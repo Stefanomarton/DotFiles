@@ -1,0 +1,39 @@
+"" BINDINGS ""
+"" Open the selection in a new tab
+bind --mode=visual t composite js document.getSelection().toString() | tabopen
+
+"" Unbindings
+unbind --mode=ex <C-a>
+unbind --mode=ex <C-c>
+unbind <C-f> 
+
+"" Better bindings
+bind o fillcmdline bmarks  
+bind O fillcmdline bmarks -t
+bind a fillcmdline tabopen
+
+"" Handy multiwindow/multitasking binds
+ bind gd tabdetach
+ bind gD composite tabduplicate; tabdetach
+ 
+"" MISC SETTINGS ""
+"" set editorcmd to suckless terminal, or use the defaults on other platforms
+js tri.browserBg.runtime.getPlatformInfo().then(os=>{const editorcmd = os.os=="linux" ? "kitty nvim" : "auto"; tri.config.set("editorcmd", editorcmd)})
+ 
+"" Sane hinting mode
+set hintfiltermode vimperator-reflow
+set hintnames numeric
+ 
+"" Defaults to 300ms but I'm a 'move fast and close the wrong tabs' kinda chap
+set hintdelay 100
+ 
+"" Quickmark 
+quickmark y https://www.youtube.com/
+quickmark g https://github.com/
+
+"" Inject Google Translate
+command translate js let googleTranslateCallback = document.createElement('script'); googleTranslateCallback.innerHTML = "function googleTranslateElementInit(){ new google.translate.TranslateElement(); }"; document.body.insertBefore(googleTranslateCallback, document.body.firstChild); let googleTranslateScript = document.createElement('script'); googleTranslateScript.charset="UTF-8"; googleTranslateScript.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=&sl=&hl="; document.body.insertBefore(googleTranslateScript, document.body.firstChild);
+
+"" For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
+"" vim: set filetype=tridactyl
+autocmd DocStart ^http(s?)://www.reddit.com js tri.excmds.urlmodify("-t", "www", " ")

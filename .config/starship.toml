@@ -1,0 +1,50 @@
+ #> SECTION: Formatting
+format = """ $git_branch $line_break$character"""
+right_format="""$directory"""
+add_newline = true
+
+[line_break] #> breaks line where stated.
+              disabled = true
+  
+  
+[fill] #> rectifies and fills with chars, can specify multiple times in format to get equal segments.
+              disabled = false
+                 style = 'fg:#69645f'
+                symbol = '–'
+  
+  
+[character] #> still need to add proper support for vi mode
+              disabled = false
+        success_symbol = '[](bold green)[ ~](fg:#ffffff)'
+          error_symbol = '[](fg:#ffffff)[ ~](fg:#ff0000)'
+          vicmd_symbol = '[](fg:#1ef956)[ |](fg:#ffffff)'
+  
+[hostname]
+              disabled = true
+                 style = 'fg:#000000 bg:#ff9600'
+                format = '[$ssh_symbol]($style)[$hostname]($style)[ ]($style)'
+              ssh_only = false
+               trim_at = ''
+  
+[directory] #> Control directory output | Order: 2
+              disabled = false
+                 style = 'fg:#ffffff '
+       repo_root_style = 'fg:#ffffff '
+       read_only_style = '[]($style)'
+                format = '[$path]($style)'
+     home_symbol = ' '
+     truncation_symbol = ' '
+             read_only = ' '
+     truncation_length = 9999999
+  
+[git_branch]
+disabled = true
+style = 'fg:#ffffff'
+format = '[$symbol $branch]($style)'
+symbol = ''
+always_show_remote = false
+only_attached = false
+truncation_length = 9223372036854775807
+truncation_symbol = ''
+ignore_branches = []
+

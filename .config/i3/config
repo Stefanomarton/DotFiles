@@ -1,0 +1,244 @@
+#font
+font pango: Noto Sans Regular 10
+
+# set the mod key to the winkey:
+set $mod Mod4
+set $alt Mod1
+# default i3 tiling mode:
+workspace_layout default
+
+#border indicator on windows:
+default_border pixel 0
+new_window pixel 0 
+
+# Set inner/outer gaps
+gaps inner 30
+gaps outer 0
+gaps left 0
+gaps right 0
+gaps bottom -15
+gaps top -18
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# switch to workspace
+bindsym $mod+1    workspace  $ws1
+bindsym $mod+2    workspace  $ws2
+bindsym $mod+3    workspace  $ws3
+bindsym $mod+4    workspace  $ws4
+bindsym $mod+5    workspace  $ws5
+bindsym $mod+6    workspace  $ws6
+bindsym $mod+7    workspace  $ws7
+bindsym $mod+8    workspace  $ws8
+bindsym $mod+9    workspace  $ws9
+bindsym $mod+0    workspace  $ws10
+
+# move focused container to workspace
+bindsym $alt+1    move container to workspace  $ws1
+bindsym $alt+2    move container to workspace  $ws2
+bindsym $alt+3    move container to workspace  $ws3
+bindsym $alt+4    move container to workspace  $ws4
+bindsym $alt+5    move container to workspace  $ws5
+bindsym $alt+6    move container to workspace  $ws6
+bindsym $alt+7    move container to workspace  $ws7
+bindsym $alt+8    move container to workspace  $ws8
+bindsym $alt+9    move container to workspace  $ws9
+bindsym $alt+0    move container to workspace  $ws10
+
+######################################
+# keybindings for different actions: #
+######################################
+
+# start a terminal
+bindsym $mod+Return exec --no-startup-id alacritty
+
+# kill focused window
+bindsym $mod+q kill
+
+# exit-menu
+bindsym $mod+Shift+e exec --no-startup-id ~/.config/i3/scripts/powermenu
+
+# lock by blurring the screen:
+#bindsym $mod+l exec ~/.config/i3/scripts/blur-lock
+
+# restart i3 inplace (preserves your layout/session, can be used to update i3)
+bindsym $mod+Shift+r restart
+
+# keybinding in fancy rofi (automated):
+bindsym F1 exec ~/.config/i3/scripts/keyhint-2
+# alternative
+# keybinding list in editor:
+# bindsym $mod+F1 exec xed ~/.config/i3/keybindings
+
+# change focus
+bindsym $mod+k focus left
+bindsym $mod+b focus down
+bindsym $mod+p focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+Shift+k move left
+bindsym $mod+Shift+b move down
+bindsym $mod+Shift+p move up
+bindsym $mod+Shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+## App shortcuts
+bindsym $mod+Shift+c exec --no-startup-id /usr/bin/firefox
+bindsym $mod+Shift+S exec --no-startup-id /usr/bin/thunar
+
+#Scratchpads
+bindsym $mod+Shift+V [class="spectacle"] scratchpad show; move position center
+
+bindsym $mod+t exec --no-startup-id alacritty --class ranger -e ranger 
+for_window [instance="ranger"] floating enable
+
+##########################################
+# configuration for workspace behaviour: #
+##########################################
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# misssing workspaces to monitor
+ workspace $ws1 output DP-2
+ workspace $ws2 output DP-2
+ workspace $ws3 output DP-2
+ workspace $ws4 output DP-2
+ workspace $ws5 output HDMI-0
+ workspace $ws6 output HDMI-0
+ workspace $ws7 output HDMI-0
+ workspace $ws8 output DVI-D-0
+ workspace $ws9 output DVI-D-0
+ workspace $ws10 output DVI-D-0
+
+# automatic set focus new window if it opens on another workspace then the current:
+for_window [class="spectacle"] floating enable; move scratchpad
+
+##############
+# compositor #
+##############
+
+# for custom config:
+exec_always --no-startup-id picom 
+
+#############################################
+# autostart applications/services on login: #
+#############################################
+assign [class="discord"] $ws8
+
+exec_always --no-startup-id spectacle 
+
+exec_always --no-startup-id mpd
+
+exec_always --no-startup-id feh --bg-fill ~/Pictures/evening-sky.png
+
+exec_always --no-startup-id ~/.config/polybar/launch.sh
+
+#get auth work with polkit-gnome
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+# if enabled you should comment welcome app.
+#exec --no-startup-id dex -a -s /etc/xdg/autostart/:~/.config/autostart/
+exec --no-startup-id dex --autostart --environment i3
+
+# configure multiple keyboard layouts and hotkey to switch (Alt+CAPSLOCK in this example)
+#exec --no-startup-id setxkbmap -layout 'us,sk' -variant altgr-intl,qwerty -option 'grp:alt_caps_toggle'
+
+# start a script to setup displays
+# uncomment the next line, use arandr to setup displays and save the file as monitor:
+exec --no-startup-id ~/.screenlayout/monitor.sh
+
+# disable power saving (for example if using xscreensaver)
+exec --no-startup-id xset -dpms
+
+# use xautolock to use autosuspend rules for mobile devices
+# https://wiki.archlinux.org/title/Session_lock#xautolock
+#exec --no-startup-id xautolock -time 60 -locker "systemctl suspend"
+
+# xscreensaver
+# https://www.jwz.org/xscreensaver
+#exec --no-startup-id xscreensaver --no-splash
+
+# Desktop notifications
+exec --no-startup-id dbus-launch dunst --config ~/.config/dunst/dunstrc
+# alternative if you installed aside with XFCE4:
+# exec --no-startup-id /usr/lib/xfce4/notifyd/xfce4-notifyd &
+
+# autotiling script
+# https://github.com/nwg-piotr/autotiling
+# `yay -S autotiling ;) (it is in AUR)
+exec_always --no-startup-id autotiling
+
+##################
+# floating rules #
+##################
+
+# set floating (nontiling) for apps needing it
+for_window [class="Yad" instance="yad"] floating enable
+for_window [class="Galculator" instance="galculator"] floating enable
+for_window [class="Blueberry.py" instance="blueberry.py"] floating enable
+
+# set floating (nontiling) for special apps
+for_window [class="Xsane" instance="xsane"] floating enable
+for_window [class="Pavucontrol" instance="pavucontrol"] floating enable
+for_window [class="qt5ct" instance="qt5ct"] floating enable
+for_window [class="Blueberry.py" instance="blueberry.py"] floating enable
+for_window [class="Bluetooth-sendto" instance="bluetooth-sendto"] floating enable
+for_window [class="Pamac-manager"] floating enable
+for_window [window_role="About"] floating enable
+
+#####################################
+# Application menu handled by rofi: #
+#####################################
+
+## rofi bindings fancy application menu ($mod+d /F9 optional disabled)
+
+bindsym $mod+s exec --no-startup-id rofi -modi drun -show drun \
+			-config ~/.config/rofi/rofidmenu.rasi
+## rofi bindings for window menu ($mod+t /F10 optional disabled)
+
+ bindsym $mod+Shift+d exec --no-startup-id rofi -show window \
+		-config ~/.config/rofi/rofidmenu.rasi
+
+# 	bindsym F10 exec rofi -show window \
+#		-config ~/.config/rofi/rofidmenu.rasi
+
+#####
+## Exposè
+####
+
+ exec_always --no-startup-id "~/.local/bin/i3expod.py -w ~/Pictures/evening-sky.png"
+ bindsym $mod+Tab exec --no-startup-id killall -s SIGUSR1 i3expod.py
+
+#################################
+#	Color			#
+#################################
+client.focused #DDB6F2 #DDB6F2 #DDB6F2 #DDB6F2 #DDB6F2
+
+

@@ -1,0 +1,17 @@
+require "user.plugins"
+require "user.options"
+require "user.nvim-tree"
+require "user.indentline"
+require "user.impatient"
+require "user.treesitter"
+require "user.autopairs"
+require "user.colorscheme"
+require "user.galaxyline"
+require "user.keymaps"
+require "user.lsp"
+require "user.bufferline"
+require "user.cmp"
+require "user.autocommands"
+require ("luasnip-latex-snippets").setup({ use_treesitter = true })
+require 'alpha'.setup(require'user.alpha'.config) -- Requiring modified dashboard
+require"fidget".setup{} -- LSP status report on right bottom
