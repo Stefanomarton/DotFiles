@@ -14,7 +14,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
   print "Installing packer close and reopen Neovim..."
   vim.cmd [[packadd packer.nvim]]
 end
-
+--
 -- Autocommand that reloads neovim whenever you save the plugins.lua file
 vim.cmd [[
   augroup packer_user_config
@@ -61,11 +61,7 @@ use { "j-hui/fidget.nvim"}
 
 
 -- use { "jose-elias-alvarez/null-ls.nvim"}
-use { "RRethy/vim-illuminate"}
 use { "numToStr/Comment.nvim"}
-
--- use { 'williamboman/mason.nvim'}
--- use { 'williamboman/mason-lspconfig.nvim'}
 
 use{"https://github.com/junegunn/fzf.vim.git"}
 
@@ -79,20 +75,26 @@ use { "hrsh7th/nvim-cmp"}
 
 use {"unblevable/quick-scope"}
 
--- use {"lervag/vimtex"}
 use {"KeitaNakamura/tex-conceal.vim"}
 use {'goolord/alpha-nvim'}
 
--- use({
---   "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
---   config = function()
---     require("lsp_lines").setup()
---   end,
--- })
-
 use {'nvim-telescope/telescope.nvim', tag = '0.1.0'}
+use {'glepnir/galaxyline.nvim'}
+use {
+  'lewis6991/gitsigns.nvim',
+  config = function()
+    require('gitsigns').setup()
+  end
+}
 
-use({'glepnir/galaxyline.nvim'})
+use {
+  'phaazon/hop.nvim',
+  branch = 'v2', -- optional but strongly recommended
+  config = function()
+    -- you can configure Hop the way you like here; see :h hop-config
+    require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+  end
+}
 
 if PACKER_BOOTSTRAP then
     require("packer").sync()

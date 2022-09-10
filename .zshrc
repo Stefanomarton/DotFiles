@@ -20,6 +20,7 @@ alias -g ptcp="cp"
 alias -g pmi="~/Scripts/pmi.sh"
 alias -g pmr="~/Scripts/pmr.sh"
 alias -g c="clear"
+alias -g df="dotfiles"
 
 ## OH-MY-ZSH SETTINGS
 # Path to your oh-my-zsh installation.

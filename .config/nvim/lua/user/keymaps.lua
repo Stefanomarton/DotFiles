@@ -72,7 +72,7 @@ keymap("n", "<leader>e", ":NvimTreeToggle<CR>", opts)
 
 -- Comment
 keymap("n", "<leader>/", "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", opts)
-keymap("x", "<leader>/", '<ESC><CMD>lua require("Comment.api").toggle.linewise_op(vim.fn.visualmode())<CR>')
+keymap("x", "<leader>/", '<ESC><CMD>lua require("Comment.api").toggle.linewise_op(vim.fn.visualmode())<CR>', opts)
 
 -- DAP
 keymap("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<cr>", opts)
@@ -86,10 +86,14 @@ keymap("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", opts)
 keymap("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<cr>", opts)
 
 --Latex
-keymap("n", "<leader>c", ":!pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && rm %:r.aux %:r.log %:r.blg %:r.bbl %:r.fls %:r.fdb_latexmk<cr><cr>")
+keymap("n", "<leader>c", ":!pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && rm %:r.aux %:r.log %:r.blg %:r.bbl %:r.fls %:r.fdb_latexmk<cr><cr>", opts)
 
-keymap("n", "<leader>p", ":!zathura %:r.pdf > /dev/null 2>&1 &<cr><cr>")
+keymap("n", "<leader>p", ":!zathura %:r.pdf > /dev/null 2>&1 &<cr><cr>", opts)
 
-keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>")
-keymap("n", "<leader>g", "<cmd>Telescope live_grep<cr>")
+keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
+keymap("n", "<leader>g", "<cmd>Telescope live_grep<cr>", opts)
+
+-- Hop
+keymap("n", "m", ":HopWord<Cr>", opts)
+keymap("n", "M", ":HopChar1<Cr>", opts)
 
