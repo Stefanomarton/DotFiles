@@ -1,5 +1,12 @@
+autoload -U colors && colors
+
 # Vim mode
 bindkey -v
+bindkey -v '^?' backward-delete-char
+
+# Keybindings
+bindkey "^a" beginning-of-line
+bindkey "^e" end-of-line
 
 # Alias
 alias sv= "sudo nvim"
@@ -21,27 +28,9 @@ alias -g pmi="~/Scripts/pmi.sh"
 alias -g pmr="~/Scripts/pmr.sh"
 alias -g c="clear"
 alias -g df="dotfiles"
+alias -g V="sudoedit"
 
-## OH-MY-ZSH SETTINGS
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# ZSH_THEME="apple"
-
-# Autoupdate
-zstyle ':omz:update' frequency 13
-
-#Disable auto-setting terminal title.
-DISABLE_AUTO_TITLE="true"
-
-#Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="false"
-
-# Plugins
-plugins=(git; vi-mode; zsh-autosuggestions; zsh-syntax-highlighting; alias-tips)
-
-source $ZSH/oh-my-zsh.sh
-
+# Variables
 export EDITOR='nvim'
 
 # Compilation flags
@@ -56,6 +45,7 @@ path+=('/home/stefanomarton/.cargo/bin')
 path+=('/home/stefanomarton/.local/bin')
 path+=('/home/stefanomarton/.local/share/gem/ruby/3.0.0/bin')
 export PATH
+
 
 ## Use ranger to switch diurectories and bind it to ctrl-o
 rng () {
@@ -179,7 +169,26 @@ source /usr/share/fzf/completion.zsh
 ##FZF config
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
-### Starship startup
+## Edit in the command in vim 
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^v' edit-command-line
+
+
+autoload -U compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)
+
+
+source ~/.local/lib/zpico/zpico.zsh
+zpico add zsh-users/zsh-syntax-highlighting 
+zpico add qoomon/zsh-lazyload
+zpico add zsh-users/zsh-autosuggestions
+zpico add zsh-users/zsh-completions
+
 eval "$(starship init zsh)"
+
+
 
 
