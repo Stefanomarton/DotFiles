@@ -12,6 +12,6 @@ require "user.lsp"
 require "user.bufferline"
 require "user.cmp"
 require "user.autocommands"
+require "user.lightspeed"
 require ("luasnip-latex-snippets").setup({ use_treesitter = true })
 require 'alpha'.setup(require'user.alpha'.config) -- Requiring modified dashboard
-require"fidget".setup{} -- LSP status report on right bottom

@@ -1,5 +1,5 @@
  #> SECTION: Formatting
-format = """ $git_branch $line_break$character"""
+format = """ $git_branch$line_break$character"""
 right_format="""$directory"""
 add_newline = true
 
@@ -15,9 +15,9 @@ add_newline = true
   
 [character] #> still need to add proper support for vi mode
               disabled = false
-        success_symbol = '[](bold green)[ ~](fg:#ffffff)'
-          error_symbol = '[](fg:#ffffff)[ ~](fg:#ff0000)'
-          vicmd_symbol = '[](fg:#1ef956)[ |](fg:#ffffff)'
+        success_symbol = '[λ](bold green)[ ~](fg:#ffffff)'
+          error_symbol = '[λ](fg:#ffffff)[ ~](fg:#ff0000)'
+          vicmd_symbol = '[λ](fg:#1ef956)[ |](fg:#ffffff)'
   
 [hostname]
               disabled = true
@@ -35,7 +35,7 @@ add_newline = true
      home_symbol = ' '
      truncation_symbol = ' '
              read_only = ' '
-     truncation_length = 9999999
+     truncation_length = 999
   
 [git_branch]
 disabled = true

@@ -7,6 +7,7 @@ bindkey -v '^?' backward-delete-char
 # Keybindings
 bindkey "^a" beginning-of-line
 bindkey "^e" end-of-line
+bindkey '^I' expand-or-complete-prefix
 
 # Alias
 alias sv= "sudo nvim"
@@ -22,16 +23,31 @@ alias gp="git push"
 alias ga="git add"
 alias gc="git commit"
 alias -g pwd="ptpwd"
-alias -g l="ptls"
+alias -g ls="ptls"
 alias -g ptcp="cp"
 alias -g pmi="~/Scripts/pmi.sh"
 alias -g pmr="~/Scripts/pmr.sh"
 alias -g c="clear"
 alias -g df="dotfiles"
 alias -g V="sudoedit"
+alias -s {yml,yaml,lua,c,tex}=nvim #Auto open file with nvim based on extension
+
+alias d='dirs -v | head -10'
+alias 1='cd -'
+alias 2='cd -2'
+alias 3='cd -3'
+alias 4='cd -4'
+alias 5='cd -5'
+alias 6='cd -6'
+alias 7='cd -7'
+alias 8='cd -8'
+alias 9='cd -9'
 
 # Variables
 export EDITOR='nvim'
+HISTFILE=~/.zsh_history
+HISTSIZE=100000000
+SAVEHIST=100000000
 
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
@@ -46,6 +62,7 @@ path+=('/home/stefanomarton/.local/bin')
 path+=('/home/stefanomarton/.local/share/gem/ruby/3.0.0/bin')
 export PATH
 
+setopt autocd autopushd 
 
 ## Use ranger to switch diurectories and bind it to ctrl-o
 rng () {
@@ -180,12 +197,26 @@ zmodload zsh/complist
 compinit
 _comp_options+=(globdots)
 
-
 source ~/.local/lib/zpico/zpico.zsh
 zpico add zsh-users/zsh-syntax-highlighting 
 zpico add qoomon/zsh-lazyload
 zpico add zsh-users/zsh-autosuggestions
 zpico add zsh-users/zsh-completions
+zpico add hlissner/zsh-autopair
+
+zpico add IngoMeyer441/zsh-easy-motion
+EASY_MOTION_TARGET_KEYS="asdghklqwertyuiopzxcvbnmfj;"
+EASY_MOTION_DIM="fg=242"
+EASY_MOTION_HIGHLIGHT="fg=196,bold"
+EASY_MOTION_HIGHLIGHT_2_FIRST="fg=11,bold"
+EASY_MOTION_HIGHLIGHT_2_SECOND="fg=3,bold"
+bindkey -M vicmd ' ' vi-easy-motion
+
+# options
+setopt SHARE_HISTORY
+setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+setopt APPEND_HISTORY            # append to history file
 
 eval "$(starship init zsh)"
 

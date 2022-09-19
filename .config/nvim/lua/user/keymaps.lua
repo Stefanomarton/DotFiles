@@ -97,3 +97,4 @@ keymap("n", "<leader>g", "<cmd>Telescope live_grep<cr>", opts)
 keymap("n", "m", ":HopWord<Cr>", opts)
 keymap("n", "M", ":HopChar1<Cr>", opts)
 
+
