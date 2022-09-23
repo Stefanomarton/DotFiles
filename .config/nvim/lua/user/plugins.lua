@@ -89,6 +89,14 @@ use {
 
 use 'ggandor/lightspeed.nvim'
 
+use({
+	'mvllow/modes.nvim',
+	tag = 'v0.2.0',
+	config = function()
+		require('modes').setup()
+	end
+})
+
 -- use {
 --   'phaazon/hop.nvim',
 --   branch = 'v2', -- optional but strongly recommended

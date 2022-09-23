@@ -28,6 +28,18 @@ local math_iA = {
       return string.format("\\hat{%s}", snip.captures[1])
     end, {})
   ),
+  s(
+    {
+      trig = "(%a)vec",
+      wordTrig = false,
+      regTrig = true,
+      name = "vec",
+      priority = 100,
+    },
+    f(function(_, snip)
+      return string.format("\\vec{%s}", snip.captures[1])
+    end, {})
+  ),
 
   ls.parser.parse_snippet({ trig = "al ", name = "to the ... power ^{}" }, "\\alpha "),
   ls.parser.parse_snippet({ trig = "be ", name = "to the ... power ^{}" }, "\\beta "),
@@ -49,6 +61,7 @@ local math_iA = {
   ls.parser.parse_snippet({ trig = "om ", name = "to the ... power ^{}" }, "\\omega "),
   ls.parser.parse_snippet({ trig = "Om ", name = "to the ... power ^{}" }, "\\Omega "),
   ls.parser.parse_snippet({ trig = "nu ", name = "to the ... power ^{}" }, "\\nu "),
+  ls.parser.parse_snippet({ trig = "ve ", name = "to the ... power ^{}" }, "\\vec{$1}$2 "),
 
   ls.parser.parse_snippet({ trig = "_", name = "to the ... power ^{}" }, "_{$1}$0 "),
   ls.parser.parse_snippet({ trig = "^", name = "to the ... power ^{}" }, "^{$1}$0 "),

@@ -1,7 +1,7 @@
 -- Shorten function name
 local keymap = vim.keymap.set
 -- Silent keymap option
-local opts = { silent = true }
+local opts = { silent = true, noremap = true }
 
 --Remap space as leader key
 keymap("", "<Space>", "<Nop>", opts)
@@ -48,6 +48,10 @@ keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
 
 -- Better paste
 keymap("v", "p", '"_dP', opts)
+
+-- Better search
+keymap("n", "<leader>s", "V :s/")
+keymap("v", "s", "V :s/")
 
 -- Insert --
 
@@ -96,5 +100,6 @@ keymap("n", "<leader>g", "<cmd>Telescope live_grep<cr>", opts)
 -- Hop
 keymap("n", "m", ":HopWord<Cr>", opts)
 keymap("n", "M", ":HopChar1<Cr>", opts)
+
 
 
