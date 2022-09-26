@@ -53,7 +53,10 @@ Fonts
 + [**Nerd Fonts**](https://www.nerdfonts.com/font-downloads)
 
 Software
-+ Neovim 
+This are the essential packages for this configuration to worw 
+          
+        awesome neovim firefox flameshot rofi feh 
+
 
 
   
