@@ -38,7 +38,7 @@ I use stow to manage my dotfile i use [stow](https://www.gnu.org/software/stow/)
 
          $ git clone https://github.com/Stefanomarton/DotFiles
  
-2. Enter the directory and create the symlink with stow
+2. Enter the directory and create the symlinks with stow
 
         $ cd DotFiles 
         $ stow .
@@ -50,7 +50,7 @@ Install the git version of AwesomeWM; Arch users can use the awesome-git AUR pac
 
 ## Dependencies
 Fonts
-+ **Nerd Fonts** - [website](https://www.nerdfonts.com/font-downloads)
++ [**Nerd Fonts**](https://www.nerdfonts.com/font-downloads)
 
 Software
 
