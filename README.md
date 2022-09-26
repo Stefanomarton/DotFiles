@@ -48,6 +48,12 @@ I use different xinit configuration so that I use the right configuration on the
  
  
 # Setup
+
+### SMABS (Stefano Marton Automatic Bootstrapping Script)
+I'm experimenting with a small bootstrapping script, which deploy all my dotfiles and needed packages.
+You can find it [here](https://github.com/Stefanomarton/SMABS)
+
+### Stow 
 Here are the instructions you should follow to replicate my AwesomeWM setup. 
 I use stow to manage my dotfile i use [stow](https://www.gnu.org/software/stow/).
 
@@ -59,6 +65,10 @@ I use stow to manage my dotfile i use [stow](https://www.gnu.org/software/stow/)
 
        $ cd DotFiles 
        $ stow .
+
+### Manual cloning 
+
+Just clone the repo and copy what you need where you need it
 
 ## Dependencies
 Fonts
