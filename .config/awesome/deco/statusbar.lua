@@ -37,7 +37,6 @@ awful.screen.connect_for_each_screen(function(s)
   -- Create a promptbox for each screen
   -- s.mypromptbox = awful.widget.prompt()
 
-
    mytextclock = wibox.widget.textclock()
 
   -- Create an imagebox widget which will contain an icon indicating which layout we're using.
@@ -58,12 +57,12 @@ awful.screen.connect_for_each_screen(function(s)
     style   = {
         shape = function(cr, width, height)
                 gears.shape.circle(cr, 12, 12)
-            end, 
-        spacing = 30,
-        align = "center",
+            end 
       },
-      layout  = wibox.layout.fixed.horizontal
-  }
+      spacing = 30,
+    }
+
+  
 
   -- Create a tasklist widget
   s.mytasklist = awful.widget.tasklist {
@@ -72,68 +71,44 @@ awful.screen.connect_for_each_screen(function(s)
     buttons = tasklist_buttons,
           style   = {
         shape  = gears.shape.rounded_rect,
-        spacing = 50,
+        spacing = 15,
         layout= {
           valign = "center",
           halign = "center",
         }
        },
+    
                 }
-
 -- Create the systray
 local systray = wibox.widget.systray()
-systray:set_base_size(20)
+-- systray:set_base_size(20)
 
   -- Create the wibox
-  s.mywibox = awful.wibar({ position = "top", screen = 1, height = 35, bg = "beautiful.bg_normal", widht= 500})
+  s.mywibox = awful.wibar({ position = "top", screen = 1, height = 40, bg = "beautiful.bg_normal", stretch = "false", type = "desktop" })
 
   -- Add widgets to the wibox
   s.mywibox:setup {
     layout = wibox.layout.align.horizontal,
     expand = "none",
-    { -- Left widgets
-      layout = wibox.layout.align.horizontal,
-      -- wibox.container.margin(wibox.container.place(RC.launcher),10,10,10,5),
-      -- s.mypromptbox,
-      wibox.container.margin(wibox.container.background(wibox.container.place(s.mylayoutbox),beautiful.bg_normal,gears.shape.rounded_rect),1200,4,5,3),
-      wibox.container.margin(wibox.container.background(wibox.container.place(mytextclock), beautiful.bg_normal, gears.shape.rounded_rect), 15,0,5,3),
-    },
-      wibox.container.margin(wibox.container.background(wibox.container.margin(wibox.container.place(s.mytaglist),5,0,8,0), beautiful.bg_normal, gears.shape.rounded_rect),0,0,5,3),
-    -- s.mytasklist, -- Middle widget
-    { -- Right widgets
-      layout = wibox.layout.align.horizontal,
-      wibox.container.margin(wibox.container.background(wibox.container.margin(cpu_widget({ color = '#1ef956' }),5,5),beautiful.bg_normal, gears.shape.rounded_rect ),10,10,5,3),
-
-wibox.container.margin(wibox.container.background(wibox.container.margin(
+      -- First
+     wibox.container.margin(wibox.container.background(wibox.container.margin(wibox.container.place(s.mytasklist),10,10,3,3),beautiful.bg_normal, gears.shape.rounded_rect),10,0,3,3),
+      -- Second
+      wibox.container.margin(wibox.container.background(wibox.container.margin(wibox.container.place(s.mytaglist),10,2,12,0), beautiful.bg_normal, gears.shape.rounded_rect),0,0,3,3),
+      -- Third
+    {
+      wibox.container.margin(wibox.container.background(wibox.container.place(mytextclock), beautiful.bg_normal, gears.shape.rounded_rect), 0,0,3,3),
+      wibox.container.margin(wibox.container.background(wibox.container.margin(cpu_widget({ color = '#1ef956' }),5,5),beautiful.bg_normal, gears.shape.rounded_rect ),0,0,3,3),
+      wibox.container.margin(wibox.container.background(wibox.container.margin(
         volume_widget {
           widget_type = "horizontal_bar",
           with_icon = false,
           mute_color = "#ff0000",
           main_color = "#F1FA8C",
-        },5,10,0,0),beautiful.bg_normal, gears.shape.rounded_rect),2,2,5,3),
-      
-    wibox.container.margin(wibox.container.background(wibox.container.margin(wibox.container.place(systray),10,10,3,3),beautiful.bg_normal, gears.shape.rounded_rect),5,1340,5,3)
-    },
-  }
--- Create the wibox
-  s.mywibox2 = awful.wibar({ position = "bottom", screen = 1, bg = "beautiful.bg_normal",height = 30})
-
-s.mywibox2:setup {
-    layout = wibox.layout.align.horizontal,
-    { -- Left widgets
-      layout = wibox.layout.align.horizontal,
-      -- RC.launcher,
-      -- s.mytaglist,
-      -- s.mypromptbox,
-    },
-    wibox.container.margin(wibox.container.place(s.mytasklist),0,0,5,5),
-     -- Middle widget
-    { -- Right widgets
-      layout = wibox.layout.align.horizontal,
-      -- wibox.container.margin(wibox.container.place(systray),0,40,0,0),
-      -- wibox.container.margin(wibox.container.place(mytextclock),0,40,0,0),
-      -- wibox.container.margin(wibox.container.place(s.mylayoutbox),0,40,0,0)
-    },
+        },2,5,0,0),beautiful.bg_normal, gears.shape.rounded_rect),0,0,3,3),
+      wibox.container.margin(wibox.container.background(wibox.container.margin(wibox.container.place(systray),10,10,3,3),beautiful.bg_normal, gears.shape.rounded_rect),0,10,3,3),
+      spacing = 10,
+      layout = wibox.layout.fixed.horizontal,
+    }
   }
 
 end

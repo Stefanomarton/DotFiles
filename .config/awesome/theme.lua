@@ -20,20 +20,20 @@ theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
-theme.useless_gap   = dpi(25)
+theme.useless_gap   = dpi(10)
 theme.border_width  = 2
 theme.border_focus = "#9afcb3"
 theme.border_normal  = "#ff79c6"
 theme.border_marked = "#ffffff"
 
-theme.taglist_bg_focus    = "#e0af68"
-theme.taglist_bg_empty    = "#7aa2f7"
-theme.taglist_bg_occupied = "#7aa2f7"
+theme.taglist_bg_focus    = "#bb9af7"
+theme.taglist_bg_empty    = "#565f89"
+theme.taglist_bg_occupied = "#b4f9f8"
 theme.taglist_fg_focus    = "#ffffff"
 theme.taglist_fg_occupied = "#ffffff"
 theme.taglist_fg_urgent   = "#f7768e"
 theme.taglist_fg_empty    = "#3992af"
-theme.taglist_spacing     = 2
+theme.taglist_spacing     = 30
 theme.taglist_font        = "JetBrainsMono Nerd Font 12"
 
 
@@ -43,7 +43,7 @@ theme.tasklist_fg_focus    = "#ffffff"
 theme.tasklist_fg_occupied = "#ffffff"
 theme.tasklist_fg_urgent   = "#f7768e"
 theme.tasklist_fg_empty    = "#3992af"
-theme.tasklist_spacing     = 2
+theme.tasklist_spacing     = 0
 theme.tasklist_font        = "JetBrainsMono Nerd Font 12"
 
 
@@ -132,7 +132,7 @@ theme.icon_theme = nil
 theme.flash_focus_start_opacity = 1
 theme.flash_focus_step = 0.9         -- the step of animation
 theme.systray_icon_spacing = 6
-theme.tasklist_disable_task_name = false
+theme.tasklist_disable_task_name = true
 theme.tasklist_disable_icon = false
 theme.notification_icon_size = 64
 

@@ -10,4 +10,4 @@ awful.spawn.with_shell("xrandr --output DVI-D-0 --mode 1920x1080 --pos 4520x0 --
 awful.spawn("picom")
 awful.spawn("discord")
 awful.spawn.with_shell("xmodmap .Xmodmap")
-awful.spawn.with_shell("feh --bg-fill --no-fehbg ~/Desktop/IMG2.jpg")
+awful.spawn.with_shell("feh --bg-fill --no-fehbg ~/Desktop/street.png")
