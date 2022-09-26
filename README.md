@@ -57,7 +57,9 @@ This are the essential packages for this configuration to worw
 
 # Configuration
 ## Neovim
-
+<div align=center>
+![image](https://user-images.githubusercontent.com/80684231/192338331-b0bd3b3b-d508-419c-b350-98a1204bdf30.png)
+</div>
 
   
 
