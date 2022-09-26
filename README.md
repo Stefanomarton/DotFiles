@@ -75,9 +75,13 @@ It integrated VIM keybindings in firefox, with also a lot of other cool features
 
 I like the bookmark management in particular:
 Any letter 'x' can be assigned to a bookmark, then you can type:
-              
-              go'x' Open the bookmark binded to x in the curret tab
-              gn'x' Open the bookmark binded to x in a new tab
++ Open the bookmark binded to x in the curret tab
+   
+      go'x'
+
++ Open the bookmark binded to x in a new tab
+
+      gn'x' 
 
 
 
