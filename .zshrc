@@ -10,7 +10,8 @@ bindkey "^e" end-of-line
 bindkey '^I' expand-or-complete-prefix
 
 # Alias
-alias sv= "sudo nvim"
+# alias cp= "cp -r"
+alias -g mkd= "mkdir -p -v"
 alias ka= "killall"
 alias v="nvim"
 alias music="ncmpcpp"

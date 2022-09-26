@@ -51,7 +51,10 @@ use { "lewis6991/impatient.nvim"}
 use { "lukas-reineke/indent-blankline.nvim"}
 use { "L3MON4D3/LuaSnip" }
 use { "nvim-treesitter/nvim-treesitter"}
+
+  --Colorscheme
 use { "dracula/vim" }
+use { 'folke/tokyonight.nvim' }
 use { "akinsho/bufferline.nvim"}
 
 
@@ -105,6 +108,7 @@ use({
 --     require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
 --   end
 -- }
+
 
 if PACKER_BOOTSTRAP then
     require("packer").sync()
