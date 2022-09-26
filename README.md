@@ -18,6 +18,7 @@ My principles are to find a satisfactory balance between functionality and desig
 
 
 <div align=right > 
+  
 | Type  | Used |
 | :---:  | :---:  |
 | OS  | ArchLinux  |
@@ -26,6 +27,7 @@ My principles are to find a satisfactory balance between functionality and desig
 | Editor | [Neovim](https://neovim.io/) |
 |File Manager | Nautilus 
 | Shell | Zsh |
+  
 </div>
   
 </div>
