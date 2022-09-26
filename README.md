@@ -8,7 +8,7 @@
 
 </div>
 
-<div>
+<div align = right>
 
 | Type  | Used |
 | :---:  | :---:  |
@@ -19,7 +19,7 @@
 | File Manager | Nautilus |
 | Shell | Zsh |
   
-</div align = right>
+</div>
 
 <table>
   <tr>
