@@ -1,9 +1,6 @@
 <div align=center>
 
-# DotFiles
-  
-[![AwesomeWM](https://img.shields.io/badge/AwesomeWM-git-blue.svg?logo=lua)](https://github.com/awesomeWM/awesome)
-
+![image](https://user-images.githubusercontent.com/80684231/192342745-7266665d-362b-42e4-acee-6ae3c7c6a633.png)
 </div>
 
 # Small Description
