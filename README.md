@@ -43,11 +43,6 @@ I use stow to manage my dotfile i use [stow](https://www.gnu.org/software/stow/)
         $ cd DotFiles 
         $ stow .
 
-## Awesome
-
-Install the git version of AwesomeWM; Arch users can use the awesome-git AUR package.
-**For other distros**, build instructions are [here](https://github.com/awesomeWM/awesome/#building-and-installation).
-
 ## Dependencies
 Fonts
 + [**Nerd Fonts**](https://www.nerdfonts.com/font-downloads)
