@@ -8,13 +8,13 @@
 
 # Small Description
 
-<img src="https://user-images.githubusercontent.com/80684231/192327751-5584bd54-a99d-495b-a545-e1d627d3bf3a.png" alt="img" align="right" width="500px">
-
 This is my personal collection of configuration files.
 
 The [setup section](#setup) will guide you through the installation process.
 
 Each configuration is described in this file, you can find each configuration [below](#Configurations).
+
+<img src="https://user-images.githubusercontent.com/80684231/192327751-5584bd54-a99d-495b-a545-e1d627d3bf3a.png" alt="img" align="right" width="500px">
 
 Here are some details about my setup:
 
