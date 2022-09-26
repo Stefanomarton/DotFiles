@@ -35,17 +35,15 @@ Here are the instructions you should follow to replicate my AwesomeWM setup.
 
 ## Awesome
 
-Install the git version of AwesomeWM.
-
-Arch users can use the awesome-git AUR package.
-
+Install the git version of AwesomeWM; Arch users can use the awesome-git AUR package.
 **For other distros**, build instructions are [here](https://github.com/awesomeWM/awesome/#building-and-installation).
 
 ## Dependencies
-Install needed fonts
+Fonts
 + **Nerd Fonts** - [website](https://www.nerdfonts.com/font-downloads)
 
-Install software dependencies
+Software
+
 
 
   
