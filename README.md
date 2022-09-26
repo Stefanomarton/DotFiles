@@ -20,7 +20,7 @@
 | Shell | Zsh |
   
 </div>
-
+<div align = left>
 <table>
   <tr>
     <th>Company</th>
@@ -38,4 +38,5 @@
     <td>Mexico</td>
   </tr>
 </table>
+</div>
 
