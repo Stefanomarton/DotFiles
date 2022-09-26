@@ -16,15 +16,15 @@ My principles are to find a satisfactory balance between functionality and desig
 </div>
 
 
-<div align=left> 
+<div align=right> 
       
-    | Type  | Used |
-    | :---:  | :---:  |
-    | OS  | ArchLinux  |
-    | Window Manager  | [AwesomeWM](https://github.com/awesomeWM/awesome)  |
-    | Terminal | [Kitty](https://github.com/kitty) |
-    | Editor | [Neovim](https://neovim.io/) |
-    | File Manager | Nautilus |
-    | Shell | Zsh |
+| Type  | Used |
+| :---:  | :---:  |
+| OS  | ArchLinux  |
+| Window Manager  | [AwesomeWM](https://github.com/awesomeWM/awesome)  |
+| Terminal | [Kitty](https://github.com/kitty) |
+| Editor | [Neovim](https://neovim.io/) |
+|File Manager | Nautilus 
+| Shell | Zsh |
       
 </div>
