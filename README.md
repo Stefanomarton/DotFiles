@@ -73,7 +73,8 @@ It integrated VIM keybindings in firefox, with also a lot of other cool features
 
 ![image](https://user-images.githubusercontent.com/80684231/192339889-6cb1f369-26da-4064-8d56-69285543b995.png)
 
-I like the bookmark management in particular:
+I like the bookmark management in particular.
+
 Any letter 'x' can be assigned to a bookmark, then you can type:
 + Open the bookmark binded to x in the curret tab
    
