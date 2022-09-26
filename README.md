@@ -8,7 +8,7 @@
 
 </div>
 
- 
+<div align=center>
 <div align=left> 
 This repository contains my personal dotfiles for most of the programs I use on a daily basis. Primarily, this allows me to organize my rice and to easily set up        the computing experience I enjoy on any machine I come across. However, it also allows me to share my preferences with others. I think there are some interesting        things here worth discovering, and that's why I take the time to write (or at least try to write) sufficient comments and documentation.
 
@@ -27,4 +27,5 @@ My principles are to find a satisfactory balance between functionality and desig
 |File Manager | Nautilus 
 | Shell | Zsh |
       
+</div>
 </div>
