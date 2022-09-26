@@ -35,7 +35,8 @@ Here are the instructions you should follow to replicate my AwesomeWM setup.
 I use stow to manage my dotfile i use [stow](https://www.gnu.org/software/stow/).
 
 1. Clone my repo
- git clone https://github.com/Stefanomarton/DotFiles
+
+    git clone https://github.com/Stefanomarton/DotFiles
  
 2. 
 
