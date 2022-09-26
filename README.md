@@ -15,6 +15,7 @@
 My principles are to find a satisfactory balance between functionality and design while keeping an eye on resource consumption. I prefer keyboard-focused control over everything else and place a high value on visual consistency (preferably by using the gruvbox color scheme). I use Arch Linux as my daily driver, but there shouldn't be much here requiring this specific distribution, so using my configurations on other distros or, in the worst case, porting them shouldn't be too hard. I prefer a slightly retro design, but I don't shy away from occasionally using Unicode symbols and Nerd Font glyphs in my terminal applications. However, since I sometimes only work with the Linux console, I always make sure to fall back to settings that look good in VGA text mode with code page 437, if that should be the case.
     </div>
     <div style="margin-left: 620px;"> 
+      
     | Type  | Used |
     | :---:  | :---:  |
     | OS  | ArchLinux  |
@@ -23,5 +24,6 @@ My principles are to find a satisfactory balance between functionality and desig
     | Editor | [Neovim](https://neovim.io/) |
     | File Manager | Nautilus |
     | Shell | Zsh |
+      
     </div>
 </div>
