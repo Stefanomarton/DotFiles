@@ -19,7 +19,7 @@
 | File Manager | Nautilus |
 | Shell | Zsh |
   
-</div>
+</div align = right>
 
 <table>
   <tr>
