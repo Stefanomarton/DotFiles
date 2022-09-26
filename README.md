@@ -64,6 +64,9 @@ This are the essential packages for this configuration to worw
   
 </div>
 
+### Config organization 
+The config is kind of modularized, it make simple to find and modify what you need. Each section is then require in the init.lua file
+
   
 
 
