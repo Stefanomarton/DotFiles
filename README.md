@@ -34,13 +34,12 @@ My principles are to find a satisfactory balance between functionality and desig
 
 Here are the instructions you should follow to replicate my AwesomeWM setup.
 
-    Install the git version of AwesomeWM.
-
-    Arch users can use the awesome-git AUR package.
+Install the git version of AwesomeWM.
+Arch users can use the awesome-git AUR package.
 
     yay -S awesome-git
 
-    For other distros, build instructions are here.
+**For other distros**, build instructions are [here](https://github.com/awesomeWM/awesome/#building-and-installation).
 
   
 
