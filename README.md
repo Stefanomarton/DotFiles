@@ -21,7 +21,7 @@
   
 </div>
 
-table>
+<table>
   <tr>
     <th>Company</th>
     <th>Contact</th>
