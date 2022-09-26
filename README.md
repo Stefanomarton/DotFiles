@@ -31,10 +31,14 @@ This repository contains my personal dotfiles for most of the programs I use on 
 My principles are to find a satisfactory balance between functionality and design while keeping an eye on resource consumption. I prefer keyboard-focused control over everything else and place a high value on visual consistency. I use Arch Linux as my daily driver, but there shouldn't be much here requiring this specific distribution, so using my configurations on other distros or, in the worst case, porting them shouldn't be too hard.
 
 # Setup
-## Awesome
 Here are the instructions you should follow to replicate my AwesomeWM setup.
+
+## Awesome
+
 Install the git version of AwesomeWM.
+
 Arch users can use the awesome-git AUR package.
+
 **For other distros**, build instructions are [here](https://github.com/awesomeWM/awesome/#building-and-installation).
 
 ## Dependencies
