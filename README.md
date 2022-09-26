@@ -12,9 +12,9 @@
 
 | Type  | Used |
 | :---:  | :---:  |
-| OS  | [NixOS](https://nixos.org/)  |
+| OS  | ArchLinux  |
 | Window Manager  | [AwesomeWM](https://github.com/awesomeWM/awesome)  |
-| Terminal | [Wezterm](https://github.com/wez/wezterm) |
+| Terminal | [Kitty](https://github.com/kitty) |
 | Editor | [Neovim](https://neovim.io/) |
 | File Manager | Nautilus |
 | Shell | Zsh |
