@@ -50,7 +50,7 @@ Fonts
 Software
 This are the essential packages for this configuration to worw 
           
-        awesome neovim firefox flameshot rofi feh 
+        awesome neovim firefox flameshot rofi feh kitty zsh starship
 
 
 
