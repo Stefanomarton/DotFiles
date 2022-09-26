@@ -5,26 +5,24 @@
 [![AwesomeWM](https://img.shields.io/badge/AwesomeWM-git-blue.svg?logo=lua)](https://github.com/awesomeWM/awesome)
 
 </div>
+
 ## Thanks for dropping by!
 
-<img src="https://user-images.githubusercontent.com/80684231/192327751-5584bd54-a99d-495b-a545-e1d627d3bf3a.png" alt="img" align="right" width="400px">
+<img src="https://user-images.githubusercontent.com/80684231/192327751-5584bd54-a99d-495b-a545-e1d627d3bf3a.png" alt="img" align="right" width="500px">
 
 This is my personal collection of configuration files.
-
-You are probably here for my AwesomeWM configuration.
 
 The [setup section](#setup) will guide you through the installation process.
 
 Here are some details about my setup:
 
-+ **WM**: [AwesomeWM](https://github.com/awesomeWM/awesome/) 💙 config included!
++ **WM**: [AwesomeWM](https://github.com/awesomeWM/awesome/) 
 + **OS**: Arch Linux
 + **Shell**: [zsh](https://wiki.archlinux.org/index.php/Zsh)
-+ **Terminal**: [kitty](https://github.com/kovidgoyal/kitty/) 💙 config included!
-+ **Editor**: [Neovim](https://github.com/neovim/neovim/) 💙 config included!
-+ **Org editor**: [Doom Emacs](https://github.com/hlissner/doom-emacs/)
-+ **File Manager**: [Thunar](https://git.xfce.org/xfce/thunar/)
-+ **Launcher**: [rofi](https://github.com/davatorium/rofi/) 💙 config included!
++ **Terminal**: [kitty](https://github.com/kovidgoyal/kitty/) 
++ **Editor**: [Neovim](https://github.com/neovim/neovim/) 
++ **File Manager**: Nautilus
++ **Launcher**: [rofi](https://github.com/davatorium/rofi/)
 + **Browser**: Firefox
   
 # Small Description
