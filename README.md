@@ -56,7 +56,7 @@ This are the essential packages for this configuration to worw
         awesome neovim firefox flameshot rofi feh kitty zsh starship
 
 # Configuration
-## Neovim
+### Neovim
 
 <div align=center>
   
@@ -67,8 +67,17 @@ This are the essential packages for this configuration to worw
 The config is kind of modularized, it make simple to find and modify what you need. Each section is then require in the init.lua file. 
 I use nvim for latex and markdown writing and some minor programming stuff in lua and python.
 
+### Trydactil
+In my opinion one of the best firefox extension, you can find more [here](https://github.com/tridactyl/tridactyl). 
+It integrated VIM keybindings in firefox, with also a lot of other cool features.
 
-  
+![image](https://user-images.githubusercontent.com/80684231/192339889-6cb1f369-26da-4064-8d56-69285543b995.png)
+
+I like the bookmark management in particular:
+Any letter 'x' can be assigned to a bookmark, then you can type:
+              
+              go'x' Open the bookmark binded to x in the curret tab
+              gn'x' Open the bookmark binded to x in a new tab
 
 
 
