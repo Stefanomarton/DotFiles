@@ -44,7 +44,7 @@ use { "wbthomason/packer.nvim"}
 use { "nvim-lua/plenary.nvim"}
 use { "windwp/nvim-autopairs"}
 use { "kyazdani42/nvim-web-devicons"}
-use { "kyazdani42/nvim-tree.lua"}
+use { "kyazdani42/nvim-tree.lua", commit = "ce463a5"}
 use { "moll/vim-bbye"}
 use { "nvim-lualine/lualine.nvim"}
 use { "lewis6991/impatient.nvim"}
@@ -64,7 +64,7 @@ use { "j-hui/fidget.nvim"}
 
 
 -- use { "jose-elias-alvarez/null-ls.nvim"}
-use { "numToStr/Comment.nvim"}
+use { "numToStr/Comment.nvim", commit = "256cea0082c404cdced10319e9fa7580d33cf255"}
 
 use{"https://github.com/junegunn/fzf.vim.git"}
 
@@ -78,7 +78,7 @@ use { "hrsh7th/nvim-cmp"}
 
 use {"unblevable/quick-scope"}
 
-use {"KeitaNakamura/tex-conceal.vim"}
+-- use {"KeitaNakamura/tex-conceal.vim"}
 use {'goolord/alpha-nvim'}
 
 use {'nvim-telescope/telescope.nvim', tag = '0.1.0'}
@@ -90,7 +90,7 @@ use {
   end
 }
 
-use 'ggandor/lightspeed.nvim'
+-- use 'ggandor/lightspeed.nvim'
 
 use({
 	'mvllow/modes.nvim',
@@ -100,14 +100,14 @@ use({
 	end
 })
 
--- use {
---   'phaazon/hop.nvim',
---   branch = 'v2', -- optional but strongly recommended
---   config = function()
---     -- you can configure Hop the way you like here; see :h hop-config
---     require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
---   end
--- }
+use {
+  'phaazon/hop.nvim',
+  branch = 'v2', -- optional but strongly recommended
+  config = function()
+    -- you can configure Hop the way you like here; see :h hop-config
+    require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+  end
+}
 
 
 if PACKER_BOOTSTRAP then

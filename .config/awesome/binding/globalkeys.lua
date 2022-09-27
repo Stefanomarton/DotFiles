@@ -189,7 +189,10 @@ function _M.get()
     { description = "screenshot", group = "launcher" }),
 
     -- Launch Scripts
-      awful.key({modkey,"Control"},"l",function () awful.spawn.with_shell("cd ~/GoogleDrive/Università/Libri && zathura $(ls | rofi -dmenu -i -theme ~/.config/rofi/dracula.rasi)")end,
+    --   awful.key({modkey,"Control"},"l",function () awful.spawn.with_shell("cd ~/GoogleDrive/Università/Libri && zathura $(ls | rofi -dmenu -i -theme ~/.config/rofi/dracula.rasi)")end,
+    -- { description = "open book", group = "Scripts" })
+
+      awful.key({modkey,"Control"},"l",function () awful.spawn.with_shell("/bin/bash -c /home/stefanomarton/Scripts/libriv2")end,
     { description = "open book", group = "Scripts" })
 
 
