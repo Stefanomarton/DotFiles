@@ -173,11 +173,11 @@ function _M.get()
               {description = "Ranger", group = "Scratchpad"}),
     awful.key({ modkey }, "t", function() term:toggle() end,
               {description = "Term", group = "Scratchpad"}),
-    awful.key({ modkey }, "/", function() mixer:turn_on() end,
+    awful.key({ modkey }, "/", function() mixer:toggle() end,
               {description = "Mixer", group = "Scratchpad"}),
-    awful.key({ modkey }, "g", function() galculator:turn_on() end,
+    awful.key({ modkey }, "g", function() galculator:toggle() end,
               {description = "Galculator", group = "Scratchpad"}),
-    awful.key({ modkey }, "y", function() ytm:turn_on() end,
+    awful.key({ modkey }, "y", function() ytm:toggle() end,
               {description = "YTMusic", group = "Scratchpad"}),
 
     -- Launch program
