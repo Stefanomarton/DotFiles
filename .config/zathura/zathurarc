@@ -1,9 +1,8 @@
 #include catppuccin
 include dracula
-set scroll-step 200
+set scroll-step 50
 set selection-clipboard clipboard
-set adjust-open width
-set recolor false 
+set recolor false
 
 unmap j
 map j navigate next 
@@ -16,3 +15,19 @@ map K scroll up
 
 unmap J
 map J scroll down
+
+set adjust-open "width"
+
+set incremental-search "true"
+
+set font "JetBrainsMono Nerd Font 10"
+
+set zoom-center "true"
+
+set statusbar-home-tilde "true"
+
+set render-loading "false"
+
+set scroll-page-aware "true"
+
+set scroll-full-overlap 0.01
