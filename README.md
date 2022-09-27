@@ -106,4 +106,19 @@ Any letter 'x' can be assigned to a bookmark, then you can type:
       gn'x' 
 
 
+### Starship
+
+Starship is a cross shell prompt, highly configurabhe, with a lot of module available, without all the bloat that comes with p10k for oh-my-zsh, for example.
+
+I keep it very simple with a kind of lambda theme, vi-mode indicator, directory path and git module. 
+
+### ZSH
+
+Simple config: I use some plugins, with zpico as a plugin manager, as I don´t need much other than this.
+Several aliases are configured to make faster interaction with the terminal. 
+
+I have integrated fzf as much as I can, I find it efficient, especially when searching throug history or files.
+
+
+### Kitty 
 
