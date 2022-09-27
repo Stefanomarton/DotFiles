@@ -35,22 +35,15 @@ In this config files you can find two different awesome setup:
 + Awesome 
 + Awesome-laptop
 
-This is because i use different configuration file on laptop and desktop. 
+This is because I use different configuration file on laptop and desktop, I explain how I do it [below](https://github.com/Stefanomarton/DotFiles/edit/master/README.md#xinit).
 
-Using this :
-      
-    awesome --config DIR
-
-I use different xinit configuration so that I use the right configuration on the device I want
- 
- 
 # Setup
 
-### SMABS (Stefano Marton Automatic Bootstrapping Script)
+## SMABS (Stefano Marton Automatic Bootstrapping Script)
 I'm experimenting with a small bootstrapping script, which deploy all my dotfiles and needed packages.
 You can find it [here](https://github.com/Stefanomarton/SMABS)
 
-### Stow 
+## Stow 
 Here are the instructions you should follow to replicate my AwesomeWM setup. 
 I use stow to manage my dotfile i use [stow](https://www.gnu.org/software/stow/).
 
@@ -63,11 +56,11 @@ I use stow to manage my dotfile i use [stow](https://www.gnu.org/software/stow/)
        $ cd DotFiles 
        $ stow .
 
-### Manual cloning 
+## Manual cloning 
 
 Just clone the repo and copy what you need where you need it
 
-## Dependencies
+# Dependencies
 Fonts
 + [**Nerd Fonts**](https://www.nerdfonts.com/font-downloads)
 
@@ -77,7 +70,7 @@ This are the essential packages for this configuration to worw
         awesome neovim firefox flameshot rofi feh kitty zsh starship
 
 # Configurations
-### Neovim
+## Neovim
 
 <div align=center>
   
@@ -88,7 +81,7 @@ This are the essential packages for this configuration to worw
 The config is kind of modularized, it make simple to find and modify what you need. Each section is then require in the init.lua file. 
 I use nvim for latex and markdown writing and some minor programming stuff in lua and python.
 
-### Trydactil
+## Trydactil
 In my opinion one of the best firefox extension, you can find more [here](https://github.com/tridactyl/tridactyl). 
 It integrated VIM keybindings in firefox, with also a lot of other cool features.
 
@@ -106,19 +99,35 @@ Any letter 'x' can be assigned to a bookmark, then you can type:
       gn'x' 
 
 
-### Starship
+## Starship
 
 Starship is a cross shell prompt, highly configurabhe, with a lot of module available, without all the bloat that comes with p10k for oh-my-zsh, for example.
 
 I keep it very simple with a kind of lambda theme, vi-mode indicator, directory path and git module. 
 
-### ZSH
+## ZSH
 
 Simple config: I use some plugins, with zpico as a plugin manager, as I don´t need much other than this.
 Several aliases are configured to make faster interaction with the terminal. 
 
 I have integrated fzf as much as I can, I find it efficient, especially when searching throug history or files.
 
+## Xinit
 
-### Kitty 
+As I have different needs in my two different devices I use a simple case function in the .xinitrc file:
 
+
+    case "$HOSTNAME" in 
+
+    desktop)
+      exec awesome
+      ;;
+
+    laptop)
+      exec awesome ~/.config/awesome-laptop/rc.lua
+      ;;
+
+    esac
+
+Changing the $HOSTNAME I can set what I need.
+If you don't know how to change hostname after installation, you can read [here](https://wiki.archlinux.org/title/Network_configuration#Set_the_hostname)
