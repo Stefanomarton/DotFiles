@@ -11,7 +11,7 @@ desktop)
     ;;
 
 laptop)
-    exec awesome ~/.config/awesome-laptop/rc.lua
+    exec awesome --config /home/stefanomarton/.config/awesome-laptop/rc.lua
   ;;
 
 esac
