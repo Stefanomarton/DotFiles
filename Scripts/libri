@@ -1,0 +1,3 @@
+#!/bin/bash
+
+du -a ~/GoogleDrive/Università/Libri | awk '{print $2}' | dmenu | xargs zathura & exit
