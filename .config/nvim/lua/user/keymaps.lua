@@ -90,7 +90,15 @@ keymap("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", opts)
 keymap("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<cr>", opts)
 
 --Latex
-keymap("n", "<leader>c", ":!pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && rm %:r.aux %:r.log %:r.blg %:r.bbl %:r.fls %:r.fdb_latexmk<cr><cr>", opts)
+keymap("n", "<leader>c", ":!pdflatex -synctex=1 -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && rm %:r.aux %:r.log %:r.blg %:r.bbl %:r.fls %:r.fdb_latexmk<cr><cr>", opts)
+
+-- function! SyncTexForward()
+--     let execstr = "silent !zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
+--     exec execstr
+-- endfunction
+--
+-- au FileType tex nmap <Leader>f :call SyncTexForward()<CR>
+--
 
 keymap("n", "<leader>p", ":!zathura %:r.pdf > /dev/null 2>&1 &<cr><cr>", opts)
 

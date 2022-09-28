@@ -1,6 +1,6 @@
 #include catppuccin
 include dracula
-set scroll-step 50
+set scroll-step 400
 set selection-clipboard clipboard
 set recolor false
 
@@ -31,3 +31,7 @@ set render-loading "false"
 set scroll-page-aware "true"
 
 set scroll-full-overlap 0.01
+
+set dbus-service true
+set synctex true
+set synctex-editor-command "gvim --remote-silent +%{line} %{input}"

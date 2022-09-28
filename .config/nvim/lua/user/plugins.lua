@@ -77,8 +77,8 @@ use { "hrsh7th/nvim-cmp"}
   use { "hrsh7th/cmp-cmdlIne" }
 
 use {"unblevable/quick-scope"}
+use { 'lervag/vimtex' }
 
--- use {"KeitaNakamura/tex-conceal.vim"}
 use {'goolord/alpha-nvim'}
 
 use {'nvim-telescope/telescope.nvim', tag = '0.1.0'}
@@ -109,6 +109,9 @@ use {
   end
 }
 
+use {
+    'xuhdev/vim-latex-live-preview'
+  }
 
 if PACKER_BOOTSTRAP then
     require("packer").sync()

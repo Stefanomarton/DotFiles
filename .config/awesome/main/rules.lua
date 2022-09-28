@@ -74,8 +74,8 @@ function _M.get(clientkeys, clientbuttons)
    { rule = { class = "discord" },
     properties = { screen = 2, tag = "1" } },
 
-  { rule = { instance = "Navigator" },
-    properties = { screen = 1, tag = " α " } },
+  -- { rule = { instance = "Navigator" },
+  --   properties = { screen = 1, tag = " α " } },
 
   { rule = { class = "spotify" },
     properties = { screen = 3, tag = "1" } },
