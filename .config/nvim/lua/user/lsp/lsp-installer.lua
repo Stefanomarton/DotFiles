@@ -16,7 +16,10 @@ local servers = {
   "pylsp",
   "ltex",
   "texlab",
+  "arduino_language_server",
+  "taplo",
   "grammarly"
+  
 }
 
 lsp_installer.setup()
