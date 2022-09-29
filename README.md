@@ -3,20 +3,18 @@
 ![image](https://user-images.githubusercontent.com/80684231/192342745-7266665d-362b-42e4-acee-6ae3c7c6a633.png)
 </div>
 
+<div align=center>
+
 # Small Description
 
-This is my personal collection of configuration files.
-
-The [setup section](#setup) will guide you through the installation process.
-
-Each configuration is described in this file, you can find each configuration [below](#Configurations).
-
-<br> 
-Here are some details about my setup:
-
-<img src="![image](https://user-images.githubusercontent.com/80684231/193136221-4acd6235-7221-4978-9871-4774c3e7535e.png)" alt="img" align="right" width="500px">
 
 
+<img src= "https://user-images.githubusercontent.com/80684231/193136221-4acd6235-7221-4978-9871-4774c3e7535e.png" alt="img" align="right" width="650px">
+
+
+### Software
+
+</div>
 
 + **WM**: [AwesomeWM](https://github.com/awesomeWM/awesome/) 
 + **OS**: Arch Linux
@@ -26,18 +24,23 @@ Here are some details about my setup:
 + **File Manager**: Nautilus
 + **Launcher**: [rofi](https://github.com/davatorium/rofi/)
 + **Browser**: Firefox
-  
-  
+<br>
+
+
 This repository contains my personal dotfiles for most of the programs I use on a daily basis. Primarily, this allows me to organize my rice and to easily set up        the computing experience I enjoy on any machine I come across. However, it also allows me to share my preferences with others. I think there are some interesting        things here worth discovering, and that's why I take the time to write (or at least try to write) sufficient comments and documentation.
 My principles are to find a satisfactory balance between functionality and design while keeping an eye on resource consumption. I prefer keyboard-focused control over everything else and place a high value on visual consistency. I use Arch Linux as my daily driver, but there shouldn't be much here requiring this specific distribution, so using my configurations on other distros or, in the worst case, porting them shouldn't be too hard.
 
-In this config files you can find two different awesome setup:
-+ Awesome 
-+ Awesome-laptop
+Each configuration is described in this file, you can find each configuration [below](#Configurations) (I'm working on them), several references are mentioned and linked. The [setup section](#setup) will guide you through the installation process.
 
-This is because I use different configuration file on laptop and desktop, I explain how I do it [below](https://github.com/Stefanomarton/DotFiles/edit/master/README.md#xinit).
+### Theme 
+I'm embracing a kind of mix between dracula, tokyonight and nord themes. This is the result for now but it is work in progress.
+I really like the vibes from the nord theme but I would like some more vivid colors, so I'm integrating from dracula and tokyonight. If the results comes out good I may publish it here. 
+
+<div align=center>
 
 # Setup
+
+</div>
 
 ## SMABS (Stefano Marton Automatic Bootstrapping Script)
 I'm experimenting with a small bootstrapping script, which deploy all my dotfiles and needed packages.
@@ -60,7 +63,12 @@ I use stow to manage my dotfile i use [stow](https://www.gnu.org/software/stow/)
 
 Just clone the repo and copy what you need where you need it
 
+<div align=center>
+
 # Dependencies
+
+</div>
+
 Fonts
 + [**Nerd Fonts**](https://www.nerdfonts.com/font-downloads)
 
@@ -68,8 +76,13 @@ Software
 This are the essential packages for this configuration to worw 
           
         awesome neovim firefox flameshot rofi feh kitty zsh starship
+        
+<div align=center>
 
 # Configurations
+
+</div>
+
 ## Neovim
 
 <div align=center>
@@ -101,7 +114,7 @@ Any letter 'x' can be assigned to a bookmark, then you can type:
 
 ## Starship
 
-Starship is a cross shell prompt, highly configurabhe, with a lot of module available, without all the bloat that comes with p10k for oh-my-zsh, for example.
+Starship is a cross shell prompt, highly configurable, with a lot of module available, without all the bloat that comes with p10k for oh-my-zsh, for example.
 
 I keep it very simple with a kind of lambda theme, vi-mode indicator, directory path and git module. 
 
@@ -131,3 +144,15 @@ As I have different needs in my two different devices I use a simple case functi
 
 Changing the $HOSTNAME I can set what I need.
 If you don't know how to change hostname after installation, you can read [here](https://wiki.archlinux.org/title/Network_configuration#Set_the_hostname)
+
+## AwesomeWM
+
+I love awesomeWM, it is an automatic tiling window manager, written in lua and extremely extensible. At the beginning the learning curve is very steep, I was coming from i3, with zero knowledge about Lua. I now keep it fairly simple, but there are some crazy setup that you need to see! You can find them in the 
+I use
+
+In this config files you can find two different awesome setup:
+
++ Awesome 
++ Awesome-laptop
+
+This is because I use different configuration file on laptop and desktop, I explain how I do it [below](https://github.com/Stefanomarton/DotFiles/edit/master/README.md#xinit).
