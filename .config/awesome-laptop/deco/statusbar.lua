@@ -84,28 +84,28 @@ local systray = wibox.widget.systray()
 -- systray:set_base_size(20)
 
   -- Create the wibox
-  s.mywibox = awful.wibar({ position = "top", screen = 1, height = 40, bg = "beautiful.bg_normal", stretch = "false", type = "desktop" })
+  s.mywibox = awful.wibar({ position = "top", screen = 1, height = 40, bg = beautiful.bg_wibar .. "95", stretch = "false", type = "desktop" })
 
   -- Add widgets to the wibox
   s.mywibox:setup {
     layout = wibox.layout.align.horizontal,
     expand = "none",
       -- First
-     wibox.container.margin(wibox.container.background(wibox.container.margin(wibox.container.place(s.mytasklist),10,10,3,3),beautiful.bg_normal, gears.shape.rounded_rect),10,0,3,3),
+     wibox.container.margin(wibox.container.background(wibox.container.margin(wibox.container.place(s.mytasklist),10,10,3,3),beautiful.taglist_bg_empty, gears.shape.rounded_rect),10,0,3,3),
       -- Second
-      wibox.container.margin(wibox.container.background(wibox.container.margin(wibox.container.place(s.mytaglist),10,2,12,0), beautiful.bg_normal, gears.shape.rounded_rect),0,0,3,3),
+      wibox.container.margin(wibox.container.background(wibox.container.margin(wibox.container.place(s.mytaglist),10,2,12,0), beautiful.taglist_bg_empty .. "80", gears.shape.rounded_rect),0,0,3,3),
       -- Third
     {
-      wibox.container.margin(wibox.container.background(wibox.container.place(mytextclock), beautiful.bg_normal, gears.shape.rounded_rect), 0,0,3,3),
-      wibox.container.margin(wibox.container.background(wibox.container.margin(cpu_widget({ color = '#1ef956' }),5,5),beautiful.bg_normal, gears.shape.rounded_rect ),0,0,3,3),
+      wibox.container.margin(wibox.container.background(wibox.container.place(mytextclock), beautiful.taglist_bg_empty, gears.shape.rounded_rect), 0,0,3,3),
+      wibox.container.margin(wibox.container.background(wibox.container.margin(cpu_widget({ color = '#1ef956' }),5,5),beautiful.taglist_bg_empty, gears.shape.rounded_rect ),0,0,3,3),
       wibox.container.margin(wibox.container.background(wibox.container.margin(
         volume_widget {
           widget_type = "horizontal_bar",
           with_icon = false,
           mute_color = "#ff0000",
           main_color = "#F1FA8C",
-        },2,5,0,0),beautiful.bg_normal, gears.shape.rounded_rect),0,0,3,3),
-      wibox.container.margin(wibox.container.background(wibox.container.margin(wibox.container.place(systray),10,10,3,3),beautiful.bg_normal, gears.shape.rounded_rect),0,10,3,3),
+        },2,5,0,0),beautiful.taglist_bg_empty, gears.shape.rounded_rect),0,0,3,3),
+      wibox.container.margin(wibox.container.background(wibox.container.margin(wibox.container.place(systray),10,10,3,3),beautiful.taglist_bg_empty, gears.shape.rounded_rect),0,10,3,3),
       spacing = 10,
       layout = wibox.layout.fixed.horizontal,
     }

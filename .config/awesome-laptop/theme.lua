@@ -8,12 +8,12 @@ local themes_path = gfs.get_themes_dir()
 local theme = {}
 
 theme.font          = "JetBrainsMono Nerd Font 12"
-theme.bg_wibar      = "#282a36"
+theme.bg_wibar      = "#24283B"
 theme.bg_normal     = "#282a36"
 theme.bg_focus      = "#BD93F9"
 theme.bg_urgent     = "#9afcb3"
 theme.bg_minimize   = "#ffffff"
-theme.bg_systray    = "#272935"
+theme.bg_systray    = "#565f89"
 
 theme.fg_normal     = "#ffffff"
 theme.fg_focus      = "#ffffff"
@@ -21,9 +21,9 @@ theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap   = dpi(0)
-theme.border_width  = 2
-theme.border_focus = "#9afcb3"
-theme.border_normal  = "#ff79c6"
+theme.border_width  = 0
+theme.border_focus = "#b4f9f8"
+theme.border_normal  = "#282a36"
 theme.border_marked = "#ffffff"
 
 theme.taglist_bg_focus    = "#bb9af7"

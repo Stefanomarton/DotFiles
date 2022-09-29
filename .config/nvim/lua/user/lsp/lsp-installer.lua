@@ -44,5 +44,9 @@ for _, server in pairs(servers) do
     opts = vim.tbl_deep_extend("force", pyright_opts, opts)
   end
 
+  if server == "texlab" then
+    local texlab_opts = require "user.lsp.settings.texlab"
+    opts = vim.tbl_deep_extend("force", texlab_opts, opts)
+  end
   lspconfig[server].setup(opts)
 end
