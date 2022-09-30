@@ -7,7 +7,7 @@ term_scratch = bling.module.scratchpad {
   sticky                  = true,
   autoclose               = true,
   floating                = true,
-  geometry                = { x = 1100, y = 280, height = 900, width = 1200 },
+  geometry                = { x = 360, y = 80, height = 900, width = 1200 },
   dont_focus_before_close = true,
 }
 

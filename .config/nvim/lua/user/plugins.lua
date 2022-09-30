@@ -81,7 +81,7 @@ use { 'lervag/vimtex' }
 
 use {'goolord/alpha-nvim'}
 
-use {'nvim-telescope/telescope.nvim', tag = '0.1.0'}
+use {'nvim-telescope/telescope.nvim'}
 use {'glepnir/galaxyline.nvim'}
 use {
   'lewis6991/gitsigns.nvim',
@@ -112,6 +112,9 @@ use {
 use {
     'xuhdev/vim-latex-live-preview'
   }
+
+
+use { "folke/which-key.nvim" }
 
 if PACKER_BOOTSTRAP then
     require("packer").sync()
