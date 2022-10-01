@@ -40,83 +40,94 @@ packer.init {
 
 return packer.startup(function(use)
 
-use { "wbthomason/packer.nvim"}
-use { "nvim-lua/plenary.nvim"}
-use { "windwp/nvim-autopairs"}
-use { "kyazdani42/nvim-web-devicons"}
-use { "kyazdani42/nvim-tree.lua", commit = "ce463a5"}
-use { "moll/vim-bbye"}
-use { "nvim-lualine/lualine.nvim"}
-use { "lewis6991/impatient.nvim"}
-use { "lukas-reineke/indent-blankline.nvim"}
-use { "L3MON4D3/LuaSnip" }
-use { "nvim-treesitter/nvim-treesitter"}
+  use { "wbthomason/packer.nvim" }
+  use { "nvim-lua/plenary.nvim" }
+  use { "windwp/nvim-autopairs" }
+  use { "kyazdani42/nvim-web-devicons" }
+  use { "kyazdani42/nvim-tree.lua", commit = "ce463a5" }
+  use { "moll/vim-bbye" }
+  use { "nvim-lualine/lualine.nvim" }
+  use { "lewis6991/impatient.nvim" }
+  use { "lukas-reineke/indent-blankline.nvim" }
+  use { "L3MON4D3/LuaSnip" }
+  use { "nvim-treesitter/nvim-treesitter" }
 
   --Colorscheme
-use { "dracula/vim" }
-use { 'folke/tokyonight.nvim' }
-use { "akinsho/bufferline.nvim"}
+  use { "dracula/vim" }
+  use { 'folke/tokyonight.nvim' }
+  use { "akinsho/bufferline.nvim" }
 
 
-use { "neovim/nvim-lspconfig"}
-use { "williamboman/nvim-lsp-installer"}
-use { "j-hui/fidget.nvim"}
+  use { "neovim/nvim-lspconfig" }
+  use { "williamboman/nvim-lsp-installer" }
+  use { "j-hui/fidget.nvim" }
 
 
--- use { "jose-elias-alvarez/null-ls.nvim"}
-use { "numToStr/Comment.nvim", commit = "256cea0082c404cdced10319e9fa7580d33cf255"}
+  -- use { "jose-elias-alvarez/null-ls.nvim"}
+  use { "numToStr/Comment.nvim", commit = "256cea0082c404cdced10319e9fa7580d33cf255" }
 
-use{"https://github.com/junegunn/fzf.vim.git"}
+  use { "https://github.com/junegunn/fzf.vim.git" }
 
-use { "hrsh7th/nvim-cmp"}
-  use { "hrsh7th/cmp-buffer"}
-  use { "hrsh7th/cmp-path"}
-  use { "saadparwaiz1/cmp_luasnip"}
-  use { "hrsh7th/cmp-nvim-lsp"}
-  use { "hrsh7th/cmp-nvim-lua"}
+  use { "hrsh7th/nvim-cmp" }
+  use { "hrsh7th/cmp-buffer" }
+  use { "hrsh7th/cmp-path" }
+  use { "saadparwaiz1/cmp_luasnip" }
+  use { "hrsh7th/cmp-nvim-lsp" }
+  use { "hrsh7th/cmp-nvim-lua" }
   use { "hrsh7th/cmp-cmdlIne" }
 
-use {"unblevable/quick-scope"}
-use { 'lervag/vimtex' }
+  use { "unblevable/quick-scope" }
+  use { 'lervag/vimtex' }
 
-use {'goolord/alpha-nvim'}
+  use { 'goolord/alpha-nvim' }
 
-use {'nvim-telescope/telescope.nvim'}
-use {'glepnir/galaxyline.nvim'}
-use {
-  'lewis6991/gitsigns.nvim',
-  config = function()
-    require('gitsigns').setup()
-  end
-}
+  use { 'nvim-telescope/telescope.nvim' }
+  use { 'glepnir/galaxyline.nvim' }
+  use {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('gitsigns').setup()
+    end
+  }
 
--- use 'ggandor/lightspeed.nvim'
+  -- use 'ggandor/lightspeed.nvim'
 
-use({
-	'mvllow/modes.nvim',
-	tag = 'v0.2.0',
-	config = function()
-		require('modes').setup()
-	end
-})
+  use({
+    'mvllow/modes.nvim',
+    tag = 'v0.2.0',
+    config = function()
+      require('modes').setup()
+    end
+  })
 
-use {
-  'phaazon/hop.nvim',
-  branch = 'v2', -- optional but strongly recommended
-  config = function()
-    -- you can configure Hop the way you like here; see :h hop-config
-    require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
-  end
-}
+  use {
+    'phaazon/hop.nvim',
+    branch = 'v2', -- optional but strongly recommended
+    config = function()
+      -- you can configure Hop the way you like here; see :h hop-config
+      require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+    end
+  }
 
-use {
+  use {
     'xuhdev/vim-latex-live-preview'
   }
 
 
-use { "folke/which-key.nvim" }
+  use { "folke/which-key.nvim" }
 
-if PACKER_BOOTSTRAP then
+
+  use { "jose-elias-alvarez/null-ls.nvim" }
+
+  use { "folke/trouble.nvim" }
+
+  use { 'NvChad/nvim-colorizer.lua' }
+
+  use { "lvimuser/lsp-inlayhints.nvim" }
+  use { "akinsho/toggleterm.nvim" }
+
+
+  if PACKER_BOOTSTRAP then
     require("packer").sync()
   end
 end)

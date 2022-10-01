@@ -20,9 +20,9 @@ vim.g.mapleader = " "
 keymap("n", "K", "2k", opts)
 keymap("n", "J", "2j", opts)
 
---Save and close 
-keymap("n", "<leader>w", ":w<cr>",opts)
-keymap("n", "<leader>q", ":x<cr>",opts)
+--Save and close
+keymap("n", "<leader>w", ":w<cr>", opts)
+keymap("n", "<leader>q", ":x<cr>", opts)
 
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)
@@ -90,7 +90,9 @@ keymap("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", opts)
 keymap("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<cr>", opts)
 
 --Latex
-keymap("n", "<leader>c", ":!pdflatex -synctex=1 -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && rm %:r.aux %:r.log %:r.blg %:r.bbl %:r.fls %:r.fdb_latexmk<cr><cr>", opts)
+keymap("n", "<leader>c",
+  ":!pdflatex -synctex=1 -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && rm %:r.aux %:r.log %:r.blg %:r.bbl %:r.fls %:r.fdb_latexmk<cr><cr>"
+  , opts)
 
 -- function! SyncTexForward()
 --     let execstr = "silent !zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
@@ -108,6 +110,3 @@ keymap("n", "<leader>g", "<cmd>Telescope live_grep<cr>", opts)
 -- Hop
 keymap("n", "m", ":HopWord<Cr>", opts)
 keymap("n", "M", ":HopChar1<Cr>", opts)
-
-
-

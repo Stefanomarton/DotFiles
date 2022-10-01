@@ -13,5 +13,9 @@ require "user.bufferline"
 require "user.cmp"
 require "user.autocommands"
 require "user.whichkey"
-require ("luasnip-latex-snippets").setup({ use_treesitter = true })
-require 'alpha'.setup(require'user.alpha'.config) -- Requiringimodified dashboard
+require "user.null-ls"
+require "user.trouble"
+require("luasnip-latex-snippets").setup({ use_treesitter = true })
+require "alpha".setup(require 'user.alpha'.config)
+require("lsp-inlayhints").setup()
+require("toggleterm").setup()

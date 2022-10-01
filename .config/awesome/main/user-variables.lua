@@ -8,7 +8,7 @@ local _M = {
   -- This is used later as the default terminal and editor to run.
   -- terminal = "xterm",
   terminal = "kitty",
-  editor = "nvim", 
+  editor = "nvim",
   -- editor_cmd = terminal .. " -e " .. editor,
   modkey = "Mod4",
   Alt = "Mod1",
@@ -21,4 +21,3 @@ local _M = {
 }
 
 return _M
-

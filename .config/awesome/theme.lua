@@ -7,24 +7,24 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font          = "JetBrainsMono Nerd Font 12"
-theme.bg_wibar      = "#24283b"
+theme.font           = "JetBrainsMono Nerd Font 12"
+theme.bg_wibar       = "#24283b"
 theme.bg_wibarwidget = "#7aa2f7"
-theme.bg_normal     = "#282a36"
-theme.bg_focus      = "#BD93F9"
-theme.bg_urgent     = "#9afcb3"
-theme.bg_minimize   = "#ffffff"
-theme.bg_systray    = "#3F4E75"
+theme.bg_normal      = "#282a36"
+theme.bg_focus       = "#BD93F9"
+theme.bg_urgent      = "#9afcb3"
+theme.bg_minimize    = "#ffffff"
+theme.bg_systray     = "#3F4E75"
 
-theme.fg_normal     = "#ffffff"
-theme.fg_focus      = "#ffffff"
-theme.fg_urgent     = "#ffffff"
-theme.fg_minimize   = "#ffffff"
+theme.fg_normal   = "#ffffff"
+theme.fg_focus    = "#ffffff"
+theme.fg_urgent   = "#ffffff"
+theme.fg_minimize = "#ffffff"
 
 theme.useless_gap   = dpi(10)
 theme.border_width  = 2
-theme.border_focus = "#9afcb3"
-theme.border_normal  = "#ff79c6"
+theme.border_focus  = "#9afcb3"
+theme.border_normal = "#ff79c6"
 theme.border_marked = "#ffffff"
 
 theme.taglist_bg_focus    = "#bb9af7"
@@ -39,7 +39,7 @@ theme.taglist_font        = "JetBrainsMono Nerd Font 12"
 
 
 theme.tasklist_bg_focus    = "#e0af68"
-theme.tasklist_bg_normal    = "#7aa2f7"
+theme.tasklist_bg_normal   = "#7aa2f7"
 theme.tasklist_fg_focus    = "#ffffff"
 theme.tasklist_fg_occupied = "#ffffff"
 theme.tasklist_fg_urgent   = "#f7768e"
@@ -67,9 +67,9 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
-theme.menu_submenu_icon = themes_path.."default/submenu.png"
-theme.menu_height = dpi(20)
-theme.menu_width  = dpi(150)
+theme.menu_submenu_icon = themes_path .. "default/submenu.png"
+theme.menu_height       = dpi(20)
+theme.menu_width        = dpi(150)
 
 -- You can add as many variables as
 -- you wish and access them by using
@@ -77,31 +77,31 @@ theme.menu_width  = dpi(150)
 --theme.bg_widget = "#cc0000"
 
 -- Define the image to load
-theme.titlebar_close_button_normal = themes_path.."default/titlebar/close_normal.png"
-theme.titlebar_close_button_focus  = themes_path.."default/titlebar/close_focus.png"
+theme.titlebar_close_button_normal = themes_path .. "default/titlebar/close_normal.png"
+theme.titlebar_close_button_focus  = themes_path .. "default/titlebar/close_focus.png"
 
-theme.titlebar_minimize_button_normal = themes_path.."default/titlebar/minimize_normal.png"
-theme.titlebar_minimize_button_focus  = themes_path.."default/titlebar/minimize_focus.png"
+theme.titlebar_minimize_button_normal = themes_path .. "default/titlebar/minimize_normal.png"
+theme.titlebar_minimize_button_focus  = themes_path .. "default/titlebar/minimize_focus.png"
 
-theme.titlebar_ontop_button_normal_inactive = themes_path.."default/titlebar/ontop_normal_inactive.png"
-theme.titlebar_ontop_button_focus_inactive  = themes_path.."default/titlebar/ontop_focus_inactive.png"
-theme.titlebar_ontop_button_normal_active = themes_path.."default/titlebar/ontop_normal_active.png"
-theme.titlebar_ontop_button_focus_active  = themes_path.."default/titlebar/ontop_focus_active.png"
+theme.titlebar_ontop_button_normal_inactive = themes_path .. "default/titlebar/ontop_normal_inactive.png"
+theme.titlebar_ontop_button_focus_inactive  = themes_path .. "default/titlebar/ontop_focus_inactive.png"
+theme.titlebar_ontop_button_normal_active   = themes_path .. "default/titlebar/ontop_normal_active.png"
+theme.titlebar_ontop_button_focus_active    = themes_path .. "default/titlebar/ontop_focus_active.png"
 
-theme.titlebar_sticky_button_normal_inactive = themes_path.."default/titlebar/sticky_normal_inactive.png"
-theme.titlebar_sticky_button_focus_inactive  = themes_path.."default/titlebar/sticky_focus_inactive.png"
-theme.titlebar_sticky_button_normal_active = themes_path.."default/titlebar/sticky_normal_active.png"
-theme.titlebar_sticky_button_focus_active  = themes_path.."default/titlebar/sticky_focus_active.png"
+theme.titlebar_sticky_button_normal_inactive = themes_path .. "default/titlebar/sticky_normal_inactive.png"
+theme.titlebar_sticky_button_focus_inactive  = themes_path .. "default/titlebar/sticky_focus_inactive.png"
+theme.titlebar_sticky_button_normal_active   = themes_path .. "default/titlebar/sticky_normal_active.png"
+theme.titlebar_sticky_button_focus_active    = themes_path .. "default/titlebar/sticky_focus_active.png"
 
-theme.titlebar_floating_button_normal_inactive = themes_path.."default/titlebar/floating_normal_inactive.png"
-theme.titlebar_floating_button_focus_inactive  = themes_path.."default/titlebar/floating_focus_inactive.png"
-theme.titlebar_floating_button_normal_active = themes_path.."default/titlebar/floating_normal_active.png"
-theme.titlebar_floating_button_focus_active  = themes_path.."default/titlebar/floating_focus_active.png"
+theme.titlebar_floating_button_normal_inactive = themes_path .. "default/titlebar/floating_normal_inactive.png"
+theme.titlebar_floating_button_focus_inactive  = themes_path .. "default/titlebar/floating_focus_inactive.png"
+theme.titlebar_floating_button_normal_active   = themes_path .. "default/titlebar/floating_normal_active.png"
+theme.titlebar_floating_button_focus_active    = themes_path .. "default/titlebar/floating_focus_active.png"
 
-theme.titlebar_maximized_button_normal_inactive = themes_path.."default/titlebar/maximized_normal_inactive.png"
-theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar/maximized_focus_inactive.png"
-theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
-theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
+theme.titlebar_maximized_button_normal_inactive = themes_path .. "default/titlebar/maximized_normal_inactive.png"
+theme.titlebar_maximized_button_focus_inactive  = themes_path .. "default/titlebar/maximized_focus_inactive.png"
+theme.titlebar_maximized_button_normal_active   = themes_path .. "default/titlebar/maximized_normal_active.png"
+theme.titlebar_maximized_button_focus_active    = themes_path .. "default/titlebar/maximized_focus_active.png"
 
 -- You can use your own layout icons like this:
 -- theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
@@ -131,7 +131,7 @@ theme.awesome_icon = theme_assets.awesome_icon(
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
 theme.icon_theme = nil
 theme.flash_focus_start_opacity = 1
-theme.flash_focus_step = 0.9         -- the step of animation
+theme.flash_focus_step = 0.9 -- the step of animation
 theme.systray_icon_spacing = 6
 theme.tasklist_disable_task_name = true
 theme.tasklist_disable_icon = false
@@ -141,4 +141,3 @@ return theme
 
 
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
-

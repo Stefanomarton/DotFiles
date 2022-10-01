@@ -85,9 +85,6 @@ root.buttons(binding.globalbuttons())
 root.keys(RC.globalkeys)
 -- }}}
 
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
-
 -- {{{ Statusbar: Wibar
 require("deco.statusbar")
 -- }}}

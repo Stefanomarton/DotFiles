@@ -29,7 +29,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
--- NvimTree enter file directory automaticall 
+-- NvimTree enter file directory automaticall
 vim.cmd "autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif"
 
 -- Fixes Autocomment
@@ -46,9 +46,14 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   end,
 })
 
--- Chezmoi apply for sourced file
-vim.cmd('autocmd BufWritePost ~/.local/share/chezmoi/* !chezmoi apply --source-path "%"')
+-- Latex compile on save
 vim.cmd('autocmd BufWritePost *.tex !pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && rm %:r.aux %:r.log %:r.blg %:r.bbl %:r.fls %:r.fdb_latexmk')
+
+-- Autocd for NvimTree
 vim.cmd([[autocmd BufEnter * if &ft != 'help' | silent! cd %:p:h | endif]])
 
+-- Autoformat on save
+vim.cmd('autocmd BufWritePre * lua vim.lsp.buf.format()')
 
+-- Autocmd for Colorizer
+vim.cmd('autocmd BufEnter * :ColorizerToggle')

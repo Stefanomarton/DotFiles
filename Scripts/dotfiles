@@ -1,5 +1,4 @@
 #!/bin/bash
-
 dot_dir="/home/stefanomarton/DotFiles/" # dotfile directory
 nested_levels="6" # number of nested levels to search for dotfiles
 dot_file_extensions=(".txt" ".json" ".yml" ".yaml" ".conf" ".ini" ".toml" ".xml" ".vim" ".lua" "rc" "profile" ".resources") # dotfile extensions to search for
