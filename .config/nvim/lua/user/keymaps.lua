@@ -20,14 +20,20 @@ vim.g.mapleader = " "
 --   command_mode = "c",
 
 -- Normal --
+
+-- Normal --
+
 -- Faster movements
 keymap("n", "K", "2k", opts)
 keymap("n", "J", "2j", opts)
 keymap("n", "q", "b", opts)
+keymap("x", "q", "b", opts)
 keymap("n", "Q", "B", opts)
+keymap("x", "Q", "B", opts)
+
+-- Delete
 keymap("n", "dq", "db", opts)
 keymap("n", "dQ", "dB", opts)
-
 
 --Save and close
 keymap("n", "<leader>w", ":w<cr>", opts)
@@ -100,7 +106,7 @@ keymap("x", "<leader>/", '<ESC><CMD>lua require("Comment.api").toggle.linewise_o
 -- keymap("n", "<leader>p", ":!zathura %:r.pdf > /dev/null 2>&1 &<cr><cr>", opts)
 
 -- Hop
-keymap("n", "F", ":HopWord<Cr>", opts)
+keymap("x", "F", ":HopWord<Cr>", opts)
 keymap("n", "m", ":HopChar1<Cr>", opts)
 
 
@@ -124,6 +130,10 @@ wk.register({
   }
 },
   { prefix = "<leader>" })
+
+keymap("n", "DD", '"_dd', opts)
+keymap("v", "p", '"_p', opts)
+keymap("v", "P", '"_P', opts)
 
 keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
