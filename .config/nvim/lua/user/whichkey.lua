@@ -31,20 +31,20 @@ wk.setup({
     -- ["<tab>"] = "TAB",
   },
   icons = {
-    breadcrumb = "-", -- symbol used in the command line area that shows your active key combo
-    separator = "-", -- symbol used between a key and it's label
-    group = "+", -- symbol prepended to a group
+    breadcrumb = "", -- symbol used in the command line area that shows your active key combo
+    separator = "", -- symbol used between a key and its label
+    group = "+", -- symbol prepended to a grouplocal
   },
   popup_mappings = {
     scroll_down = '<c-d>', -- binding to scroll down inside the popup
     scroll_up = '<c-u>', -- binding to scroll up inside the popup
   },
   window = {
-    border = "single", -- none, single, double, shadow
+    border = "none", -- none, single, double, shadow
     position = "bottom", -- bottom, top
-    margin = { 0, 0, 0, 0 }, -- extra window margin [top, right, bottom, left]
-    padding = { 0, 0, 0, 0 }, -- extra window padding [top, right, bottom, left]
-    winblend = 0
+    margin = { 0, 0, 1.5, 0 }, -- extra window margin [top, right, bottom, left]
+    padding = { 0, 0, 3, 0 }, -- extra window padding [top, right, bottom, left]
+    winblend = 5
   },
   layout = {
     height = { min = 4, max = 25 }, -- min and max height of the columns
@@ -54,7 +54,7 @@ wk.setup({
   },
   ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label
   hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
-  show_help = true, -- show help message on the command line when the popup is visible
+  show_help = false, -- show help message on the command line when the popup is visible
   triggers = "auto", -- automatically setup triggers
   -- triggers = {"<leader>"} -- or specify a list manually
   triggers_blacklist = {
@@ -71,17 +71,3 @@ wk.setup({
     filetypes = { "TelescopePrompt" },
   }
 })
-
-
--- Mappings
--- wk.register({
---   f = {
---     name = "file", -- optional group name
---       f = { "<cmd>Telescope find_files<cr>", "Find File" }, -- create a binding with label
---     r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File", noremap=false, buffer = 123 }, -- additional options for creating the keymap
---     n = { "New File" }, -- just a label. don't create any mapping
---     e = "Edit File", -- same as above
---     ["1"] = "which_key_ignore",  -- special label to hide it in the popup
---     b = { function() print("bar") end, "Foobar" } -- you can also pass functions!
---   },
--- }, { prefix = "<leader>" })

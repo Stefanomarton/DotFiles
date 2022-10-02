@@ -46,6 +46,9 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   end,
 })
 
+-- -- Chezmoi apply for sourced file
+-- vim.cmd('autocmd BufWritePost ~/.local/share/chezmoi/* !chezmoi apply --source-path "%"')
+
 -- Latex compile on save
 vim.cmd('autocmd BufWritePost *.tex !pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && rm %:r.aux %:r.log %:r.blg %:r.bbl %:r.fls %:r.fdb_latexmk')
 
@@ -57,3 +60,6 @@ vim.cmd('autocmd BufWritePre * lua vim.lsp.buf.format()')
 
 -- Autocmd for Colorizer
 vim.cmd('autocmd BufEnter * :ColorizerToggle')
+
+-- -- Reload nvim config when modified
+-- vim.cmd('autocmd BufWritePost ~/DotFiles/.config/nvim/* luafile ~/DotFiles/.config/nvim/init.lua')

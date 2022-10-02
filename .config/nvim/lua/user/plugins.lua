@@ -124,8 +124,6 @@ return packer.startup(function(use)
   use { 'NvChad/nvim-colorizer.lua' }
 
   use { "lvimuser/lsp-inlayhints.nvim" }
-  use { "akinsho/toggleterm.nvim" }
-
 
   if PACKER_BOOTSTRAP then
     require("packer").sync()
