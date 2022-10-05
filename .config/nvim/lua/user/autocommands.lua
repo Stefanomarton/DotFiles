@@ -56,7 +56,7 @@ vim.cmd('autocmd BufWritePost *.tex !pdflatex -shell-escape %:r.tex && pdflatex 
 vim.cmd([[autocmd BufEnter * if &ft != 'help' | silent! cd %:p:h | endif]])
 
 -- Autoformat on save
-vim.cmd('autocmd BufWritePre * lua vim.lsp.buf.format()')
+-- vim.cmd('autocmd BufWritePre * lua vim.lsp.buf.format()')
 
 -- Autocmd for Colorizer
 vim.cmd('autocmd BufEnter * :ColorizerToggle')
