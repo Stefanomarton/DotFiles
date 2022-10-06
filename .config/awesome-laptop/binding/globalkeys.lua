@@ -193,10 +193,28 @@ function _M.get()
     -- { description = "open book", group = "Scripts" })
 
       awful.key({modkey,"Control"},"l",function () awful.spawn.with_shell("/bin/bash -c /home/stefanomarton/Scripts/libriv2")end,
-    { description = "open book", group = "Scripts" })
+    { description = "open book", group = "Scripts" }),
 
 
+-- AudioControl
+awful.key ( { }, "XF86AudioRaiseVolume", function() awful.spawn.with_shell"amixer -D pulse sset Master 5%+" end,
+{ description = "VolumeUp", group = "System Control" }),
 
+awful.key ( { }, "XF86AudioLowerVolume", function() awful.spawn.with_shell"amixer -D pulse sset Master 5%-" end,
+{ description = "VolumeDown", group = "System Control" }),
+
+awful.key ( { }, "XF86AudioMute", function() awful.spawn.with_shell"amixer set Master toggle" end,
+{ description = "Mute", group = "System Control" }),
+
+awful.key({}, "XF86MonBrightnessUp", function ()
+  awful.spawn.with_shell"xbacklight -inc 5" 
+end,
+{ description = "Brightness Up", group = "System Control" }),
+
+awful.key({}, "XF86MonBrightnessDown", function ()
+  awful.spawn.with_shell"xbacklight -dec 5" 
+end,
+{ description = "Brightness Down", group = "System Control" })
 
 
   )

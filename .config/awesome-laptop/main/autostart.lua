@@ -10,6 +10,6 @@ awful.spawn.with_shell("python /opt/thefanclub/overgrive/overgrive")
 awful.spawn.once("picom")
 awful.spawn.once("discord")
 awful.spawn.with_shell("xmodmap .Xmodmap")
-awful.spawn.with_shell("feh --bg-fill --no-fehbg ~/.config/awesomevecchio/arch.jpeg")
+awful.spawn.with_shell("feh --bg-fill --no-fehbg /home/stefanomarton/Downloads/WallpaperDog-5567922.jpg")
 
 awful.spawn.with_shell("python ~/.config/awesome-laptop/utils/autohidewibox.py")
