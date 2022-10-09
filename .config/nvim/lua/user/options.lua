@@ -44,3 +44,6 @@ vim.g.qs_highlight_on_keys = { 'f', 'F' }
 -- Vimtex
 vim.g.vimtex_view_method = 'zathura'
 vim.g.livepreview_previewer = 'zathura'
+
+--Treesitter context background color
+vim.api.nvim_set_hl(0, 'TreesitterContext', { fg = "#ffffff", bg = "#414868" })

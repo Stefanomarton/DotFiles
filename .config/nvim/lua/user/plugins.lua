@@ -51,6 +51,7 @@ return packer.startup(function(use)
   use { "lukas-reineke/indent-blankline.nvim" }
   use { "L3MON4D3/LuaSnip" }
   use { "nvim-treesitter/nvim-treesitter" }
+  use {'nvim-treesitter/nvim-treesitter-context'}
 
   --Colorscheme
   use { "dracula/vim" }
@@ -162,6 +163,18 @@ return packer.startup(function(use)
     wants = { 'nvim-treesitter' }, -- or require if not used so far
     after = { 'nvim-cmp' } -- if a completion plugin is using tabs load it before_init
   }
+
+
+use { "ggandor/leap.nvim",
+  config = function ()
+ require('leap').set_default_keymaps()
+    end }
+
+use { "rcarriga/nvim-notify"}
+
+use({
+	"Pocco81/true-zen.nvim"
+})
 
   if PACKER_BOOTSTRAP then
     require("packer").sync()

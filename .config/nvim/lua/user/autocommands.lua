@@ -63,3 +63,5 @@ vim.cmd('autocmd BufEnter * :ColorizerToggle')
 
 -- -- Reload nvim config when modified
 -- vim.cmd('autocmd BufWritePost ~/DotFiles/.config/nvim/* luafile ~/DotFiles/.config/nvim/init.lua')
+
+vim.cmd("autocmd ColorScheme * lua require('leap').init_highlight(true)")

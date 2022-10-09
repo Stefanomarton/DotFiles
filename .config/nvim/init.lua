@@ -18,3 +18,5 @@ require "user.trouble"
 require("luasnip-latex-snippets").setup({ use_treesitter = true })
 require "alpha".setup(require 'user.alpha'.config)
 require("lsp-inlayhints").setup()
+require("user.treesitter-context")
+require("user.zen")
