@@ -65,7 +65,7 @@ return packer.startup(function(use)
 
 
   -- use { "jose-elias-alvarez/null-ls.nvim"}
-  use { "numToStr/Comment.nvim", commit = "256cea0082c404cdced10319e9fa7580d33cf255" }
+  use { "numToStr/Comment.nvim"}
 
   use { "https://github.com/junegunn/fzf.vim.git" }
 
@@ -175,6 +175,8 @@ use { "rcarriga/nvim-notify"}
 use({
 	"Pocco81/true-zen.nvim"
 })
+
+use { 'mhartington/formatter.nvim' }
 
   if PACKER_BOOTSTRAP then
     require("packer").sync()
