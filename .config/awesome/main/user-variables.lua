@@ -12,7 +12,7 @@ local _M = {
   -- editor_cmd = terminal .. " -e " .. editor,
   modkey = "Mod4",
   Alt = "Mod1",
-  browser = "firefox",
+  browser = "chromium",
   filemanager = "nautilus",
 
   -- user defined wallpaper
