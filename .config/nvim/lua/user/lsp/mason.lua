@@ -1,6 +1,6 @@
 local servers = {
 	"sumneko_lua",
-  "texlab",
+	"texlab",
 	-- "cssls",
 	-- "html",
 	-- "tsserver",

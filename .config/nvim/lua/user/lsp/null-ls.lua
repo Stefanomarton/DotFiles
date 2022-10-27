@@ -16,6 +16,7 @@ null_ls.setup({
 		formatting.stylua,
 		diagnostics.chktex,
 		formatting.latexindent.with({ extra_args = { "-m" } }),
+		formatting.markdownlint,
 		-- diagnostics.flake8
 	},
 })
