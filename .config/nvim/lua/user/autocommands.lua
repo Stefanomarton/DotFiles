@@ -50,13 +50,13 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 -- vim.cmd('autocmd BufWritePost ~/.local/share/chezmoi/* !chezmoi apply --source-path "%"')
 
 -- Latex compile on save
--- vim.cmd('autocmd BufWritePost *.tex !pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && pdflatex -shell-escape %:r.tex && rm %:r.aux %:r.log %:r.blg %:r.bbl %:r.fls %:r.fdb_latexmk')
+vim.cmd('autocmd BufWritePost *.tex :silent !tectonic -X compile %:r.tex')
 
 -- Autocd for NvimTree
 vim.cmd([[autocmd BufEnter * if &ft != 'help' | silent! cd %:p:h | endif]])
 
 -- Autoformat on save
--- vim.cmd('autocmd BufWritePre * lua vim.lsp.buf.format()')
+vim.cmd('autocmd BufWritePre * lua vim.lsp.buf.format()')
 
 -- Autocmd for Colorizer
 vim.cmd('autocmd BufEnter * :ColorizerToggle')
