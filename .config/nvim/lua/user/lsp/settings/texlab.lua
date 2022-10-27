@@ -1,12 +1,12 @@
 return {
   texlab = {
-    auxDirectory = ".",
+    rootDirectory = nil,
     bibtexFormatter = "texlab",
     build = {
-      args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+      args = { "-pdf", "-c", "-interaction=nonstopmode", "-synctex=1", "%f" },
       executable = "latexmk",
-      forwardSearchAfter = false,
-      onSave = false
+      forwardSearchAfter = true,
+      onSave = true
     },
     chktex = {
       onEdit = false,
@@ -19,7 +19,7 @@ return {
     },
     latexFormatter = "latexindent",
     latexindent = {
-      modifyLineBreaks = true 
+      modifyLineBreaks = true
     }
   }
 }

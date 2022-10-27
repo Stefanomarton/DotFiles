@@ -178,6 +178,23 @@ use({
 
 use { 'mhartington/formatter.nvim' }
 
+-- Packer
+use({
+  "folke/noice.nvim",
+  event = "VimEnter",
+  config = function()
+    require("noice").setup()
+  end,
+  requires = {
+    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+    "MunifTanjim/nui.nvim",
+    -- OPTIONAL:
+    --   `nvim-notify` is only needed, if you want to use the notification view.
+    --   If not available, we use `mini` as the fallback
+    "rcarriga/nvim-notify",
+    }
+})
+
   if PACKER_BOOTSTRAP then
     require("packer").sync()
   end
