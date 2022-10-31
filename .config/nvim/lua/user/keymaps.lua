@@ -109,27 +109,24 @@ keymap("x", "<leader>/", '<ESC><CMD>lua require("Comment.api").toggle.linewise_o
 keymap("x", "F", ":HopWord<Cr>", opts)
 keymap("n", "m", ":HopChar1<Cr>", opts)
 
+wk.register({
+	f = {
+		name = "Files", -- Create Group name
+		f = { "<cmd>Telescope find_files<cr>", "Find File", noremap = true, silent = true },
+		r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File", noremap = true, silent = true },
+		b = { "<cmd>Telescope buffers<cr>", "Open current buffers", noremap = true, silent = true },
+		g = { "<cmd>Telescope live_grep<cr>", "Open live grep", noremap = true, silent = true },
+	},
+}, { prefix = "<leader>" })
 
 wk.register({
-  f = {
-    name = "Files", -- Create Group name
-    f = { "<cmd>Telescope find_files<cr>", "Find File", noremap = true, silent = true },
-    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File", noremap = true, silent = true },
-    b = { "<cmd>Telescope buffers<cr>", "Open current buffers", noremap = true, silent = true },
-    g = { "<cmd>Telescope live_grep<cr>", "Open live grep", noremap = true, silent = true },
-  }
-},
-  { prefix = "<leader>" })
-
-wk.register({
-  l = {
-    name = "LaTex",
-    c = { ":VimtexCompile", "Compile", noremap = true, silent = true },
-    p = { ":!zathura %:r.pdf > /dev/null 2>&1 &<cr><cr>", "Preview", noremap = true, silent = true },
-    t = { ":VimtexTocToggle", "Toc", noremap = true, silent = true }
-  }
-},
-  { prefix = "<leader>" })
+	l = {
+		name = "LaTex",
+		c = { ":VimtexCompile", "Compile", noremap = true, silent = true },
+		p = { ":!zathura %:r.pdf > /dev/null 2>&1 &<cr><cr>", "Preview", noremap = true, silent = true },
+		t = { ":VimtexTocOpen<cr>", "Toc", noremap = true, silent = true },
+	},
+}, { prefix = "<leader>" })
 
 keymap("n", "DD", '"_dd', opts)
 keymap("v", "p", '"_p', opts)
