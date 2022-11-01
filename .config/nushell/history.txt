@@ -1,0 +1,61 @@
+clear
+ls
+ls -h
+clArer
+cd
+clear
+v .config/nushell/config.nu
+ls
+claer
+clear
+dsadsa
+asD
+as
+ls
+clear
+ls
+xdrawchem
+$light_theme
+nu
+nu
+nu
+nu
+nvim .config/nushell/config.nu
+ls
+nvim .config/nushell/env.nu
+clear
+ls
+ranger
+ls
+v .zshrc
+clEar
+clear
+nvim .config/nushell/env.nu
+nu
+nu
+nvim .zshrc
+open texcompiler
+ls
+open libri
+ls
+cd
+v .zshrc
+Cd
+nvim .zshrc
+xplr -h
+xplr -V
+ls
+dsall
+l
+dsadas
+sd
+s
+sS
+s
+env
+navi
+sudo pacman -Syu
+dsa
+S
+firefox -h
+firefox --headless
