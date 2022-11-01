@@ -1,3 +1,12 @@
+#> RC - XDG Spec
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_STATE_HOME=$HOME/.local/state
+
+#>>> XDG - ENV
+source "$XDG_CONFIG_HOME"/zsh/xdg-env
+
 autoload -U colors && colors
 
 # Vim mode
@@ -218,6 +227,7 @@ setopt SHARE_HISTORY
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
 setopt APPEND_HISTORY            # append to history file
+
 
 eval "$(starship init zsh)"
 
