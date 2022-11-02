@@ -417,7 +417,7 @@ let-env config = {
       name: completion_menu
       modifier: none
       keycode: tab
-      mode: emacs # Options: emacs vi_normal vi_insert
+      mode: [emacs, vi_normal, vi_insert] 
       event: {
         until: [
           { send: menu name: completion_menu }
@@ -427,7 +427,7 @@ let-env config = {
     }
     {
       name: completion_previous
-      modifier: shift
+      modifier: none
       keycode: backtab
       mode: [emacs, vi_normal, vi_insert] # Note: You can add the same keybinding to all modes by using a list
       event: { send: menuprevious }
@@ -515,3 +515,21 @@ let-env config = {
     }
   ]
 }
+
+## Aliases
+alias v = nvim
+alias mkd = mkdir -p -v
+alias ka = killall
+# alias pmi= bash ~/Scripts/pmi.sh 
+# alias pmr= bash ~/Scripts/pmr.sh
+let-env FZF_DEFAULT_OPTS = "--height 40% --layout=reverse --border"
+
+let-env PATH = ($env.PATH | append "~/Scripts/")
+
+
+ def prov [] {
+    lf -last-dir-path ~/.OUTFILE ; cd (cat ~/.OUTFILE)
+  }
+
+## Starship Config
+source ~/.cache/starship/init.nu
