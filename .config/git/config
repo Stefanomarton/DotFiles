@@ -1,0 +1,63 @@
+[user]
+	email = sstefanomarton@gmail.com
+	name = Stefanomarton
+[init]
+	defaultBranch = master
+[color "status"]
+	branch = 14 normal
+	added = 10 normal
+	updated = 10 normal
+	localbranch = 14 normal
+	changed = 11 normal
+	header = normal
+	remotebranch = 13 normal
+	nobranch = 1 normal italic
+	unmerged = 9 normal
+	untracked = normal dim
+[color "branch"]
+	plain = 14 normal dim
+	remote = 13 normal dim
+	current = 14 normal
+	local = 14 normal dim
+	upstream = 13 normal
+[color "remote"]
+	hint = normal dim
+	success = 2 normal
+	error = 1 normal
+	warning = 3 normal
+[color "interactive"]
+	header = 8 normal bold
+	prompt = 15 4
+	help = 8 normal
+	error = 1 normal italic
+[color "diff"]
+	commit = 3 normal
+	newMoved = 14 normal
+	oldMovedAlternativeDimmed = 4 normal dim
+	frag = 8 normal ul
+	oldMovedAlternative = 12 normal dim
+	contextBold = normal bold
+	newBold = 10 normal bold
+	context = normal
+	oldMoved = 14 normal dim
+	oldBold = 9 normal dim bold
+	newMovedDimmed = 6 normal
+	func = 8 normal ul
+	meta = 8 normal
+	newDimmed = 2 normal
+	newMovedAlternative = 12 normal
+	new = 10 normal
+	newMovedAlternativeDimmed = 4 normal
+	whitespace = normal 9
+	oldMovedDimmed = 6 normal dim
+	oldDimmed = 1 normal dim
+	old = 9 normal dim
+[color "decorate"]
+	branch = 14 normal
+	tag = 3 normal
+	remotebranch = 13 normal
+	stash = 8 normal
+	grafted = 1 normal italic
+	HEAD = 14 normal dim
+[diff]
+	colorMoved = zebra

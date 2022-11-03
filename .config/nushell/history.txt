@@ -59,6 +59,7 @@ dsa
 S
 firefox -h
 firefox --headless
+<<<<<<< HEAD
 prova
 ls
 lsa
@@ -313,3 +314,6 @@ cd DotFiles
 ;s
 ls
 ga -A
+=======
+ls
+>>>>>>> 80ceeca (fix:home useless files)
