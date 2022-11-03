@@ -317,3 +317,7 @@ ga -A
 =======
 ls
 >>>>>>> 80ceeca (fix:home useless files)
+cd DotFiles
+ls
+v .con
+v .config/kitty/kitty.conf
