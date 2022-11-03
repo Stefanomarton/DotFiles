@@ -128,7 +128,7 @@ wk.register({
 	},
 }, { prefix = "<leader>" })
 
-keymap("n", "DD", '"_dd', opts)
+-- keymap("n", "DD", '"_dd', opts)
 keymap("v", "p", '"_p', opts)
 keymap("v", "P", '"_P', opts)
 
