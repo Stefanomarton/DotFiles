@@ -44,7 +44,7 @@ alias L="ptls -a"
 alias gp="git push"
 alias ga="git add"
 alias gc="git commit"
-alias -g pwd="ptpwd"
+# alias -g pwd="ptpwd"
 alias -g ls="ptls"
 alias -g ptcp="cp"
 alias -g pmi="~/Scripts/pmi"
@@ -242,8 +242,8 @@ setopt INC_APPEND_HISTORY        # Write to the history file immediately, not wh
 setopt APPEND_HISTORY            # append to history file
 
 
+eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
-
 
 
 

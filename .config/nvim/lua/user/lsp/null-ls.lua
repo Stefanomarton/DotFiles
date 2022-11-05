@@ -17,8 +17,7 @@ null_ls.setup({
 		diagnostics.chktex,
 		formatting.latexindent.with({ extra_args = { "-m" } }),
 		formatting.markdownlint,
-		formatting.shellcheck,
-		-- diagnostics.flake8
+		diagnostics.proselint,
 	},
 })
 

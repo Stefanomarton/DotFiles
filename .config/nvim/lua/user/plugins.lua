@@ -82,6 +82,8 @@ return packer.startup(function(use)
 		"williamboman/mason-lspconfig.nvim",
 		"neovim/nvim-lspconfig",
 	})
+
+	-- Telescope and telescope integrations
 	use({
 		"nvim-telescope/telescope.nvim",
 		config = function()
@@ -90,14 +92,45 @@ return packer.startup(function(use)
 					heading = {
 						treesitter = true,
 					},
+					file_browser = {},
 				},
 			})
 		end,
 	})
+
 	use({
 		"crispgm/telescope-heading.nvim",
 		config = function()
 			require("telescope").load_extension("heading")
+		end,
+	})
+
+	use({
+		"nvim-telescope/telescope-packer.nvim",
+		config = function()
+			require("telescope").load_extension("packer")
+		end,
+	})
+
+	use({
+		"nvim-telescope/telescope-file-browser.nvim",
+		config = function()
+			require("telescope").load_extension("file_browser")
+		end,
+	})
+
+	-- Luasnip integration with Telescope to check the snippet in a hurry
+	use({
+		"benfowler/telescope-luasnip.nvim",
+		config = function()
+			require("telescope").load_extension("luasnip")
+		end,
+	})
+
+	use({
+		"keyvchan/telescope-find-pickers.nvim",
+		config = function()
+			require("telescope").load_extension("find_pickers")
 		end,
 	})
 

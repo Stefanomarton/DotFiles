@@ -27,12 +27,12 @@ IFS=$'\n'
 ## 6    | image      | Display the image `$IMAGE_CACHE_PATH` points to as an image preview
 ## 7    | image      | Display the file directly as an image
 
-FILE_PATH=""
-PREVIEW_WIDTH=10
-PREVIEW_HEIGHT=10
+FILE_PATH="${1}"
+PREVIEW_WIDTH=20
+PREVIEW_HEIGHT=20
 PREVIEW_X_COORD=0
 PREVIEW_Y_COORD=0
-IMAGE_CACHE_PATH=""
+IMAGE_CACHE_PATH="${4}"
 
 # echo "$@"
 
