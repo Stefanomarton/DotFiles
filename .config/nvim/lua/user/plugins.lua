@@ -82,7 +82,25 @@ return packer.startup(function(use)
 		"williamboman/mason-lspconfig.nvim",
 		"neovim/nvim-lspconfig",
 	})
-	use({ "nvim-telescope/telescope.nvim" })
+	use({
+		"nvim-telescope/telescope.nvim",
+		config = function()
+			require("telescope").setup({
+				extensions = {
+					heading = {
+						treesitter = true,
+					},
+				},
+			})
+		end,
+	})
+	use({
+		"crispgm/telescope-heading.nvim",
+		config = function()
+			require("telescope").load_extension("heading")
+		end,
+	})
+
 	use({ "glepnir/galaxyline.nvim" })
 	use({
 		"lewis6991/gitsigns.nvim",
