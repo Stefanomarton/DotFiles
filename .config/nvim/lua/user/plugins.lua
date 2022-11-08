@@ -84,19 +84,7 @@ return packer.startup(function(use)
 	})
 
 	-- Telescope and telescope integrations
-	use({
-		"nvim-telescope/telescope.nvim",
-		config = function()
-			require("telescope").setup({
-				extensions = {
-					heading = {
-						treesitter = true,
-					},
-					file_browser = {},
-				},
-			})
-		end,
-	})
+	use({ "nvim-telescope/telescope.nvim" })
 
 	use({
 		"crispgm/telescope-heading.nvim",
@@ -244,8 +232,6 @@ return packer.startup(function(use)
 			-- "rcarriga/nvim-notify",
 		},
 	})
-
-	use({ "folke/trouble.nvim" })
 
 	if PACKER_BOOTSTRAP then
 		require("packer").sync()
