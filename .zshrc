@@ -242,6 +242,7 @@ setopt INC_APPEND_HISTORY        # Write to the history file immediately, not wh
 setopt APPEND_HISTORY            # append to history file
 
 eval `ssh-agent`
+ssh-add
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
