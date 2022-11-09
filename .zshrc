@@ -90,6 +90,10 @@ rng () {
     }
 bindkey -s '^u' 'rng\n'
 
+#fzfpier
+pierfzf() {                                                  pier $(pier -c ~/.config/pier/config.toml list | awk NR\>2 | fzf | awk '{print $1}')
+}
+
 ### FZF Shortcuts
 # The code at the top and the bottom of this file is the same as in completion.zsh.
 if 'zmodload' 'zsh/parameter' 2>'/dev/null' && (( ${+options} )); then
