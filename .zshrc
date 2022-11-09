@@ -241,7 +241,7 @@ setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
 setopt APPEND_HISTORY            # append to history file
 
-
+eval `ssh-agent`
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
