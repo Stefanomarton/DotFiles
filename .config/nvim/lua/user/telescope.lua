@@ -8,6 +8,18 @@ require("telescope").setup({
 		layout_config = {
 			vertical = { width = 0.5 },
 		},
+		file_ignore_patterns = {
+			".git/",
+			".cache",
+			"%.o",
+			"%.a",
+			"%.out",
+			"%.class",
+			"%.pdf",
+			"%.mkv",
+			"%.mp4",
+			"%.zip",
+		},
 		-- Default configuration for telescope goes here:
 		-- config_key = value,
 		mappings = {
@@ -98,6 +110,7 @@ require("telescope").setup({
 					["<C-q>"] = fb_actions.create_from_prompt,
 					["<C-r>"] = fb_actions.rename,
 					["<C-p>"] = fb_actions.goto_parent_dir,
+					["<C-o>"] = fb_actions.goto_cwd,
 					["<C-d>"] = fb_actions.remove,
 				},
 				["n"] = {
