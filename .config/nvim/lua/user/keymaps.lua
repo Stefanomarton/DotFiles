@@ -61,10 +61,6 @@ keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 -- Close buffers
 keymap("n", "<C-q>", "<cmd>Bdelete!<CR>", opts)
 
--- Better search
-keymap("n", "<leader>s", "V :s/")
-keymap("v", "s", "V :s/")
-
 -- Visual --
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
@@ -72,15 +68,8 @@ keymap("v", ">", ">gv", opts)
 
 -- Plugins --
 
--- NvimTree
+-- Telescope file_browser
 keymap("n", "<leader>e", ":Telescope file_browser<CR>", opts)
-
--- Git
--- keymap("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
-
--- Comment
-keymap("n", "<leader>/", "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", opts)
-keymap("x", "<leader>/", '<ESC><CMD>lua require("Comment.api").toggle.linewise_op(vim.fn.visualmode())<CR>', opts)
 
 -- Hop
 keymap("x", "F", ":HopWord<Cr>", opts)
@@ -96,22 +85,12 @@ wk.register({
 	},
 }, { prefix = "<leader>" })
 
-wk.register({
-	l = {
-		name = "LaTex",
-		c = { ":VimtexCompile", "Compile", noremap = true, silent = true },
-		p = { ":!zathura %:r.pdf > /dev/null 2>&1 &<cr><cr>", "Preview", noremap = true, silent = true },
-		t = { ":Telescope heading <cr>", "Toc", noremap = true, silent = true },
-		l = { ":Telescope luasnip theme=get_cursor<cr>", "Snippets", noremap = true, silent = true },
-	},
-}, { prefix = "<leader>" })
-
-keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-keymap("n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+-- keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+-- keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+-- keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+-- keymap("n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+-- keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+-- keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 keymap("n", "<leader>pf", "<cmd>lua vim.lsp.buf.format({async= true})<cr>", opts)
 keymap("n", "<leader>pi", "<cmd>LspInfo<cr>", opts)
 keymap("n", "<leader>pI", "<cmd>Mason<cr>", opts)

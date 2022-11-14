@@ -36,14 +36,15 @@ vim.opt.scrolloff = 8 -- is one of my fav
 vim.opt.sidescrolloff = 8
 vim.opt.guifont = "monospace:h17" -- the font used in graphical neovim applications
 vim.opt.fillchars.eob = " "
-vim.opt.shortmess:append "c"
+vim.opt.shortmess:append("c")
 vim.opt.whichwrap:append("<,>,[,],h,l")
 vim.opt.iskeyword:append("-")
-vim.g.qs_highlight_on_keys = { 'f', 'F' }
+vim.g.qs_highlight_on_keys = { "f", "F" }
 
 -- Vimtex
-vim.g.vimtex_view_method = 'zathura'
-vim.g.livepreview_previewer = 'zathura'
+vim.g.vimtex_view_method = "zathura"
+vim.g.livepreview_previewer = "zathura"
+vim.g.vimtex_compiler_method = "tectonic"
 
 --Treesitter context background color
-vim.api.nvim_set_hl(0, 'TreesitterContext', { fg = "#ffffff", bg = "#414868" })
+vim.api.nvim_set_hl(0, "TreesitterContext", { fg = "#ffffff", bg = "#414868" })
