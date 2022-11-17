@@ -14,7 +14,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
 	print("Installing packer close and reopen Neovim...")
 	vim.cmd([[packadd packer.nvim]])
 end
---
+
 -- Autocommand that reloads neovim whenever you save the plugins.lua file
 vim.cmd([[
   augroup packer_user_config
@@ -47,15 +47,35 @@ return packer.startup(function(use)
 	use({ "lewis6991/impatient.nvim" })
 	use({ "lukas-reineke/indent-blankline.nvim" })
 	use({ "L3MON4D3/LuaSnip" })
-	use({ "nvim-treesitter/nvim-treesitter" })
+	use({
+		"nvim-treesitter/nvim-treesitter",
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				highlight = {
+					enable = true,
+				},
+			})
+		end,
+	})
 	use({ "nvim-treesitter/nvim-treesitter-context" })
+	use({
+		"lewis6991/spellsitter.nvim",
+		config = function()
+			require("spellsitter").setup()
+		end,
+	})
 
 	--Colorscheme and deco stuff
 	use({ "dracula/vim" })
 	use({ "folke/tokyonight.nvim" })
-	use({ "akinsho/bufferline.nvim" })
+	use({
+		"romgrk/barbar.nvim",
+		config = function()
+			require("user.UI.barbar")
+		end,
+	})
 	use({ "j-hui/fidget.nvim" })
-	use({ "goolord/alpha-nvim" })
+	-- use({ "goolord/alpha-nvim" })
 	use({ "rcarriga/nvim-notify" })
 	use({ "Pocco81/true-zen.nvim" })
 	use({ "glepnir/galaxyline.nvim" })
@@ -109,7 +129,7 @@ The Core plugins
 	})
 
 	use({ "unblevable/quick-scope" })
-	use({ "lervag/vimtex" })
+	use({ "lervag/vimtex", ft = "tex" })
 
 	--[[ 	Telescope and telescope integrations ]]
 
@@ -120,6 +140,7 @@ The Core plugins
 		config = function()
 			require("telescope").load_extension("heading")
 		end,
+		ft = { "tex", "md" },
 	})
 
 	use({

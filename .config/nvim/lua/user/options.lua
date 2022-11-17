@@ -14,7 +14,7 @@ vim.opt.smartcase = true -- smart case
 vim.opt.smartindent = true -- make indenting smarter again
 vim.opt.splitbelow = true -- force all horizontal splits to go below current window
 vim.opt.splitright = true -- force all vertical splits to go to the right of current window
-vim.opt.swapfile = true -- creates a swapfile
+vim.opt.swapfile = false -- creates a swapfile
 vim.opt.termguicolors = true -- set term gui colors (most terminals support this)
 vim.opt.timeoutlen = 1000 -- time to wait for a mapped sequence to complete (in milliseconds)
 vim.opt.undofile = true -- enable persistent undo
@@ -43,3 +43,5 @@ vim.g.qs_highlight_on_keys = { "f", "F" }
 
 --Treesitter context background color
 vim.api.nvim_set_hl(0, "TreesitterContext", { fg = "#ffffff", bg = "#414868" })
+
+-- vim.cmd([[syntax match todoCheckbox "\n" conceal cchar=]])
