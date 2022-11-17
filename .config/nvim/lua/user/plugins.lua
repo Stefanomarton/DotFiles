@@ -43,28 +43,57 @@ return packer.startup(function(use)
 	use({ "nvim-lua/plenary.nvim" })
 	use({ "windwp/nvim-autopairs" })
 	use({ "kyazdani42/nvim-web-devicons" })
-	-- use({ "kyazdani42/nvim-tree.lua", commit = "ce463a5" })
 	use({ "moll/vim-bbye" })
-	use({ "nvim-lualine/lualine.nvim" })
 	use({ "lewis6991/impatient.nvim" })
 	use({ "lukas-reineke/indent-blankline.nvim" })
 	use({ "L3MON4D3/LuaSnip" })
 	use({ "nvim-treesitter/nvim-treesitter" })
 	use({ "nvim-treesitter/nvim-treesitter-context" })
 
-	--Colorscheme
+	--Colorscheme and deco stuff
 	use({ "dracula/vim" })
 	use({ "folke/tokyonight.nvim" })
 	use({ "akinsho/bufferline.nvim" })
-
-	use({ "williamboman/nvim-lsp-installer" })
 	use({ "j-hui/fidget.nvim" })
+	use({ "goolord/alpha-nvim" })
+	use({ "rcarriga/nvim-notify" })
+	use({ "Pocco81/true-zen.nvim" })
+	use({ "glepnir/galaxyline.nvim" })
+	use({
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup()
+		end,
+	})
+	use({
+		"petertriho/nvim-scrollbar",
+		config = function()
+			require("user.UI.scrollbar")
+		end,
+	})
 
-	-- use { "jose-elias-alvarez/null-ls.nvim"}
+	use({
+		"folke/noice.nvim",
+		config = function()
+			require("user.UI.noice")
+		end,
+		event = "VimEnter",
+		requires = {
+			"MunifTanjim/nui.nvim",
+		},
+	})
+
+	--[[ 	
+The Core plugins
+]]
+
+	use({
+		"ggandor/leap.nvim",
+		config = function()
+			require("leap").set_default_keymaps()
+		end,
+	})
 	use({ "numToStr/Comment.nvim" })
-
-	use({ "https://github.com/junegunn/fzf.vim.git" })
-
 	use({ "hrsh7th/nvim-cmp" })
 	use({ "hrsh7th/cmp-buffer" })
 	use({ "hrsh7th/cmp-path" })
@@ -72,18 +101,18 @@ return packer.startup(function(use)
 	use({ "hrsh7th/cmp-nvim-lsp" })
 	use({ "hrsh7th/cmp-nvim-lua" })
 	use({ "hrsh7th/cmp-cmdlIne" })
-
-	use({ "unblevable/quick-scope" })
-	use({ "lervag/vimtex" })
-
-	use({ "goolord/alpha-nvim" })
+	use({ "williamboman/nvim-lsp-installer" })
 	use({
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
 		"neovim/nvim-lspconfig",
 	})
 
-	-- Telescope and telescope integrations
+	use({ "unblevable/quick-scope" })
+	use({ "lervag/vimtex" })
+
+	--[[ 	Telescope and telescope integrations ]]
+
 	use({ "nvim-telescope/telescope.nvim" })
 
 	use({
@@ -122,16 +151,6 @@ return packer.startup(function(use)
 		end,
 	})
 
-	use({ "glepnir/galaxyline.nvim" })
-	use({
-		"lewis6991/gitsigns.nvim",
-		config = function()
-			require("gitsigns").setup()
-		end,
-	})
-
-	-- use 'ggandor/lightspeed.nvim'
-
 	use({
 		"mvllow/modes.nvim",
 		tag = "v0.2.0",
@@ -149,10 +168,6 @@ return packer.startup(function(use)
 		end,
 	})
 
-	use({
-		"xuhdev/vim-latex-live-preview",
-	})
-
 	use({ "folke/which-key.nvim" })
 
 	use({ "jose-elias-alvarez/null-ls.nvim" })
@@ -161,15 +176,11 @@ return packer.startup(function(use)
 
 	use({ "NvChad/nvim-colorizer.lua" })
 
-	use({ "lvimuser/lsp-inlayhints.nvim" })
-
 	use({
 		"kylechui/nvim-surround",
-		tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+		tag = "main", -- Use for stability; omit to use `main` branch for the latest features
 		config = function()
-			require("nvim-surround").setup({
-				-- Configuration here, or leave empty to use defaults
-			})
+			require("nvim-surround").setup({})
 		end,
 	})
 
@@ -199,38 +210,6 @@ return packer.startup(function(use)
 		end,
 		wants = { "nvim-treesitter" }, -- or require if not used so far
 		after = { "nvim-cmp" }, -- if a completion plugin is using tabs load it before_init
-	})
-
-	use({
-		"ggandor/leap.nvim",
-		config = function()
-			require("leap").set_default_keymaps()
-		end,
-	})
-
-	use({ "rcarriga/nvim-notify" })
-
-	use({
-		"Pocco81/true-zen.nvim",
-	})
-
-	use({ "mhartington/formatter.nvim" })
-
-	-- Packer
-	use({
-		"folke/noice.nvim",
-		event = "VimEnter",
-		config = function()
-			require("noice").setup()
-		end,
-		requires = {
-			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-			"MunifTanjim/nui.nvim",
-			-- OPTIONAL:
-			--   `nvim-notify` is only needed, if you want to use the notification view.
-			--   If not available, we use `mini` as the fallback
-			-- "rcarriga/nvim-notify",
-		},
 	})
 
 	if PACKER_BOOTSTRAP then

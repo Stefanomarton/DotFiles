@@ -14,14 +14,14 @@ vim.opt.smartcase = true -- smart case
 vim.opt.smartindent = true -- make indenting smarter again
 vim.opt.splitbelow = true -- force all horizontal splits to go below current window
 vim.opt.splitright = true -- force all vertical splits to go to the right of current window
-vim.opt.swapfile = false -- creates a swapfile
+vim.opt.swapfile = true -- creates a swapfile
 vim.opt.termguicolors = true -- set term gui colors (most terminals support this)
 vim.opt.timeoutlen = 1000 -- time to wait for a mapped sequence to complete (in milliseconds)
 vim.opt.undofile = true -- enable persistent undo
 vim.opt.updatetime = 300 -- faster completion (4000ms default)
 vim.opt.writebackup = false -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
-vim.opt.expandtab = true -- convert tabs to spaces
-vim.opt.shiftwidth = 2 -- the number of spaces inserted for each indentation
+vim.opt.expandtab = false -- convert tabs to spaces
+vim.opt.shiftwidth = 4 -- the number of spaces inserted for each indentation
 vim.opt.tabstop = 2 -- insert 2 spaces for a tab
 vim.opt.cursorline = true -- highlight the current line
 vim.opt.relativenumber = true -- set numbered lines
@@ -40,11 +40,6 @@ vim.opt.shortmess:append("c")
 vim.opt.whichwrap:append("<,>,[,],h,l")
 vim.opt.iskeyword:append("-")
 vim.g.qs_highlight_on_keys = { "f", "F" }
-
--- Vimtex
-vim.g.vimtex_view_method = "zathura"
-vim.g.livepreview_previewer = "zathura"
-vim.g.vimtex_compiler_method = "tectonic"
 
 --Treesitter context background color
 vim.api.nvim_set_hl(0, "TreesitterContext", { fg = "#ffffff", bg = "#414868" })

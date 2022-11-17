@@ -1,24 +1,32 @@
-require("user.plugins")
-require("user.options")
-require("user.nvim-tree")
+-- UI Configs
+require("alpha").setup(require("user.UI.alpha").config)
+require("user.UI.colorscheme")
+require("user.UI.galaxyline")
+require("user.UI.zen")
+--require("user.UI.noice")
 require("user.indentline")
-require("user.impatient")
-require("user.treesitter")
-require("user.autopairs")
-require("user.colorscheme")
-require("user.galaxyline")
-require("user.keymaps")
-require("user.lsp")
 require("user.bufferline")
-require("user.cmp")
+
+-- Plugins
+require("user.plugins")
+require("user.impatient")
+
+-- Base configs
+require("user.keymaps")
+require("user.options")
 require("user.autocommands")
-require("user.whichkey")
+
+-- Core plugins
+require("user.lsp")
+require("user.cmp")
 require("user.trouble")
+require("user.treesitter")
 require("luasnip-latex-snippets").setup({ use_treesitter = true })
-require("alpha").setup(require("user.alpha").config)
-require("lsp-inlayhints").setup()
 require("user.treesitter-context")
-require("user.zen")
+require("user.vimtex")
+
+-- Confort plugins configs
+require("user.autopairs")
+require("user.whichkey")
 require("user.comment")
-require("user.formatter")
 require("user.telescope")
