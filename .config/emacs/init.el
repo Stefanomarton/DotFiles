@@ -5,13 +5,20 @@
 (set-fringe-mode 10)
 
 (menu-bar-mode -1)
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150)
-(load-theme 'tango-dark)
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 100)
+(load-theme 'doom-nord t)
+;;(setq custom-safe-themes t)
+
+(column-number-mode)
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers 'relative)
 
 (require 'package)
-(setq package-archives '(("melpa" . "https://melp.org/packages/")
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			 ("org" . "https://orgmode.org/elpa/")
 			 ("elpa" . "https://elpa.gnu.org/packages/")))
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 (package-initialize)
 (unless package-archive-contents
@@ -21,4 +28,72 @@
   (package-install 'use-package))
 
 (require 'use-package)
-(use-package-always-ensure t)
+(setq use-package-always-ensure t)
+(use-package ivy
+  :diminish
+   :config
+   (ivy-mode 1))
+
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
+(use-package counsel
+  :bind (("M-x" . counsel-M-x)
+	 ("C-x b" . counsel-ibuffer)
+	 ("C-x C-f" . counsel-find-file))
+  :config
+  (setq ivy-initial-inputs-alist nil)) ;; Dont't start searches with ^
+
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
+
+(use-package doom-themes)
+
+;; Download Evil
+(unless (package-installed-p 'evil)
+  (package-install 'evil))
+
+;; Enable Evil
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+(evil-mode 1))
+
+(use-package all-the-icons
+  :ensure t)
+
+;; Which Key
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 0.3))
+
+;; Rainbow Delimeters
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+;; Latex
+(use-package tex
+  :ensure auctex)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("1a1ac598737d0fcdc4dfab3af3d6f46ab2d5048b8e72bc22f50271fd6d393a00" default))
+ '(package-selected-packages
+   '(auctex doom-themes doom-theme all-the-icons evil doom-modeline command-log-mode use-package)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
