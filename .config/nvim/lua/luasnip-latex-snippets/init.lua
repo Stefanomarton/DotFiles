@@ -25,111 +25,103 @@ local conds_expand = require("luasnip.extras.conditions.expand")
 local M = {}
 
 local default_opts = {
-  use_treesitter = true,
+	use_treesitter = true,
 }
 
 M.setup = function(opts)
-  opts = vim.tbl_deep_extend("force", default_opts, opts or {})
+	opts = vim.tbl_deep_extend("force", default_opts, opts or {})
 
-  local is_math = utils.with_opts(utils.is_math, opts.use_treesitter)
-  local not_math = utils.with_opts(utils.not_math, opts.use_treesitter)
+	local is_math = utils.with_opts(utils.is_math, opts.use_treesitter)
+	local not_math = utils.with_opts(utils.not_math, opts.use_treesitter)
 
-  ls.config.setup({ enable_autosnippets = true })
+	ls.config.setup({ enable_autosnippets = true })
 
+	ls.add_snippets("tex", {
+		ls.parser.parse_snippet({ trig = "pac", name = "Package" }, "\\usepackage[${1:options}]{${2:package}}$0"),
+		ls.parser.parse_snippet({ trig = "sec", name = "Section" }, "\\section{${1}}"),
+		ls.parser.parse_snippet({ trig = "ssec", name = "Subsection" }, "\\subsection{${1}}"),
+		ls.parser.parse_snippet({ trig = "sssec", name = "Subsubsection" }, "\\subsubsection{${1}}"),
 
-  ls.add_snippets("tex", {
-    ls.parser.parse_snippet(
-      { trig = "pac", name = "Package" },
-      "\\usepackage[${1:options}]{${2:package}}$0"
-    ),
-    ls.parser.parse_snippet(
-      { trig = "sec", name = "Section" },
-      "\\section{${1}}"
-    ),
-    ls.parser.parse_snippet(
-      { trig = "ssec", name = "Subsection" },
-      "\\subsection{${1}}"
-    ),
-    ls.parser.parse_snippet(
-      { trig = "sssec", name = "Subsubsection" },
-      "\\subsubsection{${1}}"
-    ),
+		-- ls.parser.parse_snippet({ trig = "nn", name = "Tikz node" }, {
+		--   "$0",
+		--   -- "\\node[$5] (${1/[^0-9a-zA-Z]//g}${2}) ${3:at (${4:0,0}) }{$${1}$};",
+		--   "\\node[$5] (${1}${2}) ${3:at (${4:0,0}) }{$${1}$};",
+		-- }),
+	})
 
-    -- ls.parser.parse_snippet({ trig = "nn", name = "Tikz node" }, {
-    --   "$0",
-    --   -- "\\node[$5] (${1/[^0-9a-zA-Z]//g}${2}) ${3:at (${4:0,0}) }{$${1}$};",
-    --   "\\node[$5] (${1}${2}) ${3:at (${4:0,0}) }{$${1}$};",
-    -- }),
-  })
+	local math_i = require("luasnip-latex-snippets/math_i")
+	for _, snip in ipairs(math_i) do
+		snip.condition = pipe({ is_math })
+		snip.show_condition = is_math
+		snip.wordTrig = false
+	end
 
-  local math_i = require("luasnip-latex-snippets/math_i")
-  for _, snip in ipairs(math_i) do
-    snip.condition = pipe({ is_math })
-    snip.show_condition = is_math
-    snip.wordTrig = false
-  end
+	ls.add_snippets("tex", math_i, { default_priority = 0 })
 
-  ls.add_snippets("tex", math_i, { default_priority = 0 })
+	local autosnippets = {}
 
-  local autosnippets = {}
+	for _, snip in ipairs(require("luasnip-latex-snippets/math_wRA_no_backslash")) do
+		snip.regTrig = true
+		snip.condition = pipe({ is_math, no_backslash })
+		table.insert(autosnippets, snip)
+	end
 
-  for _, snip in ipairs(require("luasnip-latex-snippets/math_wRA_no_backslash")) do
-    snip.regTrig = true
-    snip.condition = pipe({ is_math, no_backslash })
-    table.insert(autosnippets, snip)
-  end
+	for _, snip in ipairs(require("luasnip-latex-snippets/math_rA_no_backslash")) do
+		snip.wordTrig = false
+		snip.regTrig = true
+		snip.condition = pipe({ is_math, no_backslash })
+		table.insert(autosnippets, snip)
+	end
 
-  for _, snip in ipairs(require("luasnip-latex-snippets/math_rA_no_backslash")) do
-    snip.wordTrig = false
-    snip.regTrig = true
-    snip.condition = pipe({ is_math, no_backslash })
-    table.insert(autosnippets, snip)
-  end
+	for _, snip in ipairs(require("luasnip-latex-snippets/normal_wA")) do
+		snip.condition = pipe({ not_math })
+		table.insert(autosnippets, snip)
+	end
 
-  for _, snip in ipairs(require("luasnip-latex-snippets/normal_wA")) do
-    snip.condition = pipe({ not_math })
-    table.insert(autosnippets, snip)
-  end
+	for _, snip in ipairs(require("luasnip-latex-snippets/math_wrA")) do
+		snip.regTrig = true
+		snip.condition = pipe({ is_math })
+		table.insert(autosnippets, snip)
+	end
 
-  for _, snip in ipairs(require("luasnip-latex-snippets/math_wrA")) do
-    snip.regTrig = true
-    snip.condition = pipe({ is_math })
-    table.insert(autosnippets, snip)
-  end
+	for _, snip in ipairs(require("luasnip-latex-snippets/math_wA_no_backslash")) do
+		snip.condition = pipe({ is_math, no_backslash })
+		table.insert(autosnippets, snip)
+	end
 
-  for _, snip in ipairs(require("luasnip-latex-snippets/math_wA_no_backslash")) do
-    snip.condition = pipe({ is_math, no_backslash })
-    table.insert(autosnippets, snip)
-  end
+	for _, snip in ipairs(require("luasnip-latex-snippets/math_iA")) do
+		snip.wordTrig = false
+		snip.condition = pipe({ is_math })
+		table.insert(autosnippets, snip)
+	end
 
-  for _, snip in ipairs(require("luasnip-latex-snippets/math_iA")) do
-    snip.wordTrig = false
-    snip.condition = pipe({ is_math })
-    table.insert(autosnippets, snip)
-  end
+	for _, snip in ipairs(require("luasnip-latex-snippets/math_iA_no_backslash")) do
+		snip.wordTrig = false
+		snip.condition = pipe({ is_math, no_backslash })
+		table.insert(autosnippets, snip)
+	end
 
-  for _, snip in ipairs(require("luasnip-latex-snippets/math_iA_no_backslash")) do
-    snip.wordTrig = false
-    snip.condition = pipe({ is_math, no_backslash })
-    table.insert(autosnippets, snip)
-  end
+	for _, snip in ipairs(require("luasnip-latex-snippets/math_bwA")) do
+		snip.condition = pipe({ conds.line_begin, is_math })
+		table.insert(autosnippets, snip)
+	end
 
-  for _, snip in ipairs(require("luasnip-latex-snippets/math_bwA")) do
-    snip.condition = pipe({ conds.line_begin, is_math })
-    table.insert(autosnippets, snip)
-  end
+	for _, snip in ipairs(require("luasnip-latex-snippets/bwA")) do
+		snip.condition = pipe({ conds.line_begin, not_math })
+		table.insert(autosnippets, snip)
+	end
 
-  for _, snip in ipairs(require("luasnip-latex-snippets/bwA")) do
-    snip.condition = pipe({ conds.line_begin, not_math })
-    table.insert(autosnippets, snip)
-  end
-
-  ls.add_snippets("tex", autosnippets, {
-    type = "autosnippets",
-    default_priority = 0,
-  })
+	ls.add_snippets("tex", autosnippets, {
+		type = "autosnippets",
+		default_priority = 0,
+	})
 end
 
+ls.filetype_extend("markdown", { "tex" }) -- Addd tex snippets to markdown
 
+-- Needed keyconfig for selection snippets to work
+ls.config.set_config({
+	store_selection_keys = "<leader>u",
+})
 
 return M

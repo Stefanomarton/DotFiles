@@ -6,7 +6,7 @@ vim.opt.conceallevel = 2 -- so that `` is visible in markdown files
 vim.opt.fileencoding = "utf-8" -- the encoding written to a file
 vim.opt.hlsearch = true -- highlight all matches on previous search pattern
 vim.opt.ignorecase = true -- ignore case in search patterns
-vim.opt.mouse = "a" -- allow the mouse to be used in neovim
+vim.opt.mouse = "a" -- allow the mouse to be used in Neovim
 vim.opt.pumheight = 10 -- pop up menu height
 vim.opt.showmode = false -- we don't need to see things like -- INSERT -- anymore
 vim.opt.showtabline = 0 -- always show tabs
@@ -15,7 +15,7 @@ vim.opt.smartindent = true -- make indenting smarter again
 vim.opt.splitbelow = true -- force all horizontal splits to go below current window
 vim.opt.splitright = true -- force all vertical splits to go to the right of current window
 vim.opt.swapfile = false -- creates a swapfile
-vim.opt.termguicolors = true -- set term gui colors (most terminals support this)
+vim.opt.termguicolors = true -- set term GUI colors (most terminals support this)
 vim.opt.timeoutlen = 1000 -- time to wait for a mapped sequence to complete (in milliseconds)
 vim.opt.undofile = true -- enable persistent undo
 vim.opt.updatetime = 300 -- faster completion (4000ms default)
@@ -34,14 +34,20 @@ vim.opt.signcolumn = "yes" -- always show the sign column, otherwise it would sh
 vim.opt.wrap = true -- display lines as one long line
 vim.opt.scrolloff = 8 -- is one of my fav
 vim.opt.sidescrolloff = 8
-vim.opt.guifont = "monospace:h17" -- the font used in graphical neovim applications
+vim.opt.guifont = "JetBrainsMono Nerd Font:h15" -- the font used in graphical neovim applications
 vim.opt.fillchars.eob = " "
 vim.opt.shortmess:append("c")
 vim.opt.whichwrap:append("<,>,[,],h,l")
 vim.opt.iskeyword:append("-")
 vim.g.qs_highlight_on_keys = { "f", "F" }
+vim.opt.spell = false
+vim.opt.spelllang = { "en_us" }
 
---Treesitter context background color
+-- TreeSitter context background color
 vim.api.nvim_set_hl(0, "TreesitterContext", { fg = "#ffffff", bg = "#414868" })
 
 -- vim.cmd([[syntax match todoCheckbox "\n" conceal cchar=]])
+
+-- GUI settings for Neovide
+vim.g.neovide_scale_factor = 0.8
+vim.g.neovide_refresh_rate = 60

@@ -105,13 +105,13 @@ cmp.setup({
 			return vim_item
 		end,
 	},
-	sources = {
+	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
 		{ name = "nvim_lua" },
 		{ name = "luasnip" },
 		{ name = "buffer" },
 		{ name = "path" },
-	},
+	}),
 	confirm_opts = {
 		behavior = cmp.ConfirmBehavior.Replace,
 		select = false,
@@ -122,5 +122,24 @@ cmp.setup({
 	},
 	experimental = {
 		ghost_text = true,
+	},
+})
+
+cmp.setup.filetype("tex", {
+	sources = {
+		{ name = "latex_symbols" },
+		{ name = "nvim_lsp" },
+		{
+			name = "spell",
+			option = {
+				keep_all_entries = false,
+				enable_in_context = function()
+					return require("cmp.config.context").in_treesitter_capture("spell")
+				end,
+			},
+		},
+		{ name = "luasnip" },
+		{ name = "buffer" },
+		{ name = "path" },
 	},
 })

@@ -94,6 +94,7 @@ return packer.startup(function(use)
 
 	use({
 		"folke/noice.nvim",
+
 		config = function()
 			require("user.UI.noice")
 		end,
@@ -115,12 +116,15 @@ The Core plugins
 	})
 	use({ "numToStr/Comment.nvim" })
 	use({ "hrsh7th/nvim-cmp" })
+	use({ "kdheepak/cmp-latex-symbols", ft = "tex" })
 	use({ "hrsh7th/cmp-buffer" })
 	use({ "hrsh7th/cmp-path" })
 	use({ "saadparwaiz1/cmp_luasnip" })
 	use({ "hrsh7th/cmp-nvim-lsp" })
 	use({ "hrsh7th/cmp-nvim-lua" })
 	use({ "hrsh7th/cmp-cmdlIne" })
+	use({ "f3fora/cmp-spell" })
+
 	use({ "williamboman/nvim-lsp-installer" })
 	use({
 		"williamboman/mason.nvim",
@@ -229,8 +233,6 @@ The Core plugins
 				exclude = {}, -- tabout will ignore these filetypes
 			})
 		end,
-		wants = { "nvim-treesitter" }, -- or require if not used so far
-		after = { "nvim-cmp" }, -- if a completion plugin is using tabs load it before_init
 	})
 
 	if PACKER_BOOTSTRAP then

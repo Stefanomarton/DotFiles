@@ -28,8 +28,7 @@ keymap("n", "q", "b", opts)
 keymap("x", "q", "b", opts)
 keymap("n", "Q", "B", opts)
 keymap("x", "Q", "B", opts)
-keymap("n", "gj", "0", opts)
-keymap("n", "gk", "$", opts)
+keymap("n", "1", "$", opts)
 
 -- Delete
 keymap("n", "dq", "db", opts)
@@ -59,7 +58,7 @@ keymap("n", "<S-h>", ":bprevious<CR>", opts)
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
 -- Close buffers
-keymap("n", "<C-q>", "<cmd>Bdelete!<CR>", opts)
+keymap("n", "<C-q>", "<cmd>BufferClose<CR>", opts)
 
 -- Visual --
 -- Stay in indent mode
@@ -70,6 +69,11 @@ keymap("v", ">", ">gv", opts)
 
 -- Telescope file_browser
 keymap("n", "<leader>e", ":Telescope file_browser<CR>", opts)
+
+wk.register({
+	e = { ":Telescope file_browser<CR>", "File explorer", opts },
+	{ prefix = "<leader>" },
+})
 
 -- Hop
 keymap("x", "F", ":HopWord<Cr>", opts)

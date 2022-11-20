@@ -20,15 +20,16 @@ vim.api.nvim_create_autocmd({ "User" }, {
 	end,
 })
 
--- Set wrap and spell in markdown and gitcommit
+-- -- Set wrap and spell in markdown and gitcommit
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	pattern = { "gitcommit", "markdown", "latex" },
 	callback = function()
 		vim.opt_local.wrap = true
 		vim.opt_local.spell = true
+		vim.opt.spelllang = { "en_us", "it" }
 	end,
 })
-
+--
 -- NvimTree enter file directory automaticall
 -- vim.cmd "autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif"
 
