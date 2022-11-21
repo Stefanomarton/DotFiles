@@ -210,7 +210,7 @@ function _M.get()
 			awful.spawn.with_shell("flameshot gui")
 		end, { description = "screenshot", group = "launcher" }),
 		awful.key({ modkey, "Shift" }, "n", function()
-			awful.spawn.with_shell("neovide --novsync --multigrid")
+			awful.spawn.with_shell("neovide --novsync")
 		end, { description = "open Neovide", group = "launcher" }),
 
 		awful.key({ modkey, "Control" }, "l", function()

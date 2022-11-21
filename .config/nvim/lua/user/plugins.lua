@@ -61,7 +61,9 @@ return packer.startup(function(use)
 	use({
 		"lewis6991/spellsitter.nvim",
 		config = function()
-			require("spellsitter").setup()
+			require("spellsitter").setup({
+				enable = true,
+			})
 		end,
 	})
 
@@ -102,6 +104,20 @@ return packer.startup(function(use)
 		requires = {
 			"MunifTanjim/nui.nvim",
 		},
+	})
+
+	use({
+		"folke/todo-comments.nvim",
+		config = function()
+			require("user.todo")
+		end,
+	})
+
+	use({
+		"glepnir/dashboard-nvim",
+		config = function()
+			require("user.UI.dashboard")
+		end,
 	})
 
 	--[[ 	

@@ -36,7 +36,7 @@ keymap("n", "dQ", "dB", opts)
 
 --Save and close
 keymap("n", "<leader>w", ":w<cr>", opts)
-keymap("n", "<leader>q", ":x<cr>", opts)
+keymap("n", "<leader>q", "<cmd>BufferClose<CR>", opts)
 
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)
@@ -58,7 +58,7 @@ keymap("n", "<S-h>", ":bprevious<CR>", opts)
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
 -- Close buffers
-keymap("n", "<C-q>", "<cmd>BufferClose<CR>", opts)
+keymap("n", "<leader>Q", ":x<cr>", opts)
 
 -- Visual --
 -- Stay in indent mode

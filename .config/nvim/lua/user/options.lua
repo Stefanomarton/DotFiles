@@ -34,7 +34,7 @@ vim.opt.signcolumn = "yes" -- always show the sign column, otherwise it would sh
 vim.opt.wrap = true -- display lines as one long line
 vim.opt.scrolloff = 8 -- is one of my fav
 vim.opt.sidescrolloff = 8
-vim.opt.guifont = "JetBrainsMono Nerd Font:h15" -- the font used in graphical neovim applications
+vim.opt.guifont = "JetBrainsMono Nerd Font:h20" -- the font used in graphical neovim applications
 vim.opt.fillchars.eob = " "
 vim.opt.shortmess:append("c")
 vim.opt.whichwrap:append("<,>,[,],h,l")
@@ -50,4 +50,4 @@ vim.api.nvim_set_hl(0, "TreesitterContext", { fg = "#ffffff", bg = "#414868" })
 
 -- GUI settings for Neovide
 vim.g.neovide_scale_factor = 0.8
-vim.g.neovide_refresh_rate = 60
+vim.g.neovide_refresh_rate = 144

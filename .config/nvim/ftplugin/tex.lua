@@ -74,6 +74,8 @@ keymap("n", "vim", "v<plug>(vimtex-i$)", opts) -- Visual select inside math
 keymap("n", ",", "<plug>(vimtex-%)", opts) -- Move between delimiters
 keymap("n", ";", "<plug>(vimtex-doc-package)", opts) -- Move between delimiters
 
+vim.cmd([[imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>']])
+
 --[[ other useful command  ]]
 -- ac               |<plug>(vimtex-ac)| aside command
 -- ic               |<plug>(vimtex-ic)| iside command
