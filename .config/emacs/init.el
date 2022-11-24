@@ -1,7 +1,39 @@
-;;(setq inhibit-startup-message t)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(tooltip-mode -1)
+;; Makes *scratch* empty:
+(setq initial-scratch-message "")
+
+; Removes *scratch* from buffer after the mode has been set.
+(defun remove-scratch-buffer ()
+  (if (get-buffer "*scratch*")
+      (kill-buffer "*scratch*")))
+(add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
+
+; Removes *messages* from the buffer.
+ (setq-default message-log-max nil)
+ (kill-buffer "*Messages*")
+
+;; Removes *Completions* from buffer after you've opened a file.
+; (add-hook 'minibuffer-exit-hook
+;       '(lambda ()
+;          (let ((buffer "*Completions*"))
+;           (and (get-buffer buffer)
+;                 (kill-buffer buffer)))))
+
+;; Don't show *Buffer list* when opening multiple files at the same time.
+(setq inhibit-startup-buffer-menu t)
+
+;; System clipboard
+(setq select-enable-clipboard t)
+
+;; Show only one active window when opening multiple files at the same time.
+(add-hook 'window-setup-hook 'delete-other-windows)
+
+;; No more typing the whole yes or no. Just y or n will do.
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(setq inhibit-startup-message t) ;; Don't show startup messages
+(scroll-bar-mode -1) ;; No scrollbar
+(tool-bar-mode -1) ;; No top bar
+(tooltip-mode -1) ;; No tooltip
 (set-fringe-mode 10)
 
 (menu-bar-mode -1)
@@ -19,6 +51,10 @@
 			 ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(global-set-key (kbd "S-C-c") 'kill-ring-save)
+(global-set-key (kbd "S-C-v") 'yank)
+(global-set-key (kbd "K") nil)
+(global-set-key (kbd "Y") nil)
 
 (use-package general
   :config
@@ -34,8 +70,18 @@
     "p" '(counsel-M-x :which-key "Command center")
     "q" '(kill-buffer-and-window :which-key "Close")
     "w" '(counsel-ibuffer :which-key "Navigate buffers")
-    "e" '(eval-buffer :which-key "eval buffer")))
+    "e" '(eval-buffer :which-key "eval buffer")
+    "ggl" '(google-this-noconfirm :which-key "Google the selection")))
 
+;; Revome useless files and keep folders clean
+(setq user-emacs-directory "~/.cache/emacs")
+(use-package no-littering)
+
+;; no-littering doesn't set this by default so we must place
+;; auto save files in the same path as it uses for sessions
+(setq auto-save-file-name-transforms
+      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+(setq create-lockfiles nil)
 
 (package-initialize)
 (unless package-archive-contents
@@ -68,10 +114,6 @@
 
 (use-package doom-themes)
 
-;; Download Evil
-(unless (package-installed-p 'evil)
-  (package-install 'evil))
-
 ;; Enable Evil
 (use-package evil
   :init
@@ -81,7 +123,13 @@
   (setq evil-want-C-i-jump nil)
   (setq evil-undo-system 'undo-tree)
   (setq evil-search-module 'evil-search)
-(evil-mode 1))
+  (evil-mode 1))
+
+;; nvim surround functionalities https://github.com/emacs-evil/evil-surround
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
 
 ;;Undo package
 (use-package undo-tree
@@ -103,23 +151,6 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;; Latex package
-(use-package auctex
-  :ensure t
-  :defer t
-  :hook (LaTex-mode .
-		    (lambda ()
-		      (push (list 'output-pdf "zathura")
-			    TeX-view-program-selection))))
-(defun my-LaTeX-mode()
-  (add-to-list 'TeX-view-program-list '("zathura" "zathura %o"))
-  (setq TeX-view-program-selection '((output-pdf "zathura")))
-  ; Other mode specific config
-  )
-(add-hook 'LaTeX-mode-hook 'my-LaTeX-mode)
-
-(use-package consult
-  :ensure t)
 
 (use-package smartparens)
 
@@ -127,7 +158,7 @@
 (smartparens-global-mode t)
 (use-package tab-jump-out)
 (tab-jump-out-mode)
-;;(setq yas-fallback-behavior '(apply tab-jump-out 1))
+;(setq yas-fallback-behavior '(apply tab-jump-out 1))
 
 (use-package centaur-tabs
   :demand
@@ -140,13 +171,29 @@
 (use-package evil-collection)
 (evil-collection-init)
 
-(use-package auto-complete)
+;; Enable indent guide lines https://github.com/DarthFennec/highlight-indent-guides
+(use-package highlight-indent-guides)
+(add-hook 'prog-mode-hook 'highlight-indent-guides-mode) 
+(setq highlight-indent-guides-method 'character)
+
+(use-package indent-guide
+  :config (indent-guide-global-mode))
 
 (use-package yasnippet)
+(setq yas-snippet-dirs
+      '("~/.config/emacs/yasnippets"                 ;; personal snippets
+        ))
 
-(use-package lua-mode)
+(yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
+;(yas-reload-all)
+;(add-hook 'prog-mode-hook #'yas-minor-mode)
 
-(use-package latex-preview-pane)
+(use-package evil-tex)
+(add-hook 'LaTeX-mode-hook #'evil-tex-mode)
+
+(use-package cdlatex)
+ (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)   ; with AUCTeX LaTeX mode
+ (add-hook 'latex-mode-hook #'turn-on-cdlatex)   ; with Emacs latex mode
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -156,10 +203,260 @@
  '(custom-safe-themes
    '("1a1ac598737d0fcdc4dfab3af3d6f46ab2d5048b8e72bc22f50271fd6d393a00" default))
  '(package-selected-packages
-   '(latex-preview-pane lua-mode yasnippet auto-complete evil-collection evil-collections centaur-tabs tab-jump-out smartparens consult treesitter general lsp-mode undo-tree auctex doom-themes doom-theme all-the-icons evil doom-modeline command-log-mode use-package)))
+   '(dashboard google-this flycheck no-littering org-table preview evil-tex evil-surround cdlatex highlight-indent-guides latex-preview-pane lua-mode yasnippet auto-complete evil-collection evil-collections centaur-tabs tab-jump-out smartparens consult treesitter general lsp-mode undo-tree auctex doom-themes doom-theme all-the-icons evil doom-modeline command-log-mode use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;; AucTeX settings - almost no changes
+(use-package latex
+  :ensure auctex
+  :hook ((LaTeX-mode . prettify-symbols-mode))
+  :bind (:map LaTeX-mode-map
+         ("C-S-e" . latex-math-from-calc))
+  :config
+  ;; Format math as a Latex string with Calc
+  (defun latex-math-from-calc ()
+    "Evaluate `calc' on the contents of line at point."
+    (interactive)
+    (cond ((region-active-p)
+           (let* ((beg (region-beginning))
+                  (end (region-end))
+                  (string (buffer-substring-no-properties beg end)))
+             (kill-region beg end)
+             (insert (calc-eval `(,string calc-language latex
+                                          calc-prefer-frac t
+                                          calc-angle-mode rad)))))
+          (t (let ((l (thing-at-point 'line)))
+               (end-of-line 1) (kill-line 0) 
+               (insert (calc-eval `(,l
+                                    calc-language latex
+                                    calc-prefer-frac t
+                                    calc-angle-mode rad))))))))
+
+;; CDLatex settings
+(use-package cdlatex
+  :ensure t
+  :hook (LaTeX-mode . turn-on-cdlatex)
+  :bind (:map cdlatex-mode-map 
+              ("<tab>" . cdlatex-tab)))
+
+;; Yasnippet settings
+(use-package yasnippet
+  :ensure t
+  :hook ((LaTeX-mode . yas-minor-mode)
+         (post-self-insert . my/yas-try-expanding-auto-snippets))
+  :config
+  (use-package warnings
+    :config
+    (cl-pushnew '(yasnippet backquote-change)
+                warning-suppress-types
+                :test 'equal))
+
+  (setq yas-triggers-in-field t)
+  
+  ;; Function that tries to autoexpand YaSnippets
+  ;; The double quoting is NOT a typo!
+  (defun my/yas-try-expanding-auto-snippets ()
+    (when (and (boundp 'yas-minor-mode) yas-minor-mode)
+      (let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
+        (yas-expand)))))
+
+;; CDLatex integration with YaSnippet: Allow cdlatex tab to work inside Yas
+;; fields
+(use-package cdlatex
+  :hook ((cdlatex-tab . yas-expand)
+         (cdlatex-tab . cdlatex-in-yas-field))
+  :config
+  (use-package yasnippet
+    :bind (:map yas-keymap
+           ("<tab>" . yas-next-field-or-cdlatex)
+           ("TAB" . yas-next-field-or-cdlatex)
+	   ("<backtab>" . yas-prev-field))
+    :config
+    (defun cdlatex-in-yas-field ()
+      ;; Check if we're at the end of the Yas field
+      (when-let* ((_ (overlayp yas--active-field-overlay))
+                  (end (overlay-end yas--active-field-overlay)))
+        (if (>= (point) end)
+            ;; Call yas-next-field if cdlatex can't expand here
+            (let ((s (thing-at-point 'sexp)))
+              (unless (and s (assoc (substring-no-properties s)
+                                    cdlatex-command-alist-comb))
+                (yas-next-field-or-maybe-expand)
+                t))
+          ;; otherwise expand and jump to the correct location
+          (let (cdlatex-tab-hook minp)
+            (setq minp
+                  (min (save-excursion (cdlatex-tab)
+                                       (point))
+                       (overlay-end yas--active-field-overlay)))
+            (goto-char minp) t))))
+
+    (defun yas-next-field-or-cdlatex nil
+      (interactive)
+      "Jump to the next Yas field correctly with cdlatex active."
+      (if
+          (or (bound-and-true-p cdlatex-mode)
+              (bound-and-true-p org-cdlatex-mode))
+          (cdlatex-tab)
+        (yas-next-field-or-maybe-expand)))))
+
+(defun efs/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
+
+;; LSP mode
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . efs/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l") 
+  :config
+  (lsp-enable-which-key-integration t)
+  (setq lsp-modeline-diagnostics-enable))
+
+(use-package flycheck
+  :ensure t
+  )
+
+(use-package volatile-highlights
+  :config
+
+  (volatile-highlights-mode t)
+  (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
+  (vhl/install-extension 'undo-tree)
+
+  (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before 'evil-paste-pop 'evil-move 'evil-yank 'evil-yank-line)
+  (vhl/install-extension 'evil)
+
+  )
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+(use-package google-this
+  :config (google-this-mode 1))
+
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
+(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+
+
+;; Daemon mode configs
+(pcase system-type
+  ('gnu/linux "It's Linux!")
+  ('windows-nt "It's Windows!")
+  ('darwin "It's macOS!"))
+
+(if (daemonp)
+    (message "Loading in the daemon!")
+    (message "Loading in regular Emacs!"))
+
+(defun efs/set-font-faces ()
+  (message "Setting faces!")
+     (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150)
+
+  ;; Set the fixed pitch face
+  (set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 150)
+
+  ;; Set the variable pitch face
+  (set-face-attribute 'variable-pitch nil :font "JetBrainsMono Nerd Font" :height 150 :weight 'regular))
+
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                ;; (setq doom-modeline-icon t)
+                (with-selected-frame frame
+                  (efs/set-font-faces))))
+    (efs/set-font-faces))
+
+(setq doom-modeline-icon t)
+
+(setq highlight-indent-guides-method 'character)
+
+;; Array/tabular input with org-tables and cdlatex 
+;(use-package org-table
+;  :after cdlatex
+;  :bind (:map orgtbl-mode-map
+;              ("<tab>" . lazytab-org-table-next-field-maybe)
+;              ("TAB" . lazytab-org-table-next-field-maybe))
+;  :init
+;  (add-hook 'cdlatex-tab-hook 'lazytab-cdlatex-or-orgtbl-next-field 90)
+;  ;; Tabular environments using cdlatex
+;  (add-to-list 'cdlatex-command-alist '("smat" "Insert smallmatrix env"
+;                                       "\\left( \\begin{smallmatrix} ? \\end{smallmatrix} \\right)"
+;                                       lazytab-position-cursor-and-edit
+;                                       nil nil t))
+;  (add-to-list 'cdlatex-command-alist '("bmat" "Insert bmatrix env"
+;                                       "\\begin{bmatrix} ? \\end{bmatrix}"
+;                                       lazytab-position-cursor-and-edit
+;                                       nil nil t))
+;  (add-to-list 'cdlatex-command-alist '("pmat" "Insert pmatrix env"
+;                                       "\\begin{pmatrix} ? \\end{pmatrix}"
+;                                       lazytab-position-cursor-and-edit
+;                                       nil nil t))
+;  (add-to-list 'cdlatex-command-alist '("tbl" "Insert table"
+;                                        "\\begin{table}\n\\centering ? \\caption{}\n\\end{table}\n"
+;                                       lazytab-position-cursor-and-edit
+;                                       nil t nil))
+;  :config
+;  ;; Tab handling in org tables
+;  (defun lazytab-position-cursor-and-edit ()
+;    ;; (if (search-backward "\?" (- (point) 100) t)
+;    ;;     (delete-char 1))
+;    (cdlatex-position-cursor)
+;    (lazytab-orgtbl-edit))
+;
+;  (defun lazytab-orgtbl-edit ()
+;    (advice-add 'orgtbl-ctrl-c-ctrl-c :after #'lazytab-orgtbl-replace)
+;    (orgtbl-mode 1)
+;    (open-line 1)
+;    (insert "\n|"))
+;
+;  (defun lazytab-orgtbl-replace (_)
+;    (interactive "P")
+;    (unless (org-at-table-p) (user-error "Not at a table"))
+;    (let* ((table (org-table-to-lisp))
+;           params
+;           (replacement-table
+;            (if (texmathp)
+;                (lazytab-orgtbl-to-amsmath table params)
+;              (orgtbl-to-latex table params))))
+;      (kill-region (org-table-begin) (org-table-end))
+;      (open-line 1)
+;      (push-mark)
+;      (insert replacement-table)
+;      (align-regexp (region-beginning) (region-end) "\\([:space:]*\\)& ")
+;      (orgtbl-mode -1)
+;      (advice-remove 'orgtbl-ctrl-c-ctrl-c #'lazytab-orgtbl-replace)))
+;  
+;  (defun lazytab-orgtbl-to-amsmath (table params)
+;    (orgtbl-to-generic
+;     table
+;     (org-combine-plists
+;      '(:splice t
+;                :lstart ""
+;                :lend " \\\\"
+;                :sep " & "
+;                :hline nil
+;                :llend "")
+;      params)))
+;
+;  (defun lazytab-cdlatex-or-orgtbl-next-field ()
+;    (when (and (bound-and-true-p orgtbl-mode)
+;               (org-table-p)
+;               (looking-at "[[:space:]]*\\(?:|\\|$\\)")
+;               (let ((s (thing-at-point 'sexp)))
+;                 (not (and s (assoc s cdlatex-command-alist-comb)))))
+;      (call-interactively #'org-table-next-field)
+;      t))
+;
+;  (defun lazytab-org-table-next-field-maybe ()
+;    (interactive)
+;    (if (bound-and-true-p cdlatex-mode)
+;        (cdlatex-tab)
+;      (org-table-next-field))))
