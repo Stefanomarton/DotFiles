@@ -58,7 +58,7 @@ keymap("n", "<S-h>", ":bprevious<CR>", opts)
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
 -- Close buffers
-keymap("n", "<leader>Q", ":x<cr>", opts)
+keymap("n", "<leader>qa", ":x<cr>", opts)
 
 -- Visual --
 -- Stay in indent mode
