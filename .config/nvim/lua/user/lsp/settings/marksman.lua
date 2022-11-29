@@ -1,0 +1,6 @@
+
+return {
+	settings = {
+		filetype = { "markdown" },
+	},
+}
