@@ -1,54 +1,20 @@
-;; Makes *scratch* empty:
-(setq initial-scratch-message "")
+;; Add the load path to load module of the config
+(add-to-list 'load-path "~/.config/emacs/lisp/")
 
-					; Removes *scratch* from buffer after the mode has been set.
-(defun remove-scratch-buffer ()
-  (if (get-buffer "*scratch*")
-      (kill-buffer "*scratch*")))
-(add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
+;; General options for emacs
+(require 'options)
 
-					; Removes *messages* from the buffer.
-(setq-default message-log-max nil)
-(kill-buffer "*Messages*")
+;; Latex configuration
+(require 'latexconfig)
 
-;; Removes *Completions* from buffer after you've opened a file.
-					; (add-hook 'minibuffer-exit-hook
-					;       '(lambda ()
-					;          (let ((buffer "*Completions*"))
-					;           (and (get-buffer buffer)
-					;                 (kill-buffer buffer)))))
-
-;; Don't show *Buffer list* when opening multiple files at the same time.
-(setq inhibit-startup-buffer-menu t)
-
-;; System clipboard
-(setq select-enable-clipboard t)
-
-;; Show only one active window when opening multiple files at the same time.
-(add-hook 'window-setup-hook 'delete-other-windows)
-
-;; No more typing the whole yes or no. Just y or n will do.
-(fset 'yes-or-no-p 'y-or-n-p)
-
-(setq inhibit-startup-message t) ;; Don't show startup messages
-(scroll-bar-mode -1) ;; No scrollbar
-(tool-bar-mode -1) ;; No top bar
-(tooltip-mode -1) ;; No tooltip
-(set-fringe-mode 10)
-
-(menu-bar-mode -1)
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150)
 (load-theme 'doom-nord t)
-;;(setq custom-safe-themes t)
 
-(column-number-mode)
-(global-display-line-numbers-mode 1)
-(setq display-line-numbers 'relative)
-
+;; Requirin package 
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("org" . "https://orgmode.org/elpa/")
-			 ("elpa" . "https://elpa.gnu.org/packages/")))
+												 ("org" . "https://orgmode.org/elpa/")
+												 ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "S-C-c") 'kill-ring-save)
@@ -62,7 +28,6 @@
     :keymaps '(normal insert visual emacs)
     :prefix "SPC"
     :global-prefix "C-SPC")
-
   (rune/leader-keys
     "t"  '(:ignore t :which-key "toggles")
     "tt" '(counsel-load-theme :which-key "choose theme")
@@ -72,16 +37,6 @@
     "w" '(counsel-ibuffer :which-key "Navigate buffers")
     "e" '(eval-buffer :which-key "eval buffer")
     "ggl" '(google-this-noconfirm :which-key "Google the selection")))
-
-;; Revome useless files and keep folders clean
-(setq user-emacs-directory "~/.cache/emacs")
-(use-package no-littering)
-
-;; no-littering doesn't set this by default so we must place
-;; auto save files in the same path as it uses for sessions
-(setq auto-save-file-name-transforms
-      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-(setq create-lockfiles nil)
 
 (package-initialize)
 (unless package-archive-contents
@@ -121,23 +76,29 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-i-jump nil)
-  (setq evil-undo-system 'undo-tree)
+  (setq evil-undo-system 'undo-fu)
   (setq evil-search-module 'evil-search)
   (evil-mode 1))
 
 ;; nvim surround functionalities https://github.com/emacs-evil/evil-surround
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
+(use-package evil-surround)
 
-(use-package evil-nerd-commenter)
+(use-package evil-nerd-commenter
+  :general
+  (general-nvmap
+    "gc" 'evilnc-comment-operator
+    "gC" 'evilnc-copy-and-comment-operator)
+  )
+
+(use-package evil-snipe
+  :after evil
+  :demand
+  :config
+  (evil-snipe-mode +1)
+  (evil-snipe-override-mode +1))
 
 ;;Undo package
-(use-package undo-tree
-  :ensure t
-  :config
-  (global-undo-tree-mode 1))
+(use-package undo-fu)
 
 (use-package all-the-icons
   :ensure t)
@@ -164,23 +125,33 @@
 					;(setq yas-fallback-behavior '(apply tab-jump-out 1))
 
 (use-package centaur-tabs
-  :demand
+  :hook (emacs-startup . centaur-tabs-mode)
+  :general
+  (general-nmap "gt" 'centaur-tabs-forward
+    "gT" 'centaur-tabs-backward)
+  (lc/leader-keys
+    "b K" '(centaur-tabs-kill-other-buffers-in-current-group :wk "kill other buffers"))
+  :init
+  (setq centaur-tabs-set-icons t)
+  (setq centaur-tabs-set-modified-marker t
+        centaur-tabs-modified-marker "M"
+        centaur-tabs-cycle-scope 'tabs)
+  (setq centaur-tabs-set-close-button nil)
+  (setq centaur-tabs-enable-ido-completion nil)
   :config
   (centaur-tabs-mode t)
-  :bind
-  ("C-H" . centaur-tabs-backward)
-  ("C-L" . centaur-tabs-forward))
-
+  ;; (centaur-tabs-headline-match)
+  )
 (use-package evil-collection)
 (evil-collection-init)
 
 ;; Enable indent guide lines https://github.com/DarthFennec/highlight-indent-guides
 (use-package highlight-indent-guides)
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-(setq highlight-indent-guides-method 'character)
+(setq highlight-indent-guides-method 'bitmap)
+(setq highlight-indent-guides-responsive nil)
 
-(use-package indent-guide
-  :config (indent-guide-global-mode))
+(use-package indent-guide)
 
 
 (use-package evil-tex)
@@ -192,69 +163,21 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("1a1ac598737d0fcdc4dfab3af3d6f46ab2d5048b8e72bc22f50271fd6d393a00" default))
+	 '("4dcf06273c9f5f0e01cea95e5f71c3b6ee506f192d75ffda639d737964e2e14e" "1a1ac598737d0fcdc4dfab3af3d6f46ab2d5048b8e72bc22f50271fd6d393a00" default))
  '(package-selected-packages
-   '(helpful format-all dashboard google-this flycheck no-littering org-table preview evil-tex evil-surround cdlatex highlight-indent-guides latex-preview-pane lua-mode yasnippet auto-complete evil-collection evil-collections centaur-tabs tab-jump-out smartparens consult treesitter general lsp-mode undo-tree auctex doom-themes doom-theme all-the-icons evil doom-modeline command-log-mode use-package)))
+	 '(ivy-postframe olivetti csv-mode restart-emacs marginalia orderless vertico centered-cursor-mode evil-goggles helpful format-all dashboard google-this flycheck no-littering org-table preview evil-tex evil-surround cdlatex highlight-indent-guides latex-preview-pane lua-mode yasnippet auto-complete evil-collection evil-collections centaur-tabs tab-jump-out smartparens consult treesitter general lsp-mode undo-tree auctex doom-themes doom-theme all-the-icons evil doom-modeline command-log-mode use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
-
-;; AucTeX settings - almost no changes
-(use-package latex
-  :ensure auctex
-  :hook ((LaTeX-mode . prettify-symbols-mode))
-  :bind (:map LaTeX-mode-map
-              ("C-S-e" . latex-math-from-calc))
-  :config
-  ;; Format math as a Latex string with Calc
-  (defun latex-math-from-calc ()
-    "Evaluate `calc' on the contents of line at point."
-    (interactive)
-    (cond ((region-active-p)
-           (let* ((beg (region-beginning))
-                  (end (region-end))
-                  (string (buffer-substring-no-properties beg end)))
-             (kill-region beg end)
-             (insert (calc-eval `(,string calc-language latex
-                                          calc-prefer-frac t
-                                          calc-angle-mode rad)))))
-          (t (let ((l (thing-at-point 'line)))
-               (end-of-line 1) (kill-line 0)
-               (insert (calc-eval `(,l
-                                    calc-language latex
-                                    calc-prefer-frac t
-                                    calc-angle-mode rad))))))))
-
-(setq auto-mode-alist (cons '("\\.tex$" . latex-mode) auto-mode-alist)) ; Enable Latex-Mode when entry in a .tex file
-
-;; Yasnippet settings
-(use-package yasnippet
-  :ensure t
-  :hook ((LaTeX-mode . yas-minor-mode)
-         (post-self-insert . my/yas-try-expanding-auto-snippets))
-  :config
-  (use-package warnings
-    :config
-    (cl-pushnew '(yasnippet backquote-change)
-                warning-suppress-types
-                :test 'equal))
-
-  (setq yas-triggers-in-field t)
-
-;; Suppress warnings
-(with-eval-after-load 'warnings
-  (cl-pushnew '(yasnippet backquote-change) warning-suppress-types
-              :test 'equal))
-
-  ;; Function that tries to autoexpand YaSnippets
-  ;; The double quoting is NOT a typo!
-  (defun my/yas-try-expanding-auto-snippets ()
-    (when (and (boundp 'yas-minor-mode) yas-minor-mode)
-      (let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
-        (yas-expand)))))
+ '(evil-goggles-change-face ((t (:inherit diff-removed))))
+ '(evil-goggles-delete-face ((t (:inherit diff-removed))))
+ '(evil-goggles-paste-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-add-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-change-face ((t (:inherit diff-changed))))
+ '(evil-goggles-undo-redo-remove-face ((t (:inherit diff-removed))))
+ '(evil-goggles-yank-face ((t (:inherit diff-changed)))))
 
 (setq yas-snippet-dirs
       '("~/.config/emacs/snippets"                 ;; personal snippets
@@ -263,45 +186,6 @@
 (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
 					;(yas-reload-all)
 					;(add-hook 'prog-mode-hook #'yas-minor-mode)
-
-;; CDLatex integration with YaSnippet: Allow cdlatex tab to work inside Yas fields
- (use-package cdlatex
-   :hook ((cdlatex-tab . yas-expand)
-          (cdlatex-tab . cdlatex-in-yas-field))
-   :config
-   (use-package yasnippet
-     :bind (:map yas-keymap
- 		("<tab>" . yas-next-field-or-cdlatex)
- 		("TAB" . yas-next-field-or-cdlatex)
- 		("<backtab>" . yas-prev-field))
-     :config
-     (defun cdlatex-in-yas-field ()
-       ;; Check if we're at the end of the Yas field
-       (when-let* ((_ (overlayp yas--active-field-overlay))
-                   (end (overlay-end yas--active-field-overlay)))
-         (if (>= (point) end)
-             ;; Call yas-next-field if cdlatex can't expand here
-             (let ((s (thing-at-point 'sexp)))
-               (unless (and s (assoc (substring-no-properties s)
-                                     cdlatex-command-alist-comb))
-                 (yas-next-field-or-maybe-expand)
-                 t))
-           ;; otherwise expand and jump to the correct location
-           (let (cdlatex-tab-hook minp)
-             (setq minp
-                   (min (save-excursion (cdlatex-tab)
-                                        (point))
-                        (overlay-end yas--active-field-overlay)))
-             (goto-char minp) t))))
-
-     (defun yas-next-field-or-cdlatex nil
-       (interactive)
-       "Jump to the next Yas field correctly with cdlatex active."
-       (if
-           (or (bound-and-true-p cdlatex-mode)
-               (bound-and-true-p org-cdlatex-mode))
-           (cdlatex-tab)
-         (yas-next-field-or-maybe-expand)))))
 
 (defun efs/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
@@ -317,17 +201,21 @@
   (lsp-enable-which-key-integration t)
   (setq lsp-modeline-diagnostics-enable))
 
-(use-package volatile-highlights
+;; Displays a visual hint when editing with evil.
+(use-package evil-goggles
+  :after evil
+  :demand
+  :init
+  (setq evil-goggles-duration 0.05)
   :config
-
-  (volatile-highlights-mode t)
-  (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
-  (vhl/install-extension 'undo-tree)
-
-  (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before 'evil-paste-pop 'evil-move 'evil-yank 'evil-yank-line)
-  (vhl/install-extension 'evil)
+  (push '(evil-operator-eval
+          :face evil-goggles-yank-face
+          :switch evil-goggles-enable-yank
+          :advice evil-goggles--generic-async-advice)
+        evil-goggles--commands)
+  (evil-goggles-mode)
+  (evil-goggles-use-diff-faces)
   )
-
 (use-package google-this
   :config (google-this-mode 1))
 
@@ -371,51 +259,6 @@
   (setq doom-modeline-icon t)
   )
 
-(use-package aas
-  :hook (LaTeX-mode . aas-activate-for-major-mode)
-  :hook (org-mode . aas-activate-for-major-mode)
-  :config
-  (aas-set-snippets 'text-mode
-    ;; expand unconditionally
-    ";o-" "ō"
-    ";i-" "ī"
-    ";a-" "ā"
-    ";u-" "ū"
-    ";e-" "ē")
-  (aas-set-snippets 'latex-mode
-    ;; set condition!
-    :cond #'texmathp ; expand only while in math
-    "supp" "\\supp"
-    "On" "O(n)"
-    "O1" "O(1)"
-    "Olog" "O(\\log n)"
-    "Olon" "O(n \\log n)"
-    ;; bind to functions
-    "Span" (lambda () (interactive)
-             (yas-expand-snippet "\\Span($1)$0")))
-  ;; disable snippets by redefining them with a nil expansion
-  (aas-set-snippets 'latex-mode
-    "supp" nil))
-
-(use-package laas
-  :hook (LaTeX-mode . laas-mode)
-  :config ; do whatever here
-  (aas-set-snippets 'laas-mode
-                    ;; set condition!
-                    :cond #'texmathp ; expand only while in math
-                    "supp" "\\supp"
-                    "On" "O(n)"
-                    "O1" "O(1)"
-                    "Olog" "O(\\log n)"
-                    "Olon" "O(n \\log n)"
-                    ;; bind to functions!
-                    "sum" (lambda () (interactive)
-                            (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-                    "Span" (lambda () (interactive)
-                             (yas-expand-snippet "\\Span($1)$0"))
-                    ;; add accent snippets
-                    :cond #'laas-object-on-left-condition
-                    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 ; Set custom prefix for math
 (defcustom cdlatex-math-symbol-prefix ?:
@@ -428,5 +271,78 @@ Lisp vector."
           (string :value "" :tag "kbd readable string")
           (sexp :value [] :tag "a lisp vector")))
 
-
 (use-package helpful)
+(use-package restart-emacs)
+
+;; Center cursor when scrolling
+;; (use-package centered-cursor-mode
+;;   :general
+;;   (lc/leader-keys
+;;     "t =" '((lambda () (interactive) (centered-cursor-mode 'toggle)) :wk "center cursor")
+;;     )
+;;   )
+
+
+(use-package csv-mode
+  :hook (csv-mode . lc/init-csv-mode)
+  :general
+  (lc/local-leader-keys
+    :keymaps 'csv-mode-map
+    :states 'normal
+    "a" '(csv-align-fields :wk "align fields")
+    "A" '(lc/csv-align-visible :wk "align fields, visible")
+    "i"  '(lc/init-csv-mode :wk "init csv mode")
+    "u" '(csv-unalign-fields :wk "unalign fields")
+    "s" '(csv-sort-fields :wk "sort fields")
+    ";" '(lc/set-csv-semicolon-separator :wk "set semicolon sep")
+    "," '(lc/reset-csv-separators :wk "set comma sep"))
+  :init
+  (defun lc/csv-align-visible (&optional arg)
+    "Align visible fields"
+    (interactive "P")
+    (csv-align-fields nil (window-start) (window-end)))
+  (defun lc/set-csv-semicolon-separator ()
+    (interactive)
+    (customize-set-variable 'csv-separators '(";")))
+  (defun lc/reset-csv-separators ()
+    (interactive)
+    (customize-set-variable 'csv-separators lc/default-csv-separators))
+  (defun lc/init-csv-mode ()
+    (interactive)
+    (lc/set-csv-separators)
+    (lc/csv-highlight)
+    (call-interactively 'csv-align-fields))
+  :config
+  (require 'cl)
+  (require 'color)
+  (defun lc/set-csv-separators ()
+    (interactive)
+    (let* ((n-commas (count-matches "," (point-at-bol) (point-at-eol)))
+           (n-semicolons (count-matches ";" (point-at-bol) (point-at-eol))))
+      (if ( ; <
+           > n-commas n-semicolons)
+          (customize-set-variable 'csv-separators '("," " "))   
+        (customize-set-variable 'csv-separators '(";" " ")))))
+  (defun lc/csv-highlight ()
+    (interactive)
+    (font-lock-mode 1)
+    (let* ((separator (string-to-char (car csv-separators)))
+           (n (count-matches (string separator) (point-at-bol) (point-at-eol)))
+           (colors (loop for i from 0 to 1.0 by (/ 2.0 n)
+                         collect (apply #'color-rgb-to-hex 
+                                        (color-hsl-to-rgb i 0.3 0.5)))))
+      (loop for i from 2 to n by 2 
+            for c in colors
+            for r = (format "^\\([^%c\n]+%c\\)\\{%d\\}" separator separator i)
+            do (font-lock-add-keywords nil `((,r (1 '(face (:foreground ,c)))))))))
+  )
+
+  (use-package olivetti
+    :general
+    (lc/leader-keys
+      "t o" '(olivetti-mode :wk "olivetti"))
+    :init
+    (setq olivetti-body-width 100)
+    (setq olivetti-recall-visual-line-mode-entry-state t))
+
+

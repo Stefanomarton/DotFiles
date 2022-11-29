@@ -133,6 +133,7 @@ The Core plugins
 	use({ "numToStr/Comment.nvim" })
 	use({ "hrsh7th/nvim-cmp" })
 	use({ "kdheepak/cmp-latex-symbols", ft = "tex" })
+	use({ "KeitaNakamura/tex-conceal.vim", ft = "tex" })
 	use({ "hrsh7th/cmp-buffer" })
 	use({ "hrsh7th/cmp-path" })
 	use({ "saadparwaiz1/cmp_luasnip" })
