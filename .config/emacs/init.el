@@ -260,16 +260,6 @@
   )
 
 
-; Set custom prefix for math
-(defcustom cdlatex-math-symbol-prefix ?:
-  "Prefix key for `cdlatex-math-symbol'.
-This may be a character, a string readable with `read-kbd-macro', or a
-Lisp vector."
-  :group 'cdlatex-math-support
-  :type '(choice
-          (character)
-          (string :value "" :tag "kbd readable string")
-          (sexp :value [] :tag "a lisp vector")))
 
 (use-package helpful)
 (use-package restart-emacs)

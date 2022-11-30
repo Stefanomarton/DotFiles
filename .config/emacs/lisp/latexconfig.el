@@ -2,6 +2,8 @@
 
 (setq auto-mode-alist (cons '("\\.tex$" . latex-mode) auto-mode-alist)) ; Enable Latex-Mode when entry in a .tex file
 
+
+(setq auto-mode-alist (cons '("\\.tex$" . cdlatex-mode) auto-mode-alist)) ; Enable cdlatex-Mode when entry in a .tex file
 ;; CDLatex integration with YaSnippet: Allow cdlatex tab to work inside Yas fields
  (use-package cdlatex
    :hook ((cdlatex-tab . yas-expand)
@@ -144,3 +146,16 @@
 
 
 (use-package reftex)
+
+
+; Set custom prefix for math
+(defcustom cdlatex-math-symbol-prefix ?:
+  "Prefix key for `cdlatex-math-symbol'.
+This may be a character, a string readable with `read-kbd-macro', or a
+Lisp vector."
+  :group 'cdlatex-math-support
+  :type '(choice
+          (character)
+          (string :value "" :tag "kbd readable string")
+          (sexp :value [] :tag "a lisp vector")))
+
