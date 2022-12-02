@@ -10,8 +10,8 @@
 (menu-bar-mode -1) ;; No menu bar
 (set-fringe-mode 10) ;; Set the padding of the inside windows
 (column-number-mode) ;; Toggle column number in the modeline
-(global-display-line-numbers-mode 1)
-(setq display-line-numbers 'relative)
+(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode)
 
 ;; ;; Makes *scratch* buffer empty:
 ;; (setq initial-scratch-message "")   

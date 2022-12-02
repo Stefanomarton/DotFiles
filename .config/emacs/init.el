@@ -7,10 +7,13 @@
 ;; Latex configuration
 (require 'latexconfig)
 
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150)
-(load-theme 'doom-nord t)
+;; Org-mode config
+(require 'orgconfig)
 
-;; Requirin package 
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150)
+(load-theme 'doom-flatwhite t)
+
+;; Requirin package
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 												 ("org" . "https://orgmode.org/elpa/")
@@ -19,8 +22,7 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "S-C-c") 'kill-ring-save)
 (global-set-key (kbd "S-C-v") 'yank)
-(global-set-key (kbd "K") nil)
-(global-set-key (kbd "Y") nil)
+;;(global-set-key (kbd "C-l") 'centaur-tabs-forward-tab)
 
 (use-package general
   :config
@@ -37,6 +39,15 @@
     "w" '(counsel-ibuffer :which-key "Navigate buffers")
     "e" '(eval-buffer :which-key "eval buffer")
     "ggl" '(google-this-noconfirm :which-key "Google the selection")))
+
+;(evil-global-set-key 'normal (kbd "J") 'evil-next-line)
+;(evil-define-key 'normal 'global (kbd "K") 'evil-previous-line)
+;;(global-unset-key (kbd "K") nil)
+;;(evil-define-key 'normal 'local (kbd "K") nil)
+(setq evil-lookup-func nil)
+(eval-after-load "evil-maps"
+  '(progn
+     (setq evil-lookup-func nil)))
 
 (package-initialize)
 (unless package-archive-contents
@@ -58,8 +69,8 @@
 
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
-	 ("C-x b" . counsel-ibuffer)
-	 ("C-x C-f" . counsel-find-file))
+				 ("C-x b" . counsel-ibuffer)
+				 ("C-x C-f" . counsel-find-file))
   :config
   (setq ivy-initial-inputs-alist nil)) ;; Dont't start searches with ^
 
@@ -84,18 +95,18 @@
 (use-package evil-surround)
 
 (use-package evil-nerd-commenter
-  :general
-  (general-nvmap
-    "gc" 'evilnc-comment-operator
-    "gC" 'evilnc-copy-and-comment-operator)
+  ;; :config
+  ;; (general
+  ;;   "gc" 'evilnc-comment-operator
+  ;;   "gC" 'evilnc-copy-and-comment-operator)
   )
 
 (use-package evil-snipe
   :after evil
   :demand
   :config
-  (evil-snipe-mode +1)
-  (evil-snipe-override-mode +1))
+  (evil-snipe-mode +1))
+;;(evil-snipe-override-mode +1))
 
 ;;Undo package
 (use-package undo-fu)
@@ -122,15 +133,10 @@
 
 (use-package tab-jump-out)
 (tab-jump-out-mode)
-					;(setq yas-fallback-behavior '(apply tab-jump-out 1))
+																				;(setq yas-fallback-behavior '(apply tab-jump-out 1))
 
 (use-package centaur-tabs
   :hook (emacs-startup . centaur-tabs-mode)
-  :general
-  (general-nmap "gt" 'centaur-tabs-forward
-    "gT" 'centaur-tabs-backward)
-  (lc/leader-keys
-    "b K" '(centaur-tabs-kill-other-buffers-in-current-group :wk "kill other buffers"))
   :init
   (setq centaur-tabs-set-icons t)
   (setq centaur-tabs-set-modified-marker t
@@ -153,7 +159,6 @@
 
 (use-package indent-guide)
 
-
 (use-package evil-tex)
 (add-hook 'LaTeX-mode-hook #'evil-tex-mode)
 
@@ -165,7 +170,7 @@
  '(custom-safe-themes
 	 '("4dcf06273c9f5f0e01cea95e5f71c3b6ee506f192d75ffda639d737964e2e14e" "1a1ac598737d0fcdc4dfab3af3d6f46ab2d5048b8e72bc22f50271fd6d393a00" default))
  '(package-selected-packages
-	 '(ivy-postframe olivetti csv-mode restart-emacs marginalia orderless vertico centered-cursor-mode evil-goggles helpful format-all dashboard google-this flycheck no-littering org-table preview evil-tex evil-surround cdlatex highlight-indent-guides latex-preview-pane lua-mode yasnippet auto-complete evil-collection evil-collections centaur-tabs tab-jump-out smartparens consult treesitter general lsp-mode undo-tree auctex doom-themes doom-theme all-the-icons evil doom-modeline command-log-mode use-package)))
+	 '(lazytab ivy-postframe olivetti csv-mode restart-emacs marginalia orderless vertico centered-cursor-mode evil-goggles helpful format-all dashboard google-this flycheck no-littering org-table preview evil-tex evil-surround cdlatex highlight-indent-guides latex-preview-pane lua-mode yasnippet auto-complete evil-collection evil-collections centaur-tabs tab-jump-out smartparens consult treesitter general lsp-mode undo-tree auctex doom-themes doom-theme all-the-icons evil doom-modeline command-log-mode use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -184,8 +189,8 @@
         ))
 
 (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
-					;(yas-reload-all)
-					;(add-hook 'prog-mode-hook #'yas-minor-mode)
+																				;(yas-reload-all)
+																				;(add-hook 'prog-mode-hook #'yas-minor-mode)
 
 (defun efs/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
@@ -206,16 +211,17 @@
   :after evil
   :demand
   :init
-  (setq evil-goggles-duration 0.05)
+  (setq evil-goggles-duration 0.2)
   :config
-  (push '(evil-operator-eval
-          :face evil-goggles-yank-face
-          :switch evil-goggles-enable-yank
-          :advice evil-goggles--generic-async-advice)
-        evil-goggles--commands)
+  ;; (push '(evil-operator-eval
+  ;;         :face evil-goggles-yank-face
+  ;;         :switch evil-goggles-enable-yank
+  ;;         :advice evil-goggles--generic-async-advice)
+  ;;       evil-goggles--commands)
   (evil-goggles-mode)
   (evil-goggles-use-diff-faces)
   )
+
 (use-package google-this
   :config (google-this-mode 1))
 
@@ -277,15 +283,15 @@
   :hook (csv-mode . lc/init-csv-mode)
   :general
   (lc/local-leader-keys
-    :keymaps 'csv-mode-map
-    :states 'normal
-    "a" '(csv-align-fields :wk "align fields")
-    "A" '(lc/csv-align-visible :wk "align fields, visible")
-    "i"  '(lc/init-csv-mode :wk "init csv mode")
-    "u" '(csv-unalign-fields :wk "unalign fields")
-    "s" '(csv-sort-fields :wk "sort fields")
-    ";" '(lc/set-csv-semicolon-separator :wk "set semicolon sep")
-    "," '(lc/reset-csv-separators :wk "set comma sep"))
+   :keymaps 'csv-mode-map
+   :states 'normal
+   "a" '(csv-align-fields :wk "align fields")
+   "A" '(lc/csv-align-visible :wk "align fields, visible")
+   "i"  '(lc/init-csv-mode :wk "init csv mode")
+   "u" '(csv-unalign-fields :wk "unalign fields")
+   "s" '(csv-sort-fields :wk "sort fields")
+   ";" '(lc/set-csv-semicolon-separator :wk "set semicolon sep")
+   "," '(lc/reset-csv-separators :wk "set comma sep"))
   :init
   (defun lc/csv-align-visible (&optional arg)
     "Align visible fields"
@@ -311,7 +317,7 @@
            (n-semicolons (count-matches ";" (point-at-bol) (point-at-eol))))
       (if ( ; <
            > n-commas n-semicolons)
-          (customize-set-variable 'csv-separators '("," " "))   
+          (customize-set-variable 'csv-separators '("," " "))
         (customize-set-variable 'csv-separators '(";" " ")))))
   (defun lc/csv-highlight ()
     (interactive)
@@ -319,20 +325,18 @@
     (let* ((separator (string-to-char (car csv-separators)))
            (n (count-matches (string separator) (point-at-bol) (point-at-eol)))
            (colors (loop for i from 0 to 1.0 by (/ 2.0 n)
-                         collect (apply #'color-rgb-to-hex 
+                         collect (apply #'color-rgb-to-hex
                                         (color-hsl-to-rgb i 0.3 0.5)))))
-      (loop for i from 2 to n by 2 
+      (loop for i from 2 to n by 2
             for c in colors
             for r = (format "^\\([^%c\n]+%c\\)\\{%d\\}" separator separator i)
             do (font-lock-add-keywords nil `((,r (1 '(face (:foreground ,c)))))))))
   )
 
-  (use-package olivetti
-    :general
-    (lc/leader-keys
-      "t o" '(olivetti-mode :wk "olivetti"))
-    :init
-    (setq olivetti-body-width 100)
-    (setq olivetti-recall-visual-line-mode-entry-state t))
-
-
+(use-package olivetti
+  :general
+  (lc/leader-keys
+   "t o" '(olivetti-mode :wk "olivetti"))
+  :init
+  (setq olivetti-body-width 100)
+  (setq olivetti-recall-visual-line-mode-entry-state t))
