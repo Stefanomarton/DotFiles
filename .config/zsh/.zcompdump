@@ -1,4 +1,4 @@
-#files: 826	version: 5.9
+#files: 822	version: 5.9
 
 _comps=(
 '-' '_precommand'
@@ -24,7 +24,6 @@ _comps=(
 'add-zle-hook-widget' '_add-zle-hook-widget'
 'add-zsh-hook' '_add-zsh-hook'
 'admin' '_sccs'
-'ag' '_the_silver_searcher'
 'ali' '_mh'
 'alias' '_alias'
 'amaya' '_webbrowser'
@@ -51,6 +50,7 @@ _comps=(
 'appletviewer' '_java'
 'apropos' '_man'
 'apvlv' '_pdf'
+'arch-chroot' '_archinstallscripts'
 'arduino-ctags' '_ctags'
 'arecord' '_alsa-utils'
 'arena' '_webbrowser'
@@ -68,7 +68,6 @@ _comps=(
 'attr' '_attr'
 'augtool' '_augeas'
 'autoload' '_typeset'
-'autorandr' '_autorandr'
 'avahi-browse' '_avahi'
 'avahi-browse-domains' '_avahi'
 'avahi-resolve' '_avahi'
@@ -82,7 +81,6 @@ _comps=(
 'basename' '_basename'
 'basenc' '_basenc'
 'bash' '_bash'
-'bat' '_bat'
 'batch' '_at'
 'baz' '_baz'
 'beep' '_beep'
@@ -124,8 +122,6 @@ _comps=(
 'bunzip2' '_bzip2'
 'burst' '_mh'
 'busctl' '_busctl'
-'_bw' '_bw'
-'bw' '_bw'
 'bwrap' '_bwrap'
 'bzcat' '_bzip2'
 'bzegrep' '_grep'
@@ -138,11 +134,6 @@ _comps=(
 'cabal' '_cabal'
 'cal' '_cal'
 'calendar' '_calendar'
-'calibre' '_calibre'
-'calibredb' '_calibre'
-'calibre-debug' '_calibre'
-'calibre-server' '_calibre'
-'calibre-smtp' '_calibre'
 'cargo' '_cargo'
 'cat' '_cat'
 'catchsegv' '_precommand'
@@ -161,6 +152,7 @@ _comps=(
 'chattr' '_chattr'
 'chcon' '_chcon'
 'chdir' '_cd'
+'chezmoi' '_chezmoi'
 'chfn' '_users'
 'chgrp' '_chown'
 'chimera' '_webbrowser'
@@ -292,11 +284,6 @@ _comps=(
 'dwb' '_webbrowser'
 'e2label' '_e2label'
 'eatmydata' '_precommand'
-'ebook-convert' '_calibre'
-'ebook-edit' '_calibre'
-'ebook-meta' '_calibre'
-'ebook-polish' '_calibre'
-'ebook-viewer' '_calibre'
 'ecasound' '_ecasound'
 'echotc' '_echotc'
 'echoti' '_echoti'
@@ -338,7 +325,6 @@ _comps=(
 'fc-list' '_xft_fonts'
 'fc-match' '_xft_fonts'
 'feh' '_feh'
-'fetch-ebook-metadata' '_calibre'
 'fetchmail' '_fetchmail'
 'ffmpeg' '_ffmpeg'
 'fg' '_jobs_fg'
@@ -417,6 +403,7 @@ _comps=(
 'geany' '_geany'
 'gegrep' '_grep'
 'gem' '_gem'
+'genfstab' '_archinstallscripts'
 'genisoimage' '_genisoimage'
 'genv' '_env'
 'get' '_sccs'
@@ -586,11 +573,8 @@ _comps=(
 'hd' '_hexdump'
 'head' '_head'
 'heat' '_openstack'
-'_helix' '_helix'
-'helix' '_helix'
 'help' '_sccs'
 'hexdump' '_hexdump'
-'highlight' '_highlight'
 'hilite' '_precommand'
 'histed' '_zed'
 'history' '_fc'
@@ -599,7 +583,6 @@ _comps=(
 'hostnamectl' '_hostnamectl'
 'hotjava' '_webbrowser'
 'htop' '_htop'
-'hugo' '_hugo'
 'iceweasel' '_mozilla'
 'icombine' '_ispell'
 'iconv' '_iconv'
@@ -655,6 +638,7 @@ _comps=(
 'join' '_join'
 'journalctl' '_journalctl'
 'jq' '_jq'
+'just' '_just'
 'kdeconnect-cli' '_kdeconnect'
 'kernel-install' '_kernel-install'
 'keystone' '_openstack'
@@ -682,6 +666,7 @@ _comps=(
 'ldd' '_ldd'
 'less' '_less'
 'let' '_math'
+'lf' '_lf'
 'lftp' '_ncftp'
 'lha' '_lha'
 'libinput' '_libinput'
@@ -715,8 +700,6 @@ _comps=(
 'lpr' '_lp'
 'lprm' '_lp'
 'lpstat' '_lp'
-'lrf2lrs' '_calibre'
-'lrfviewer' '_calibre'
 'ls' '_ls'
 'lsattr' '_lsattr'
 'lsblk' '_lsblk'
@@ -862,7 +845,6 @@ _comps=(
 'nginx' '_nginx'
 'ngrep' '_ngrep'
 'nice' '_nice'
-'nim' '_nim'
 'ninja' '_ninja'
 'nkf' '_nkf'
 'nl' '_nl'
@@ -907,6 +889,7 @@ _comps=(
 'pacman-key' '_pacman'
 'pacman.static' '_pacman'
 'pacmd' '_pulseaudio'
+'pacstrap' '_archinstallscripts'
 'pactl' '_pulseaudio'
 'padsp' '_pulseaudio'
 'pandoc' '_pandoc'
@@ -966,7 +949,6 @@ _comps=(
 'pkginfo' '_pkginfo'
 'pkgrm' '_pkgrm'
 'pkill' '_pgrep'
-'playerctl' '_playerctl'
 'pldd' '_pids'
 'pmake' '_make'
 'pman' '_perl_modules'
@@ -985,8 +967,6 @@ _comps=(
 'podtoc' '_perl_modules'
 'poff' '_pon'
 'policytool' '_java'
-'polybar' '_polybar'
-'polybar-msg' '_polybar_msg'
 'pon' '_pon'
 'popd' '_directory_stack'
 'postconf' '_postfix'
@@ -1454,6 +1434,9 @@ _comps=(
 'whom' '_mh'
 'wiggle' '_wiggle'
 'wipefs' '_wipefs'
+'wl-copy' '_wl-copy'
+'wlogout' '_wlogout'
+'wl-paste' '_wl-paste'
 'wodim' '_cdrecord'
 'wpa_cli' '_wpa_cli'
 'write' '_users_on'
@@ -1688,18 +1671,17 @@ bindkey '^[,' _history-complete-newer
 bindkey '^[/' _history-complete-older
 bindkey '^[~' _bash_complete-word
 
-autoload -Uz _autorandr _bat _bootctl _busctl _bw \
-            _bwrap _calibre _cargo _code _code-oss \
-            _coredumpctl _curl _flatpak _helix _highlight \
-            _hostnamectl _hugo _journalctl _kernel-install _kitty \
-            _libinput _localectl _loginctl _luarocks _luarocks-admin \
-            _machinectl _meson _mkinitcpio _networkctl _nim \
-            _ninja _oomctl _pacman _playerctl _polybar \
-            _polybar_msg _pulseaudio _resolvectl _rg _sd_hosts_or_user_at_host \
-            _sd_machines _sd_outputmodes _sd_unit_files _snap _starship \
-            _sway _swaymsg _systemctl _systemd _systemd-analyze \
-            _systemd-delta _systemd-inhibit _systemd-nspawn _systemd-path _systemd-run \
-            _systemd-tmpfiles _the_silver_searcher _timedatectl _udevadm _yay \
+autoload -Uz _archinstallscripts _bootctl _busctl _bwrap _cargo \
+            _chezmoi _code _code-oss _coredumpctl _curl \
+            _flatpak _hostnamectl _journalctl _just _kernel-install \
+            _kitty _lf _libinput _localectl _loginctl \
+            _luarocks _luarocks-admin _machinectl _meson _mkinitcpio \
+            _networkctl _ninja _oomctl _pacman _pulseaudio \
+            _resolvectl _rg _sd_hosts_or_user_at_host _sd_machines _sd_outputmodes \
+            _sd_unit_files _snap _starship _sway _swaymsg \
+            _systemctl _systemd _systemd-analyze _systemd-delta _systemd-inhibit \
+            _systemd-nspawn _systemd-path _systemd-run _systemd-tmpfiles _timedatectl \
+            _udevadm _wl-copy _wlogout _wl-paste _yay \
             _zathura _zoxide _cdr _all_labels _all_matches \
             _alternative _approximate _arg_compile _arguments _bash_completions \
             _cache_invalid _call_function _combination _complete _complete_debug \

@@ -111,6 +111,7 @@
 ;;Undo package
 (use-package undo-fu)
 
+;; In case that image do not show correctly run M-x all-the-icons-install-fonts
 (use-package all-the-icons
   :ensure t)
 

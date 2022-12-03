@@ -16,7 +16,7 @@ wk.register({
 	s = { ":Telescope heading <cr>", "Table of contents of the current file", opts },
 	-- Show list of available luasnip
 	l = { ":Telescope luasnip theme=get_cursor<cr>", "Available snippets", opts },
-}, { prefix = "<leader>", mode = "n" })
+}, { prefix = "<Space>", mode = "n" })
 
 -- Delete env, cmd, math and delimiters
 wk.register({
@@ -38,7 +38,7 @@ wk.register({
 		m = { "<plug>(vimtex-env-change-math)", "Change Math ", opts },
 		d = { "<plug>(vimtex-delim-change)", "Change delimiter", opts },
 	},
-}, { prefix = "<leader>", mode = "n" })
+}, { prefix = "<leader>"})
 
 -- Toggle env, cmd, math and delimiters
 wk.register({
@@ -57,8 +57,7 @@ wk.register({
 		name = "Surround",
 		e = { "v<plug>(vimtex-ae) <plug>(vimtex-env-surround-visual)", "Surround enviroment", opts },
 	},
-	{ prefix = "<leader>", mode = "v" },
-})
+}	,{ prefix = "<leader>", mode = "v" })
 
 -- Surround current line with a new enviroment
 wk.register({
@@ -66,8 +65,8 @@ wk.register({
 		name = "Surround",
 		l = { "<plug>(vimtex-env-surround-line)", "Surround line  command", opts },
 	},
-	{ prefix = "<leader>", mode = "n" },
-})
+		},{ prefix = "<leader>", mode = "n" }
+)
 
 keymap("n", "vam", "v<plug>(vimtex-a$)", opts) -- Visual select (a)inside math
 keymap("n", "vim", "v<plug>(vimtex-i$)", opts) -- Visual select inside math
