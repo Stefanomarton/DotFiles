@@ -321,3 +321,18 @@ cd DotFiles
 ls
 v .con
 v .config/kitty/kitty.conf
+prova
+ls
+nu
+nu
+nu
+nu
+nu
+nu
+ls
+l
+sls
+ls
+v .config/nushell/env.nu
+q
+ls

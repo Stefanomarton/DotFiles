@@ -27,7 +27,7 @@ let-env PROMPT_COMMAND_RIGHT = { create_right_prompt }
 let-env PROMPT_INDICATOR = { "〉" }
 let-env PROMPT_INDICATOR_VI_INSERT = { " " }
 let-env PROMPT_INDICATOR_VI_NORMAL = { " " }
-let-env PROMPT_MULTILINE_INDICATOR = { "::: " }
+let-env PROMPT_MULTILINE_INDICATOR = { " " }
 
 # Specifies how environment variables are:
 # - converted from a string to a value on Nushell startup (from_string)
@@ -57,7 +57,6 @@ let-env NU_LIB_DIRS = [
 let-env NU_PLUGIN_DIRS = [
     ($nu.config-path | path dirname | path join 'plugins')
 ]
-
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
