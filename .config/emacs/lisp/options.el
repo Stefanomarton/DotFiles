@@ -9,9 +9,14 @@
 (tooltip-mode -1) ;; No tooltip
 (menu-bar-mode -1) ;; No menu bar
 (set-fringe-mode 10) ;; Set the padding of the inside windows
-(column-number-mode) ;; Toggle column number in the modeline
-(setq display-line-numbers-type 'relative)
+
+;; Toggle column relative and absolute number in the modeline 
+(column-number-mode) 
+(setq display-line-numbers-type 'relative) 
 (global-display-line-numbers-mode)
+
+;; Highlight the current line
+(global-hl-line-mode)
 
 ;; ;; Makes *scratch* buffer empty:
 ;; (setq initial-scratch-message "")   

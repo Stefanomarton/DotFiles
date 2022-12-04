@@ -108,6 +108,8 @@
   (evil-snipe-mode +1))
 ;;(evil-snipe-override-mode +1))
 
+(evil-set-initial-state 'info-mode 'normal)
+
 ;;Undo package
 (use-package undo-fu)
 
