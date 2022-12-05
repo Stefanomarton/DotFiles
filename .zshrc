@@ -60,7 +60,7 @@ alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settin
 alias -g lg="lazygit"
 
 # Variables
-export EDITOR='neovide --novsync'
+export EDITOR='nvim'
 HISTFILE=~/.zsh_history
 HISTSIZE=100000000
 SAVEHIST=100000000
