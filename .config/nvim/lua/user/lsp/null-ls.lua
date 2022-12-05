@@ -11,8 +11,8 @@ local diagnostics = null_ls.builtins.diagnostics
 null_ls.setup({
 	debug = false,
 	sources = {
-		formatting.prettier.with({ extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } }),
-		formatting.black.with({ extra_args = { "--fast" } }),
+		--formatting.prettier.with({ extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } }),
+		--formatting.black.with({ extra_args = { "--fast" } }),
 		formatting.stylua,
 		-- diagnostics.chktex,
 		formatting.latexindent.with({ extra_args = { "-m" } }),
@@ -30,8 +30,7 @@ require("null-ls").setup({
 				group = augroup,
 				buffer = bufnr,
 				callback = function()
-					-- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-					vim.lsp.buf.formatting_sync()
+					vim.lsp.buf.format({ async = false })
 				end,
 			})
 		end

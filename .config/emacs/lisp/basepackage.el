@@ -55,6 +55,7 @@
 (setq yas-snippet-dirs
       '("~/.config/emacs/snippets"                 ;; personal snippets
         ))
+(yas-global-mode 1)
 
 (use-package dashboard
   :ensure t
