@@ -61,7 +61,10 @@ alias -g lg="lazygit"
 
 # Variables
 export EDITOR='nvim'
+<<<<<<< HEAD
 export PAGER='emacs'
+=======
+>>>>>>> 7f02b2dfd84e0946c8c7fcd9f6b0d3325ddd0035
 HISTFILE=~/.zsh_history
 HISTSIZE=100000000
 SAVEHIST=100000000
