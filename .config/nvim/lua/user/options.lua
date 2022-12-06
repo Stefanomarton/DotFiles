@@ -42,11 +42,12 @@ vim.opt.iskeyword:append("-")
 vim.g.qs_highlight_on_keys = { "f", "F" }
 vim.opt.spell = false
 vim.opt.spelllang = { "en_us" }
+vim.opt.shell = "/bin/bash"
+vim.opt.lazyredraw = false
+vim.opt.shadafile = "NONE" 
 
 -- TreeSitter context background color
 vim.api.nvim_set_hl(0, "TreesitterContext", { fg = "#ffffff", bg = "#414868" })
-
--- vim.cmd([[syntax match todoCheckbox "\n" conceal cchar=]])
 
 -- GUI settings for Neovide
 vim.g.neovide_scale_factor = 0.8

@@ -14,7 +14,7 @@ return {
 				onOpenAndSave = true,
 			},
 			diagnosticsDelay = 300,
-			formatterLineLength = 80,
+			formatterLineLength = 100,
 			forwardSearch = {
 				args = {},
 			},

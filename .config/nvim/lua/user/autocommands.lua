@@ -54,7 +54,7 @@ vim.cmd("autocmd BufWritePost *.tex :silent !tectonic -X compile %:r.tex")
 vim.cmd([[autocmd BufEnter * if &ft != 'help' | silent! cd %:p:h | endif]])
 
 -- Autoformat on save
-vim.cmd("autocmd BufWritePre * lua vim.lsp.buf.format()")
+vim.cmd("autocmd BufWritePre * lua vim.lsp.buf.format({async = true})")
 
 -- Autocmd for Colorizer
 vim.cmd("autocmd BufEnter * :ColorizerToggle")

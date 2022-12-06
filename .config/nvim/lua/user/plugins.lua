@@ -38,6 +38,32 @@ packer.init({
 	},
 })
 
+-- Disable default plugin
+local disabled_built_ins = {
+	"netrw",
+	"netrwPlugin",
+	"netrwSettings",
+	"netrwFileHandlers",
+	"gzip",
+	"zip",
+	"zipPlugin",
+	"tar",
+	"tarPlugin",
+	"getscript",
+	"getscriptPlugin",
+	"vimball",
+	"vimballPlugin",
+	"2html_plugin",
+	"logipat",
+	"rrhelper",
+	"spellfile_plugin",
+	"matchit",
+}
+
+for _, plugin in pairs(disabled_built_ins) do
+	vim.g["loaded_" .. plugin] = 1
+end
+
 return packer.startup(function(use)
 	use({ "wbthomason/packer.nvim" })
 	use({ "nvim-lua/plenary.nvim" })
@@ -77,7 +103,6 @@ return packer.startup(function(use)
 		end,
 	})
 	use({ "j-hui/fidget.nvim" })
-	-- use({ "goolord/alpha-nvim" })
 	use({ "rcarriga/nvim-notify" })
 	use({ "Pocco81/true-zen.nvim" })
 	use({ "glepnir/galaxyline.nvim" })
@@ -137,10 +162,10 @@ The Core plugins
 	use({ "hrsh7th/cmp-buffer" })
 	use({ "hrsh7th/cmp-path" })
 	use({ "saadparwaiz1/cmp_luasnip" })
-	use({ "hrsh7th/cmp-nvim-lsp" })
+	use({ "hrsh7th/cmp-nvim-lsp" }) --
 	use({ "hrsh7th/cmp-nvim-lua" })
 	use({ "hrsh7th/cmp-cmdlIne" })
-	use({ "f3fora/cmp-spell" })
+	use({ "f3fora/cmp-spell" }) --
 
 	use({ "williamboman/nvim-lsp-installer" })
 	use({
@@ -150,9 +175,9 @@ The Core plugins
 	})
 
 	use({ "unblevable/quick-scope" })
-	use({ "lervag/vimtex", ft = "tex" })
+	use({ "lervag/vimtex"  })
 
-	--[[ 	Telescope and telescope integrations ]]
+	--[[ 	telescope and telescope integrations ]]
 
 	use({ "nvim-telescope/telescope.nvim" })
 
