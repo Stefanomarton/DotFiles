@@ -67,25 +67,45 @@ end
 return packer.startup(function(use)
 	use({ "wbthomason/packer.nvim" })
 	use({ "nvim-lua/plenary.nvim" })
-	use({ "windwp/nvim-autopairs" })
-	use({ "kyazdani42/nvim-web-devicons" })
-	use({ "moll/vim-bbye" })
 	use({ "lewis6991/impatient.nvim" })
-	use({ "lukas-reineke/indent-blankline.nvim" })
+
+	use({
+		"windwp/nvim-autopairs",
+		config = function()
+			require("user.autopairs")
+		end,
+	})
+
+	use({ "kyazdani42/nvim-web-devicons" })
+
+	use({ "moll/vim-bbye" })
+
+	use({
+		"lukas-reineke/indent-blankline.nvim",
+		config = function()
+			require("user.indentline")
+		end,
+	})
 	use({ "L3MON4D3/LuaSnip" })
+
 	use({
 		"nvim-treesitter/nvim-treesitter",
 		config = function()
-			require("nvim-treesitter.configs").setup({
-				highlight = {
-					enable = true,
-				},
-			})
+			require("user.treesitter")
 		end,
 	})
-	use({ "nvim-treesitter/nvim-treesitter-context" })
+
+	use({
+		"nvim-treesitter/nvim-treesitter-context",
+		after = "nvim-treesitter",
+		config = function()
+			require("user.treesitter-context")
+		end,
+	})
+
 	use({
 		"lewis6991/spellsitter.nvim",
+		after = "nvim-treesitter",
 		config = function()
 			require("spellsitter").setup({
 				enable = true,
@@ -94,18 +114,27 @@ return packer.startup(function(use)
 	})
 
 	--Colorscheme and deco stuff
-	use({ "dracula/vim" })
 	use({ "folke/tokyonight.nvim" })
 	use({
 		"romgrk/barbar.nvim",
 		config = function()
-			require("user.UI.barbar")
+			require("user.deco.barbar")
 		end,
 	})
 	use({ "j-hui/fidget.nvim" })
 	use({ "rcarriga/nvim-notify" })
-	use({ "Pocco81/true-zen.nvim" })
-	use({ "glepnir/galaxyline.nvim" })
+	use({
+		"Pocco81/true-zen.nvim",
+		config = function()
+			require("user.deco.colorscheme")
+		end,
+	})
+	use({
+		"glepnir/galaxyline.nvim",
+		config = function()
+			require("user.deco.galaxyline")
+		end,
+	})
 	use({
 		"lewis6991/gitsigns.nvim",
 		config = function()
@@ -115,7 +144,7 @@ return packer.startup(function(use)
 	use({
 		"petertriho/nvim-scrollbar",
 		config = function()
-			require("user.UI.scrollbar")
+			require("user.deco.scrollbar")
 		end,
 	})
 
@@ -123,7 +152,7 @@ return packer.startup(function(use)
 		"folke/noice.nvim",
 
 		config = function()
-			require("user.UI.noice")
+			require("user.deco.noice")
 		end,
 		event = "VimEnter",
 		requires = {
@@ -141,7 +170,7 @@ return packer.startup(function(use)
 	use({
 		"glepnir/dashboard-nvim",
 		config = function()
-			require("user.UI.dashboard")
+			require("user.deco.dashboard")
 		end,
 	})
 
@@ -155,7 +184,12 @@ The Core plugins
 			require("leap").set_default_keymaps()
 		end,
 	})
-	use({ "numToStr/Comment.nvim" })
+	use({
+		"numToStr/Comment.nvim",
+		config = function()
+			require("user.comment")
+		end,
+	})
 	use({ "hrsh7th/nvim-cmp" })
 	use({ "kdheepak/cmp-latex-symbols", ft = "tex" })
 	use({ "KeitaNakamura/tex-conceal.vim", ft = "tex" })
@@ -175,11 +209,16 @@ The Core plugins
 	})
 
 	use({ "unblevable/quick-scope" })
-	use({ "lervag/vimtex"  })
+	use({ "lervag/vimtex" })
 
 	--[[ 	telescope and telescope integrations ]]
 
-	use({ "nvim-telescope/telescope.nvim" })
+	use({
+		"nvim-telescope/telescope.nvim",
+		config = function()
+			require("user.telescope")
+		end,
+	})
 
 	use({
 		"crispgm/telescope-heading.nvim",
@@ -220,7 +259,6 @@ The Core plugins
 
 	use({
 		"mvllow/modes.nvim",
-		tag = "v0.2.0",
 		config = function()
 			require("modes").setup()
 		end,
@@ -235,17 +273,24 @@ The Core plugins
 		end,
 	})
 
-	use({ "folke/which-key.nvim" })
-
+	use({
+		"folke/which-key.nvim",
+		config = function()
+			require("user.whichkey")
+		end,
+	})
 	use({ "jose-elias-alvarez/null-ls.nvim" })
-
-	use({ "folke/trouble.nvim" })
-
+	use({
+		"folke/trouble.nvim",
+		config = function()
+			require("user.trouble")
+		end,
+	})
 	use({ "NvChad/nvim-colorizer.lua" })
 
 	use({
 		"kylechui/nvim-surround",
-		tag = "main", -- Use for stability; omit to use `main` branch for the latest features
+		tag = "main",
 		config = function()
 			require("nvim-surround").setup({})
 		end,

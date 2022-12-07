@@ -18,6 +18,7 @@ export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export ZDOTDIR="$HOME"/.config/zsh 
 
+
 export BW_SESSION="B6o+4VlAgK/+ne9t+IItf5viLHkYhlsCoS/dAtNu35wUwgcillYuCMkr075RtNQ9vaQRj2dFhU0iHhwrA/McUg=="
 
 

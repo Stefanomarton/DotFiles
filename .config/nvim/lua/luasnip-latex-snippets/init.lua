@@ -37,16 +37,10 @@ M.setup = function(opts)
 	ls.config.setup({ enable_autosnippets = true })
 
 	ls.add_snippets("tex", {
-		ls.parser.parse_snippet({ trig = "pac", name = "Package" }, "\\usepackage[${1:options}]{${2:package}}$0"),
-		ls.parser.parse_snippet({ trig = "sec", name = "Section" }, "\\section{${1}}"),
-		ls.parser.parse_snippet({ trig = "ssec", name = "Subsection" }, "\\subsection{${1}}"),
-		ls.parser.parse_snippet({ trig = "sssec", name = "Subsubsection" }, "\\subsubsection{${1}}"),
-
-		-- ls.parser.parse_snippet({ trig = "nn", name = "Tikz node" }, {
-		--   "$0",
-		--   -- "\\node[$5] (${1/[^0-9a-zA-Z]//g}${2}) ${3:at (${4:0,0}) }{$${1}$};",
-		--   "\\node[$5] (${1}${2}) ${3:at (${4:0,0}) }{$${1}$};",
-		-- }),
+		ls.parser.parse_snippet({ trig = "pac", name = "Package" }, "\\usepackage[]{${1:package}}$0"),
+		ls.parser.parse_snippet({ trig = ";s", name = "Section" }, "\\section{${1}}"),
+		ls.parser.parse_snippet({ trig = ";ss", name = "Subsection" }, "\\subsection{${1}}"),
+		ls.parser.parse_snippet({ trig = ";sss", name = "Subsubsection" }, "\\subsubsection{${1}}"),
 	})
 
 	local math_i = require("luasnip-latex-snippets/math_i")
