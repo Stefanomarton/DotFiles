@@ -86,7 +86,7 @@ return packer.startup(function(use)
 			require("user.indentline")
 		end,
 	})
-	use({ "L3MON4D3/LuaSnip" })
+	use({ "L3MON4D3/LuaSnip"  })
 
 	use({
 		"nvim-treesitter/nvim-treesitter",
@@ -114,14 +114,23 @@ return packer.startup(function(use)
 	})
 
 	--Colorscheme and deco stuff
+	use({
+		"feline-nvim/feline.nvim",
+		after = "tokyonight.nvim",
+		config = function()
+			require("user.deco.feline")
+		end,
+	})
+
 	use({ "folke/tokyonight.nvim" })
+	-- If you are using Packer
 	use({
 		"romgrk/barbar.nvim",
 		config = function()
 			require("user.deco.barbar")
 		end,
 	})
-	use({ "j-hui/fidget.nvim" })
+	use({ "j-hui/fidget.nvim", after = "feline.nvim" })
 	use({ "rcarriga/nvim-notify" })
 	use({
 		"Pocco81/true-zen.nvim",
@@ -129,12 +138,12 @@ return packer.startup(function(use)
 			require("user.deco.colorscheme")
 		end,
 	})
-	use({
-		"glepnir/galaxyline.nvim",
-		config = function()
-			require("user.deco.galaxyline")
-		end,
-	})
+	-- use({
+	-- 	"glepnir/galaxyline.nvim",
+	-- 	config = function()
+	-- 		require("user.deco.galaxyline")
+	-- 	end,
+	-- })
 	use({
 		"lewis6991/gitsigns.nvim",
 		config = function()
@@ -154,7 +163,7 @@ return packer.startup(function(use)
 		config = function()
 			require("user.deco.noice")
 		end,
-		event = "VimEnter",
+		event = "BufEnter",
 		requires = {
 			"MunifTanjim/nui.nvim",
 		},
@@ -169,6 +178,7 @@ return packer.startup(function(use)
 
 	use({
 		"glepnir/dashboard-nvim",
+		event = "BufEnter",
 		config = function()
 			require("user.deco.dashboard")
 		end,
