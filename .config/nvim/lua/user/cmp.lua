@@ -127,7 +127,6 @@ cmp.setup({
 
 cmp.setup.filetype("tex", {
 	sources = {
-		{ name = "latex_symbols" },
 		{ name = "nvim_lsp" },
 		{
 			name = "spell",
@@ -138,6 +137,7 @@ cmp.setup.filetype("tex", {
 				end,
 			},
 		},
+		{ name = "omni" },
 		{ name = "luasnip" },
 		{ name = "buffer" },
 		{ name = "path" },

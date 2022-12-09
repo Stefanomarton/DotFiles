@@ -66,45 +66,45 @@
         (yas-next-field-or-maybe-expand)))))
 
 ;;;; Autosnippets configuration with auto-activating-snippets
-(use-package aas
-  :hook (LaTeX-mode . aas-activate-for-major-mode)
-  ;;:hook (org-mode . aas-activate-for-major-mode)
-  :config
-  (aas-set-snippets 'LaTeX-mode
-		;; set condition!
-		:cond #'texmathp ; expand only while in math
-		"supp" "\\supp"
-		"On" "O(n)"
-		"O1" "O(1)"
-		"Olog" "O(\\log n)"
-		"Olon" "O(n \\log n)"
-		;; bind to functions
-		"Span" (lambda () (interactive)
-						 (yas-expand-snippet "\\Span($1)$0")))
-  ;; disable snippets by redefining them with a nil expansion
-  (aas-set-snippets 'LaTeX-mode
-		"supp" nil))
+;; (use-package aas
+;;   :hook (LaTeX-mode . aas-activate-for-major-mode)
+;;   ;;:hook (org-mode . aas-activate-for-major-mode)
+;;   :config
+;;   (aas-set-snippets 'LaTeX-mode
+;; 		;; set condition!
+;; 		:cond #'texmathp ; expand only while in math
+;; 		"supp" "\\supp"
+;; 		"On" "O(n)"
+;; 		"O1" "O(1)"
+;; 		"Olog" "O(\\log n)"
+;; 		"Olon" "O(n \\log n)"
+;; 		;; bind to functions
+;; 		"Span" (lambda () (interactive)
+;; 						 (yas-expand-snippet "\\Span($1)$0")))
+;;   ;; disable snippets by redefining them with a nil expansion
+;;   (aas-set-snippets 'LaTeX-mode
+;; 		"supp" nil))
 
-(use-package laas
-  :hook (latex-mode . laas-mode)
-  ;;:hook (org-mode . laas-mode)
-  :config ; do whatever here
-  (aas-set-snippets 'laas-mode
-    ;; set condition!
-    :cond #'texmathp ; expand only while in math
-    "supp" "\\supp"
-    "On" "O(n)"
-    "O1" "O(1)"
-    "Olog" "O(\\log n)"
-    "Olon" "O(n \\log n)"
-    ;; bind to functions!
-    "sum" (lambda () (interactive)
-            (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-    "Span" (lambda () (interactive)
-             (yas-expand-snippet "\\Span($1)$0"))
-    ;; add accent snippets
-    :cond #'laas-object-on-left-condition
-    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+;; (use-package laas
+;;   :hook (latex-mode . laas-mode)
+;;   ;;:hook (org-mode . laas-mode)
+;;   :config ; do whatever here
+;;   (aas-set-snippets 'laas-mode
+;;     ;; set condition!
+;;     :cond #'texmathp ; expand only while in math
+;;     "supp" "\\supp"
+;;     "On" "O(n)"
+;;     "O1" "O(1)"
+;;     "Olog" "O(\\log n)"
+;;     "Olon" "O(n \\log n)"
+;;     ;; bind to functions!
+;;     "sum" (lambda () (interactive)
+;;             (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+;;     "Span" (lambda () (interactive)
+;;              (yas-expand-snippet "\\Span($1)$0"))
+;;     ;; add accent snippets
+;;     :cond #'laas-object-on-left-condition
+;;     "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 ;; Yasnippet settings for latex
 (use-package yasnippet

@@ -1,6 +1,6 @@
 local ls = require("luasnip")
 local conds = require("luasnip.extras.expand_conditions")
-local utils = require("luasnip-latex-snippets.util.utils")
+local utils = require("snippets.latex.util.utils")
 local pipe = utils.pipe
 local no_backslash = utils.no_backslash
 local s = ls.snippet
@@ -43,7 +43,7 @@ M.setup = function(opts)
 		ls.parser.parse_snippet({ trig = ";sss", name = "Subsubsection" }, "\\subsubsection{${1}}"),
 	})
 
-	local math_i = require("luasnip-latex-snippets/math_i")
+	local math_i = require("snippets.latex.math_i")
 	for _, snip in ipairs(math_i) do
 		snip.condition = pipe({ is_math })
 		snip.show_condition = is_math
@@ -54,53 +54,53 @@ M.setup = function(opts)
 
 	local autosnippets = {}
 
-	for _, snip in ipairs(require("luasnip-latex-snippets/math_wRA_no_backslash")) do
+	for _, snip in ipairs(require("snippets.latex.math_wRA_no_backslash")) do
 		snip.regTrig = true
 		snip.condition = pipe({ is_math, no_backslash })
 		table.insert(autosnippets, snip)
 	end
 
-	for _, snip in ipairs(require("luasnip-latex-snippets/math_rA_no_backslash")) do
+	for _, snip in ipairs(require("snippets.latex.math_rA_no_backslash")) do
 		snip.wordTrig = false
 		snip.regTrig = true
 		snip.condition = pipe({ is_math, no_backslash })
 		table.insert(autosnippets, snip)
 	end
 
-	for _, snip in ipairs(require("luasnip-latex-snippets/normal_wA")) do
+	for _, snip in ipairs(require("snippets.latex.normal_wA")) do
 		snip.condition = pipe({ not_math })
 		table.insert(autosnippets, snip)
 	end
 
-	for _, snip in ipairs(require("luasnip-latex-snippets/math_wrA")) do
+	for _, snip in ipairs(require("snippets.latex.math_wrA")) do
 		snip.regTrig = true
 		snip.condition = pipe({ is_math })
 		table.insert(autosnippets, snip)
 	end
 
-	for _, snip in ipairs(require("luasnip-latex-snippets/math_wA_no_backslash")) do
+	for _, snip in ipairs(require("snippets.latex.math_wA_no_backslash")) do
 		snip.condition = pipe({ is_math, no_backslash })
 		table.insert(autosnippets, snip)
 	end
 
-	for _, snip in ipairs(require("luasnip-latex-snippets/math_iA")) do
+	for _, snip in ipairs(require("snippets.latex/math_iA")) do
 		snip.wordTrig = false
 		snip.condition = pipe({ is_math })
 		table.insert(autosnippets, snip)
 	end
 
-	for _, snip in ipairs(require("luasnip-latex-snippets/math_iA_no_backslash")) do
+	for _, snip in ipairs(require("snippets.latex/math_iA_no_backslash")) do
 		snip.wordTrig = false
 		snip.condition = pipe({ is_math, no_backslash })
 		table.insert(autosnippets, snip)
 	end
 
-	for _, snip in ipairs(require("luasnip-latex-snippets/math_bwA")) do
+	for _, snip in ipairs(require("snippets.latex/math_bwA")) do
 		snip.condition = pipe({ conds.line_begin, is_math })
 		table.insert(autosnippets, snip)
 	end
 
-	for _, snip in ipairs(require("luasnip-latex-snippets/bwA")) do
+	for _, snip in ipairs(require("snippets.latex/bwA")) do
 		snip.condition = pipe({ conds.line_begin, not_math })
 		table.insert(autosnippets, snip)
 	end

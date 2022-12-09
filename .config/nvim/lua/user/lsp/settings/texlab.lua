@@ -5,9 +5,9 @@ return {
 			-- bibtexFormatter = "texlab",
 			build = {
 				executable = "tectonic",
-				args = { "-x", "compile" },
+				args = { "%f" },
 				forwardSearchAfter = false,
-				onSave = false,
+				onSave = true,
 			},
 			chktex = {
 				onEdit = true,

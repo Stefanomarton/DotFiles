@@ -86,7 +86,7 @@ return packer.startup(function(use)
 			require("user.indentline")
 		end,
 	})
-	use({ "L3MON4D3/LuaSnip"  })
+	use({ "L3MON4D3/LuaSnip" })
 
 	use({
 		"nvim-treesitter/nvim-treesitter",
@@ -130,7 +130,7 @@ return packer.startup(function(use)
 			require("user.deco.barbar")
 		end,
 	})
-	use({ "j-hui/fidget.nvim", after = "feline.nvim" })
+	use({ "j-hui/fidget.nvim", after = "noice.nvim" })
 	use({ "rcarriga/nvim-notify" })
 	use({
 		"Pocco81/true-zen.nvim",
@@ -163,7 +163,7 @@ return packer.startup(function(use)
 		config = function()
 			require("user.deco.noice")
 		end,
-		event = "BufEnter",
+		--event = "BufEnter",
 		requires = {
 			"MunifTanjim/nui.nvim",
 		},
@@ -202,7 +202,7 @@ The Core plugins
 	})
 	use({ "hrsh7th/nvim-cmp" })
 	use({ "kdheepak/cmp-latex-symbols", ft = "tex" })
-	use({ "KeitaNakamura/tex-conceal.vim", ft = "tex" })
+	--use({ "KeitaNakamura/tex-conceal.vim", ft = "tex" })
 	use({ "hrsh7th/cmp-buffer" })
 	use({ "hrsh7th/cmp-path" })
 	use({ "saadparwaiz1/cmp_luasnip" })
@@ -210,6 +210,7 @@ The Core plugins
 	use({ "hrsh7th/cmp-nvim-lua" })
 	use({ "hrsh7th/cmp-cmdlIne" })
 	use({ "f3fora/cmp-spell" }) --
+	use({ "hrsh7th/cmp-omni" })
 
 	use({ "williamboman/nvim-lsp-installer" })
 	use({

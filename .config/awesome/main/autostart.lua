@@ -3,7 +3,7 @@ local awful = require("awful")
 
 awful.spawn.with_shell("xset r rate 300 60")
 awful.spawn.with_shell("nm-applet")
-awful.spawn.with_shell("insync")
+awful.spawn.with_shell("insync start")
 -- awful.spawn.with_shell("python /opt/thefanclub/overgrive/overgrive")
 -- awful.spawn.once("picom")
 awful.spawn.once("discord")

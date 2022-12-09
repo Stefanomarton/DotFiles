@@ -1,5 +1,5 @@
 local ls = require("luasnip")
-local with_priority = require("luasnip-latex-snippets.util.utils").with_priority
+local with_priority = require("snippets.latex.util.utils").with_priority
 
 local math_wA_no_backslash = {
   with_priority(ls.parser.parse_snippet({ trig = "arcsin", name = "arcsin" }, "\\arcsin "), 10),

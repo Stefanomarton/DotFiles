@@ -13,7 +13,7 @@ require("user.autocommands")
 ----[[ Core plugins ]]
 require("user.lsp")
 require("user.cmp")
-require("luasnip-latex-snippets").setup({ use_treesitter = true })
+require("snippets.latex").setup({ use_treesitter = true })
 require("user.vimtex")
 
 --[[Confort plugins configs ]]
