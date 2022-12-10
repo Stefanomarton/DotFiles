@@ -21,7 +21,7 @@
 
 ;; Theme and font
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150)
-(load-theme 'doom-flatwhite t)
+(load-theme 'doom-nord t)
 
 ;; Comfy sane default
 (setq inhibit-startup-buffer-menu t) ;; Don't show *Buffer list* when opening multiple files at the same time. 
