@@ -64,6 +64,8 @@ for _, plugin in pairs(disabled_built_ins) do
 	vim.g["loaded_" .. plugin] = 1
 end
 
+local neovide = vim.g.neovide == 1
+
 return packer.startup(function(use)
 	use({ "wbthomason/packer.nvim" })
 	use({ "nvim-lua/plenary.nvim" })
@@ -86,6 +88,7 @@ return packer.startup(function(use)
 			require("user.indentline")
 		end,
 	})
+
 	use({ "L3MON4D3/LuaSnip" })
 
 	use({
@@ -112,6 +115,7 @@ return packer.startup(function(use)
 			})
 		end,
 	})
+	use({ "nvim-treesitter/playground" })
 
 	--Colorscheme and deco stuff
 	use({
@@ -130,8 +134,8 @@ return packer.startup(function(use)
 			require("user.deco.barbar")
 		end,
 	})
-	use({ "j-hui/fidget.nvim", after = "noice.nvim" })
-	use({ "rcarriga/nvim-notify" })
+	-- use({ "j-hui/fidget.nvim"})
+	-- use({ "rcarriga/nvim-notify" })
 	use({
 		"Pocco81/true-zen.nvim",
 		config = function()
@@ -157,17 +161,17 @@ return packer.startup(function(use)
 		end,
 	})
 
-	use({
-		"folke/noice.nvim",
-
-		config = function()
-			require("user.deco.noice")
-		end,
-		--event = "BufEnter",
-		requires = {
-			"MunifTanjim/nui.nvim",
-		},
-	})
+	-- use({
+	-- 	"folke/noice.nvim",
+	--
+	-- 	config = function()
+	-- 		require("user.deco.noice")
+	-- 	end,
+	-- 	--event = "BufEnter",
+	-- 	requires = {
+	-- 		"MunifTanjim/nui.nvim",
+	-- 	},
+	-- })
 
 	use({
 		"folke/todo-comments.nvim",
@@ -224,6 +228,7 @@ The Core plugins
 
 	--[[ 	telescope and telescope integrations ]]
 
+	use({ "junegunn/fzf.vim" })
 	use({
 		"nvim-telescope/telescope.nvim",
 		config = function()
@@ -329,6 +334,18 @@ The Core plugins
 				},
 				ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
 				exclude = {}, -- tabout will ignore these filetypes
+			})
+		end,
+	})
+
+	use({
+		"epwalsh/obsidian.nvim",
+		config = function()
+			require("obsidian").setup({
+				dir = "~/GoogleDrive/Obsidian/",
+				completion = {
+					nvim_cmp = true, -- if using nvim-cmp, otherwise set to false
+				},
 			})
 		end,
 	})
