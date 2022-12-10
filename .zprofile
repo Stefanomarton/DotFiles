@@ -5,8 +5,7 @@ case "$(tty)" in
 pgrep awesome || startx "$XDG_CONFIG_HOME/X11/.xinitrc" ;;
 
 "/dev/tty2")
-pgrep Hyprland || Hyprland 
-sudo evremap remap .config/evremap/evremap.toml > /dev/null &&
+pgrep Hyprland || Hyprland
 ;;
 
 esac
