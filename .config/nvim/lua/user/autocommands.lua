@@ -48,7 +48,7 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 })
 
 -- Latex compile on save
-vim.cmd("autocmd BufWritePost *.tex :silent !tectonic -X compile %:r.tex")
+--vim.cmd("autocmd BufWritePost *.tex :silent !tectonic -X compile %:r.tex")
 
 -- -- Autocd for NvimTree
 vim.cmd([[autocmd BufEnter * if &ft != 'help' | silent! cd %:p:h | endif]])
@@ -57,7 +57,7 @@ vim.cmd([[autocmd BufEnter * if &ft != 'help' | silent! cd %:p:h | endif]])
 --vim.cmd("autocmd BufWritePre * lua vim.lsp.buf.format({async = true})")
 
 -- Autocmd for Colorizer
-vim.cmd("autocmd BufEnter * :ColorizerToggle")
+--vim.cmd("autocmd BufEnter * :ColorizerToggle")
 
 -- -- Reload nvim config when modified
 -- vim.cmd('autocmd BufWritePost ~/DotFiles/.config/nvim/* luafile ~/DotFiles/.config/nvim/init.lua')

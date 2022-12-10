@@ -109,7 +109,7 @@ cmp.setup({
 		{ name = "nvim_lsp" },
 		{ name = "nvim_lua" },
 		{ name = "luasnip" },
-		{ name = "buffer" },
+		--{ name = "buffer" },
 		{ name = "path" },
 	}),
 	confirm_opts = {
@@ -137,9 +137,45 @@ cmp.setup.filetype("tex", {
 				end,
 			},
 		},
-		{ name = "omni" },
 		{ name = "luasnip" },
 		{ name = "buffer" },
 		{ name = "path" },
+		--{ name = "omni" },
 	},
 })
+
+cmp.setup.filetype("md", {
+	sources = {
+		{ name = "nvim_lsp" },
+		{
+			name = "spell",
+			option = {
+				keep_all_entries = false,
+				enable_in_context = function()
+					return require("cmp.config.context").in_treesitter_capture("spell")
+				end,
+			},
+		},
+		{ name = "luasnip" },
+		{ name = "path" },
+		--{ name = "omni" },
+	},
+})
+
+-- require("cmp").setup.buffer({
+-- 	formatting = {
+-- 		format = function(entry, vim_item)
+-- 			vim_item.menu = ({
+-- 				omni = (vim.inspect(vim_item.menu):gsub('%"', "")),
+-- 				buffer = "[Buffer]",
+-- 				-- formatting for other sources
+-- 			})[entry.source.name]
+-- 			return vim_item
+-- 		end,
+-- 	},
+-- 	sources = {
+-- 		{ name = "omni" },
+-- 		{ name = "buffer" },
+-- 		-- other sources
+-- 	},
+-- })

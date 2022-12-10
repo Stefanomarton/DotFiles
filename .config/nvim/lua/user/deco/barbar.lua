@@ -1,7 +1,7 @@
 -- Set barbar's options
 require("bufferline").setup({
 	-- Enable/disable animations
-	animation = false,
+	animation = true,
 
 	-- Enable/disable auto-hiding the tab bar when there is a single buffer
 	auto_hide = true,
@@ -44,7 +44,7 @@ require("bufferline").setup({
 
 	-- If true, new buffers will be inserted at the start/end of the list.
 	-- Default is to insert after current buffer.
-	insert_at_end = false,
+	insert_at_end = true,
 	insert_at_start = false,
 
 	-- Sets the maximum padding width with which to surround each tab
