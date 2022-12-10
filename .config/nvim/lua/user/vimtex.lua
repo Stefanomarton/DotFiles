@@ -32,3 +32,24 @@ vim.g.vimtex_imaps_enabled = 1
 vim.g.tex_IgnoredWarnings = 1
 --vim.g.vimtex_imaps_list = 1
 -- vim.vimtex_log_ignore = 1
+vim.g.vimtex_toc_show_preamble = 0
+vim.cmd([[
+" TOC settings
+let g:vimtex_toc_config = {
+      \ 'name' : 'TOC',
+      "\ 'layers' : ['content', 'todo', 'include'],
+      \ 'layers' : ['content'],
+      \ 'resize' : 0,
+      \ 'split_width' : 40,
+      \ 'todo_sorted' : 0,
+      \ 'show_help' : 0,
+      \ 'show_numbers' : 1,
+      \ 'mode' : 1,
+      \}
+
+let g:vimtex_toc_show_preamble = 0
+
+]])
+
+-- for TOC
+--:call vimtex#fzf#run('c')
