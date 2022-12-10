@@ -16,6 +16,7 @@ wk.register({
 	s = { ":Telescope heading <cr>", "Table of contents of the current file", opts },
 	-- Show list of available luasnip
 	l = { ":Telescope luasnip theme=get_cursor<cr>", "Available snippets", opts },
+	t = { ":call vimtex#fzf#run('c')<cr>", "TOC", opts },
 }, { prefix = "<Space>" })
 
 -- Delete env, cmd, math and delimiters
