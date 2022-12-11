@@ -15,6 +15,3 @@ require("user.lsp")
 require("user.cmp")
 require("snippets.latex").setup({ use_treesitter = true })
 require("user.vimtex")
-
---[[Confort plugins configs ]]
---require("user.whichkey")

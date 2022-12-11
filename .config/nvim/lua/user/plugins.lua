@@ -350,6 +350,34 @@ The Core plugins
 		end,
 	})
 
+	use({
+		"ryleelyman/latex.nvim",
+		config = function()
+			require("latex").setup({
+				conceals = {
+					enabled = {
+						"greek",
+						"math",
+						"script",
+						-- "delim",
+						"font",
+					},
+					add = {},
+				},
+				imaps = {
+					enabled = false,
+					add = {},
+					default_leader = "`",
+				},
+				surrounds = {
+					enabled = false,
+					command = "c",
+					environment = "e",
+				},
+			})
+		end,
+	})
+
 	if PACKER_BOOTSTRAP then
 		require("packer").sync()
 	end
