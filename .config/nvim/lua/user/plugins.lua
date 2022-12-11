@@ -358,9 +358,9 @@ The Core plugins
 					enabled = {
 						"greek",
 						"math",
-						"script",
+						-- "script",
 						-- "delim",
-						"font",
+						-- "font",
 					},
 					add = {},
 				},

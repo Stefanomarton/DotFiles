@@ -136,10 +136,31 @@
       (let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
         (yas-expand)))))
 
-(use-package reftex)
+(use-package reftex
+	:hook (LaTeX-mode . reftex-mode)
+  :bind (:map reftex-toc-map
+              ("<escape>" . reftex-toc-quit)
+              ("k" . reftex-toc-previous))
+  :config
+  (setq reftex-plug-into-AUCTeX t))
 
 (setq cdlatex-math-modify-prefix 58)
 
 (setq cdlatex-math-modify-prefix 59)
 
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+  (rune/leader-keys
+    "t"  '(reftex-toc :which-key "TOC")
+    "s" '(counsel-imenu :which-key "Outline"))))
+
+(add-hook 'reftex-toc-mode-hook
+					(lambda (&rest _) (display-line-numbers-mode -1))
+					)
+
+(setq reftex-toc-split-windows-horizontally 1)
+(setq reftex-auto-recenter-toc 1)
+(setq reftex-toc-follow-mode 1)
+
+(setq LaTeX-item-indent 0)
 

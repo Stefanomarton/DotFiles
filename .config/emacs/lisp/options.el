@@ -12,6 +12,7 @@
 (column-number-mode) ;; Show column number
 (setq display-line-numbers-type 'relative)  ;; Show relative number
 (global-display-line-numbers-mode) ;;Show aboslute number on the current line
+;;(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (global-hl-line-mode) ;; Highlight the current line
 (setq inhibit-startup-screen t
 		  initial-scratch-message nil
