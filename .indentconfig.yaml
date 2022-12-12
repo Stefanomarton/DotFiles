@@ -1,0 +1,8 @@
+# Paths to user settings for latexindent.pl
+#
+# Note that the settings will be read in the order you
+# specify here- each successive settings file will overwrite
+# the variables that you specify
+
+paths:
+- /home/stefanomarton/DotFiles/.config/latexindent/mysettings.yaml
