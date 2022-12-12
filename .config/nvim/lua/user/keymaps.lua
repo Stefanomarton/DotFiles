@@ -28,6 +28,7 @@ keymap("n", "j", "h", opts)
 keymap("n", "k", "j", opts)
 keymap("n", "l", "k", opts)
 keymap("n", ";", "l", opts)
+keymap("n", "=", "l", opts)
 
 keymap("n", "q", "b", opts)
 keymap("x", "q", "b", opts)
