@@ -75,7 +75,7 @@ local math_iA = {
 	ls.parser.parse_snippet({ trig = ";n", name = "greek letter" }, "\\nu "),
 	ls.parser.parse_snippet({ trig = ";v", name = "greek letter" }, "\\vec{$1}$2 "),
 
-	ls.parser.parse_snippet({ trig = "_", name = "to the ... power ^{}" }, "_{$1}$0 "),
+	ls.parser.parse_snippet({ trig = "ll", name = "pedice" }, "_{$1}$0 "),
 	ls.parser.parse_snippet({ trig = "^", name = "to the ... power ^{}" }, "^{$1}$0 "),
 	ls.parser.parse_snippet({ trig = "rt", name = "to the ... power ^{()}" }, "^{($1)}$0 "),
 	ls.parser.parse_snippet({ trig = "cb", name = "Cube ^3" }, "^3 "),

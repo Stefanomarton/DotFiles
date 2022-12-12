@@ -8,7 +8,7 @@ local opts = { silent = true, noremap = true }
 wk.register({
 	-- Open PDF preview with zathura
 	p = {
-		":!zathura %:r.pdf > /dev/null 2>&1 &<cr><cr>",
+		":VimtexView <cr>",
 		"PDF view of the current file",
 		opts,
 	},

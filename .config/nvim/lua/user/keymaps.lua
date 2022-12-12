@@ -22,8 +22,13 @@ vim.g.mapleader = " "
 -- Normal --
 
 -- Faster movements
-keymap("n", "K", "2k", opts)
-keymap("n", "J", "2j", opts)
+
+keymap("n", "m", "$", opts)
+keymap("n", "j", "h", opts)
+keymap("n", "k", "j", opts)
+keymap("n", "l", "k", opts)
+keymap("n", ";", "l", opts)
+
 keymap("n", "q", "b", opts)
 keymap("x", "q", "b", opts)
 keymap("n", "Q", "B", opts)
