@@ -1,2 +1,0 @@
-#!/usr/bin/env nu
-lf -last-dir-path ~/.OUTFILE ; cd (cat ~/.OUTFILE)
