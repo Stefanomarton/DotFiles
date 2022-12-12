@@ -1,0 +1,2 @@
+;;; Generated package description from consult-ag.el  -*- no-byte-compile: t -*-
+(define-package "consult-ag" "20220419.1721" "The silver searcher integration using Consult" '((emacs "27.1") (consult "0.16")) :commit "2460ae6829e86c9f1186a852304d919526838cb8" :authors '(("Kanon Kakuno" . "yadex205@outlook.jp")) :maintainer '("Kanon Kakuno" . "yadex205@outlook.jp") :url "https://github.com/yadex205/consult-ag")

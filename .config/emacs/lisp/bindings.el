@@ -23,8 +23,6 @@
     "f" '(counsel-find-file :which-key "Find files")
     "p" '(counsel-M-x :which-key "Command center")
     "q" '(kill-buffer-and-window :which-key "Close")
-    "w" '(counsel-ibuffer :which-key "Navigate buffers")
+    "w" '(basic-save-buffer :which-key "Write file")
     "e" '(eval-buffer :which-key "eval buffer")
     "ggl" '(google-this-noconfirm :which-key "Google the selection")))
-
-

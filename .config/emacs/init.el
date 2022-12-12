@@ -39,7 +39,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-	 '(ivy-posframe markdown-mode all-the-icons evil general use-package no-littering)))
+	 '(nano-emacs nano-theme mini-frame all-the-icons-completion embark marginalia consult-ag consult ivy-posframe markdown-mode all-the-icons evil general use-package no-littering)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

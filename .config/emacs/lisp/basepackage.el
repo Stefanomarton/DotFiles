@@ -132,9 +132,37 @@
   :ensure t
   :init (doom-modeline-mode 1))
 
-(use-package doom-themes)
+;;(use-package doom-themes)
 
 ;; In case that image do not show correctly run M-x all-the-icons-install-fonts
 (use-package all-the-icons
   :ensure t)
 
+(use-package marginalia)
+
+;(use-package embark)
+
+(require 'consult)
+
+(use-package vertico
+  :init
+  (vertico-mode)
+
+  ;; Different scroll margin
+  ;; (setq vertico-scroll-margin 0)
+
+  ;; Show more candidates
+  ;; (setq vertico-count 20)
+
+  ;; Grow and shrink the Vertico minibuffer
+  ;; (setq vertico-resize t)
+
+  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
+  ;; (setq vertico-cycle t)
+  )
+
+(use-package mini-frame)
+
+(use-package nano-theme)
+
+;(use-package nano-emacs)

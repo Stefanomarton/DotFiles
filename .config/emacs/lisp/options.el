@@ -81,3 +81,7 @@
 (setq auto-save-file-name-transforms
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 (setq create-lockfiles nil)
+
+
+(use-package all-the-icons-completion)
+(all-the-icons-completion-mode)
