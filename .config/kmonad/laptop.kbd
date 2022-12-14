@@ -11,13 +11,16 @@
 )
 
 (defalias
-		pr (tap-hold 180 esc rctl)
-		sc (tap-hold 200 c rsft)
-		sn (tap-hold 300 n rsft)
+		ret (tap-hold-next-release 150 ret lmet)
+		pr (tap-hold-next-release 150 esc (layer-toggle movement))
+		shp (tap-hold-next-release 150 p rsft)
+		stab (tap-hold-next-release 150 tab lsft)
+		sq (tap-hold-next-release 150 q rsft)
     sls (sticky-key 40 lsft)
-    sym  (tap-hold 150 spc (layer-toggle symbol))
-		mov (layer-toggle movement)
-		sls2 (tap-next @sls @mov )
+    sym  (tap-hold-next-release 200 spc (layer-toggle symbol))
+		mov (layer-toggle movement)	
+		num (tap-hold-next-release 150 spc (layer-toggle numbers))
+
 		;; Some shortname
 		plus S-=
 		us S--
@@ -25,40 +28,59 @@
 		rp S-0
 		lsp S-[
 		rsp S-]
+		
+		;; Autoshift
+		a (tap-hold-next-release 120 a #(A XX))
+		g (tap-hold 120 g #(G XX))
+		v (tap-hold 120 v #(V XX))
+		o (tap-hold 120 o #(O XX))
+		i (tap-hold 120 i #(I XX))
+		=+ (tap-hold 120 = #(+ XX))
+		? (tap-hold 120 / #(? XX))
+		
 )
 
 (defsrc
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  a  
-  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc a
-  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \    a
-  caps a    s    d    f    g    h    j    k    l    ;    '    ret        a
-  lsft z    x    c    v    b    n    m    ,    .    /    rsft           a a 
-  lctl lmet lalt           spc            ralt rmet cmp  rctl           a a a 
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12    
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc 
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \    
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret        
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft   
+  lctl lmet lalt           spc            ralt rmet cmp  rctl    
 )
 
 (deflayer qwerty
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12 a      
-  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc a
-  tab  q    w    e    r    t    y    u    i    o    p    =    /    \    a
-  @pr  1    s    d    f    g    h    j    k    l    ;     '  ret        a
-  @sls2 z    x    @sc    v    b    @sn    m    ,    .    /    rsft           a a   
-  @mov lmet lalt       @sym            ralt rmet cmp  rctl           a a a        
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12       
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc 
+  @stab  @sq    w    e    r    t    y    u    @i    @o    @shp    @=+    @?    \    
+	@pr  @a    s    d    f    @g    h    j    k    l    ;     '  @ret        
+  rctl z    x    c    @v    b    n   m    ,    .    /    rsft
+  rctl lmet lalt       @num            ralt rmet  cmp    rctl    
 )
 
 (deflayer symbol
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12 a      
-  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc a
-  tab  !    @   #    r    t    y    u    @lp    @rp  p  [   ]    \    a
-  lctl  0    @plus    ^    @us    g    h   @lsp    @rsp  l   ;     '  ret        a
-  lsft z    %    $    v    b    n    m    ,    .    /    rsft           a a   
-  lctl lmet lalt       spc            ralt rmet cmp  rctl           a a a        
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12     
+  grv XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  tab  !    @   #   XX   XX   XX   XX    @lp    @rp  [   ]  XX    XX    
+  lctl XX    @plus    ^    @us   XX   XX   @lsp    @rsp  l  XX    XX  ret 
+  lsft XX    %    $   XX   XX   XX   XX   XX   XX   XX    rsft  
+  lctl lmet lalt       spc            ralt rmet cmp  rctl       
 )
 
 (deflayer movement
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12 a      
-  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc a
-  tab  q    bspc    e    r    t    y    u    i    o    p    [    ]    \    a
-  @pr  -    =    ret    f    g    h    left    down    up    right   '  ret        a
-  lsft z    x    c    v    b    n    m    ,    .    /    rsft           a a   
-  lctl lmet lalt       spc           ralt rmet cmp  rctl           a a a        
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12       
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    bspc    e    r    t    y    u    i    o    p    [    ]    \
+  @pr  a    s    ret    f    g   left    down    up    right ;  '  ret 
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft        
+  lctl lmet lalt       spc           ralt rmet cmp  rctl         
+)
+
+(deflayer numbers
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  XX  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX 
+  tab  1    2    3    4    5    6    7    8    9    0   XX   XX   XX 
+	@pr  !    @    #    $    %    ^    &    *    \(    \)     -  ret
+  @mov XX   XX   XX   XX   XX   XX   XX   XX   XX   XX    rsft               
+  lctl lmet lalt       @sym            ralt rmet cmp  rctl                   
 )
