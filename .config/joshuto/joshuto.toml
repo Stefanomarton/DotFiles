@@ -2,14 +2,13 @@ numbered_command = false
 
 use_trash = true
 watch_files = true
-xdg_open = false
+xdg_open = true 
 xdg_open_fork = false
 
 
 [display]
 # default, hsplit
 mode = "default"
-
 automatically_count_files = false
 collapse_preview = true
 # ratios for parent view (optional), current view and preview
