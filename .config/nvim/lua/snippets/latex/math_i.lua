@@ -51,6 +51,7 @@ local math_i = {
 	ls.parser.parse_snippet({ trig = "dha", name = "Activatione entropy" }, "\\Delta H^{ 0 ~ \\dagger}$1"),
 	ls.parser.parse_snippet({ trig = "dss", name = "Standard Entropy" }, "\\Delta H^{0}$1"),
 	ls.parser.parse_snippet({ trig = "dha", name = "Standard Entalpy" }, "\\Delta H^{0}$1"),
+	ls.parser.parse_snippet({ trig = "mit", name = "italic math" }, "\\mathit{${1:${TM_SELECTED_TEXT}}} $0"),
 }
 
 return math_i
