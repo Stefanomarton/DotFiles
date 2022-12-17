@@ -2,3 +2,5 @@
 .config/ranger/colorschemes/__pycache__/__init__.cpython-310.opt-1.pyc
 .config/ranger/colorschemes/__pycache__/dracula.cpython-310.opt-1.pyc
 .config/ranger/plugins/__pycache__
+.config/ranger/colorschemes/__pycache__
+.config/ranger/plugins/fzf_marks/__pycache__
