@@ -20,6 +20,7 @@ export ZDOTDIR="$HOME"/.config/zsh
 
 
 export BW_SESSION="B6o+4VlAgK/+ne9t+IItf5viLHkYhlsCoS/dAtNu35wUwgcillYuCMkr075RtNQ9vaQRj2dFhU0iHhwrA/McUg=="
+export FZF_MARKS_FILE="$XDG_CONFIG_HOME"/fzf-marks/bookmarks
 
 
 autoload -U colors && colors
@@ -225,6 +226,7 @@ zpico add qoomon/zsh-lazyload
 zpico add zsh-users/zsh-autosuggestions
 zpico add zsh-users/zsh-completions
 zpico add hlissner/zsh-autopair
+zpico add urbainvaes/fzf-marks
 
 zpico add IngoMeyer441/zsh-easy-motion
 EASY_MOTION_TARGET_KEYS="asdghklqwertyuiopzxcvbnmfj;"
