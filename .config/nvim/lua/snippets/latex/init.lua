@@ -41,6 +41,10 @@ M.setup = function(opts)
 		ls.parser.parse_snippet({ trig = ";s", name = "Section" }, "\\section{${1}}"),
 		ls.parser.parse_snippet({ trig = ";ss", name = "Subsection" }, "\\subsection{${1}}"),
 		ls.parser.parse_snippet({ trig = ";sss", name = "Subsubsection" }, "\\subsubsection{${1}}"),
+		ls.parser.parse_snippet(
+			{ trig = ";fig", name = "Subsubsection" },
+			"\\begin{figure}[H]\n\\centering\n\\includegraphics[height = 0.3\\textheight]{$1}\n\\end{figure} "
+		),
 	})
 
 	local math_i = require("snippets.latex.math_i")

@@ -13,7 +13,7 @@ vim.g.vimtex_quickfix_enabled = 1
 vim.g.vimtex_env_change_autofill = "gather*"
 
 vim.g.vimtex_imaps_leader = ";"
-vim.g.vimtex_imaps_enabled = 1
+vim.g.vimtex_imaps_enabled = 0
 vim.g.tex_IgnoredWarnings = 1
 --vim.g.vimtex_imaps_list = 1
 -- vim.vimtex_log_ignore = 1

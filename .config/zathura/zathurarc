@@ -34,4 +34,4 @@ set scroll-full-overlap 0.01
 
 set dbus-service true
 set synctex true
-set synctex-editor-command "gvim --remote-silent +%{line} %{input}"
+set synctex-editor-command "nvim --remote-silent +%{line} %{input}"

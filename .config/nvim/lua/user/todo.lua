@@ -1,6 +1,6 @@
 require("todo-comments").setup({
 	signs = true, -- show icons in the signs column
-	sign_priority = 8, -- sign priority --T O D O
+	sign_priority = 8, -- sign priority
 	-- keywords recognized as todo comments
 	keywords = {
 		FIX = {
@@ -9,7 +9,7 @@ require("todo-comments").setup({
 			alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
 			-- signs = false, -- configure signs for some keywords individually
 		},
-		TODO = { icon = " ", color = "info" },
+		TODO = { icon = " ", color = "warning" },
 		HACK = { icon = " ", color = "warning" },
 		WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
 		PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
@@ -32,7 +32,7 @@ require("todo-comments").setup({
 		before = "", -- "fg" or "bg" or empty
 		keyword = "wide", -- "fg", "bg", "wide", "wide_bg", "wide_fg" or empty. (wide and wide_bg is the same as bg, but will also highlight surrounding characters, wide_fg acts accordingly but with fg)
 		after = "fg", -- "fg" or "bg" or empty
-		pattern = [[.*<(KEYWORDS)\s*:]], -- pattern or table of patterns, used for highlightng (vim regex)
+		pattern = [[.*<(KEYWORDS)\s*]], -- pattern or table of patterns, used for highlightng (vim regex)
 		comments_only = true, -- uses treesitter to match keywords in comments only
 		max_line_len = 400, -- ignore lines longer than this
 		exclude = {}, -- list of file types to exclude highlighting
@@ -41,7 +41,7 @@ require("todo-comments").setup({
 	-- list of highlight groups or use the hex color if hl not found as a fallback
 	colors = {
 		error = { "DiagnosticError", "ErrorMsg", "#DC2626" },
-		warning = { "DiagnosticWarning", "WarningMsg", "#FBBF24" },
+		warning = { "DiagnosticWarn", "WarningMsg", "#FBBF24" },
 		info = { "DiagnosticInfo", "#2563EB" },
 		hint = { "DiagnosticHint", "#10B981" },
 		default = { "Identifier", "#7C3AED" },
@@ -58,7 +58,7 @@ require("todo-comments").setup({
 		},
 		-- regex that will be used to match keywords.
 		-- don't replace the (KEYWORDS) placeholder
-		pattern = [[\b(KEYWORDS):]], -- ripgrep regex
+		pattern = [[\b(KEYWORDS)]], -- ripgrep regex
 		-- pattern = [[\b(KEYWORDS)\b]], -- match without the extra colon. You'll likely get false positives
 	},
 })
