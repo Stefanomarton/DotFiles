@@ -52,6 +52,16 @@ wk.register({
 	},
 })
 
+wk.register({
+	v = {
+		name = "VimTeX",
+		t = { ":VimtexToggleMain<cr>", "Toggle Master document", opts },
+		c = { ":VimtexClean<cr>", "Clean", opts },
+		o = { ":VimtexTocOpen<cr>", "Open Outline of the document", opts },
+		e = { ":VimtexErrors<cr>", "Errors", opts },
+	},
+})
+
 -- Surround current enviroment with a new enviroment
 wk.register({
 	a = {
