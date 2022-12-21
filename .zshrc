@@ -1,22 +1,24 @@
 #> RC - XDG Spec
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_STATE_HOME=$HOME/.local/state
+ export XDG_CONFIG_HOME=$HOME/.config
+ export XDG_CACHE_HOME=$HOME/.cache
+ export XDG_DATA_HOME=$HOME/.local/share
+ export XDG_STATE_HOME=$HOME/.local/state
 
-#>>> XDG - ENV
-# source "$XDG_CONFIG_HOME"/zsh/xdg-env
-export ANDROID_HOME="$XDG_DATA_HOME"/android
-export HISTFILE="$XDG_STATE_HOME"/bash/history
-export HISTFILE="$XDG_STATE_HOME"/zsh/history
-export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
-export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
+# #>>> XDG - ENV
+ source "$XDG_CONFIG_HOME"/zsh/xdg-env
+export ANDROID_HOME="$XDG_DATA_HOME"/android export HISTFILE="$XDG_STATE_HOME"/bash/history export HISTFILE="$XDG_STATE_HOME"/zsh/history export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export ZDOTDIR="$HOME"/.config/zsh 
+export STARSHIP_CONFIG="$XDG_CONFIG_HOME"/starship.toml
+PATH="/home/stefanomarton/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/stefanomarton/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/stefanomarton/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/stefanomarton/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/stefanomarton/perl5"; export PERL_MM_OPT;
 
 
 export BW_SESSION="B6o+4VlAgK/+ne9t+IItf5viLHkYhlsCoS/dAtNu35wUwgcillYuCMkr075RtNQ9vaQRj2dFhU0iHhwrA/McUg=="
@@ -28,14 +30,14 @@ autoload -U colors && colors
 # Vim mode
 bindkey -v
 bindkey -v '^?' backward-delete-char
-
-# Keybindings
+#
+# # Keybindings
 bindkey "^a" beginning-of-line
 bindkey "^e" end-of-line
 bindkey '^I' expand-or-complete-prefix
-
-# Alias
-# alias cp= "cp -r"
+#
+# # Alias
+alias cp= "cp -r"
 alias -g mkd= "mkdir -p -v"
 alias ka= "killall"
 alias v="nvim"
@@ -58,21 +60,20 @@ alias -g df="dotfiles"
 alias -g V="sudoedit"
 alias -s {yml,yaml,lua,c,tex}=nvim #Auto open file with nvim based on extension
 alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings"
-
 alias -g lg="lazygit"
 
 # Variables
 export EDITOR='nvim'
-export PAGER='emacs'
+export PAGER='less'
 HISTFILE=~/.zsh_history
 HISTSIZE=100000000
 SAVEHIST=100000000
-
-# Compilation flags
-export ARCHFLAGS="-arch x86_64"
-
+#
+# # Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+#
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
+#
 path+=('~/bin')
 path+=('/home/stefanomarton/Scripts/')
 path+=('/home/stefanomarton/go/bin')
@@ -80,10 +81,10 @@ path+=('/home/stefanomarton/.cargo/bin')
 path+=('/home/stefanomarton/.local/bin')
 path+=('/home/stefanomarton/.local/share/gem/ruby/3.0.0/bin')
 export PATH
-
+#
 setopt autocd autopushd 
-
-## Use ranger to switch diurectories and bind it to ctrl-o
+#
+# ## Use ranger to switch diurectories and bind it to ctrl-o
 rng () {
     tmp="$(mktemp)"
     ranger --choosedir="$tmp" "$@"
@@ -94,11 +95,7 @@ rng () {
     fi
     }
 bindkey -s '^u' 'rng\n'
-
-#fzfpier
-pierfzf() {                                                  pier $(pier -c ~/.config/pier/config.toml list | awk NR\>2 | fzf | awk '{print $1}')
-}
-
+bindkey -s '^f' 'rng --cmd=fzm \n'
 ### FZF Shortcuts
 # The code at the top and the bottom of this file is the same as in completion.zsh.
 if 'zmodload' 'zsh/parameter' 2>'/dev/null' && (( ${+options} )); then
@@ -227,7 +224,7 @@ zpico add zsh-users/zsh-autosuggestions
 zpico add zsh-users/zsh-completions
 zpico add hlissner/zsh-autopair
 zpico add urbainvaes/fzf-marks
-
+#
 zpico add IngoMeyer441/zsh-easy-motion
 EASY_MOTION_TARGET_KEYS="asdghklqwertyuiopzxcvbnmfj;"
 EASY_MOTION_DIM="fg=242"
@@ -242,14 +239,5 @@ setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
 setopt APPEND_HISTORY            # append to history file
 
-eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
-
-
-
-PATH="/home/stefanomarton/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/stefanomarton/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/stefanomarton/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/stefanomarton/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/stefanomarton/perl5"; export PERL_MM_OPT;

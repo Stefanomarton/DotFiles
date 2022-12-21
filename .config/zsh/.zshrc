@@ -18,7 +18,9 @@ export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export ZDOTDIR="$HOME"/.config/zsh 
 
+
 export BW_SESSION="B6o+4VlAgK/+ne9t+IItf5viLHkYhlsCoS/dAtNu35wUwgcillYuCMkr075RtNQ9vaQRj2dFhU0iHhwrA/McUg=="
+export FZF_MARKS_FILE="$XDG_CONFIG_HOME"/fzf-marks/bookmarks
 
 
 autoload -U colors && colors
@@ -49,7 +51,7 @@ alias gc="git commit"
 # alias -g pwd="ptpwd"
 alias -g ls="ptls"
 alias -g ptcp="cp"
-alias -g pmi="~/Scripts/pmi"
+alias pmi="~/Scripts/pmi"
 alias -g pmr="~/Scripts/pmr"
 alias -g c="clear"
 alias -g df="dotfiles"
@@ -60,7 +62,8 @@ alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settin
 alias -g lg="lazygit"
 
 # Variables
-export EDITOR='neovide --multigrid --novsync'
+export EDITOR='nvim'
+export PAGER='emacs'
 HISTFILE=~/.zsh_history
 HISTSIZE=100000000
 SAVEHIST=100000000
@@ -223,6 +226,7 @@ zpico add qoomon/zsh-lazyload
 zpico add zsh-users/zsh-autosuggestions
 zpico add zsh-users/zsh-completions
 zpico add hlissner/zsh-autopair
+zpico add urbainvaes/fzf-marks
 
 zpico add IngoMeyer441/zsh-easy-motion
 EASY_MOTION_TARGET_KEYS="asdghklqwertyuiopzxcvbnmfj;"
@@ -238,7 +242,7 @@ setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
 setopt APPEND_HISTORY            # append to history file
 
-eval "$(zoxide init zsh)"
+# eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
 
