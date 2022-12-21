@@ -336,3 +336,11 @@ ls
 v .config/nushell/env.nu
 q
 ls
+zsh
+bash
+ls
+cd .config/
+ls
+cd
+ls
+cd
