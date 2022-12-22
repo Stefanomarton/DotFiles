@@ -64,7 +64,9 @@ for _, plugin in pairs(disabled_built_ins) do
 	vim.g["loaded_" .. plugin] = 1
 end
 
-local neovide = vim.g.neovide == 1
+local nocode = function()
+	return vim.fn.exists("g:vscode") == 0
+end
 
 return packer.startup(function(use)
 	use({ "wbthomason/packer.nvim" })
@@ -96,6 +98,7 @@ return packer.startup(function(use)
 		config = function()
 			require("user.treesitter")
 		end,
+		run = ":TSUpdate",
 	})
 
 	use({
@@ -125,6 +128,7 @@ return packer.startup(function(use)
 			require("user.deco.feline")
 		end,
 	})
+	use("shaunsingh/nord.nvim")
 
 	use({ "folke/tokyonight.nvim" })
 	-- If you are using Packer
@@ -154,24 +158,6 @@ return packer.startup(function(use)
 			require("gitsigns").setup()
 		end,
 	})
-	use({
-		"petertriho/nvim-scrollbar",
-		config = function()
-			require("user.deco.scrollbar")
-		end,
-	})
-
-	-- use({
-	-- 	"folke/noice.nvim",
-	--
-	-- 	config = function()
-	-- 		require("user.deco.noice")
-	-- 	end,
-	-- 	--event = "BufEnter",
-	-- 	requires = {
-	-- 		"MunifTanjim/nui.nvim",
-	-- 	},
-	-- })
 
 	use({
 		"folke/todo-comments.nvim",

@@ -18,18 +18,17 @@ require("null-ls").setup({
 				group = augroup,
 				buffer = bufnr,
 				callback = function()
-					vim.lsp.buf.format({async = true})
+					vim.lsp.buf.format({ async = true })
 				end,
 			})
 		end
 	end,
 	debug = false,
 	sources = {
-		formatting.prettier.with({ extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } }),
+		-- formatting.prettier.with({ extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } }),
 		--formatting.black.with({ extra_args = { "--fast" } }),
 		formatting.stylua,
-		-- diagnostics.chktex,
-	--formatting.latexindent.with({ extra_args = { "-m" } }),
+		--formatting.latexindent.with({ extra_args = { "-m" } }),
 		formatting.markdownlint,
 	},
 })

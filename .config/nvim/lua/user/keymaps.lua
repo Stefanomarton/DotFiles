@@ -11,18 +11,9 @@ local wk = require("which-key")
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 
--- Modes
---   normal_mode = "n",
---   insert_mode = "i",
---   visual_mode = "v",
---   visual_block_mode = "x",
---   term_mode = "t",
---   command_mode = "c",
-
 -- Normal --
 
 -- Faster movements
-
 keymap("n", "m", "$", opts)
 
 keymap("n", "q", "b", opts)
@@ -31,9 +22,22 @@ keymap("n", "Q", "B", opts)
 keymap("x", "Q", "B", opts)
 keymap("n", "1", "$", opts)
 
+keymap("v", "J", ":m '>+1<CR>gv=gv")
+keymap("v", "K", ":m '<-2<CR>gv=gv")
+
+keymap("n", "<C-d>", "<C-D>zz")
+keymap("n", "<C-u>", "<C-u>zz")
+keymap("n", "J", "mzJ`z") -- The cursor remain in the same position
+keymap("n", "n", "nzzzv")
+keymap("n", "N", "Nzzzv")
+
 -- Delete
 keymap("n", "dq", "db", opts)
 keymap("n", "dQ", "dB", opts)
+keymap("x", "<leader>d", '"_d', opts)
+
+-- Paste
+keymap("x", "<leader>p", '"_dP', opts)
 
 --Save and close
 keymap("n", "<leader>w", ":w<cr>", opts)
@@ -56,7 +60,7 @@ keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
 -- Clear highlights
-keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
+keymap("n", "<esc>", "<cmd>nohlsearch<CR>", opts)
 
 -- Close buffers
 keymap("n", "<leader>qa", ":x<cr>", opts)
@@ -65,8 +69,6 @@ keymap("n", "<leader>qa", ":x<cr>", opts)
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
-
--- Plugins --
 
 -- Telescope file_browser
 keymap("n", "<leader>e", ":Telescope file_browser<CR>", opts)
@@ -78,7 +80,7 @@ wk.register({
 
 -- Hop
 keymap("x", "F", ":HopWord<Cr>", opts)
-keymap("n", "m", ":HopChar1<Cr>", opts)
+-- keymap("n", "m", ":HopChar1<Cr>", opts)
 
 wk.register({
 	f = {
@@ -90,12 +92,12 @@ wk.register({
 	},
 }, { prefix = "<leader>" })
 
--- keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
--- keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
--- keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
--- keymap("n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
--- keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
--- keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+keymap("n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 keymap("n", "<leader>pf", "<cmd>lua vim.lsp.buf.format({async= true})<cr>", opts)
 keymap("n", "<leader>pi", "<cmd>LspInfo<cr>", opts)
 keymap("n", "<leader>pI", "<cmd>Mason<cr>", opts)

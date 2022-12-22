@@ -3,7 +3,9 @@ local servers = {
 	"texlab",
 	"pyright",
 	"jsonls",
-  "marksman"
+	"marksman",
+	"bashls",
+	"ltex",
 }
 
 local settings = {

@@ -60,7 +60,7 @@ wk.register({
 		o = { ":VimtexTocOpen<cr>", "Open Outline of the document", opts },
 		e = { ":VimtexErrors<cr>", "Errors", opts },
 	},
-})
+}, { prefix = "<leader>" })
 
 -- Surround current enviroment with a new enviroment
 wk.register({
