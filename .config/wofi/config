@@ -1,0 +1,48 @@
+prompt=
+exec_search=false
+hide_scroll=true
+matching=contain
+insensitive=true
+width=30%
+lines=3 
+columns=2
+/* sort_order=ORDER */
+/*        Specifies  the  default  sort  order.  There  are currently two orders, default and */
+/*        alphabetical. See wofi(7) for details. */
+/**/
+/* gtk_dark=true
+/*        If true, instructs wofi to use the dark  variant  of  the  current  GTK  theme  (if */
+/*        available). Default is false. */
+orientation=vertical
+/*        Specifies  the  orientation,  it  can  be either horizontal or vertical, default is */
+/*        vertical. */
+/**/
+halign=default
+content_halign=center
+valign=center
+/* filter_rate=RATE */
+/*        Specifies the rate at which search results are updated in milliseconds, default  is */
+/*        100. */
+/**/
+/* image_size=SIZE */
+/*        Specifies the size of images in pixels when images are enabled, default is 32. */
+/**/
+/* line_wrap=MODE */
+/*        Specifies  the  line  wrap  mode  to  use.  The  options  are  off, word, char, and */
+/*        word_char. Default is off. */
+/**/
+/* global_coords=BOOL */
+/*        Specifies whether x and y offsets should be calculated using the global  compositor */
+/*        space  instead  of  the  current monitor. Default is false. This does not play well */
+/*        with locations and using it with them is not advised. */
+/**/
+hide_search=true
+/*        Specifies whether the search bar should be hidden. Default is false. */
+/**/
+/* dynamic_lines=BOOL */
+/*        Specifies whether wofi should be dynamically shrunk to fit the  number  of  visible */
+/*        lines or if it should always stay the same size. Default is false. */
+/**/
+/* layer=LAYER */
+/*        Specifies  the  layer  to  open  on.  The  options are background, bottom, top, and */
+/*        overlay. Default is top */

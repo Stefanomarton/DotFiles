@@ -180,6 +180,7 @@ _comps=(
 'cmp' '_cmp'
 'co' '_rcs'
 'code' '_code'
+'code-oss' '_code-oss'
 'column' '_column'
 'comb' '_sccs'
 'combine' '_imagemagick'
@@ -1206,8 +1207,6 @@ _comps=(
 'svnliteadmin' '_subversion'
 'swaks' '_swaks'
 'swanctl' '_swanctl'
-'sway' '_sway'
-'swaymsg' '_swaymsg'
 'swift' '_swift'
 'swiftc' '_swift'
 'swww' '_swww'
@@ -1671,13 +1670,13 @@ bindkey '^[/' _history-complete-older
 bindkey '^[~' _bash_complete-word
 
 autoload -Uz _archinstallscripts _autorandr _bat _bootctl _busctl \
-            _bwrap _cargo _coredumpctl _curl _helix \
-            _highlight _hostnamectl _hugo _journalctl _kernel-install \
-            _kitty _libinput _localectl _loginctl _luarocks \
-            _luarocks-admin _machinectl _mkinitcpio _networkctl _ninja \
-            _oomctl _pacman _playerctl _pulseaudio _resolvectl \
-            _rg _sd_hosts_or_user_at_host _sd_machines _sd_outputmodes _sd_unit_files \
-            _sway _swaymsg _swww _systemctl _systemd \
+            _bwrap _cargo _code _code-oss _coredumpctl \
+            _curl _helix _highlight _hostnamectl _hugo \
+            _journalctl _kernel-install _kitty _libinput _localectl \
+            _loginctl _luarocks _luarocks-admin _machinectl _mkinitcpio \
+            _networkctl _ninja _oomctl _pacman _playerctl \
+            _pulseaudio _resolvectl _rg _sd_hosts_or_user_at_host _sd_machines \
+            _sd_outputmodes _sd_unit_files _swww _systemctl _systemd \
             _systemd-analyze _systemd-delta _systemd-inhibit _systemd-nspawn _systemd-path \
             _systemd-run _systemd-tmpfiles _timedatectl _udevadm _wl-copy \
             _wl-paste _yay _zathura _zoxide _cdr \
