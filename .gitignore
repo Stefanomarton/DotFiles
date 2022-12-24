@@ -4,3 +4,4 @@
 .config/ranger/plugins/__pycache__
 .config/ranger/colorschemes/__pycache__
 .config/ranger/plugins/fzf_marks/__pycache__
+.config/ranger/plugins/devicons2/__pycache__
