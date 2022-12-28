@@ -92,6 +92,10 @@ wk.register({
 	},
 }, { prefix = "<leader>" })
 
+wk.register({
+	g = { ":LazyGitCurrentFile<cr>", "Open live grep", opts },
+}, { prefix = "<leader>" })
+
 keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
 keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
