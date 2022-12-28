@@ -8,6 +8,7 @@ xrandr --output DVI-D-0 --mode 1920x1080 --pos 4520x0 --rotate right --output DP
 
     sleep 10 &
 		feh --bg-fill /home/stefanomarton/Media/ThemeThings/NordicWallpapers/ign_unsplash35.png &
+		picom &
     xmodmap ~/.config/X11/.XmodmapDesktop & 
 		xset r rate 300 60 &
     exec dwm
