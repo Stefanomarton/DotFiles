@@ -64,7 +64,7 @@ alias -g lg="lazygit"
 
 # Variables
 export EDITOR='nvim'
-export PAGER='less'
+export PAGER='moar -colors "auto" -no-statusbar'
 HISTFILE=~/.zsh_history
 HISTSIZE=100000000
 SAVEHIST=100000000
