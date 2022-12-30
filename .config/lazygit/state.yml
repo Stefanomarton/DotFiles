@@ -1,9 +1,10 @@
 lastupdatecheck: 0
 recentrepos:
 - /home/stefanomarton/DotFiles
+- /home/stefanomarton/GoogleDrive/Projects/SMABS
+- /home/stefanomarton/DotFiles/.misc/qmk
 - /home/stefanomarton/GoogleDrive/Projects/FormulasForLife
 - /home/stefanomarton/GitThings/FFF-Manufacturing
-- /home/stefanomarton/GoogleDrive/Projects/SMABS
 startuppopupversion: 5
 customcommandshistory:
 - 'add: emacs config, fix: nvim config for luasnip latex snippets'
