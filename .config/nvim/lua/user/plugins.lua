@@ -364,6 +364,8 @@ The Core plugins
 		end,
 	})
 
+	use("kdheepak/lazygit.nvim")
+
 	if PACKER_BOOTSTRAP then
 		require("packer").sync()
 	end
