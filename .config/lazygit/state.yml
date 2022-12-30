@@ -4,7 +4,6 @@ recentrepos:
 - /home/stefanomarton/GoogleDrive/Projects/FormulasForLife
 - /home/stefanomarton/GitThings/FFF-Manufacturing
 - /home/stefanomarton/GoogleDrive/Projects/SMABS
-- /home/stefanomarton/GitThings/qmk_firmware
 startuppopupversion: 5
 customcommandshistory:
 - 'add: emacs config, fix: nvim config for luasnip latex snippets'
