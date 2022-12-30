@@ -17,7 +17,7 @@ add_newline = true
               disabled = false
         success_symbol = '[λ](bold green)[ ~](fg:#ffffff)'
           error_symbol = '[λ](fg:#ffffff)[ ~](fg:#ff0000)'
-          vicmd_symbol = '[λ](fg:#1ef956)[ |](fg:#ffffff)'
+          vicmd_symbol = '[λ](fg:#bf616a)[ |](fg:#ffffff)'
   
 [hostname]
               disabled = true
