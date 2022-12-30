@@ -43,6 +43,7 @@ gui:
 git:
   paging:
     colorArg: always
+    pager: delta -s --dark --paging=never --syntax-theme="Coldark-Dark" --minus-style="syntax red" --plus-style="syntax seagreen"
     useConfig: false
   commit:
     signOff: false
