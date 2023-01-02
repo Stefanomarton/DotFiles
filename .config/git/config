@@ -2,7 +2,7 @@
 	email = sstefanomarton@gmail.com
 	name = Stefanomarton
 [init]
-	defaultBranch = master
+	defaultbranch = master
 [credential]
 	helper = /usr/bin/git-credential-manager
 	credentialStore = cache
