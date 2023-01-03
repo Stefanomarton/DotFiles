@@ -5,6 +5,10 @@ local fb_utils = require("telescope._extensions.file_browser.utils")
 
 require("telescope").setup({
 	defaults = {
+		winblend = 0,
+		path_display = { "truncate" },
+		borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+		color_devicons = true,
 		layout_config = {
 			vertical = { width = 0.5 },
 		},

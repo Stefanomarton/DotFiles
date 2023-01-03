@@ -64,10 +64,6 @@ for _, plugin in pairs(disabled_built_ins) do
 	vim.g["loaded_" .. plugin] = 1
 end
 
-local nocode = function()
-	return vim.fn.exists("g:vscode") == 0
-end
-
 return packer.startup(function(use)
 	use({ "wbthomason/packer.nvim" })
 	use({ "nvim-lua/plenary.nvim" })
@@ -122,10 +118,14 @@ return packer.startup(function(use)
 
 	--Colorscheme and deco stuff
 	use({
-		"feline-nvim/feline.nvim",
-		after = "tokyonight.nvim",
+		"nvim-lualine/lualine.nvim",
+		after = "nord.nvim",
 		config = function()
-			require("user.deco.feline")
+			require("lualine").setup({
+				options = {
+					theme = "nord",
+				},
+			})
 		end,
 	})
 	use("shaunsingh/nord.nvim")
@@ -268,7 +268,7 @@ The Core plugins
 
 	use({
 		"phaazon/hop.nvim",
-		branch = "v2", -- optional but strongly recommended
+		-- branch = "v2", -- optional but strongly recommended
 		config = function()
 			-- you can configure Hop the way you like here; see :h hop-config
 			require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
@@ -353,7 +353,7 @@ The Core plugins
 				imaps = {
 					enabled = false,
 					add = {},
-					default_leader = "`",
+					default_leader = ";",
 				},
 				surrounds = {
 					enabled = false,
@@ -370,5 +370,3 @@ The Core plugins
 		require("packer").sync()
 	end
 end)
-
--- T O D O
