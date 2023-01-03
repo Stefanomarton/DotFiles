@@ -917,6 +917,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Return,     spawn,                  {.v = termcmd } },
 	{ MODKEY,                       XK_f,          spawn,                  {.v = firefoxcmd } },
 	{ MODKEY,                       XK_s,          spawn,                  {.v = screencmd } },
+	{ MODKEY|ControlMask,           XK_f,          spawn,                  SHCMD("/home/stefanomarton/Scripts/searchOnFirefox.sh")},
 	#if RIODRAW_PATCH
 	{ MODKEY|ControlMask,           XK_p,          riospawnsync,           {.v = dmenucmd } },
 	{ MODKEY|ControlMask,           XK_Return,     riospawn,               {.v = termcmd } },
