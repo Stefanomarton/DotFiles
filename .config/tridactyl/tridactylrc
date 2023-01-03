@@ -1,3 +1,6 @@
+"" colorscheme
+set colourscheme mytheme
+
 "" BINDINGS ""
 "" Open the selection in a new tab
 bind --mode=visual t composite js document.getSelection().toString() | tabopen
@@ -22,7 +25,7 @@ js tri.browserBg.runtime.getPlatformInfo().then(os=>{const editorcmd = os.os=="l
  
 "" Sane hinting mode
 set hintfiltermode vimperator-reflow
-set hintnames numeric
+set hintnames uniform
  
 "" Defaults to 300ms but I'm a 'move fast and close the wrong tabs' kinda chap
 set hintdelay 100
@@ -37,3 +40,4 @@ command translate js let googleTranslateCallback = document.createElement('scrip
 "" For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
 "" vim: set filetype=tridactyl
 autocmd DocStart ^http(s?)://www.reddit.com js tri.excmds.urlmodify("-t", "www", " ")
+
