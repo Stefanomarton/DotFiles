@@ -1,9 +1,11 @@
 require("scrollbar").setup({
 	show = true,
-	show_in_active_only = false,
+	show_in_active_only = true,
 	set_highlights = true,
 	folds = 1000, -- handle folds, set to number to disable folds if no. of lines in buffer exceeds this
 	max_lines = false, -- disables if no. of lines in buffer exceeds this
+	hide_if_all_visible = true, -- Hides everything if all lines are visible
+	throttle_ms = 100,
 	handle = {
 		text = " ",
 		color = nil,
@@ -61,27 +63,27 @@ require("scrollbar").setup({
 			cterm = nil,
 			highlight = "Normal",
 		},
-		GitAdd = {
-			text = "┆",
-			priority = 7,
-			color = nil,
-			cterm = nil,
-			highlight = "GitSignsAdd",
-		},
-		GitChange = {
-			text = "┆",
-			priority = 7,
-			color = nil,
-			cterm = nil,
-			highlight = "GitSignsChange",
-		},
-		GitDelete = {
-			text = "▁",
-			priority = 7,
-			color = nil,
-			cterm = nil,
-			highlight = "GitSignsDelete",
-		},
+		-- GitAdd = {
+		-- 	text = "┆",
+		-- 	priority = 7,
+		-- 	color = nil,
+		-- 	cterm = nil,
+		-- 	highlight = "GitSignsAdd",
+		-- },
+		-- GitChange = {
+		-- 	text = "┆",
+		-- 	priority = 7,
+		-- 	color = nil,
+		-- 	cterm = nil,
+		-- 	highlight = "GitSignsChange",
+		-- },
+		-- GitDelete = {
+		-- 	text = "▁",
+		-- 	priority = 7,
+		-- 	color = nil,
+		-- 	cterm = nil,
+		-- 	highlight = "GitSignsDelete",
+		-- },
 	},
 	excluded_buftypes = {
 		"terminal",
@@ -115,5 +117,6 @@ require("scrollbar").setup({
 		gitsigns = false, -- Requires gitsigns
 		handle = true,
 		search = false, -- Requires hlslens
+		ale = false, -- Requires ALE
 	},
 })

@@ -130,6 +130,42 @@ return packer.startup(function(use)
 	})
 	use("shaunsingh/nord.nvim")
 
+	use({
+		"petertriho/nvim-scrollbar",
+		config = function()
+			require("user.deco.scrollbar")
+		end,
+	})
+
+	use({
+		"declancm/cinnamon.nvim",
+		config = function()
+			require("cinnamon").setup({
+				default_keymaps = true, -- Create default keymaps.
+				extra_keymaps = false, -- Create extra keymaps.
+				extended_keymaps = true, -- Create extended keymaps.
+				override_keymaps = true, -- The plugin keymaps will override any existing keymaps.
+				always_scroll = true, -- Scroll the cursor even when the window hasn't scrolled.
+				centered = true, -- Keep cursor centered in window when using window scrolling.
+				disabled = false, -- Disables the plugin.
+				default_delay = 5, -- The default delay (in ms) between each line when scrolling.
+				hide_cursor = true, -- Hide the cursor while scrolling. Requires enabling termguicolors!
+				horizontal_scroll = true, -- Enable smooth horizontal scrolling when view shifts left or right.
+				max_length = 300, -- Maximum length (in ms) of a command. The line delay will be
+				-- re-calculated. Setting to -1 will disable this option.
+				scroll_limit = 150, -- Max number of lines moved before scrolling is skipped. Setting
+				-- to -1 will disable this option.
+			})
+		end,
+	})
+
+	use({
+		"kevinhwang91/nvim-hlslens",
+		config = function()
+			require("hlslens").setup()
+		end,
+	})
+
 	use({ "folke/tokyonight.nvim" })
 	-- If you are using Packer
 	use({
@@ -365,6 +401,12 @@ The Core plugins
 	})
 
 	use("kdheepak/lazygit.nvim")
+	use({
+		"SmiteshP/nvim-navic",
+		config = function()
+			require("nvim-navic").setup()
+		end,
+	})
 
 	if PACKER_BOOTSTRAP then
 		require("packer").sync()

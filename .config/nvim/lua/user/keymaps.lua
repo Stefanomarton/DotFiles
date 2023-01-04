@@ -25,8 +25,8 @@ keymap("n", "1", "$", opts)
 keymap("v", "J", ":m '>+1<CR>gv=gv")
 keymap("v", "K", ":m '<-2<CR>gv=gv")
 
-keymap("n", "<C-d>", "<C-D>zz")
-keymap("n", "<C-u>", "<C-u>zz")
+-- keymap("n", "<C-d>", "<C-D>zz")
+-- keymap("n", "<C-u>", "<C-u>zz")
 keymap("n", "J", "mzJ`z") -- The cursor remain in the same position
 keymap("n", "n", "nzzzv")
 keymap("n", "N", "Nzzzv")
@@ -111,3 +111,6 @@ keymap("n", "<leader>pk", "<cmd>lua vim.diagnostic.goto_prev({buffer=0})<cr>", o
 keymap("n", "<leader>pr", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
 -- keymap("n", "<leader>ps", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 keymap("n", "<leader>pq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+
+vim.api.nvim_set_keymap("n", "*", [[*<Cmd>lua require('hlslens').start()<CR>]], opts)
+vim.api.nvim_set_keymap("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]], opts)

@@ -1,3 +1,4 @@
+local navic = require("nvim-navic")
 local M = {}
 
 local status_cmp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
@@ -23,7 +24,7 @@ M.setup = function()
 	end
 
 	local config = {
-		virtual_text = false, -- disable virtual text
+		virtual_text = true, -- disable virtual text
 		signs = {
 			active = signs, -- show signs
 		},
@@ -80,12 +81,8 @@ M.on_attach = function(client, bufnr)
 		client.server_capabilities.documentFormattingProvider = false
 	end
 
-	lsp_keymaps(bufnr)
-	local status_ok, illuminate = pcall(require, "illuminate")
-	if not status_ok then
-		return
+	if client.server_capabilities.documentSymbolProvider then
+		navic.attach(client, bufnr)
 	end
-	illuminate.on_attach(client)
 end
-
 return M
