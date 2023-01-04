@@ -9,6 +9,7 @@ xrandr --output DVI-D-0 --mode 1920x1080 --pos 4520x0 --rotate right --output DP
 		xset r rate 150 50 &
 		ferdium &
 		flameshot &
+		redshift -l 45.69651:9.1818 &
 		insync start &
 		while true; do 
 				xsetroot -name "$(date +"%A %B %d, %H:%M")"
