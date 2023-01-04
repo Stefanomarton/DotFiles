@@ -1,5 +1,0 @@
-return {
-	settings = {
-		language = { "it" },
-	},
-}
