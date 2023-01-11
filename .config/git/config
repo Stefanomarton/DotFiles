@@ -3,6 +3,8 @@
 	name = Stefanomarton
 [init]
 	defaultbranch = master
-[credential]
-	helper = /usr/bin/git-credential-manager
-	credentialStore = cache
+
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+ 	credentialStore = cache
