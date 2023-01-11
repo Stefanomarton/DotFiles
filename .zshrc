@@ -6,7 +6,11 @@ export XDG_STATE_HOME=$HOME/.local/state
 
 # #>>> XDG - ENV
 source "$XDG_CONFIG_HOME"/zsh/xdg-env
-export ANDROID_HOME="$XDG_DATA_HOME"/android export HISTFILE="$XDG_STATE_HOME"/bash/history export HISTFILE="$XDG_STATE_HOME"/zsh/history export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
+export ANDROID_HOME="$XDG_DATA_HOME"/android
+export HISTFILE="$XDG_STATE_HOME"/bash/history
+export HISTFILE="$XDG_STATE_HOME"/zsh/history
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
@@ -16,13 +20,6 @@ export ZDOTDIR="$HOME"/.config/zsh
 export STARSHIP_CONFIG="$XDG_CONFIG_HOME"/starship.toml
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export GOPATH="$XDG_DATA_HOME"/go
-PATH="/home/stefanomarton/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/stefanomarton/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/stefanomarton/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/stefanomarton/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/stefanomarton/perl5"; export PERL_MM_OPT;
-
-
 export BW_SESSION="B6o+4VlAgK/+ne9t+IItf5viLHkYhlsCoS/dAtNu35wUwgcillYuCMkr075RtNQ9vaQRj2dFhU0iHhwrA/McUg=="
 export FZF_MARKS_FILE="$XDG_CONFIG_HOME"/fzf-marks/bookmarks
 export QT_QPA_PLATFORMTHEME="qt5ct"
@@ -33,13 +30,13 @@ autoload -U colors && colors
 # Vim mode
 bindkey -v
 bindkey -v '^?' backward-delete-char
-#
-# # Keybindings
+
+# Keybindings
 bindkey "^a" beginning-of-line
 bindkey "^e" end-of-line
 bindkey '^I' expand-or-complete-prefix
-#
-# # Alias
+
+# Alias
 alias cp= "cp -r"
 alias -g mkd= "mkdir -p -v"
 alias ka= "killall"
@@ -53,13 +50,11 @@ alias L="ptls -a"
 alias gp="git push"
 alias ga="git add"
 alias gc="git commit"
-# alias -g pwd="ptpwd"
 alias -g ls="ptls"
 alias -g ptcp="cp"
 alias pmi="~/Scripts/pmi"
 alias -g pmr="~/Scripts/pmr"
 alias -g c="clear"
-alias -g df="dotfiles"
 alias -g V="sudoedit"
 alias -s {yml,yaml,lua,c,tex}=nvim #Auto open file with nvim based on extension
 alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings"
@@ -72,9 +67,17 @@ export PAGER='moar -colors "auto" -no-statusbar'
 HISTFILE=~/.zsh_history
 HISTSIZE=100000000
 SAVEHIST=100000000
-#
+
+# Function to manage bare repo with and without lazygit
+rp () {
+    lazygit --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
+}
+
+rpg () {
+    git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
+}
+
 # # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
 #
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 #
@@ -214,7 +217,6 @@ export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^v' edit-command-line
 
-
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
@@ -228,19 +230,20 @@ zpico add zsh-users/zsh-autosuggestions
 zpico add zsh-users/zsh-completions
 zpico add hlissner/zsh-autopair
 zpico add urbainvaes/fzf-marks
-#
 zpico add IngoMeyer441/zsh-easy-motion
-EASY_MOTION_TARGET_KEYS="asdghklqwertyuiopzxcvbnmfj;"
-EASY_MOTION_DIM="fg=242"
-EASY_MOTION_HIGHLIGHT="fg=196,bold"
-EASY_MOTION_HIGHLIGHT_2_FIRST="fg=11,bold"
-EASY_MOTION_HIGHLIGHT_2_SECOND="fg=3,bold"
-bindkey -M vicmd ' ' vi-easy-motion
 
 # options
 setopt SHARE_HISTORY
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
 setopt APPEND_HISTORY            # append to history file
+
+EASY_MOTION_TARGET_KEYS="asdghklqwertyuiopzxcvbnmfj;"
+EASY_MOTION_DIM="fg=242"
+EASY_MOTION_HIGHLIGHT="fg=196,bold"
+EASY_MOTION_HIGHLIGHT_2_FIRST="fg=11,bold"
+EASY_MOTION_HIGHLIGHT_2_SECOND="fg=3,bold"
+
+bindkey -M vicmd ' ' vi-easy-motion
 
 eval "$(starship init zsh)"
