@@ -20,7 +20,7 @@ add_newline = true
           vicmd_symbol = '[λ](fg:#bf616a)[ |](fg:#ffffff)'
   
 [hostname]
-              disabled = true
+              disabled = false
                  style = 'fg:#000000 bg:#ff9600'
                 format = '[$ssh_symbol]($style)[$hostname]($style)[ ]($style)'
               ssh_only = false
