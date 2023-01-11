@@ -50,6 +50,9 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 -- Latex compile on save
 vim.cmd("autocmd BufWritePost *.tex :silent VimtexCompile")
 
+-- Disable conceal on md files
+vim.cmd("autocmd BufEnter *.md :set conceallevel=0")
+
 -- -- Autocd for NvimTree
 vim.cmd([[autocmd BufEnter * if &ft != 'help' | silent! cd %:p:h | endif]])
 
