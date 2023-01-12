@@ -1,4 +1,3 @@
-local navic = require("nvim-navic")
 local M = {}
 
 local status_cmp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
@@ -79,10 +78,6 @@ M.on_attach = function(client, bufnr)
 
 	if client.name == "sumneko_lua" then
 		client.server_capabilities.documentFormattingProvider = false
-	end
-
-	if client.server_capabilities.documentSymbolProvider then
-		navic.attach(client, bufnr)
 	end
 end
 return M
