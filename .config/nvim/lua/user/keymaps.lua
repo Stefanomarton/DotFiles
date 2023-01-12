@@ -12,10 +12,7 @@ keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 
 -- Normal --
-
 -- Faster movements
-keymap("n", "m", "$", opts)
-
 keymap("n", "q", "b", opts)
 keymap("x", "q", "b", opts)
 keymap("n", "Q", "B", opts)
@@ -75,12 +72,7 @@ keymap("n", "<leader>e", ":Telescope file_browser<CR>", opts)
 
 wk.register({
 	e = { ":Telescope file_browser<CR>", "File explorer", opts },
-	{ prefix = "<leader>" },
-})
-
--- Hop
-keymap("x", "F", ":HopWord<Cr>", opts)
--- keymap("n", "m", ":HopChar1<Cr>", opts)
+}, { prefix = "<leader>" })
 
 wk.register({
 	f = {

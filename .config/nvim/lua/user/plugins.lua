@@ -66,7 +66,9 @@ end
 
 return packer.startup(function(use)
 	use({ "wbthomason/packer.nvim" })
+
 	use({ "nvim-lua/plenary.nvim" })
+
 	use({ "lewis6991/impatient.nvim" })
 
 	use({
@@ -114,7 +116,6 @@ return packer.startup(function(use)
 			})
 		end,
 	})
-	use({ "nvim-treesitter/playground" })
 
 	--Colorscheme and deco stuff
 	use({
@@ -167,27 +168,21 @@ return packer.startup(function(use)
 	})
 
 	use({ "folke/tokyonight.nvim" })
-	-- If you are using Packer
 	use({
 		"romgrk/barbar.nvim",
 		config = function()
 			require("user.deco.barbar")
 		end,
 	})
-	-- use({ "j-hui/fidget.nvim"})
-	-- use({ "rcarriga/nvim-notify" })
+	use({ "j-hui/fidget.nvim" })
+
 	use({
 		"Pocco81/true-zen.nvim",
 		config = function()
 			require("user.deco.colorscheme")
 		end,
 	})
-	-- use({
-	-- 	"glepnir/galaxyline.nvim",
-	-- 	config = function()
-	-- 		require("user.deco.galaxyline")
-	-- 	end,
-	-- })
+
 	use({
 		"lewis6991/gitsigns.nvim",
 		config = function()
@@ -217,9 +212,43 @@ The Core plugins
 	use({
 		"ggandor/leap.nvim",
 		config = function()
-			require("leap").set_default_keymaps()
+			require("leap").add_default_mappings()
 		end,
 	})
+
+	use({
+		"https://github.com/ggandor/leap-spooky.nvim.git",
+		config = function()
+			require("leap-spooky").setup({
+				affixes = {
+					-- These will generate mappings for all native text objects, like:
+					-- (ir|ar|iR|ar|im|am|iM|aM){obj}.
+					-- Special line objects will also be added, by repeating the affixes.
+					-- E.g. `yrr<leap>` and `ymm<leap>` will yank a line in the current
+					-- window.
+					-- You can also use 'rest' & 'move' as mnemonics.
+					remote = { window = "r", cross_window = "R" },
+					magnetic = { window = "m", cross_window = "M" },
+				},
+				paste_on_remote_yank = true,
+			})
+		end,
+	})
+	use({
+		"ggandor/flit.nvim",
+		config = function()
+			require("flit").setup({
+				keys = { f = "f", F = "F", t = "t", T = "T" },
+				-- A string like "nv", "nvo", "o", etc.
+				labeled_modes = "v",
+				multiline = false,
+				-- Like `leap`s similar argument (call-specific overrides).
+				-- E.g.: opts = { equivalence_classes = {} }
+				opts = {},
+			})
+		end,
+	})
+
 	use({
 		"numToStr/Comment.nvim",
 		config = function()
@@ -227,8 +256,6 @@ The Core plugins
 		end,
 	})
 	use({ "hrsh7th/nvim-cmp" })
-	use({ "kdheepak/cmp-latex-symbols", ft = "tex" })
-	--use({ "KeitaNakamura/tex-conceal.vim", ft = "tex" })
 	use({ "hrsh7th/cmp-buffer" })
 	use({ "hrsh7th/cmp-path" })
 	use({ "saadparwaiz1/cmp_luasnip" })
@@ -401,12 +428,6 @@ The Core plugins
 	})
 
 	use("kdheepak/lazygit.nvim")
-	use({
-		"SmiteshP/nvim-navic",
-		config = function()
-			require("nvim-navic").setup()
-		end,
-	})
 
 	if PACKER_BOOTSTRAP then
 		require("packer").sync()
