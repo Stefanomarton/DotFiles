@@ -87,11 +87,14 @@ require("scrollbar").setup({
 	},
 	excluded_buftypes = {
 		"terminal",
+		"mason",
 	},
 	excluded_filetypes = {
 		"prompt",
 		"TelescopePrompt",
 		"noice",
+		"mason",
+		"packer",
 	},
 	autocmd = {
 		render = {
