@@ -5,7 +5,6 @@ local servers = {
 	"jsonls",
 	"marksman",
 	"bashls",
-	"ltex",
 }
 
 local settings = {
