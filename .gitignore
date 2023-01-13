@@ -5,3 +5,4 @@
 .config/ranger/plugins/fzf_marks/__pycache__
 .config/ranger/plugins/devicons2/__pycache__
 .config/ranger/__pycache__
+.config/zsh/.zcompdump
