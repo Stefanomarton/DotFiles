@@ -14,5 +14,4 @@ xrandr --output DisplayPort-0 --primary --mode 3440x1440 --pos 1080x0 --rotate n
 				sleep 1s
 		done &
     exec awesome -c ~/awesomeprova/rc.lua 
-		#exec dwm
 
