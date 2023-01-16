@@ -1,5 +1,6 @@
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
+require("bling")
 local dpi = xresources.apply_dpi
 
 local gfs = require("gears.filesystem")
@@ -126,7 +127,9 @@ theme.systray_icon_spacing = 6
 theme.tasklist_disable_task_name = true
 theme.tasklist_disable_icon = false
 theme.notification_icon_size = 64
+theme.mstab_bar_disable = true
+theme.mstab_bar_ontop = false
+theme.mstab_dont_resize_slaves = true
+theme.mstab_border_radius = 10
 
 return theme
-
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

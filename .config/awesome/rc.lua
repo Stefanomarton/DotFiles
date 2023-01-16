@@ -105,11 +105,12 @@ require("main.autostart")
 -- }}}
 
 -- {{{ Bling module
-bling.module.flash_focus.enable()
+-- bling.module.flash_focus.enable()
 -- }}}
 
 awful.layout.layouts = {
 	lain.layout.centerwork,
+	bling.layout.mstab,
 	--bling.layout.centered,
 	awful.layout.suit.tile,
 	-- bling.layout.centered,
