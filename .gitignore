@@ -6,3 +6,4 @@
 .config/ranger/plugins/devicons2/__pycache__
 .config/ranger/__pycache__
 .config/zsh/.zcompdump
+.config/nvim/plugin
