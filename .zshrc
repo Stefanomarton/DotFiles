@@ -247,3 +247,5 @@ EASY_MOTION_HIGHLIGHT_2_SECOND="fg=3,bold"
 bindkey -M vicmd ' ' vi-easy-motion
 
 eval "$(starship init zsh)"
+
+if [ -e /home/stefanomarton/.nix-profile/etc/profile.d/nix.sh ]; then . /home/stefanomarton/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
