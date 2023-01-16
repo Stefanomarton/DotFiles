@@ -495,7 +495,7 @@ static const Rule rules[] = {
 	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
-	RULE(.instance = "spotify", .monitor = 1, .tags = 1 << 0)
+	RULE(.class = "spotify", .monitor = 1, .tags = 1 << 0)
 	RULE(.class = "Ferdium", .monitor = 1, .tags = 1 << 0)
 	RULE(.class = "Gimp", .tags = 1 << 4)
 	RULE(.class = "Firefox", .tags = 1 << 7)
