@@ -66,22 +66,15 @@ end
 
 return packer.startup(function(use)
 	use({ "wbthomason/packer.nvim" })
-
 	use({ "nvim-lua/plenary.nvim" })
-
 	use({ "lewis6991/impatient.nvim" })
-
 	use({
 		"windwp/nvim-autopairs",
 		config = function()
 			require("user.autopairs")
 		end,
 	})
-
 	use({ "kyazdani42/nvim-web-devicons" })
-
-	use({ "moll/vim-bbye" })
-
 	use({
 		"lukas-reineke/indent-blankline.nvim",
 		config = function()
@@ -108,12 +101,20 @@ return packer.startup(function(use)
 	})
 
 	use({
-		"lewis6991/spellsitter.nvim",
-		after = "nvim-treesitter",
+		"RRethy/nvim-treesitter-endwise",
 		config = function()
-			require("spellsitter").setup({
-				enable = true,
+			require("nvim-treesitter.configs").setup({
+				endwise = {
+					enable = true,
+				},
 			})
+		end,
+	})
+
+	use({
+		"windwp/nvim-ts-autotag",
+		config = function()
+			require("nvim-ts-autotag").setup()
 		end,
 	})
 
@@ -129,6 +130,7 @@ return packer.startup(function(use)
 			})
 		end,
 	})
+
 	use("shaunsingh/nord.nvim")
 
 	use({
@@ -174,14 +176,6 @@ return packer.startup(function(use)
 			require("user.deco.barbar")
 		end,
 	})
-	use({ "j-hui/fidget.nvim" })
-
-	use({
-		"Pocco81/true-zen.nvim",
-		config = function()
-			require("user.deco.colorscheme")
-		end,
-	})
 
 	use({
 		"lewis6991/gitsigns.nvim",
@@ -211,6 +205,7 @@ The Core plugins
 
 	use({
 		"ggandor/leap.nvim",
+		require = "tpope/vim-repeat",
 		config = function()
 			require("leap").add_default_mappings()
 		end,
@@ -234,16 +229,14 @@ The Core plugins
 			})
 		end,
 	})
+
 	use({
 		"ggandor/flit.nvim",
 		config = function()
 			require("flit").setup({
 				keys = { f = "f", F = "F", t = "t", T = "T" },
-				-- A string like "nv", "nvo", "o", etc.
 				labeled_modes = "v",
 				multiline = false,
-				-- Like `leap`s similar argument (call-specific overrides).
-				-- E.g.: opts = { equivalence_classes = {} }
 				opts = {},
 			})
 		end,
@@ -272,7 +265,6 @@ The Core plugins
 		"neovim/nvim-lspconfig",
 	})
 
-	use({ "unblevable/quick-scope" })
 	use({ "lervag/vimtex" })
 
 	--[[ 	telescope and telescope integrations ]]
@@ -330,15 +322,6 @@ The Core plugins
 	})
 
 	use({
-		"phaazon/hop.nvim",
-		-- branch = "v2", -- optional but strongly recommended
-		config = function()
-			-- you can configure Hop the way you like here; see :h hop-config
-			require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
-		end,
-	})
-
-	use({
 		"folke/which-key.nvim",
 		config = function()
 			require("user.whichkey")
@@ -354,25 +337,17 @@ The Core plugins
 	use({ "NvChad/nvim-colorizer.lua" })
 
 	use({
-		"kylechui/nvim-surround",
-		tag = "main",
-		config = function()
-			require("nvim-surround").setup({})
-		end,
-	})
-
-	use({
 		"abecodes/tabout.nvim",
 		config = function()
 			require("tabout").setup({
 				tabkey = "<Tab>", -- key to trigger tabout, set to an empty string to disable
 				backwards_tabkey = "<S-Tab>", -- key to trigger backwards tabout, set to an empty string to disable
-				act_as_tab = true, -- shift content if tab out is not possible
+				act_as_tab = false, -- shift content if tab out is not possible
 				act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
 				default_tab = "<C-t>", -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
 				default_shift_tab = "<C-d>", -- reverse shift default action,
 				enable_backwards = true, -- well ...
-				completion = true, -- if the tabkey is used in a completion pum
+				completion = false, -- if the tabkey is used in a completion pum
 				tabouts = {
 					{ open = "'", close = "'" },
 					{ open = '"', close = '"' },
@@ -385,6 +360,8 @@ The Core plugins
 				exclude = {}, -- tabout will ignore these filetypes
 			})
 		end,
+		wants = { "nvim-treesitter" }, -- or require if not used so far
+		after = { "nvim-cmp" }, -- if a completion plugin is using tabs load it before
 	})
 
 	use({
@@ -428,6 +405,74 @@ The Core plugins
 	})
 
 	use("kdheepak/lazygit.nvim")
+
+	--[[ 	Mini.nvim plugins ]]
+	use({
+		"echasnovski/mini.move",
+		config = function()
+			require("mini.move").setup( -- No need to copy this inside `setup()`. Will be used automatically.
+				{
+					mappings = {
+						-- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
+						left = "<M-h>",
+						right = "<M-l>",
+						down = "<M-j>",
+						up = "<M-k>",
+
+						-- Move current line in Normal mode
+						line_left = "<M-h>",
+						line_right = "<M-l>",
+						line_down = "<M-j>",
+						line_up = "<M-k>",
+					},
+				}
+			)
+		end,
+	})
+
+	use({
+		"echasnovski/mini.surround",
+		config = function()
+			require("mini.surround").setup({
+				custom_surroundings = nil,
+				highlight_duration = 500,
+				mappings = {
+					add = "<cr>",
+					delete = "<cr>d",
+					find = "",
+					find_left = "",
+					highlight = "",
+					replace = "<cr>r",
+					update_n_lines = "",
+					suffix_last = "",
+					suffix_next = "",
+				},
+				n_lines = 20,
+				search_method = "cover",
+			})
+		end,
+	})
+
+	use({
+		"echasnovski/mini.ai",
+		config = function()
+			require("mini.ai").setup({
+				custom_textobjects = nil,
+				mappings = {
+					around = "a",
+					inside = "i",
+					around_next = "an",
+					inside_next = "in",
+					around_last = "al",
+					inside_last = "il",
+					goto_left = "g[",
+					goto_right = "g]",
+				},
+				n_lines = 50,
+				search_method = "cover_or_next",
+			})
+		end,
+	})
 
 	if PACKER_BOOTSTRAP then
 		require("packer").sync()
