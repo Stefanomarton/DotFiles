@@ -161,7 +161,6 @@ return packer.startup(function(use)
 			})
 		end,
 	})
-
 	use({
 		"kevinhwang91/nvim-hlslens",
 		config = function()
