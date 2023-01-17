@@ -40,7 +40,6 @@ vim.opt.fillchars.eob = " "
 vim.opt.shortmess:append("c")
 vim.opt.whichwrap:append("<,>,[,],h,l")
 vim.opt.iskeyword:append("-")
-vim.g.qs_highlight_on_keys = { "f", "F", "t", "T" }
 -- vim.opt.spell = true
 -- vim.opt.spelllang = { "en_us", "it" }
 vim.opt.shell = "/bin/bash"
