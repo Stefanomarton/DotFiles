@@ -12,6 +12,8 @@ require("awful.hotkeys_popup.keys")
 
 -- requiring keybindings
 require("keybindings")
+local lain = require("lain")
+local bling = require("module.bling")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -125,10 +127,86 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
 
-screen.connect_signal("request::desktop_decoration", function(s)
-	-- Each screen has its own tag table.
-	awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
-end)
+-- Defining tags per monitor
+awful.tag.add(" ", {
+	layout = lain.layout.centerwork,
+	gap_single_client = true,
+	gap = 10,
+	screen = 1,
+	selected = true,
+})
+
+awful.tag.add(" ", {
+	layout = lain.layout.centerwork,
+	gap_single_client = true,
+	gap = 10,
+	screen = 1,
+})
+
+awful.tag.add(" ", {
+	layout = lain.layout.centerwork,
+	gap_single_client = true,
+	gap = 10,
+	screen = 1,
+})
+
+awful.tag.add(" ", {
+	layout = lain.layout.centerwork,
+	gap_single_client = true,
+	gap = 10,
+	screen = 1,
+})
+
+awful.tag.add(" ", {
+	layout = lain.layout.centerwork,
+	gap_single_client = true,
+	gap = 10,
+	screen = 1,
+})
+
+awful.tag.add(" ", {
+	layout = lain.layout.centerwork,
+	gap_single_client = true,
+	gap = 10,
+	screen = 1,
+})
+
+awful.tag.add(" ", {
+	layout = lain.layout.centerwork,
+	gap_single_client = true,
+	gap = 10,
+	screen = 1,
+})
+
+awful.tag.add(" ", {
+	layout = awful.layout.suit.fair.horizontal,
+	gap_single_client = true,
+	gap = 10,
+	screen = 2,
+	selected = true,
+})
+
+awful.tag.add(" ", {
+	layout = awful.layout.suit.fair.horizontal,
+	gap_single_client = true,
+	gap = 10,
+	screen = 2,
+})
+
+awful.tag.add(" ", {
+	layout = awful.layout.suit.fair.horizontal,
+	gap_single_client = true,
+	gap = 10,
+	screen = 3,
+	selected = true,
+})
+
+awful.tag.add(" ", {
+	layout = awful.layout.suit.fair.horizontal,
+	gap_single_client = true,
+	gap = 10,
+	screen = 3,
+})
 
 awful.screen.connect_for_each_screen(function(s)
 	if s == screen.primary then

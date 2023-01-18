@@ -4,3 +4,6 @@
 [submodule ".config/awesome/module/rubato"]
 	path = .config/awesome/module/rubato
 	url = https://github.com/andOrlando/rubato.git
+[submodule ".config/awesome/lain"]
+	path = .config/awesome/lain
+	url = https://github.com/lcpz/lain
