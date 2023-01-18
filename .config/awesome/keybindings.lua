@@ -9,6 +9,7 @@ local ruled = require("ruled")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
+require("scratchpads")
 
 -- {{{ Key bindings
 
@@ -60,6 +61,16 @@ awful.keyboard.append_global_keybindings({
 	awful.key({ modkey }, "d", function()
 		awful.spawn.with_shell("dmenu_run")
 	end, { description = "dmenu", group = "launcher" }),
+})
+
+-- Scratchpads
+awful.keyboard.append_global_keybindings({
+	awful.key({ modkey }, "u", function()
+		ranger:toggle()
+	end, { description = "Ranger", group = "Scratchpads" }),
+	awful.key({ modkey }, "y", function()
+		music:toggle()
+	end, { description = "Ncspot", group = "Scratchpads" }),
 })
 
 -- Focus related keybindings

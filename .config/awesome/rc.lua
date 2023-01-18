@@ -338,25 +338,3 @@ client.connect_signal("manage", function(c)
 		awful.placement.no_offscreen(c)
 	end
 end)
-
--- -- Ranger
--- term_scratch = bling.module.scratchpad({
--- 	command = "kitty --class spad -e ranger",
--- 	rule = { instance = "spad" },
--- 	sticky = true,
--- 	autoclose = true,
--- 	floating = true,
--- 	geometry = { x = 1100, y = 280, height = 900, width = 1200 },
--- 	dont_focus_before_close = true,
--- })
---
--- -- Terminal
--- term = bling.module.scratchpad({
--- 	command = "kitty --class ncspot -e ncspot",
--- 	rule = { instance = "ncspot" },
--- 	sticky = true,
--- 	autoclose = true,
--- 	floating = true,
--- 	geometry = { x = 1100, y = 280, height = 900, width = 1200 },
--- 	dont_focus_before_close = true,
--- })
