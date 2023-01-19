@@ -1,8 +1,6 @@
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
-local bling = require("module.bling")
-
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 
@@ -150,7 +148,21 @@ theme.layout_cascadetile = theme.lain_icons .. "cascadetile.png" -- cascade.tile
 theme.layout_centerwork = theme.lain_icons .. "centerwork.png"
 theme.layout_centerworkh = theme.lain_icons .. "centerworkh.png" -- centerwork.horizontal
 
--- Layout mstab
-theme.mstab_bar_disable = true
-theme.tabbar_disabled = true
+-- tabbar general
+theme.tabbar_ontop = false
+theme.tabbar_radius = 0 -- border radius of the tabbar
+theme.tabbar_style = "default" -- style of the tabbar ("default", "boxes" or "modern")
+theme.tabbar_font = "Sans 11" -- font of the tabbar
+theme.tabbar_size = 20 -- size of the tabbar
+theme.tabbar_position = "bottom" -- position of the tabbar
+theme.tabbar_bg_normal = "#1A2026" -- background color of the focused client on the tabbar
+theme.tabbar_fg_normal = "#ffffff" -- foreground color of the focused client on the tabbar
+theme.tabbar_bg_focus = "#1A2026" -- background color of unfocused clients on the tabbar
+theme.tabbar_fg_focus = "#ff0000" -- foreground color of unfocused clients on the tabbar
+theme.tabbar_bg_focus_inactive = nil -- background color of the focused client on the tabbar when inactive
+theme.tabbar_fg_focus_inactive = nil -- foreground color of the focused client on the tabbar when inactive
+theme.tabbar_bg_normal_inactive = nil -- background color of unfocused clients on the tabbar when inactive
+theme.tabbar_fg_normal_inactive = nil -- foreground color of unfocused clients on the tabbar when inactive
+theme.tabbar_disable = false -- disable the tab bar entirely
+
 return theme

@@ -49,6 +49,76 @@ awful.keyboard.append_global_keybindings({
 	end, { description = "toggle wibox", group = "awesome" }),
 })
 
+-- Client and Tabs Bindings
+--TODO
+awful.keyboard.append_global_keybindings({
+	awful.key({ "Mod1" }, "a", function()
+		bling.module.tabbed.pick_with_dmenu()
+	end, { description = "pick client to add to tab group", group = "tabs" }),
+	awful.key({ "Mod1" }, "s", function()
+		bling.module.tabbed.iter()
+	end, { description = "iterate through tabbing group", group = "tabs" }),
+	awful.key({ "Mod1" }, "d", function()
+		bling.module.tabbed.pop()
+	end, {
+		description = "remove focused client from tabbing group",
+		group = "tabs",
+	}),
+	awful.key({ modkey }, "Down", function()
+		awful.client.focus.bydirection("down")
+		bling.module.flash_focus.flashfocus(client.focus)
+	end, { description = "focus down", group = "client" }),
+	awful.key({ modkey }, "Up", function()
+		awful.client.focus.bydirection("up")
+		bling.module.flash_focus.flashfocus(client.focus)
+	end, { description = "focus up", group = "client" }),
+	awful.key({ modkey }, "Left", function()
+		awful.client.focus.bydirection("left")
+		bling.module.flash_focus.flashfocus(client.focus)
+	end, { description = "focus left", group = "client" }),
+	awful.key({ modkey }, "Right", function()
+		awful.client.focus.bydirection("right")
+		bling.module.flash_focus.flashfocus(client.focus)
+	end, { description = "focus right", group = "client" }),
+	awful.key({ modkey }, "h", function()
+		awful.client.focus.bydirection("left")
+		if client.focus then
+			client.focus:raise()
+		end
+	end),
+	awful.key({ modkey }, "j", function()
+		awful.client.focus.bydirection("down")
+		if client.focus then
+			client.focus:raise()
+		end
+	end),
+	awful.key({ modkey }, "k", function()
+		awful.client.focus.bydirection("up")
+		if client.focus then
+			client.focus:raise()
+		end
+	end),
+	awful.key({ modkey }, "l", function()
+		awful.client.focus.bydirection("right")
+		if client.focus then
+			client.focus:raise()
+		end
+	end),
+	awful.key({ modkey, "Shift" }, "j", function()
+		awful.client.swap.byidx(1)
+	end, { description = "swap with next client by index", group = "client" }),
+	awful.key({ modkey, "Shift" }, "k", function()
+		awful.client.swap.byidx(-1)
+	end, {
+		description = "swap with previous client by index",
+		group = "client",
+	}),
+	awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
+	awful.key({ altkey }, "Tab", function()
+		awesome.emit_signal("oof::window_switcher::turn_on")
+	end, { description = "Window Switcher", group = "client" }),
+})
+
 -- Tags related keybindings
 awful.keyboard.append_global_keybindings({
 	awful.key({ modkey }, "Left", awful.tag.viewprev, { description = "view previous", group = "tag" }),
