@@ -116,7 +116,6 @@ require("gears").wallpaper.maximized(
 	"/home/stefanomarton/Media/ThemeThings/NordicWallpapers/super-mario.png",
 	require("awful").screen.focused()
 )
-
 -- }}}
 
 -- {{{ Wibar
