@@ -114,9 +114,6 @@ awful.keyboard.append_global_keybindings({
 		group = "client",
 	}),
 	awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
-	awful.key({ altkey }, "Tab", function()
-		awesome.emit_signal("oof::window_switcher::turn_on")
-	end, { description = "Window Switcher", group = "client" }),
 })
 
 -- Tags related keybindings
