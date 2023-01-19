@@ -147,6 +147,12 @@ awful.keyboard.append_global_keybindings({
 	awful.key({ modkey }, "s", function()
 		awful.spawn.with_shell("dmenu_run")
 	end, { description = "dmenu", group = "launcher" }),
+	awful.key({ modkey, "Control" }, "f", function()
+		awful.spawn.with_shell("bash -c ~/Scripts/searchOnFirefox.sh")
+	end, { description = "Search on Firefox", group = "launcher" }),
+	awful.key({ modkey }, "b", function()
+		awful.spawn.with_shell("bash -c ~/Scripts/libriv2")
+	end, { description = "Open a book", group = "launcher" }),
 })
 
 -- Scratchpads
@@ -335,7 +341,7 @@ client.connect_signal("request::default_keybindings", function()
 			c:kill()
 		end, { description = "close", group = "client" }),
 		awful.key(
-			{ modkey, "Control" },
+			{ modkey, "Shift" },
 			"f",
 			awful.client.floating.toggle,
 			{ description = "toggle floating", group = "client" }
