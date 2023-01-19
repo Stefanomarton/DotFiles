@@ -10,6 +10,8 @@ local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 require("scratchpads")
+local lain = require("lain")
+local bling = require("module.bling")
 
 -- {{{ Key bindings
 
@@ -41,6 +43,10 @@ awful.keyboard.append_global_keybindings({
 	-- awful.key({ modkey }, "p", function()
 	-- 	menubar.show()
 	-- end, { description = "show the menubar", group = "launcher" }),
+	awful.key({ modkey, "Shift" }, "b", function()
+		local s = awful.screen.focused()
+		s.mywibox.visible = not s.mywibox.visible
+	end, { description = "toggle wibox", group = "awesome" }),
 })
 
 -- Tags related keybindings
@@ -48,6 +54,19 @@ awful.keyboard.append_global_keybindings({
 	awful.key({ modkey }, "Left", awful.tag.viewprev, { description = "view previous", group = "tag" }),
 	awful.key({ modkey }, "Right", awful.tag.viewnext, { description = "view next", group = "tag" }),
 	awful.key({ modkey }, "Escape", awful.tag.history.restore, { description = "go back", group = "tag" }),
+})
+
+-- Layout selection
+awful.keyboard.append_global_keybindings({
+	awful.key({ modkey }, "t", function()
+		awful.layout.set(awful.layout.suit.tile)
+	end, { description = "Tile layouts", group = "layout" }),
+	awful.key({ modkey }, "c", function()
+		awful.layout.set(lain.layout.centerwork)
+	end, { description = "Centered layout", group = "layout" }),
+	awful.key({ modkey }, "d", function()
+		awful.layout.set(bling.layout.mstab)
+	end, { description = "Tabbed", group = "layout" }),
 })
 
 -- Run Program shortcuts
@@ -58,7 +77,7 @@ awful.keyboard.append_global_keybindings({
 	awful.key({ modkey }, "f", function()
 		awful.spawn("firefox")
 	end, { description = "Firefox", group = "launcher" }),
-	awful.key({ modkey }, "d", function()
+	awful.key({ modkey }, "s", function()
 		awful.spawn.with_shell("dmenu_run")
 	end, { description = "dmenu", group = "launcher" }),
 })
@@ -75,34 +94,47 @@ awful.keyboard.append_global_keybindings({
 
 -- Focus related keybindings
 awful.keyboard.append_global_keybindings({
+	-- Focusing by direction
 	awful.key({ modkey }, "e", function()
 		client.focus = awful.client.getmaster()
 		client.focus:raise()
 	end),
-	awful.key({ modkey }, "h", function()
-		awful.client.focus.bydirection("left")
-		if client.focus then
-			client.focus:raise()
-		end
-	end),
+	-- awful.key({ modkey }, "h", function()
+	-- 	awful.client.focus.bydirection("left")
+	-- 	if client.focus then
+	-- 		client.focus:raise()
+	-- 	end
+	-- end),
+	-- awful.key({ modkey }, "j", function()
+	-- 	awful.client.focus.bydirection("down")
+	-- 	if client.focus then
+	-- 		client.focus:raise()
+	-- 	end
+	-- end),
+	-- awful.key({ modkey }, "k", function()
+	-- 	awful.client.focus.bydirection("up")
+	-- 	if client.focus then
+	-- 		client.focus:raise()
+	-- 	end
+	-- end),
+	-- awful.key({ modkey }, "l", function()
+	-- 	awful.client.focus.bydirection("right")
+	-- 	if client.focus then
+	-- 		client.focus:raise()
+	-- 	end
 	awful.key({ modkey }, "j", function()
-		awful.client.focus.bydirection("down")
-		if client.focus then
-			client.focus:raise()
-		end
-	end),
+		awful.client.focus.byidx(1)
+	end, { description = "focus next by index", group = "client" }),
 	awful.key({ modkey }, "k", function()
-		awful.client.focus.bydirection("up")
+		awful.client.focus.byidx(-1)
+	end, { description = "focus previous by index", group = "client" }),
+	awful.key({ modkey }, "Tab", function()
+		awful.client.focus.history.previous()
 		if client.focus then
 			client.focus:raise()
 		end
 	end),
-	awful.key({ modkey }, "l", function()
-		awful.client.focus.bydirection("right")
-		if client.focus then
-			client.focus:raise()
-		end
-	end),
+
 	awful.key({ modkey }, "Tab", function()
 		awful.client.focus.history.previous()
 		if client.focus then
@@ -241,7 +273,7 @@ client.connect_signal("request::default_keybindings", function()
 			awful.client.floating.toggle,
 			{ description = "toggle floating", group = "client" }
 		),
-		awful.key({ modkey }, "c", function(c)
+		awful.key({ modkey }, "v", function(c)
 			c:swap(awful.client.getmaster())
 		end, { description = "move to master", group = "client" }),
 
