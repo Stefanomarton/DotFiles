@@ -64,22 +64,6 @@ awful.keyboard.append_global_keybindings({
 		description = "remove focused client from tabbing group",
 		group = "tabs",
 	}),
-	awful.key({ modkey }, "Down", function()
-		awful.client.focus.bydirection("down")
-		bling.module.flash_focus.flashfocus(client.focus)
-	end, { description = "focus down", group = "client" }),
-	awful.key({ modkey }, "Up", function()
-		awful.client.focus.bydirection("up")
-		bling.module.flash_focus.flashfocus(client.focus)
-	end, { description = "focus up", group = "client" }),
-	awful.key({ modkey }, "Left", function()
-		awful.client.focus.bydirection("left")
-		bling.module.flash_focus.flashfocus(client.focus)
-	end, { description = "focus left", group = "client" }),
-	awful.key({ modkey }, "Right", function()
-		awful.client.focus.bydirection("right")
-		bling.module.flash_focus.flashfocus(client.focus)
-	end, { description = "focus right", group = "client" }),
 	awful.key({ modkey }, "h", function()
 		awful.client.focus.bydirection("left")
 		if client.focus then
@@ -172,42 +156,12 @@ awful.keyboard.append_global_keybindings({
 		client.focus = awful.client.getmaster()
 		client.focus:raise()
 	end),
-	-- awful.key({ modkey }, "h", function()
-	-- 	awful.client.focus.bydirection("left")
-	-- 	if client.focus then
-	-- 		client.focus:raise()
-	-- 	end
-	-- end),
-	-- awful.key({ modkey }, "j", function()
-	-- 	awful.client.focus.bydirection("down")
-	-- 	if client.focus then
-	-- 		client.focus:raise()
-	-- 	end
-	-- end),
-	-- awful.key({ modkey }, "k", function()
-	-- 	awful.client.focus.bydirection("up")
-	-- 	if client.focus then
-	-- 		client.focus:raise()
-	-- 	end
-	-- end),
-	-- awful.key({ modkey }, "l", function()
-	-- 	awful.client.focus.bydirection("right")
-	-- 	if client.focus then
-	-- 		client.focus:raise()
-	-- 	end
 	awful.key({ modkey }, "j", function()
 		awful.client.focus.byidx(1)
 	end, { description = "focus next by index", group = "client" }),
 	awful.key({ modkey }, "k", function()
 		awful.client.focus.byidx(-1)
 	end, { description = "focus previous by index", group = "client" }),
-	awful.key({ modkey }, "Tab", function()
-		awful.client.focus.history.previous()
-		if client.focus then
-			client.focus:raise()
-		end
-	end),
-
 	awful.key({ modkey }, "Tab", function()
 		awful.client.focus.history.previous()
 		if client.focus then
@@ -243,15 +197,6 @@ awful.keyboard.append_global_keybindings({
 	awful.key({ modkey, "Shift" }, "d", function()
 		awful.tag.incnmaster(-1, nil, true)
 	end, { description = "decrease the number of master clients", group = "layout" }),
-
-	-- Increase and decrease number of layout columuns
-	-- awful.key({ modkey, "Shift" }, "i", function()
-	-- 	awful.tag.incncol(1, nil, true)
-	-- end, { description = "increase the number of columns", group = "layout" }),
-	-- awful.key({ modkey, "Control" }, "l", function()
-	-- 	awful.tag.incncol(-1, nil, true)
-	-- end, { description = "decrease the number of columns", group = "layout" }),
-
 	awful.key({ modkey, "Control" }, ",", function()
 		awful.layout.inc(1)
 	end, { description = "select next", group = "layout" }),

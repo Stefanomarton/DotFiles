@@ -11,9 +11,6 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 
 -- requiring keybindings
-require("keybindings")
-local lain = require("lain")
-local bling = require("module.bling")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -29,7 +26,11 @@ end)
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/home/stefanomarton/.config/awesome/theme.lua")
+local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), "nord")
+beautiful.init(theme_path)
+local bling = require("module.bling")
+require("keybindings")
+local lain = require("lain")
 
 -- Variale settings
 terminal = "kitty"
