@@ -127,7 +127,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 mytextclock = wibox.widget.textclock()
 
 -- Defining tags per monitor
-awful.tag.add(" ", {
+awful.tag.add("1", {
 	layout = lain.layout.centerwork,
 	gap_single_client = true,
 	gap = 10,
@@ -135,49 +135,49 @@ awful.tag.add(" ", {
 	selected = true,
 })
 
-awful.tag.add(" ", {
+awful.tag.add("2", {
 	layout = lain.layout.centerwork,
 	gap_single_client = true,
 	gap = 10,
 	screen = 1,
 })
 
-awful.tag.add(" ", {
+awful.tag.add("3", {
 	layout = lain.layout.centerwork,
 	gap_single_client = true,
 	gap = 10,
 	screen = 1,
 })
 
-awful.tag.add(" ", {
+awful.tag.add("4", {
 	layout = lain.layout.centerwork,
 	gap_single_client = true,
 	gap = 10,
 	screen = 1,
 })
 
-awful.tag.add(" ", {
+awful.tag.add("5", {
 	layout = lain.layout.centerwork,
 	gap_single_client = true,
 	gap = 10,
 	screen = 1,
 })
 
-awful.tag.add(" ", {
+awful.tag.add("6", {
 	layout = lain.layout.centerwork,
 	gap_single_client = true,
 	gap = 10,
 	screen = 1,
 })
 
-awful.tag.add(" ", {
+awful.tag.add("7", {
 	layout = lain.layout.centerwork,
 	gap_single_client = true,
 	gap = 10,
 	screen = 1,
 })
 
-awful.tag.add(" ", {
+awful.tag.add("8", {
 	layout = awful.layout.suit.fair.horizontal,
 	gap_single_client = true,
 	gap = 10,
@@ -185,14 +185,14 @@ awful.tag.add(" ", {
 	selected = true,
 })
 
-awful.tag.add(" ", {
+awful.tag.add("9", {
 	layout = awful.layout.suit.fair.horizontal,
 	gap_single_client = true,
 	gap = 10,
 	screen = 2,
 })
 
-awful.tag.add(" ", {
+awful.tag.add("10", {
 	layout = awful.layout.suit.fair.horizontal,
 	gap_single_client = true,
 	gap = 10,
@@ -200,7 +200,7 @@ awful.tag.add(" ", {
 	selected = true,
 })
 
-awful.tag.add(" ", {
+awful.tag.add("11", {
 	layout = awful.layout.suit.fair.horizontal,
 	gap_single_client = true,
 	gap = 10,
