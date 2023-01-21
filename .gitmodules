@@ -7,3 +7,6 @@
 [submodule ".config/awesome/lain"]
 	path = .config/awesome/lain
 	url = https://github.com/lcpz/lain
+[submodule ".config/awesome/module/sharedtags"]
+	path = .config/awesome/module/sharedtags
+	url = https://github.com/Drauthius/awesome-sharedtags.git

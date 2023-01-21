@@ -128,85 +128,60 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 mytextclock = wibox.widget.textclock()
 
 -- Defining tags per monitor
-awful.tag.add("1", {
-	layout = lain.layout.centerwork,
-	gap_single_client = true,
-	gap = 10,
-	screen = 1,
-	selected = true,
-})
 
-awful.tag.add("2", {
-	layout = lain.layout.centerwork,
-	gap_single_client = true,
-	gap = 10,
-	screen = 1,
+local sharedtags = require("module.sharedtags")
+local tags = sharedtags({
+	{ name = "1", screen = 1, layout = bling.layout.centered },
+	{ name = "2", screen = 1, layout = bling.layout.centered },
+	{ name = "3", screen = 1, layout = bling.layout.centered },
+	{ name = "4", screen = 1, layout = bling.layout.centered },
+	{ name = "5", screen = 1, layout = bling.layout.centered },
+	{ name = "6", screen = 1, layout = bling.layout.centered },
+	{ name = "7", screen = 2, layout = awful.layout.suit.spiral, gap = 5 },
+	{ name = "8", screen = 2, layout = awful.layout.suit.spiral, gap = 5 },
+	{ name = "9", screen = 3, layout = awful.layout.suit.spiral, gap = 5 },
+	{ name = "10", screen = 3, layout = awful.layout.suit.spiral, gap = 5 },
+	-- { layout = awful.layout.layouts[1] },
+	-- { screen = 2, layout = awful.layout.layouts[1] },
 })
-
-awful.tag.add("3", {
-	layout = lain.layout.centerwork,
-	gap_single_client = true,
-	gap = 10,
-	screen = 1,
-})
-
-awful.tag.add("4", {
-	layout = lain.layout.centerwork,
-	gap_single_client = true,
-	gap = 10,
-	screen = 1,
-})
-
-awful.tag.add("5", {
-	layout = lain.layout.centerwork,
-	gap_single_client = true,
-	gap = 10,
-	screen = 1,
-})
-
-awful.tag.add("6", {
-	layout = lain.layout.centerwork,
-	gap_single_client = true,
-	gap = 10,
-	screen = 1,
-})
-
-awful.tag.add("7", {
-	layout = lain.layout.centerwork,
-	gap_single_client = true,
-	gap = 10,
-	screen = 1,
-})
-
-awful.tag.add("8", {
-	layout = awful.layout.suit.fair.horizontal,
-	gap_single_client = true,
-	gap = 10,
-	screen = 2,
-	selected = true,
-})
-
-awful.tag.add("9", {
-	layout = awful.layout.suit.fair.horizontal,
-	gap_single_client = true,
-	gap = 10,
-	screen = 2,
-})
-
-awful.tag.add("10", {
-	layout = awful.layout.suit.fair.horizontal,
-	gap_single_client = true,
-	gap = 10,
-	screen = 3,
-	selected = true,
-})
-
-awful.tag.add("11", {
-	layout = awful.layout.suit.fair.horizontal,
-	gap_single_client = true,
-	gap = 10,
-	screen = 3,
-})
+for i = 1, 9 do
+	awful.keyboard.append_global_keybindings({
+		-- View tag only.
+		awful.key({ modkey }, "#" .. i + 9, function()
+			local screen = awful.screen.focused()
+			local tag = tags[i]
+			if tag then
+				sharedtags.jumpto(tag, screen)
+			end
+		end, { description = "view tag #" .. i, group = "tag" }),
+		-- Toggle tag display.
+		awful.key({ modkey, "Control" }, "#" .. i + 9, function()
+			local screen = awful.screen.focused()
+			local tag = tags[i]
+			if tag then
+				sharedtags.viewtoggle(tag, screen)
+			end
+		end, { description = "toggle tag #" .. i, group = "tag" }),
+		-- Move client to tag.
+		awful.key({ modkey, "Shift" }, "#" .. i + 9, function()
+			if client.focus then
+				local tag = tags[i]
+				if tag then
+					client.focus:move_to_tag(tag)
+				end
+			end
+		end, { description = "move focused client to tag #" .. i, group = "tag" }),
+		-- Toggle tag on focused client.
+		awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9, function()
+			if client.focus then
+				local tag = tags[i]
+				if tag then
+					client.focus:toggle_tag(tag)
+				end
+			end
+		end, { description = "toggle focused client on tag #" .. i, group = "tag" }),
+	})
+end
 
 awful.screen.connect_for_each_screen(function(s)
 	if s == screen.primary then
