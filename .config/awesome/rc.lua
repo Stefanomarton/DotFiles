@@ -13,8 +13,6 @@ require("awful.hotkeys_popup.keys")
 -- requiring keybindings
 
 -- {{{ Error handling
--- Check if awesome encountered an error during startup and fell back to
--- another config (This code will only ever execute for the fallback config)
 naughty.connect_signal("request::display_error", function(message, startup)
 	naughty.notification({
 		urgency = "critical",
@@ -28,9 +26,9 @@ end)
 -- Themes define colours, icons, font and wallpapers.
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), "nord")
 beautiful.init(theme_path)
+
 local bling = require("module.bling")
 require("keybindings")
-local lain = require("lain")
 
 -- Variale settings
 terminal = "kitty"
@@ -94,29 +92,14 @@ end)
 -- }}}
 
 -- {{{ Wallpaper
--- screen.connect_signal("request::wallpaper", function(s)
--- 	awful.wallpaper({
--- 		screen = s,
--- 		widget = {
--- 			{
--- 				image = beautiful.wallpaper,
--- 				upscale = true,
--- 				downscale = true,
--- 				widget = wibox.widget.imagebox,
--- 			},
--- 			valign = "center",
--- 			halign = "center",
--- 			tiled = false,
--- 			widget = wibox.container.tile,
--- 		},
--- 	})
--- end)
-
--- Setting wallpaper
-require("gears").wallpaper.maximized(
-	"/home/stefanomarton/Media/ThemeThings/NordicWallpapers/super-mario.png",
-	require("awful").screen.focused()
-)
+bling.module.wallpaper.setup {
+		screen = screen,
+    set_function = bling.module.wallpaper.setters.random,
+    wallpaper = {"~/Media/ThemeThings/NordicWallpapers/"},
+    change_timer = 631, -- prime numbers are better for timers
+    position = "maximized",
+    -- background = "#424242"
+}
 -- }}}
 
 -- {{{ Wibar
@@ -154,6 +137,7 @@ for i = 1, 9 do
 				sharedtags.jumpto(tag, screen)
 			end
 		end, { description = "view tag #" .. i, group = "tag" }),
+
 		-- Toggle tag display.
 		awful.key({ modkey, "Control" }, "#" .. i + 9, function()
 			local screen = awful.screen.focused()
@@ -162,6 +146,7 @@ for i = 1, 9 do
 				sharedtags.viewtoggle(tag, screen)
 			end
 		end, { description = "toggle tag #" .. i, group = "tag" }),
+
 		-- Move client to tag.
 		awful.key({ modkey, "Shift" }, "#" .. i + 9, function()
 			if client.focus then
@@ -171,6 +156,22 @@ for i = 1, 9 do
 				end
 			end
 		end, { description = "move focused client to tag #" .. i, group = "tag" }),
+
+		-- Move client to tag and focus it
+		awful.key({ "Mod1", }, "#" .. i + 9, function()
+			if client.focus then
+				local tag = tags[i]
+				if tag then
+					client.focus:move_to_tag(tag)
+				end
+			end
+			local screen = awful.screen.focused()
+			local tag = tags[i]
+			if tag then
+				sharedtags.jumpto(tag, screen)
+			end
+		end, { description = "move focused client to tag #" .. i, group = "tag" }),
+
 		-- Toggle tag on focused client.
 		awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9, function()
 			if client.focus then
