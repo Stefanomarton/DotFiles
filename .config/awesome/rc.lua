@@ -28,13 +28,15 @@ local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.ge
 beautiful.init(theme_path)
 
 --Set wallpaper
-local function set_wallpaper(s)
+local function set_wallpaper()
 	if beautiful.wallpaper then
 		local wallpaper = beautiful.wallpaper
 		if type(wallpaper) == "function" then
-			wallpaper = wallpaper(s)
+			wallpaper = wallpaper(1)
 		end
-		gears.wallpaper.tiled(wallpaper, s)
+		gears.wallpaper.maximized(wallpaper, 1)
+		gears.wallpaper.maximized(wallpaper, 2)
+		gears.wallpaper.maximized(wallpaper, 3)
 	end
 end
 set_wallpaper()
