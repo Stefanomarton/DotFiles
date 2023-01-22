@@ -4,7 +4,7 @@
 
 ;; UI settings
 ;;(set-frame-parameter (selected-frame) 'alpha '(80 100)) ; transparency
-(add-to-list 'default-frame-alist '(alpha 80 100))
+(add-to-list 'default-frame-alist '(alpha 95 95))
 (setq inhibit-startup-message t) ;; Don't show startup messages
 (scroll-bar-mode -1) ;; No scrollbar
 (tool-bar-mode -1) ;; No top bar
