@@ -7,3 +7,4 @@
 .config/ranger/__pycache__
 .config/zsh/.zcompdump
 .config/nvim/plugin
+.config/emacs/elpa
