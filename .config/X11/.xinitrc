@@ -10,4 +10,7 @@ flameshot &
 redshift -l 45.69651:9.1818 &
 insync start &
 xbanish -s -t 2 &
+dbus-update-activation-environment --all &
+gnome-keyring-daemon --start --components=secrets &
+gnome-keyring-daemon --login &
 exec awesome
