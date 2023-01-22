@@ -9,6 +9,9 @@
 (setq highlight-indent-guides-method 'bitmap)
 (setq highlight-indent-guides-responsive nil)
 
+(use-package lua-mode)
+;(use-package catpuccin-theme)
+
 (use-package ivy
   :diminish
   :config
