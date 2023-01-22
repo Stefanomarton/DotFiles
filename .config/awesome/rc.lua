@@ -1,4 +1,5 @@
 pcall(require, "luarocks.loader")
+local gfs = require("gears.filesystem")
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
@@ -22,10 +23,21 @@ naughty.connect_signal("request::display_error", function(message, startup)
 end)
 -- }}}
 
--- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), "nord")
 beautiful.init(theme_path)
+
+--Set wallpaper
+local function set_wallpaper(s)
+	if beautiful.wallpaper then
+		local wallpaper = beautiful.wallpaper
+		if type(wallpaper) == "function" then
+			wallpaper = wallpaper(s)
+		end
+		gears.wallpaper.tiled(wallpaper, s)
+	end
+end
+set_wallpaper()
 
 local bling = require("module.bling")
 require("keybindings")
@@ -91,17 +103,6 @@ tag.connect_signal("request::default_layouts", function()
 end)
 -- }}}
 
--- {{{ Wallpaper
-bling.module.wallpaper.setup {
-		screen = screen,
-    set_function = bling.module.wallpaper.setters.random,
-    wallpaper = {"~/Media/ThemeThings/NordicWallpapers/"},
-    change_timer = 631, -- prime numbers are better for timers
-    position = "maximized",
-    -- background = "#424242"
-}
--- }}}
-
 -- {{{ Wibar
 
 -- Keyboard map indicator and switcher
@@ -158,7 +159,7 @@ for i = 1, 9 do
 		end, { description = "move focused client to tag #" .. i, group = "tag" }),
 
 		-- Move client to tag and focus it
-		awful.key({ "Mod1", }, "#" .. i + 9, function()
+		awful.key({ "Mod1" }, "#" .. i + 9, function()
 			if client.focus then
 				local tag = tags[i]
 				if tag then
@@ -185,6 +186,18 @@ for i = 1, 9 do
 end
 
 awful.screen.connect_for_each_screen(function(s)
+	local function set_wallpaper(s)
+		-- Wallpaper
+		if beautiful.wallpaper then
+			local wallpaper = beautiful.wallpaper
+			-- If wallpaper is a function, call it with the screen
+			if type(wallpaper) == "function" then
+				wallpaper = wallpaper(s)
+			end
+			gears.wallpaper.maximized(wallpaper, s, true)
+		end
+	end
+
 	if s == screen.primary then
 		-- Create a promptbox for each screen
 		s.mypromptbox = awful.widget.prompt()
