@@ -113,7 +113,7 @@ awful.keyboard.append_global_keybindings({
 		awful.layout.set(awful.layout.suit.tile)
 	end, { description = "Tile layouts", group = "layout" }),
 	awful.key({ modkey }, "c", function()
-		awful.layout.set(lain.layout.centerwork)
+		awful.layout.set(bling.layout.centered)
 	end, { description = "Centered layout", group = "layout" }),
 	awful.key({ modkey }, "d", function()
 		awful.layout.set(bling.layout.mstab)
