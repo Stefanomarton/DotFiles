@@ -328,7 +328,7 @@ ruled.client.connect_signal("request::rules", function()
 	ruled.client.append_rule({
 		id = "floating",
 		rule_any = {
-			instance = { "copyq", "pinentry" },
+			instance = { "copyq", "pinentry", "Places" },
 			class = {
 				"Arandr",
 				"Blueman-manager",
@@ -351,7 +351,7 @@ ruled.client.connect_signal("request::rules", function()
 				"pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
 			},
 		},
-		properties = { floating = true },
+		properties = { floating = true, placement = awful.placement.centered }, -- centered floating windows
 	})
 
 	-- Add titlebars to normal clients and dialogs
@@ -359,6 +359,17 @@ ruled.client.connect_signal("request::rules", function()
 		id = "titlebars",
 		rule_any = { type = { "normal", "dialog" } },
 		properties = { titlebars_enabled = true },
+	})
+
+	-- Open certain client on certain monitors
+	ruled.client.append_rule({
+		rule = { class = "discord" },
+		properties = { screen = 3 },
+	})
+
+	ruled.client.append_rule({
+		rule = { instance = "ferdium" },
+		properties = { screen = 2 },
 	})
 end)
 -- }}}
