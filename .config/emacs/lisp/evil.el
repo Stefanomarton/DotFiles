@@ -24,39 +24,27 @@
   (evil-goggles-use-diff-faces))
 
 (use-package undo-fu
-  :straight t
-						 )
+  :straight t)
 
 (use-package evil-surround
   :straight t
   :config
   (global-evil-surround-mode 1))
 
-(use-package evil-snipe
-  :straight t
-	:config
-   (evil-snipe-mode 1)
-   (evil-snipe-override-mode 1)
-	 (setq evil-snipe-scope 'visible)
+(use-package evil-commentary
+	:straight t
+	:config 
+(evil-commentary-mode))
 
-(evil-define-key '(normal motion) evil-snipe-local-mode-map
-  "s" 'evil-snipe-s
-  "S" 'evil-snipe-S)
+(use-package avy
+	:straight t
+	:config)
 
-(evil-define-key 'operator evil-snipe-local-mode-map
-  "z" 'evil-snipe-s
-  "Z" 'evil-snipe-S
-  "x" 'evil-snipe-x
-  "X" 'evil-snipe-X)
+(evil-define-key 'normal 'global (kbd "s") 'avy-goto-char-2)
+(evil-define-key 'motion 'global (kbd "s") 'avy-goto-char-2)
+(evil-define-key 'operator 'global (kbd "s") 'avy-goto-char-2)
 
-(evil-define-key 'motion evil-snipe-override-local-mode-map
-  "f" 'evil-snipe-f
-  "F" 'evil-snipe-F
-  "t" 'evil-snipe-t
-  "T" 'evil-snipe-T)
+(evil-define-key 'normal 'global (kbd "f") 'avy-goto-char-in-line)
+(evil-define-key 'motion 'global (kbd "f") 'avy-goto-char-in-line)
+(evil-define-key 'operator 'global (kbd "f") 'avy-goto-char-in-line)
 
-(when evil-snipe-override-evil-repeat-keys
-  (evil-define-key 'motion map
-    "," 'evil-snipe-repeat
-    "," 'evil-snipe-repeat-reverse))
-						 )
