@@ -10,8 +10,7 @@ local ruled = require("ruled")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
-
--- requiring keybindings
+require("module.awesomewm-micky")
 
 -- {{{ Error handling
 naughty.connect_signal("request::display_error", function(message, startup)
@@ -115,6 +114,15 @@ mytextclock = wibox.widget.textclock()
 
 -- Defining tags per monitor
 
+local function move_mouse_onto_focused_client(c)
+	if mouse.object_under_pointer() ~= c then
+		local geometry = c:geometry()
+		local x = geometry.x + geometry.width / 2
+		local y = geometry.y + geometry.height / 2
+		mouse.coords({ x = x, y = y }, true)
+	end
+end
+
 local sharedtags = require("module.sharedtags")
 local tags = sharedtags({
 	{ name = "1", screen = 1, layout = bling.layout.centered },
@@ -139,6 +147,7 @@ for i = 1, 9 do
 			if tag then
 				sharedtags.jumpto(tag, screen)
 			end
+			client.connect_signal("focus", move_mouse_onto_focused_client)
 		end, { description = "view tag #" .. i, group = "tag" }),
 
 		-- Toggle tag display.
@@ -310,6 +319,7 @@ end)
 -- }}}
 
 -- {{{ Rules
+
 -- Rules to apply to new clients.
 ruled.client.connect_signal("request::rules", function()
 	-- All clients will match this rule.
@@ -325,6 +335,14 @@ ruled.client.connect_signal("request::rules", function()
 	})
 
 	-- Floating clients.
+	-- local centered = client.connect_signal("manage", function(c)
+	-- 	awful.placement.centered(c, {
+	-- 		parent = c.focus,
+	-- 	})
+	-- 	awful.placement.no_offscreen(c)
+	-- end)
+
+	-- local centered = awful.placement.centered
 	ruled.client.append_rule({
 		id = "floating",
 		rule_any = {
@@ -334,7 +352,7 @@ ruled.client.connect_signal("request::rules", function()
 				"Blueman-manager",
 				"Gpick",
 				"Kruler",
-				"Sxiv",
+				"sxiv",
 				"Tor Browser",
 				"Wpa_gui",
 				"veromix",
@@ -351,7 +369,7 @@ ruled.client.connect_signal("request::rules", function()
 				"pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
 			},
 		},
-		properties = { floating = true, placement = awful.placement.centered }, -- centered floating windows
+		properties = { floating = true, placement = awful.placement.centered },
 	})
 
 	-- Add titlebars to normal clients and dialogs

@@ -10,3 +10,6 @@
 [submodule ".config/awesome/module/sharedtags"]
 	path = .config/awesome/module/sharedtags
 	url = https://github.com/Drauthius/awesome-sharedtags.git
+[submodule ".config/awesome/module/awesomewm-micky"]
+	path = .config/awesome/module/awesomewm-micky
+	url = https://github.com/basaran/awesomewm-micky.git
