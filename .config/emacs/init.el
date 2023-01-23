@@ -19,3 +19,6 @@
 
 (require 'options)
 (require 'evil)
+
+(add-to-list 'custom-theme-load-path (expand-file-name "~/.config/emacs/themes/"))
+(load-theme 'nord t)
