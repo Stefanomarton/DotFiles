@@ -4,7 +4,6 @@
 (setq user-full-name "Stefano Marton"
       user-mail-address "sstefanomarton@gmail.com")
 
-
 ;; UI settings
 (add-to-list 'default-frame-alist '(alpha 95 95)) ;; opacity settings
 (setq inhibit-startup-message t) ;; don't show startup messages
@@ -22,7 +21,7 @@
       sentence-end-double-space nil
       ring-bell-function 'ignore
       frame-resize-pixelwise t)
-
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
 
 ;; Generale sane defaults
 (setq inhibit-startup-buffer-menu t) ;; Don't show *Buffer list* when opening multiple files at the same time. 
