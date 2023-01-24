@@ -11,10 +11,14 @@
 (tool-bar-mode -1) ;; no top bar
 (tooltip-mode -1) ;; no tooltip
 (menu-bar-mode -1) ;; no menu bar
-(set-fringe-mode 10) ;; set the padding of the inside windows
-(column-number-mode) ;; show column number
-(setq display-line-numbers-type 'relative)  ;; show relative number
-(global-display-line-numbers-mode) ;;show aboslute number on the current line
+(set-fringe-mode 10) ;; Set the padding of the inside windows
+
+(use-package linum-relative							; add relative line numbers 
+	:straight t
+	:config
+  (linum-relative-global-mode)
+	) 
+
 (global-hl-line-mode) ;; Highlight the current line
 (setq inhibit-startup-screen t
 		  initial-scratch-message nil
@@ -22,6 +26,11 @@
       ring-bell-function 'ignore
       frame-resize-pixelwise t)
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
+
+(use-package centered-cursor-mode				;Add centered cursor 
+	:straight t
+	:init
+  (global-centered-cursor-mode))
 
 ;; Generale sane defaults
 (setq inhibit-startup-buffer-menu t) ;; Don't show *Buffer list* when opening multiple files at the same time. 
