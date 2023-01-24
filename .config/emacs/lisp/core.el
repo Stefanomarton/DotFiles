@@ -1,4 +1,4 @@
-(provide 'evil)
+(provide 'core)
 
 (use-package evil
   :straight t
@@ -24,6 +24,7 @@
 	:after evil
   :config
   (evil-goggles-mode)
+	(setq evil-goggle-duration 0.2)
   (evil-goggles-use-diff-faces))
 
 (use-package undo-fu
@@ -60,20 +61,6 @@
 	:init
 	(which-key-setup-minibuffer)
 	(which-key-mode))
-
-(use-package git-gutter									;Gitsigns
-	:straight t
-  ;; :hook (prog-mode . git-gutter-mode)
-  :config
-	(git-gutter-mode)
-  (setq git-gutter:update-interval 0.02))
-
-(use-package git-gutter-fringe					;Cool gitsigns
-	:straight t
-  :config
-  (define-fringe-bitmap 'git-gutter-fr:added [224] nil nil '(center repeated))
-  (define-fringe-bitmap 'git-gutter-fr:modified [224] nil nil '(center repeated))
-  (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240] nil nil 'bottom))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
@@ -147,3 +134,7 @@
 	)
 
 (evil-define-key 'normal 'global (kbd ":") 'execute-extended-command)
+
+(use-package doom-modeline
+  :straight t
+  :init (doom-modeline-mode 1))
