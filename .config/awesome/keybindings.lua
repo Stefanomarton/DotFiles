@@ -141,12 +141,18 @@ awful.keyboard.append_global_keybindings({
 
 -- Scratchpads
 awful.keyboard.append_global_keybindings({
-	awful.key({ modkey }, "u", function()
+	awful.key({ modkey }, "a", function()
 		ranger:toggle()
 	end, { description = "Ranger", group = "Scratchpads" }),
 	awful.key({ modkey }, "y", function()
 		music:toggle()
 	end, { description = "Ncspot", group = "Scratchpads" }),
+	awful.key({ modkey }, "g", function()
+		lazygit:toggle()
+	end, { description = "lazygit", group = "Scratchpads" }),
+	awful.key({ modkey }, "r", function()
+		repo:toggle()
+	end, { description = "repo", group = "Scratchpads" }),
 })
 
 -- Focus related keybindings
@@ -261,6 +267,15 @@ awful.keyboard.append_global_keybindings({
 -- 		end,
 -- 	}),
 -- })
+
+-- {{{ Mouse bindings
+awful.mouse.append_global_mousebindings({
+	awful.button({}, 3, function()
+		mymainmenu:toggle()
+	end),
+	awful.button({ modkey }, 4, awful.tag.viewnext),
+	awful.button({ modkey }, 5, awful.tag.viewprev),
+})
 
 client.connect_signal("request::default_mousebindings", function()
 	awful.mouse.append_client_mousebindings({
