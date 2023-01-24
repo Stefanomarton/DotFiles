@@ -1,5 +1,18 @@
 local bling = require("module.bling")
 local rubato = require("module.rubato") -- Totally optional, only required if you are using animations.
+local awful = require("awful")
+
+local function centered_gemotery(width, height)
+	width = width or awful.screen.focused().geometry.width * 0.7
+	height = height or awful.screen.focused().geometry.height * 0.9
+
+	return {
+		x = (awful.screen.focused().geometry.width / 2) - (width / 2),
+		y = (awful.screen.focused().geometry.height / 2) - (height / 2),
+		width = width,
+		height = height,
+	}
+end
 
 -- These are example rubato tables. You can use one for just y, just x, or both.
 -- The duration and easing is up to you. Please check out the rubato docs to learn more.
@@ -28,19 +41,42 @@ ranger = bling.module.scratchpad({
 	sticky = true,
 	autoclose = true,
 	floating = true,
-	geometry = { x = 1100, y = 280, height = 900, width = 1200 },
+	geometry = centered_gemotery(),
 	dont_focus_before_close = true,
 	-- rubato = { x = anim_x, y = anim_y },
 })
 
--- Terminal
+-- ncspot
 music = bling.module.scratchpad({
 	command = "kitty --class ncspot -e ncspot",
 	rule = { instance = "ncspot" },
 	sticky = true,
 	autoclose = true,
 	floating = true,
-	geometry = { x = 1100, y = 280, height = 900, width = 1200 },
+	geometry = centered_gemotery(),
+	dont_focus_before_close = true,
+	-- rubato = { x = anim_x, y = anim_y },
+})
+
+-- lazygit
+lazygit = bling.module.scratchpad({
+	command = "kitty --class lazygit -e lazygit",
+	rule = { instance = "lazygit" },
+	sticky = true,
+	autoclose = true,
+	floating = true,
+	geometry = centered_gemotery(),
+	dont_focus_before_close = true,
+	-- rubato = { x = anim_x, y = anim_y },
+})
+
+repo = bling.module.scratchpad({
+	command = 'kitty --class rp -e lazygit --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"',
+	rule = { instance = "rp" },
+	sticky = true,
+	autoclose = true,
+	floating = true,
+	geometry = centered_gemotery(),
 	dont_focus_before_close = true,
 	-- rubato = { x = anim_x, y = anim_y },
 })
