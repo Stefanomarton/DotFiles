@@ -10,6 +10,9 @@
   :config
   (evil-mode 1))
 
+;; Use escape to remove hightlight in normal mode
+(evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
+
 (use-package evil-collection
   :straight t
   :after evil
@@ -143,4 +146,4 @@
   ;;       (right-fringe . 8)))
 	)
 
-
+(evil-define-key 'normal 'global (kbd ":") 'execute-extended-command)
