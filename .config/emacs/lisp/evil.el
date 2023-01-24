@@ -31,10 +31,14 @@
   :config
   (global-evil-surround-mode 1))
 
-(use-package evil-commentary
-	:straight t
-	:config 
-(evil-commentary-mode))
+(defun comment_end_of_line ()
+  (interactive)
+  (call-interactively 'comment-dwim)
+  (call-interactively 'evil-append))
+
+(evil-define-key 'normal 'global (kbd "gcA") 'comment_end_of_line)
+(evil-define-key 'normal 'global (kbd "gcc") 'comment-line)
+(evil-define-key 'visual 'global (kbd "gc") 'comment-line)
 
 (use-package avy
 	:straight t
@@ -46,5 +50,10 @@
 
 (evil-define-key 'normal 'global (kbd "f") 'avy-goto-char-in-line)
 (evil-define-key 'motion 'global (kbd "f") 'avy-goto-char-in-line)
-(evil-define-key 'operator 'global (kbd "f") 'avy-goto-char-in-line)
+(evil-define-key 'operator 'global (kbd "f") 'avy-goto-char-in-line) ;
 
+(use-package which-key
+	:straight t
+	:init
+	(which-key-setup-minibuffer)
+	(which-key-mode))
