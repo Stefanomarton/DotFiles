@@ -11,13 +11,12 @@
 (tool-bar-mode -1) ;; no top bar
 (tooltip-mode -1) ;; no tooltip
 (menu-bar-mode -1) ;; no menu bar
-(set-fringe-mode 10) ;; Set the padding of the inside windows
+(set-fringe-mode 15) ;; Set the padding of the inside windows
 
-(use-package linum-relative							; add relative line numbers 
+(use-package linum-relative
 	:straight t
 	:config
-  (linum-relative-global-mode)
-	) 
+	(linum-relative-global-mode))
 
 (global-hl-line-mode) ;; Highlight the current line
 (setq inhibit-startup-screen t
@@ -72,8 +71,3 @@
 (setq auto-save-file-name-transforms
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 (setq create-lockfiles nil)
-
-;; (use-package smooth-scrolling
-;;   :straight t
-;;   :custom (smooth-scroll-margin 6)
-;;   :init (smooth-scrolling-mode))
