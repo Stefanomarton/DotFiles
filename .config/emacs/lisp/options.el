@@ -32,6 +32,10 @@
 	:init
   (global-centered-cursor-mode))
 
+(use-package all-the-icons
+	:straight t
+  :if (display-graphic-p))
+
 ;; Generale sane defaults
 (setq inhibit-startup-buffer-menu t) ;; Don't show *Buffer list* when opening multiple files at the same time. 
 (setq select-enable-clipboard t) ;; System clipboard
@@ -68,3 +72,8 @@
 (setq auto-save-file-name-transforms
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 (setq create-lockfiles nil)
+
+;; (use-package smooth-scrolling
+;;   :straight t
+;;   :custom (smooth-scroll-margin 6)
+;;   :init (smooth-scrolling-mode))
