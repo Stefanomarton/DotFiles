@@ -138,3 +138,25 @@
 (use-package doom-modeline
   :straight t
   :init (doom-modeline-mode 1))
+
+(use-package lsp-mode
+	:straight t
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (
+         (lua-mode . lsp)
+         (lsp-mode . lsp-enable-which-key-integration)) ;whichkey-integration
+  :commands lsp)
+
+(use-package lua-mode
+	:straight t)
+
+;; optionally
+(use-package lsp-ui
+	:straight t
+	:commands lsp-ui-mode)
+
+(use-package company
+	:straight t
+	:init
+	(add-hook 'after-init-hook 'global-company-mode))
