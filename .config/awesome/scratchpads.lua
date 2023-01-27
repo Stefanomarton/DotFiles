@@ -3,7 +3,7 @@ local rubato = require("module.rubato") -- Totally optional, only required if yo
 local awful = require("awful")
 
 local function centered_gemotery(width, height)
-	width = width or awful.screen.focused().geometry.width * 0.7
+	width = width or awful.screen.focused().geometry.width * 0.6
 	height = height or awful.screen.focused().geometry.height * 0.9
 
 	return {
@@ -76,6 +76,17 @@ repo = bling.module.scratchpad({
 	sticky = true,
 	autoclose = true,
 	floating = true,
+	geometry = centered_gemotery(),
+	dont_focus_before_close = true,
+	-- rubato = { x = anim_x, y = anim_y },
+})
+
+emacs = bling.module.scratchpad({
+	command = 'emacs',
+	rule = { instance = "emacs" },
+	sticky = false,
+	autoclose = false,
+	floating = false,
 	geometry = centered_gemotery(),
 	dont_focus_before_close = true,
 	-- rubato = { x = anim_x, y = anim_y },

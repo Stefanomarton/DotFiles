@@ -153,6 +153,9 @@ awful.keyboard.append_global_keybindings({
 	awful.key({ modkey }, "r", function()
 		repo:toggle()
 	end, { description = "repo", group = "Scratchpads" }),
+	awful.key({ modkey }, "n", function()
+		emacs:toggle()
+	end, { description = "emacs", group = "Scratchpads" }),
 })
 
 -- Focus related keybindings
