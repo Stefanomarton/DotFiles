@@ -79,13 +79,12 @@
 	:straight t
 	:config)
 
-(evil-define-key 'normal 'global (kbd "s") 'avy-goto-char-2)
-(evil-define-key 'motion 'global (kbd "s") 'avy-goto-char-2)
-(evil-define-key 'operator 'global (kbd "s") 'avy-goto-char-2)
-
-(evil-define-key 'normal 'global (kbd "f") 'avy-goto-char-in-line)
-(evil-define-key 'motion 'global (kbd "f") 'avy-goto-char-in-line)
-(evil-define-key 'operator 'global (kbd "f") 'avy-goto-char-in-line) ;
+(evil-define-key 'normal 'global (kbd "s") 'evil-avy-goto-char-timer)
+(evil-define-key 'motion 'global (kbd "s") 'evil-avy-goto-char-timer)
+(evil-define-key 'operator 'global (kbd "s") 'evil-avy-goto-char-timer)
+(evil-define-key 'normal 'global (kbd "f") 'evil-avy-goto-char-in-line)
+(evil-define-key 'motion 'global (kbd "f") 'evil-avy-goto-char-in-line)
+(evil-define-key 'operator 'global (kbd "f") 'evil-avy-goto-char-in-line)
 
 (use-package which-key
 	:straight t
@@ -237,3 +236,47 @@
 	:init
 	(add-hook 'org-mode-hook 'org-indent-mode)
 	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+(use-package tab-jump-out
+	:config
+	(tab-jump-out-mode))
+;; (setq yas-fallback-behavior '(apply tab-jump-out 1))
+
+(straight-use-package '(targets :type git :host github
+													 :repo "dvzubarev/targets.el"
+				 :branch "fix-remote"))
+
+(use-package targets
+	:config
+	(setq targets-text-objects nil)
+	(targets-setup nil)
+	(targets-define-composite-to any-block
+		(("(" ")" pair)
+		 ("[" "]" pair)
+		 ("{" "}" pair)
+		 ;; ("<" ">" pair)
+		 )
+		:bind t
+		:next-key "N"
+		:last-key "L"
+		:around-key nil
+		:inside-key nil
+		:keys "b")
+	(targets-define-composite-to any-quote
+		(("\"" "\"" quote)
+		 ("'" "'" quote))
+		:bind t
+		:next-key "N"
+		:last-key "L"
+		:around-key nil
+		:inside-key nil
+		:keys "q")
+	(targets-define-to double-quote
+										 "\"" nil quote
+										 :bind t
+										 :next-key "N"
+										 :last-key "L"
+										 :around-key nil
+										 :inside-key nil
+										 :keys "q"
+										 :hooks (emacs-lisp-mode-hook)))
