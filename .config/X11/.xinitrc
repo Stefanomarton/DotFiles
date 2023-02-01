@@ -13,4 +13,4 @@ xbanish -s -t 2 &
 dbus-update-activation-environment --all &
 gnome-keyring-daemon --start --components=secrets &
 gnome-keyring-daemon --login &
-exec awesome
+exec awesome --config .config/awesome/rc.lua
