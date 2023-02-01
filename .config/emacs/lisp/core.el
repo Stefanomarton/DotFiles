@@ -17,10 +17,29 @@
 	:config
 	(evil-collection-init))
 
+(defun split-and-follow-horizontally ()
+	(interactive)
+	(split-window-below)
+	(balance-windows)
+	(other-window 1))
+(defun split-and-follow-vertically ()
+	(interactive)
+	(split-window-right)
+	(balance-windows)
+	(other-window 1))
+
 ;; Use escape to remove hightlight in normal mode
 (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
 (evil-set-leader 'normal (kbd "SPC"))
 (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
+(evil-define-key 'normal 'global (kbd "<leader>fw") 'find-file-other-window)
+(evil-define-key 'normal 'global (kbd "<leader>fg") 'consult-grep)
+(evil-define-key 'normal 'global (kbd "<leader>bb") 'consult-buffer)
+(evil-define-key 'normal 'global (kbd "<leader>bw") 'consult-buffer-other-window)
+(evil-define-key 'normal 'global (kbd "<leader>w") 'save-buffer)
+(evil-define-key 'normal 'global (kbd "<leader>q") 'evil-quit)
+(evil-define-key 'normal 'global (kbd "<leader>sv") 'split-and-follow-vertically)
+(evil-define-key 'normal 'global (kbd "<leader>sh") 'split-and-follow-horizontally)
 
 (use-package evil-goggles
 	:straight t
@@ -133,7 +152,7 @@
 	:init
 	:config
 	(setq vertico-posframe-min-width 50)
-	(setq vertico-posframe-width 70)
+	(setq vertico-posframe-width 123)
 	(vertico-posframe-mode 1)
 	;; (setq vertico-posframe-parameters
 	;;     '((left-fringe . 8)
@@ -188,3 +207,7 @@
 (use-package rainbow-mode
 	:config
 	(add-hook 'prog-mode #'rainbow-mode))
+
+(use-package consult)
+(use-package embark)
+(use-package embark-consult)
