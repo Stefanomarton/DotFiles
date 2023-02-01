@@ -86,7 +86,6 @@ path+=('/home/stefanomarton/Scripts/')
 path+=('/home/stefanomarton/go/bin')
 path+=('/home/stefanomarton/.cargo/bin')
 path+=('/home/stefanomarton/.local/bin')
-path+=('/home/stefanomarton/.local/share/gem/ruby/3.0.0/bin')
 export PATH
 #
 setopt autocd autopushd
