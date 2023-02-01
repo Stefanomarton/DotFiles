@@ -227,12 +227,20 @@
 (use-package google-this)
 (use-package org-bullets
 	:config
+	;; use org-bullets-mode for utf8 symbols as org bullets
+	(require 'org-bullets)
+	;; make available "org-bullet-face" such that I can control the font size individually
+	(setq org-bullets-face-name (quote org-bullet-face))
+	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+	(setq org-bullets-bullet-list '("✡" "⎈" "✽" "✲" "✱" "✻" "✼" "✽" "✾" "✿" "❀" "❁" "❂" "❃" "❄" "❅" "❆" "❇"))
+
+	(setq org-hide-emphasis-markers t)
 	(custom-set-faces
-	'(org-level-1 ((t (:inherit outline-1 :height 1.3))))
-	'(org-level-2 ((t (:inherit outline-2 :height 1.3))))
-	'(org-level-3 ((t (:inherit outline-3 :height 1.3))))
-	'(org-level-4 ((t (:inherit outline-4 :height 1.3))))
-	'(org-level-5 ((t (:inherit outline-5 :height 1.3)))))
+	'(org-level-1 ((t (:inherit outline-1 :height 1.5))))
+	'(org-level-2 ((t (:inherit outline-2 :height 1.5))))
+	'(org-level-3 ((t (:inherit outline-3 :height 1.5))))
+	'(org-level-4 ((t (:inherit outline-4 :height 1.5))))
+	'(org-level-5 ((t (:inherit outline-5 :height 1.5)))))
 	:init
 	(add-hook 'org-mode-hook 'org-indent-mode)
 	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
@@ -280,3 +288,7 @@
 										 :inside-key nil
 										 :keys "q"
 										 :hooks (emacs-lisp-mode-hook)))
+
+(use-package nyan-mode
+	:config
+	(nyan-mode 1))
