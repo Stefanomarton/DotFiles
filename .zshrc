@@ -52,8 +52,8 @@ alias ga="git add"
 alias gc="git commit"
 alias -g ls="ptls"
 alias -g ptcp="cp"
-alias pmi="~/Scripts/pmi"
-alias -g pmr="~/Scripts/pmr"
+alias -g pmi="~/.local/bin/scripts/pmi"
+alias -g pmr="~/.local/bin/scripts/pmr"
 alias -g c="clear"
 alias -g V="sudoedit"
 alias -s {yml,yaml,lua,c,tex}=nvim #Auto open file with nvim based on extension
@@ -82,10 +82,11 @@ rpg () {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 #
 path+=('~/bin')
-path+=('/home/stefanomarton/Scripts/')
-path+=('/home/stefanomarton/go/bin')
-path+=('/home/stefanomarton/.cargo/bin')
-path+=('/home/stefanomarton/.local/bin')
+path+=('/home/stefanom/Scripts/')
+path+=('/home/stefanom/go/bin')
+path+=('/home/stefanom/.cargo/bin')
+path+=('/home/stefanom/.local/bin')
+path+=('/home/stefanom/.local/bin/scripts')
 export PATH
 #
 setopt autocd autopushd
