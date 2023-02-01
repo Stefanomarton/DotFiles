@@ -124,21 +124,21 @@ return packer.startup(function(use)
 		config = function()
 			require("lualine").setup({
 				options = {
-					theme = "catppuccin",
+					theme = "nord",
 				},
 			})
 		end,
 	})
 
-	-- use({
-	-- 	"shaunsingh/nord.nvim",
-	-- 	config = function()
-	-- 		vim.cmd.colorscheme("nord")
-	-- 		vim.g.nord_borders = true
-	-- 		vim.g.nord_contrast = true
-	-- 		require("nord").set()
-	-- 	end,
-	-- })
+	use({
+		"shaunsingh/nord.nvim",
+		config = function()
+			vim.cmd.colorscheme("nord")
+			vim.g.nord_borders = true
+			vim.g.nord_contrast = true
+			-- require("nord").set()
+		end,
+	})
 
 	use({
 		"petertriho/nvim-scrollbar",
@@ -175,7 +175,7 @@ return packer.startup(function(use)
 		end,
 	})
 
-	use({ "folke/tokyonight.nvim" })
+	-- use({ "folke/tokyonight.nvim" })
 	use({
 		"romgrk/barbar.nvim",
 		config = function()
@@ -479,56 +479,27 @@ The Core plugins
 			})
 		end,
 	})
+
 	use({
-		"catppuccin/nvim",
-		as = "catppuccin",
+		"nvim-neorg/neorg",
 		config = function()
-			require("catppuccin").setup({
-				flavour = "mocha", -- latte, frappe, macchiato, mocha
-				background = { -- :h background
-					light = "frappe",
-					dark = "latte",
-				},
-				transparent_background = true,
-				show_end_of_buffer = false, -- show the '~' characters after the end of buffers
-				term_colors = false,
-				dim_inactive = {
-					enabled = true,
-					shade = "dark",
-					percentage = 0.15,
-				},
-				no_italic = false, -- Force no italic
-				no_bold = false, -- Force no bold
-				styles = {
-					comments = { "italic" },
-					conditionals = { "italic" },
-					loops = {},
-					functions = {},
-					keywords = {},
-					strings = {},
-					variables = {},
-					numbers = {},
-					booleans = {},
-					properties = {},
-					types = {},
-					operators = {},
-				},
-				color_overrides = {},
-				custom_highlights = {},
-				integrations = {
-					cmp = true,
-					gitsigns = true,
-					nvimtree = true,
-					telescope = true,
-					notify = false,
-					mini = true,
-					-- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+			require("neorg").setup({
+				load = {
+					["core.defaults"] = {}, -- Loads default behaviour
+					["core.norg.concealer"] = {}, -- Adds pretty icons to your documents
+					["core.integrations.treesitter"] = {},
+					["core.norg.dirman"] = {
+						config = {
+							workspaces = {
+								notes = "~/GoogleDrive/Notes/",
+							},
+						},
+					},
 				},
 			})
-
-			-- setup must be called before loading
-			vim.cmd.colorscheme("catppuccin")
 		end,
+		run = ":Neorg sync-parsers",
+		requires = "nvim-lua/plenary.nvim",
 	})
 
 	if PACKER_BOOTSTRAP then
