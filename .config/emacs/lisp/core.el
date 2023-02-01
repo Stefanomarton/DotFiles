@@ -31,6 +31,7 @@
 ;; Use escape to remove hightlight in normal mode
 (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
 (evil-set-leader 'normal (kbd "SPC"))
+(evil-set-leader 'visual (kbd "SPC"))
 (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
 (evil-define-key 'normal 'global (kbd "<leader>fw") 'find-file-other-window)
 (evil-define-key 'normal 'global (kbd "<leader>fg") 'consult-grep)
@@ -40,6 +41,8 @@
 (evil-define-key 'normal 'global (kbd "<leader>q") 'evil-quit)
 (evil-define-key 'normal 'global (kbd "<leader>sv") 'split-and-follow-vertically)
 (evil-define-key 'normal 'global (kbd "<leader>sh") 'split-and-follow-horizontally)
+(evil-define-key 'normal 'global (kbd "<leader>gg") 'google-this)
+(evil-define-key 'visual 'global (kbd "<leader>gg") 'google-this-noconfirm)
 
 (use-package evil-goggles
 	:straight t
@@ -211,3 +214,9 @@
 (use-package consult)
 (use-package embark)
 (use-package embark-consult)
+(use-package dashboard
+	:ensure t
+	:config
+	(dashboard-setup-startup-hook))
+
+(use-package google-this)
