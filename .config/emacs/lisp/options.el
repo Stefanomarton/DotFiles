@@ -25,8 +25,8 @@
 
 (use-package linum-relative
 	:straight t
-	:config
-	(linum-relative-global-mode))
+	:init
+	(add-hook 'prog-mode-hook 'linum-relative-mode))
 
 (global-hl-line-mode) ;; Highlight the current line
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
