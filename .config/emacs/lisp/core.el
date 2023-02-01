@@ -37,6 +37,7 @@
 (evil-define-key 'normal 'global (kbd "<leader>fg") 'consult-grep)
 (evil-define-key 'normal 'global (kbd "<leader>bb") 'consult-buffer)
 (evil-define-key 'normal 'global (kbd "<leader>bw") 'consult-buffer-other-window)
+(evil-define-key 'normal 'global (kbd "<leader>tt") 'consult-theme)
 (evil-define-key 'normal 'global (kbd "<leader>w") 'save-buffer)
 (evil-define-key 'normal 'global (kbd "<leader>q") 'evil-quit)
 (evil-define-key 'normal 'global (kbd "<leader>sv") 'split-and-follow-vertically)
