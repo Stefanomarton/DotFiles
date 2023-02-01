@@ -1,0 +1,2 @@
+#!/bin/bash
+yay -Slq | fzf --multi --preview 'yay -Si {1}' | xargs -ro sudo yay -S

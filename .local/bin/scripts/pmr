@@ -1,0 +1,2 @@
+#!/bin/bash
+yay -Qq | fzf --multi --preview 'yay -Qi {1}' | xargs -ro sudo yay -Rns
