@@ -43,6 +43,11 @@
 (evil-define-key 'normal 'global (kbd "<leader>sh") 'split-and-follow-horizontally)
 (evil-define-key 'normal 'global (kbd "<leader>gg") 'google-this)
 (evil-define-key 'visual 'global (kbd "<leader>gg") 'google-this-noconfirm)
+(evil-define-key 'normal 'global (kbd "<leader>l") 'evil-window-right)
+(evil-define-key 'normal 'global (kbd "<leader>h") 'evil-window-left)
+(evil-define-key 'normal 'global (kbd "S") 'evil-surround-edit)
+(evil-define-key 'normal 'global (kbd ",r") 'evil-surround-delete)
+(evil-define-key 'normal 'global (kbd ",c") 'evil-surround-change)
 
 (use-package evil-goggles
 	:straight t
@@ -220,3 +225,14 @@
 	(dashboard-setup-startup-hook))
 
 (use-package google-this)
+(use-package org-bullets
+	:config
+	(custom-set-faces
+	'(org-level-1 ((t (:inherit outline-1 :height 1.3))))
+	'(org-level-2 ((t (:inherit outline-2 :height 1.3))))
+	'(org-level-3 ((t (:inherit outline-3 :height 1.3))))
+	'(org-level-4 ((t (:inherit outline-4 :height 1.3))))
+	'(org-level-5 ((t (:inherit outline-5 :height 1.3)))))
+	:init
+	(add-hook 'org-mode-hook 'org-indent-mode)
+	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
