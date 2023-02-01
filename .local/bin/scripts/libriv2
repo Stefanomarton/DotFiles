@@ -1,6 +1,6 @@
 #!/bin/bash
 
-book_dir="/home/stefanomarton/GoogleDrive/Università/Libri/" # dotfile directory
+book_dir="/home/$USER/GoogleDrive/Università/Libri/" # dotfile directory
 nested_levels="1" # number of nested levels to search for dotfiles
 file_extensions=(".pdf")
 
