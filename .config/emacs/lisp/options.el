@@ -77,9 +77,4 @@
 			`((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 (setq create-lockfiles nil)
 
-(use-package doom-themes
-	:straight t
-	:config
-		(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-				doom-themes-enable-italic t) ; if nil, italics is universally disabled
-	(load-theme 'doom-nord-aurora t))
+(load-theme 'modus-vivendi t)
