@@ -31,10 +31,10 @@
 (global-hl-line-mode) ;; Highlight the current line
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
 
-(use-package centered-cursor-mode				;Add centered cursor
-	:straight t
-	:init
-	(global-centered-cursor-mode))
+;; (use-package centered-cursor-mode				;Add centered cursor
+;;	:straight t
+;;	:init
+;;	(global-centered-cursor-mode))
 
 (use-package all-the-icons
 	:straight t
@@ -77,4 +77,5 @@
 			`((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 (setq create-lockfiles nil)
 
-(load-theme 'modus-vivendi t)
+(use-package ef-themes)
+(load-theme 'ef-tritanopia-light t)
