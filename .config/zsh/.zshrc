@@ -56,8 +56,8 @@ alias gc="git commit"
 # alias -g pwd="ptpwd"
 alias -g ls="ptls"
 alias -g ptcp="cp"
-alias pmi="~/Scripts/pmi"
-alias -g pmr="~/Scripts/pmr"
+# alias pmi="~/Scripts/pmi"
+# alias -g pmr="~/Scripts/pmr"
 alias -g c="clear"
 alias -g df="dotfiles"
 alias -g V="sudoedit"
@@ -78,11 +78,11 @@ SAVEHIST=100000000
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 #
 path+=('~/bin')
-path+=('/home/stefanomarton/Scripts/')
-path+=('/home/stefanomarton/go/bin')
-path+=('/home/stefanomarton/.cargo/bin')
-path+=('/home/stefanomarton/.local/bin')
-path+=('/home/stefanomarton/.local/share/gem/ruby/3.0.0/bin')
+path+=('/home/stefanom/go/bin')
+path+=('/home/stefanom/.cargo/bin')
+path+=('/home/stefanom/.local/bin')
+path+=('/home/stefanom/.local/bin/scripts/')
+path+=('/home/stefanom/.local/share/gem/ruby/3.0.0/bin')
 export PATH
 #
 setopt autocd autopushd 
