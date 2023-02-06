@@ -1,21 +1,21 @@
 (provide 'core)
 
 (use-package evil
-	:straight t
-	:init
-	(setq evil-want-integration t)
-	(setq evil-want-keybinding nil)
-	(setq evil-undo-system 'undo-fu)
-	(setq evil-search-module 'evil-search)
-	:config
-	(evil-mode 1))
+ :straight t
+ :init
+ (setq evil-want-integration t)
+ (setq evil-want-keybinding nil)
+ (setq evil-undo-system 'undo-fu)
+ (setq evil-search-module 'evil-search)
+ :config
+ (evil-mode 1))
 
 (use-package evil-collection
-	:straight t
-	:after evil
-	:custom (evil-collection-setup-minibuffer t) ; enable evil mode in minibuffer
-	:config
-	(evil-collection-init))
+ :straight t
+ :after evil
+ :custom (evil-collection-setup-minibuffer t) ; enable evil mode in minibuffer
+ :config
+ (evil-collection-init))
 
 (defun split-and-follow-horizontally ()
 	(interactive)
@@ -236,11 +236,11 @@
 
 	(setq org-hide-emphasis-markers t)
 	(custom-set-faces
-	'(org-level-1 ((t (:inherit outline-1 :height 1.5))))
-	'(org-level-2 ((t (:inherit outline-2 :height 1.5))))
-	'(org-level-3 ((t (:inherit outline-3 :height 1.5))))
-	'(org-level-4 ((t (:inherit outline-4 :height 1.5))))
-	'(org-level-5 ((t (:inherit outline-5 :height 1.5)))))
+	'(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+	'(org-level-2 ((t (:inherit outline-2 :height 1.3))))
+	'(org-level-3 ((t (:inherit outline-3 :height 1.2))))
+	'(org-level-4 ((t (:inherit outline-4 :height 1.1))))
+	'(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
 	:init
 	(add-hook 'org-mode-hook 'org-indent-mode)
 	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
@@ -292,3 +292,36 @@
 (use-package nyan-mode
 	:config
 	(nyan-mode 1))
+
+(use-package org-download
+	:hook
+ (add-hook 'dired-mode-hook 'org-download-enable))
+
+(use-package markdown-mode
+	:mode ("README\\.md\\'" . gfm-mode)
+	:init (setq markdown-command "multimarkdown"))
+
+;;;;;;;;;;;
+;; Latex ;;
+;;;;;;;;;;;
+
+(use-package laas
+	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
+	:hook (LaTeX-mode . laas-mode)
+	:config ; do whatever here
+	(aas-set-snippets 'laas-mode
+										;; set condition!
+										:cond #'texmathp ; expand only while in math
+										"supp" "\\supp"
+										"On" "O(n)"
+										"O1" "O(1)"
+										"Olog" "O(\\log n)"
+										"Olon" "O(n \\log n)"
+										;; bind to functions!
+										"Sum" (lambda () (interactive)
+														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+										"Span" (lambda () (interactive)
+														 (yas-expand-snippet "\\Span($1)$0"))
+										;; add accent snippets
+										:cond #'laas-object-on-left-condition
+										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
