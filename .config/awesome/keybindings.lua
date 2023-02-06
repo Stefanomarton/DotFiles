@@ -135,7 +135,7 @@ awful.keyboard.append_global_keybindings({
 		awful.spawn.with_shell("bash -c ~/Scripts/searchOnFirefox.sh")
 	end, { description = "Search on Firefox", group = "launcher" }),
 	awful.key({ modkey }, "b", function()
-		awful.spawn.with_shell("bash -c ~/Scripts/libriv2")
+		awful.spawn.with_shell("bash -c ~/.local/bin/scripts/libriv2")
 	end, { description = "Open a book", group = "launcher" }),
 })
 
