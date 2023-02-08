@@ -32,10 +32,10 @@
 (setq hl-line-sticky-flag nil)
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
 
-;; (use-package centered-cursor-mode				;Add centered cursor
-;;	:straight t
-;;	:init
-;;	(global-centered-cursor-mode))
+(use-package centered-cursor-mode				;Add centered cursor
+	:straight t
+	:init
+	(global-centered-cursor-mode))
 
 (use-package all-the-icons
 	:straight t
