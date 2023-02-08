@@ -1,21 +1,21 @@
 (provide 'core)
 
 (use-package evil
- :straight t
- :init
- (setq evil-want-integration t)
- (setq evil-want-keybinding nil)
- (setq evil-undo-system 'undo-fu)
- (setq evil-search-module 'evil-search)
- :config
- (evil-mode 1))
+	:straight t
+	:init
+	(setq evil-want-integration t)
+	(setq evil-want-keybinding nil)
+	(setq evil-undo-system 'undo-fu)
+	(setq evil-search-module 'evil-search)
+	:config
+	(evil-mode 1))
 
 (use-package evil-collection
- :straight t
- :after evil
- :custom (evil-collection-setup-minibuffer t) ; enable evil mode in minibuffer
- :config
- (evil-collection-init))
+	:straight t
+	:after evil
+	:custom (evil-collection-setup-minibuffer t) ; enable evil mode in minibuffer
+	:config
+	(evil-collection-init))
 
 (defun split-and-follow-horizontally ()
 	(interactive)
@@ -195,8 +195,20 @@
 
 (use-package company
 	:straight t
+	:custom
+	(add-to-list 'company-backends 'company-math-symbols-unicode)
 	:init
 	(add-hook 'after-init-hook 'global-company-mode))
+
+;; (use-package corfu
+;;	:custom
+;;	(corfu-cycle t)
+;;	(corfu-auto t)
+;;	(corfu-auto-prefix 2)
+;;	(corfu-auto-delay 0.0)
+;;	:init
+;;	(global-corfu-mode))
+
 
 ;; Editorconfig, auto set indenting
 (use-package editorconfig
@@ -233,26 +245,26 @@
 	(setq org-bullets-face-name (quote org-bullet-face))
 	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 	(setq org-bullets-bullet-list '("✡" "⎈" "✽" "✲" "✱" "✻" "✼" "✽" "✾" "✿" "❀" "❁" "❂" "❃" "❄" "❅" "❆" "❇"))
-
 	(setq org-hide-emphasis-markers t)
 	(custom-set-faces
-	'(org-level-1 ((t (:inherit outline-1 :height 1.4))))
-	'(org-level-2 ((t (:inherit outline-2 :height 1.3))))
-	'(org-level-3 ((t (:inherit outline-3 :height 1.2))))
-	'(org-level-4 ((t (:inherit outline-4 :height 1.1))))
-	'(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
+	 '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+	 '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
+	 '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
+	 '(org-level-4 ((t (:inherit outline-4 :height 1.1))))
+	 '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
+	(setq org-agenda-files '("~/org"))
 	:init
+	(add-hook 'org-mode-hook 'visual-line-mode)
 	(add-hook 'org-mode-hook 'org-indent-mode)
 	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-(use-package tab-jump-out
-	:config
-	(tab-jump-out-mode))
-;; (setq yas-fallback-behavior '(apply tab-jump-out 1))
+;; (usepackage tab-jump-out
+;;	:config
+;;  (setq yas-fallback-behavior '(apply tab-jump-out 1)))
 
 (straight-use-package '(targets :type git :host github
-													 :repo "dvzubarev/targets.el"
-				 :branch "fix-remote"))
+																:repo "dvzubarev/targets.el"
+																:branch "fix-remote"))
 
 (use-package targets
 	:config
@@ -295,7 +307,7 @@
 
 (use-package org-download
 	:hook
- (add-hook 'dired-mode-hook 'org-download-enable))
+	(add-hook 'dired-mode-hook 'org-download-enable))
 
 (use-package markdown-mode
 	:mode ("README\\.md\\'" . gfm-mode)
@@ -310,18 +322,71 @@
 	:hook (LaTeX-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-										;; set condition!
-										:cond #'texmathp ; expand only while in math
-										"supp" "\\supp"
-										"On" "O(n)"
-										"O1" "O(1)"
-										"Olog" "O(\\log n)"
-										"Olon" "O(n \\log n)"
-										;; bind to functions!
-										"Sum" (lambda () (interactive)
-														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-										"Span" (lambda () (interactive)
-														 (yas-expand-snippet "\\Span($1)$0"))
-										;; add accent snippets
-										:cond #'laas-object-on-left-condition
-										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+		;; set condition!
+		:cond #'texmathp ; expand only while in math
+		"supp" "\\supp"
+		"On" "O(n)"
+		"O1" "O(1)"
+		"Olog" "O(\\log n)"
+		"Olon" "O(n \\log n)"
+		;; bind to functions!
+		"Sum" (lambda () (interactive)
+						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+		"Span" (lambda () (interactive)
+						 (yas-expand-snippet "\\Span($1)$0"))
+		;; add accent snippets
+		:cond #'laas-object-on-left-condition
+		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+
+(straight-use-package 'auctex
+											:hook
+											(add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
+(add-hook 'LaTeX-mode 'reftex-mode)
+
+
+
+;; Yasnippet settings
+
+(setq yas-snippet-dirs '("~/.config/emacs/snippets"))
+(use-package yasnippet
+	:ensure t
+	:hook ((LaTeX-mode . yas-minor-mode)
+				 (post-self-insert . my/yas-try-expanding-auto-snippets))
+	:config
+	(yas-global-mode)
+	(use-package warnings
+		:config
+		(cl-pushnew '(yasnippet backquote-change)
+								warning-suppress-types
+								:test 'equal))
+
+	(setq yas-triggers-in-field t)
+
+	;; Function that tries to autoexpand YaSnippets
+	;; The double quoting is NOT a typo!
+	(defun my/yas-try-expanding-auto-snippets ()
+		(when (and (boundp 'yas-minor-mode) yas-minor-mode)
+			(let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
+				(yas-expand)))))
+
+(use-package format-all
+	:init
+	(add-hook 'format-all-mode-hook 'format-all-ensure-formatter)
+	(add-hook 'prog-mode-hook 'format-all-mode)
+	(add-hook 'LaTeX-mode-hook 'format-all-mode)
+	)
+(use-package consult-reftex
+	:straight (consult-reftex :type git :host github :repo "karthink/consult-reftex")
+	:after (reftex consult embark)
+	:bind (:map reftex-mode-map
+							("C-c )"   . consult-reftex-insert-reference)
+							("C-c M-." . consult-reftex-goto-label))
+	:config (setq consult-reftex-preview-function
+								#'consult-reftex-make-window-preview))
+
+(use-package company-math)
+(use-package company-auctex
+	:init
+	(company-auctex-init))
+(use-package company-reftex)
+(use-package reftex)
