@@ -4,6 +4,7 @@ set colourscheme mytheme
 "" BINDINGS ""
 "" Open the selection in a new tab
 bind --mode=visual t composite js document.getSelection().toString() | tabopen
+bind ,v composite js document.location.href.replace('https://', 'ytdl://') | shellescape | js -p 'PATH="$PATH:/usr/local/bin" mpv ' + JS_ARG | !s
 
 "" Unbindings
 unbind --mode=ex <C-a>
