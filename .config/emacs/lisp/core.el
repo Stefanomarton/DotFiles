@@ -8,6 +8,8 @@
 	(setq evil-undo-system 'undo-fu)
 	(setq evil-search-module 'evil-search)
 	:config
+	(modify-syntax-entry ?_ "w")
+	(modify-syntax-entry ?- "w")
 	(evil-mode 1))
 
 (use-package evil-collection
@@ -74,17 +76,6 @@
 (evil-define-key 'normal 'global (kbd "gcA") 'comment_end_of_line)
 (evil-define-key 'normal 'global (kbd "gcc") 'comment-line)
 (evil-define-key 'visual 'global (kbd "gc") 'comment-line)
-
-(use-package avy
-	:straight t
-	:config)
-
-(evil-define-key 'normal 'global (kbd "s") 'evil-avy-goto-char-timer)
-(evil-define-key 'motion 'global (kbd "s") 'evil-avy-goto-char-timer)
-(evil-define-key 'operator 'global (kbd "s") 'evil-avy-goto-char-timer)
-(evil-define-key 'normal 'global (kbd "f") 'evil-avy-goto-char-in-line)
-(evil-define-key 'motion 'global (kbd "f") 'evil-avy-goto-char-in-line)
-(evil-define-key 'operator 'global (kbd "f") 'evil-avy-goto-char-in-line)
 
 (use-package which-key
 	:straight t
@@ -258,9 +249,9 @@
 	(add-hook 'org-mode-hook 'org-indent-mode)
 	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-;; (usepackage tab-jump-out
-;;	:config
-;;  (setq yas-fallback-behavior '(apply tab-jump-out 1)))
+(use-package tab-jump-out
+	:custom
+	(tab-jump-out-mode 1))
 
 (straight-use-package '(targets :type git :host github
 																:repo "dvzubarev/targets.el"
@@ -291,6 +282,7 @@
 		:around-key nil
 		:inside-key nil
 		:keys "q")
+	(targets-define-to word 'evil-word nil object :bind t :keys "w")
 	(targets-define-to double-quote
 										 "\"" nil quote
 										 :bind t
@@ -322,21 +314,21 @@
 	:hook (LaTeX-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-		;; set condition!
-		:cond #'texmathp ; expand only while in math
-		"supp" "\\supp"
-		"On" "O(n)"
-		"O1" "O(1)"
-		"Olog" "O(\\log n)"
-		"Olon" "O(n \\log n)"
-		;; bind to functions!
-		"Sum" (lambda () (interactive)
-						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-		"Span" (lambda () (interactive)
-						 (yas-expand-snippet "\\Span($1)$0"))
-		;; add accent snippets
-		:cond #'laas-object-on-left-condition
-		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+										;; set condition!
+										:cond #'texmathp ; expand only while in math
+										"supp" "\\supp"
+										"On" "O(n)"
+										"O1" "O(1)"
+										"Olog" "O(\\log n)"
+										"Olon" "O(n \\log n)"
+										;; bind to functions!
+										"Sum" (lambda () (interactive)
+														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+										"Span" (lambda () (interactive)
+														 (yas-expand-snippet "\\Span($1)$0"))
+										;; add accent snippets
+										:cond #'laas-object-on-left-condition
+										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (straight-use-package 'auctex
 											:hook
@@ -390,3 +382,33 @@
 	(company-auctex-init))
 (use-package company-reftex)
 (use-package reftex)
+
+;;;;;;;;;;;;;;;
+;; AvyConfig ;;
+;;;;;;;;;;;;;;;
+
+
+(use-package avy
+	:straight t
+	:config
+	(setq avy-timeout-seconds 0.2)
+	(setq avy-keys (nconc (number-sequence ?a ?z)))
+	)
+
+
+;; (evil-define-key 'operator 'global (kbd "l") 'avy-goto-line)
+
+(evil-define-key 'normal 'global (kbd "s") 'evil-avy-goto-char-timer)
+(evil-define-key 'motion 'global (kbd "s") 'evil-avy-goto-char-timer)
+(evil-define-key 'operator 'global (kbd "s") 'evil-avy-goto-char-timer)
+(evil-define-key 'normal 'global (kbd "f") 'evil-avy-goto-char-in-line)
+(evil-define-key 'motion 'global (kbd "f") 'evil-avy-goto-char-in-line)
+(evil-define-key 'operator 'global (kbd "f") 'evil-avy-goto-char-in-line)
+(evil-define-key 'normal 'global (kbd "C-SPC") 'er/expand-region)
+(evil-define-key 'visual 'global (kbd "SPC SPC") 'er/expand-region)
+(evil-define-key 'motion 'global (kbd "l") 'avy-copy-line)
+(evil-define-key 'motion 'global (kbd "R") 'avy-copy-region)
+
+(setq avy-timeout-seconds 0.25)
+
+(use-package expand-region)
