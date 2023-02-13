@@ -47,7 +47,7 @@ vim.opt.lazyredraw = false
 vim.opt.shadafile = "NONE"
 
 -- TreeSitter context background color
-vim.api.nvim_set_hl(0, "TreesitterContext", { fg = "#ffffff", bg = "#414868" })
+--vim.api.nvim_set_hl(0, "TreesitterContext", { fg = "#ffffff", bg = "#414868" })
 
 -- GUI settings for Neovide
 vim.g.neovide_scale_factor = 0.8

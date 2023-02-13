@@ -1,17 +1,13 @@
---[[ deco Configs ]]
---require("alpha").setup(require("user.deco.alpha").config)
-require("user.deco.colorscheme")
-
---[[ Plugins ]]
-require("user.plugins")
-
-----[[ Base configs ]]
-require("user.keymaps")
-require("user.options")
-require("user.autocommands")
-
-----[[ Core plugins ]]
-require("user.lsp")
-require("user.cmp")
-require("snippets.latex").setup({ use_treesitter = true })
-require("user.vimtex")
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
+end
+vim.opt.rtp:prepend(lazypath)
+require("lazy").setup("plugins")

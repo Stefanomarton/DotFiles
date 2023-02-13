@@ -1,6 +1,0 @@
-
-return {
-	settings = {
-		filetype = { "markdown" },
-	},
-}
