@@ -312,6 +312,7 @@
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
 	:hook (LaTeX-mode . laas-mode)
+	:hook (markdown-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
 										;; set condition!
@@ -406,8 +407,8 @@
 (evil-define-key 'operator 'global (kbd "f") 'evil-avy-goto-char-in-line)
 (evil-define-key 'normal 'global (kbd "C-SPC") 'er/expand-region)
 (evil-define-key 'visual 'global (kbd "SPC SPC") 'er/expand-region)
-(evil-define-key 'motion 'global (kbd "l") 'avy-copy-line)
-(evil-define-key 'motion 'global (kbd "R") 'avy-copy-region)
+;; (evil-define-key 'motion 'global (kbd "L") 'avy-copy-line)
+(evil-define-key 'operator 'global (kbd "R") 'avy-copy-region)
 
 (setq avy-timeout-seconds 0.25)
 
