@@ -79,4 +79,11 @@
 (setq create-lockfiles nil)
 
 (use-package ef-themes)
-(load-theme 'ef-tritanopia-light t)
+(add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
+(load-theme 'nord t)
+
+(add-hook 'prog-mode-hook
+					(lambda ()
+						(whitespace-newline-mode t)))
+(setq whitespace-display-mappings
+			'((newline-mark 10 [172 10])))
