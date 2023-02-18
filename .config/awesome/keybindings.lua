@@ -132,7 +132,7 @@ awful.keyboard.append_global_keybindings({
 		awful.spawn.with_shell("dmenu_run -l 5")
 	end, { description = "dmenu", group = "launcher" }),
 	awful.key({ modkey, "Control" }, "f", function()
-		awful.spawn.with_shell("bash -c ~/Scripts/searchOnFirefox.sh")
+				awful.spawn.with_shell("bash -c ~/.local/bin/scripts/searchOnFirefox.sh")
 	end, { description = "Search on Firefox", group = "launcher" }),
 	awful.key({ modkey }, "b", function()
 		awful.spawn.with_shell("bash -c ~/.local/bin/scripts/libriv2")
