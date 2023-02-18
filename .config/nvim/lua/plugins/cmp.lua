@@ -107,7 +107,7 @@ return {
 					{ name = "nvim_lsp" },
 					{ name = "nvim_lua" },
 					{ name = "luasnip" },
-					--{ name = "buffer" },
+					{ name = "buffer" },
 					{ name = "path" },
 				}),
 				confirm_opts = {
@@ -170,4 +170,3 @@ return {
 	{ "f3fora/cmp-spell" },
 	{ "hrsh7th/cmp-omni" },
 }
-

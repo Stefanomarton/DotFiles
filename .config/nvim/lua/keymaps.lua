@@ -67,11 +67,12 @@ keymap("n", "<leader>qa", ":x<cr>", opts)
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
 
--- Telescope file_browser
-keymap("n", "<leader>e", ":Telescope file_browser<CR>", opts)
-
 wk.register({
 	e = { ":Telescope file_browser<CR>", "File explorer", opts },
+}, { prefix = "<leader>" })
+
+wk.register({
+	b = { ":Telescope buffers<CR>", "Telescope buffer", opts },
 }, { prefix = "<leader>" })
 
 wk.register({
@@ -106,3 +107,8 @@ keymap("n", "<leader>pq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 
 vim.api.nvim_set_keymap("n", "*", [[*<Cmd>lua require('hlslens').start()<CR>]], opts)
 vim.api.nvim_set_keymap("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]], opts)
+
+vim.keymap.set("n", "s", function()
+	local current_window = vim.fn.win_getid()
+	require("leap").leap({ target_windows = { current_window } })
+end)
