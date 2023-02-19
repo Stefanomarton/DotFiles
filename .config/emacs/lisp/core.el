@@ -187,7 +187,8 @@
 (use-package company
 	:straight t
 	:custom
-	(add-to-list 'company-backends 'company-math-symbols-unicode)
+	(add-to-list 'company-backends 'company-math-symbols-latex)
+	(add-to-list 'company-backends 'company-auctex)
 	:init
 	(add-hook 'after-init-hook 'global-company-mode))
 
@@ -293,9 +294,7 @@
 										 :keys "q"
 										 :hooks (emacs-lisp-mode-hook)))
 
-(use-package nyan-mode
-	:config
-	(nyan-mode 1))
+(use-package nyan-mode)
 
 (use-package org-download
 	:hook
@@ -303,7 +302,10 @@
 
 (use-package markdown-mode
 	:mode ("README\\.md\\'" . gfm-mode)
-	:init (setq markdown-command "multimarkdown"))
+	:init
+	(setq markdown-enable-math t))
+;; :init (setq markdown-command "multimarkdown"))
+
 
 ;;;;;;;;;;;
 ;; Latex ;;
@@ -323,7 +325,7 @@
 										"Olog" "O(\\log n)"
 										"Olon" "O(n \\log n)"
 										;; bind to functions!
-										"Sum" (lambda () (interactive)
+										"sum" (lambda () (interactive)
 														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
 										"Span" (lambda () (interactive)
 														 (yas-expand-snippet "\\Span($1)$0"))
@@ -413,3 +415,56 @@
 (setq avy-timeout-seconds 0.25)
 
 (use-package expand-region)
+
+(use-package org-fragtog)
+
+;; Daemon mode configs
+(pcase system-type
+	('gnu/linux "It's Linux!")
+	('windows-nt "It's Windows!")
+	('darwin "It's macOS!"))
+
+(if (daemonp)
+		(message "Loading in the daemon!")
+	(message "Loading in regular Emacs!"))
+
+(defun efs/set-font-faces ()
+	(message "Setting faces!")
+	(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150)
+
+	;; Set the fixed pitch face
+	(set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 150)
+
+	;; Set the variable pitch face
+	(set-face-attribute 'variable-pitch nil :font "JetBrainsMono Nerd Font" :height 150 :weight 'regular))
+
+(if (daemonp)
+		(add-hook 'after-make-frame-functions
+							(lambda (frame)
+								;; (setq doom-modeline-icon t)
+								(with-selected-frame frame
+									(efs/set-font-faces))))
+	(efs/set-font-faces)
+	(setq highlight-indent-guides-method 'character)
+	(setq doom-modeline-icon t)
+	)
+
+;; Terminal specific configuration
+
+(if (display-graphic-p)
+		;; GUI mode
+		(progn
+			(nyan-mode 1))
+	;; Terminal mode
+	())
+
+;; (if (daemonp)
+;;		(add-hook 'after-make-frame-functions
+;;							(defun my/theme-init-daemon (frame)
+;;								(with-selected-frame frame
+;;									(load-theme 'atom-one-dark))
+;;								;; Run this hook only once.
+;;								(remove-hook 'after-make-frame-functions
+;;														 #'my/theme-init-daemon)
+;;								(fmakunbound 'my/theme-init-daemon)))
+;;	(load-theme 'doom-nord t))

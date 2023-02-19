@@ -5,7 +5,7 @@
 			user-mail-address "sstefanomarton@gmail.com")
 
 ;; UI settings
-(add-to-list 'default-frame-alist '(alpha 95 95)) ;; opacity settings
+(add-to-list 'default-frame-alist '(alpha 100 100)) ;; opacity settings
 (setq inhibit-startup-message t) ;; don't show startup messages
 (scroll-bar-mode -1) ;; no scrollbar
 (tool-bar-mode -1) ;; no top bar
@@ -26,7 +26,8 @@
 (use-package linum-relative
 	:straight t
 	:init
-	(add-hook 'prog-mode-hook 'linum-relative-mode))
+	(add-hook 'prog-mode-hook 'linum-relative-mode)
+	(add-hook 'LaTeX-mode-hook 'linum-relative-mode))
 
 (add-hook 'prog-mode-hook 'hl-line-mode) ;; Highlight the current line
 (setq hl-line-sticky-flag nil)
@@ -79,11 +80,14 @@
 (setq create-lockfiles nil)
 
 (use-package ef-themes)
+(use-package doom-themes)
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
-(load-theme 'nord t)
+(load-theme 'doom-nord t)
 
 (add-hook 'prog-mode-hook
 					(lambda ()
 						(whitespace-newline-mode t)))
+
+;; Set ⏎ symbol for newlines
 (setq whitespace-display-mappings
-			'((newline-mark 10 [172 10])))
+			'((newline-mark 10 [32 ?\x23CE 10])))
