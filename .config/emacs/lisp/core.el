@@ -1,8 +1,10 @@
 (provide 'core)
 
+(use-package restart-emacs)
 (use-package evil
 	:straight t
 	:init
+	(setq completion-in-region-function 'consult-completion-in-region)
 	(setq evil-want-integration t)
 	(setq evil-want-keybinding nil)
 	(setq evil-undo-system 'undo-fu)
@@ -15,9 +17,14 @@
 (use-package evil-collection
 	:straight t
 	:after evil
-	:custom (evil-collection-setup-minibuffer t) ; enable evil mode in minibuffer
+	;; :custom (evil-collection-setup-minibuffer t) ; enable evil mode in minibuffer
 	:config
 	(evil-collection-init))
+
+;; breaks the evil undo sequence when the buffer is changed over a line boundary
+
+(use-package evil-nl-break-undo
+	:hook ((text-mode prog-mode) . evil-nl-break-undo-mode))
 
 (defun split-and-follow-horizontally ()
 	(interactive)
@@ -32,14 +39,19 @@
 
 ;; Use escape to remove hightlight in normal mode
 (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
+(evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
+;; (keymap-set vertico-map "<escape>" #'keyboard-escape-quit)
+;; (keymap-set vertico-map "C-w" #'backward-kill-word)
 (evil-set-leader 'normal (kbd "SPC"))
 (evil-set-leader 'visual (kbd "SPC"))
+(evil-define-key 'normal 'global (kbd "M-:") '((evil-ex)(vertico-posframe-cleanup)))
+(evil-define-key 'normal 'global (kbd ":") 'execute-extended-command)
 (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
 (evil-define-key 'normal 'global (kbd "<leader>fw") 'find-file-other-window)
 (evil-define-key 'normal 'global (kbd "<leader>fg") 'consult-grep)
 (evil-define-key 'normal 'global (kbd "<leader>bb") 'consult-buffer)
 (evil-define-key 'normal 'global (kbd "<leader>bw") 'consult-buffer-other-window)
-(evil-define-key 'normal 'global (kbd "<leader>tt") 'consult-theme)
+;; (evil-define-key 'normal 'global (kbd "<leader>tt") 'consult-theme)
 (evil-define-key 'normal 'global (kbd "<leader>w") 'save-buffer)
 (evil-define-key 'normal 'global (kbd "<leader>q") 'evil-quit)
 (evil-define-key 'normal 'global (kbd "<leader>sv") 'split-and-follow-vertically)
@@ -48,6 +60,10 @@
 (evil-define-key 'visual 'global (kbd "<leader>gg") 'google-this-noconfirm)
 (evil-define-key 'normal 'global (kbd "<leader>l") 'evil-window-right)
 (evil-define-key 'normal 'global (kbd "<leader>h") 'evil-window-left)
+(evil-define-key 'normal 'global (kbd "<leader>ee") 'eval-buffer)
+(evil-define-key 'normal 'global (kbd "<leader>es") 'eval-expression)
+(evil-define-key 'normal 'global (kbd "<leader>er") 'eval-region)
+(evil-define-key 'normal 'global (kbd "<leader>er") 'eval-defun)
 (evil-define-key 'normal 'global (kbd "S") 'evil-surround-edit)
 (evil-define-key 'normal 'global (kbd ",r") 'evil-surround-delete)
 (evil-define-key 'normal 'global (kbd ",c") 'evil-surround-change)
@@ -158,8 +174,6 @@
 	;;       (right-fringe . 8)))
 	)
 
-(evil-define-key 'normal 'global (kbd ":") 'execute-extended-command)
-
 (use-package doom-modeline
 	:straight t
 	:init (doom-modeline-mode 1))
@@ -184,23 +198,38 @@
 	:straight t
 	:commands lsp-ui-mode)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package company
 	:straight t
-	:custom
+	:config
+	(setq company-idle-delay 0)
 	(add-to-list 'company-backends 'company-math-symbols-latex)
 	(add-to-list 'company-backends 'company-auctex)
+	(add-to-list 'company-backends 'company-yasnippet)
+	;; Add yasnippet support for all company backends
+	;; https://github.com/syl20bnr/spacemacs/pull/179
+	(defvar company-mode/enable-yas t "Enable yasnippet for all backends.")
+
+	(defun company-mode/backend-with-yas (backend)
+		(if (or (not company-mode/enable-yas) (and (listp backend)    (member 'company-yasnippet backend)))
+				backend
+			(append (if (consp backend) backend (list backend))
+							'(:with company-yasnippet))))
+
+	(setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
 	:init
+	(global-company-mode)
 	(add-hook 'after-init-hook 'global-company-mode))
 
-;; (use-package corfu
-;;	:custom
-;;	(corfu-cycle t)
-;;	(corfu-auto t)
-;;	(corfu-auto-prefix 2)
-;;	(corfu-auto-delay 0.0)
-;;	:init
-;;	(global-corfu-mode))
+(use-package company-math)
+(use-package company-auctex
+	:init
+	(company-auctex-init))
+(use-package company-reftex)
+(use-package reftex)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Editorconfig, auto set indenting
 (use-package editorconfig
@@ -223,9 +252,22 @@
 (use-package consult)
 (use-package embark)
 (use-package embark-consult)
+
 (use-package dashboard
 	:ensure t
 	:config
+	(setq dashboard-banner-logo-title "Welcome Back Goblin")
+	;; Content is not centered by default. To center, set
+	(setq dashboard-startup-banner "~/.config/emacs/themes/logo.txt")
+	(setq dashboard-center-content t)
+	(setq dashboard-set-heading-icons t)
+	(setq dashboard-set-file-icons t)
+	(setq dashboard-set-navigator t)
+	(setq dashboard-items '((recents  . 5)))
+	;; (bookmarks . 5)
+	;; (projects . 5)
+	;; (agenda . 5)
+	;; (registers . 5)))
 	(dashboard-setup-startup-hook))
 
 (use-package google-this)
@@ -311,12 +353,20 @@
 ;; Latex ;;
 ;;;;;;;;;;;
 
+(evil-define-key 'normal LaTeX-mode-map
+	(kbd "<leader>tt") 'reftex-toc)
+
+
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
 	:hook (LaTeX-mode . laas-mode)
 	:hook (markdown-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
 										;; set condition!
 										:cond #'texmathp ; expand only while in math
 										"supp" "\\supp"
@@ -345,24 +395,24 @@
 (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
 (use-package yasnippet
 	:ensure t
-	:hook ((LaTeX-mode . yas-minor-mode)
-				 (post-self-insert . my/yas-try-expanding-auto-snippets))
+	;; :hook ((LaTeX-mode . yas-minor-mode))
+	;;			 (post-self-insert . my/yas-try-expanding-auto-snippets))
 	:config
-	(yas-global-mode)
-	(use-package warnings
-		:config
-		(cl-pushnew '(yasnippet backquote-change)
-								warning-suppress-types
-								:test 'equal))
+	(yas-global-mode))
+;; (use-package warnings
+;;	:config
+;;	(cl-pushnew '(yasnippet backquote-change)
+;;							warning-suppress-types
+;;							:test 'equal))
 
-	(setq yas-triggers-in-field t)
+;; (setq yas-triggers-in-field t)
 
-	;; Function that tries to autoexpand YaSnippets
-	;; The double quoting is NOT a typo!
-	(defun my/yas-try-expanding-auto-snippets ()
-		(when (and (boundp 'yas-minor-mode) yas-minor-mode)
-			(let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
-				(yas-expand)))))
+;; ;; Function that tries to autoexpand YaSnippets
+;; ;; The double quoting is NOT a typo!
+;; (defun my/yas-try-expanding-auto-snippets ()
+;;	(when (and (boundp 'yas-minor-mode) yas-minor-mode)
+;;		(let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
+;;			(yas-expand)))))
 
 (use-package format-all
 	:init
@@ -378,13 +428,6 @@
 							("C-c M-." . consult-reftex-goto-label))
 	:config (setq consult-reftex-preview-function
 								#'consult-reftex-make-window-preview))
-
-(use-package company-math)
-(use-package company-auctex
-	:init
-	(company-auctex-init))
-(use-package company-reftex)
-(use-package reftex)
 
 ;;;;;;;;;;;;;;;
 ;; AvyConfig ;;
@@ -419,6 +462,7 @@
 (use-package org-fragtog)
 
 ;; Daemon mode configs
+
 (pcase system-type
 	('gnu/linux "It's Linux!")
 	('windows-nt "It's Windows!")
@@ -448,6 +492,9 @@
 	(setq highlight-indent-guides-method 'character)
 	(setq doom-modeline-icon t)
 	)
+(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Terminal specific configuration
 
@@ -457,14 +504,3 @@
 			(nyan-mode 1))
 	;; Terminal mode
 	())
-
-;; (if (daemonp)
-;;		(add-hook 'after-make-frame-functions
-;;							(defun my/theme-init-daemon (frame)
-;;								(with-selected-frame frame
-;;									(load-theme 'atom-one-dark))
-;;								;; Run this hook only once.
-;;								(remove-hook 'after-make-frame-functions
-;;														 #'my/theme-init-daemon)
-;;								(fmakunbound 'my/theme-init-daemon)))
-;;	(load-theme 'doom-nord t))
