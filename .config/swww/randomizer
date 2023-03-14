@@ -2,7 +2,7 @@
 swww img ~/Media/ThemeThings/NordicWallpapers/ign_bratislava.png 
 
 if [[ $# -lt 1 ]] || [[ ! -d $1   ]]; then
-	$0 ~/DotFiles/Media/ThemeThings/NordicWallpapers
+	$0 ~/.local/share/Wallpapers/NordicWallpapers/
 	exit 1
 fi
 # Edit bellow to control the images transition
