@@ -79,7 +79,6 @@
 			`((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 (setq create-lockfiles nil)
 
-(use-package ef-themes)
 (use-package doom-themes)
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 (load-theme 'doom-nord t)

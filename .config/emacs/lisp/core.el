@@ -161,7 +161,7 @@
 				completion-category-defaults nil
 				completion-category-overrides '((file (styles partial-completion)))))
 
-;; Vertico postframe
+;;Vertico postframe
 (use-package vertico-posframe
 	:straight t
 	:init
@@ -230,6 +230,10 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package solaire-mode
+	:straight t)
+(solaire-global-mode +1)
 
 ;; Editorconfig, auto set indenting
 (use-package editorconfig
