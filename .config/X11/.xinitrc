@@ -1,5 +1,5 @@
 xrdb -merge ~/.config/X11/.Xresources &
-xrandr --output DisplayPort-2 --primary --mode 3440x1440 --pos 1920x0 --rotate normal -r 144 --output DisplayPort-3 --off --output HDMI-A-2 --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-A-3 --off --output DVI-D-1 --off --output DisplayPort-1-0 --off --output DisplayPort-1-1 --off --output HDMI-A-1-0 --off --output HDMI-A-1-1 --off --output DVI-D-1-0 --off
+xrandr --output DP-1 --primary -r 144 --mode 3440x1440 --pos 1920x0 --rotate normal --output DP-2 --off --output HDMI-1 --mode 1920x1080 --pos 0x114 --rotate normal --output HDMI-2 --off --output DVI-D-1 --off
 sleep 10 &
 #feh --no-fehbg --bg-fill /home/stefanomarton/Media/ThemeThings/NordicWallpapers/super-mario.png
 picom &
