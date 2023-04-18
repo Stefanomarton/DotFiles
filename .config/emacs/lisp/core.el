@@ -10,8 +10,8 @@
 	(setq evil-undo-system 'undo-fu)
 	(setq evil-search-module 'evil-search)
 	:config
-	(modify-syntax-entry ?_ "w")
-	(modify-syntax-entry ?- "w")
+	;; (modify-syntax-entry ?_ "w")
+	;; (modify-syntax-entry ?- "w")
 	(evil-mode 1))
 
 (use-package evil-collection
@@ -22,7 +22,6 @@
 	(evil-collection-init))
 
 ;; breaks the evil undo sequence when the buffer is changed over a line boundary
-
 (use-package evil-nl-break-undo
 	:hook ((text-mode prog-mode) . evil-nl-break-undo-mode))
 
@@ -181,6 +180,7 @@
 (use-package lsp-mode
 	:straight t
 	:config
+	(setq lsp-tex-server 'digestif)
 	(setq lsp-enable-symbol-highlighting nil)
 	(setq lsp-lens-enable nil)
 	;; (setq lsp-headerline-breadcrumb-enable nil)
@@ -199,35 +199,44 @@
 	:commands lsp-ui-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package company
 	:straight t
 	:config
 	(setq company-idle-delay 0)
-	(add-to-list 'company-backends 'company-math-symbols-latex)
-	(add-to-list 'company-backends 'company-auctex)
+	(add-to-list 'company-backends 'company-capf)
+	(add-to-list 'company-backends 'company-files)
 	(add-to-list 'company-backends 'company-yasnippet)
-	;; Add yasnippet support for all company backends
-	;; https://github.com/syl20bnr/spacemacs/pull/179
-	(defvar company-mode/enable-yas t "Enable yasnippet for all backends.")
-
-	(defun company-mode/backend-with-yas (backend)
-		(if (or (not company-mode/enable-yas) (and (listp backend)    (member 'company-yasnippet backend)))
-				backend
-			(append (if (consp backend) backend (list backend))
-							'(:with company-yasnippet))))
-
-	(setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
 	:init
 	(global-company-mode)
-	(add-hook 'after-init-hook 'global-company-mode))
+	(add-hook 'after-init-hook 'global-company-mode 1))
+
+;; COmpany
+;; (defun my-latex-hook-company ()
+;;	(set (make-local-variable 'company-backends)
+;;			 '((company-files company-capf company-auctex company-yasnippet company-reftex-labels company-math-symbols-latex))))
 
 (use-package company-math)
 (use-package company-auctex
 	:init
 	(company-auctex-init))
-(use-package company-reftex)
-(use-package reftex)
+(use-package reftex
+	:init
+	(add-hook 'LaTeX-mode-hook 'reftex-mode)
+	:config
+	(setq reftex-plug-into-AUCTeX t))
 
+(use-package company-reftex
+	:config
+	(setq company-minimum-prefix-length 1))
+
+(defun my-elisp-mode-hook ()
+	"Hook for `emacs-lisp-mode'"
+	(set (make-local-variable 'company-backends)
+			 '((company-capf company-dabbrev-code company-yasnippet company-files))))
+
+(add-hook 'emacs-lisp-mode-hook 'my-elisp-mode-hook)
+(add-hook 'emacs-lisp-mode-hook 'company-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
