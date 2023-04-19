@@ -14,12 +14,12 @@
 		ret (tap-hold-next-release 150 ret lmet)
 		n (tap-hold-next-release 150 n ralt) 
 		c (tap-hold-next-release 150 c ralt) 
-		pr (tap-hold-next-release 150 esc (layer-toggle movement))
+		pr (tap-hold-next-release 150 esc rctl)
 		shp (tap-hold-next-release 150 p rsft)
-		stab (tap-hold-next-release 150 tab lsft)
+		stab (tap-hold-next-release 150 tab ralt)
 		sq (tap-hold-next-release 150 q rsft)
     sls (sticky-key 40 lsft)
-    sym  (tap-hold-next-release 200 spc (layer-toggle symbol))
+    sym  (tap-hold-next-release 200 spc (layer-toggle movement))
 		mov (layer-toggle movement)	
 		num (tap-hold-next-release 150 spc (layer-toggle numbers))
 
@@ -56,7 +56,7 @@
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc 
   @stab  @sq    w    e    r    t    y    u    @i    @o    @shp    @=+    @?    \    
 	@pr  @a    s    d    f    @g    h    j    k    l    ;     '  @ret        
-  rctl z    x    @c    @v    b    @n   m    ,    .    /    rsft
+  lsft z    x    @c    @v    b    @n   m    ,    .    /    rsft
   @sym lmet lalt       @num            ralt rmet  cmp    rctl    
 )
 
