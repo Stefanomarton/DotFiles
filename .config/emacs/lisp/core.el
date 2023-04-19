@@ -366,6 +366,16 @@
 ;; Latex ;;
 ;;;;;;;;;;;
 
+(setq TeX-save-query nil)
+(setq TeX-clean-confirm nil)
+
+(setq TeX-source-correlate-method 'synctex)
+(TeX-source-correlate-mode)
+(setq TeX-source-correlate-start-server t)
+
+(add-to-list 'TeX-view-program-selection
+						 '(output-pdf "Zathura"))
+
 (evil-define-key 'normal LaTeX-mode-map
 	(kbd "<leader>tt") 'reftex-toc)
 
@@ -376,32 +386,30 @@
 	:hook (markdown-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-										;; set condition!
-										:cond #'texmathp ; expand only while in math
-										"supp" "\\supp"
-										"On" "O(n)"
-										"O1" "O(1)"
-										"Olog" "O(\\log n)"
-										"Olon" "O(n \\log n)"
-										;; bind to functions!
-										"sum" (lambda () (interactive)
-														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-										"Span" (lambda () (interactive)
-														 (yas-expand-snippet "\\Span($1)$0"))
-										;; add accent snippets
-										:cond #'laas-object-on-left-condition
-										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+		;; set condition!
+		:cond #'texmathp ; expand only while in math
+		"supp" "\\supp"
+		"On" "O(n)"
+		"O1" "O(1)"
+		"Olog" "O(\\log n)"
+		"Olon" "O(n \\log n)"
+		;; bind to functions!
+		"sum" (lambda () (interactive)
+						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+		"Span" (lambda () (interactive)
+						 (yas-expand-snippet "\\Span($1)$0"))
+		;; add accent snippets
+		:cond #'laas-object-on-left-condition
+		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (straight-use-package 'auctex
 											:hook
 											(add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
 (add-hook 'LaTeX-mode 'reftex-mode)
-
-
 
 ;; Yasnippet settings
 
