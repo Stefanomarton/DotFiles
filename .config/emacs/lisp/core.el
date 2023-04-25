@@ -1,4 +1,6 @@
 (provide 'core)
+;; (use-package tree-sitter)
+;; (use-package tree-sitter-langs)
 
 (use-package restart-emacs)
 (use-package evil
@@ -40,32 +42,37 @@
 (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
 (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
 ;; (keymap-set vertico-map "<escape>" #'keyboard-escape-quit)
-;; (keymap-set vertico-map "C-w" #'backward-kill-word)
 (evil-set-leader 'normal (kbd "SPC"))
 (evil-set-leader 'visual (kbd "SPC"))
-(evil-define-key 'normal 'global (kbd "M-:") '((evil-ex)(vertico-posframe-cleanup)))
-(evil-define-key 'normal 'global (kbd ":") 'execute-extended-command)
-(evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
-(evil-define-key 'normal 'global (kbd "<leader>fw") 'find-file-other-window)
-(evil-define-key 'normal 'global (kbd "<leader>fg") 'consult-grep)
-(evil-define-key 'normal 'global (kbd "<leader>bb") 'consult-buffer)
-(evil-define-key 'normal 'global (kbd "<leader>bw") 'consult-buffer-other-window)
-;; (evil-define-key 'normal 'global (kbd "<leader>tt") 'consult-theme)
-(evil-define-key 'normal 'global (kbd "<leader>w") 'save-buffer)
-(evil-define-key 'normal 'global (kbd "<leader>q") 'evil-quit)
-(evil-define-key 'normal 'global (kbd "<leader>sv") 'split-and-follow-vertically)
-(evil-define-key 'normal 'global (kbd "<leader>sh") 'split-and-follow-horizontally)
-(evil-define-key 'normal 'global (kbd "<leader>gg") 'google-this)
+
+;;Settings normal global keybindings
+(evil-define-key 'normal 'global
+	(kbd ";") 'evil-ex
+	(kbd ":") 'execute-extended-command
+	(kbd "<leader>ff") 'find-file
+	(kbd "<leader>fw") 'find-file-other-window
+	(kbd "<leader>fr") 'consult-recent-file
+	(kbd "<leader>fg") 'consult-grep
+	(kbd "<leader>bb") 'consult-buffer
+	(kbd "<leader>bw") 'consult-buffer-other-window
+	(kbd "<leader>w") 'save-buffer
+	(kbd "<leader>qq") 'kill-buffer
+	(kbd "<leader>qa") 'kill-current-buffer
+	(kbd "<leader>sv") 'split-and-follow-vertically
+	(kbd "<leader>sh") 'split-and-follow-horizontally
+	(kbd "<leader>gg") 'google-this
+	(kbd "<leader>l") 'evil-window-right
+	(kbd "<leader>h") 'evil-window-left
+	(kbd "<leader>ee") 'eval-buffer
+	(kbd "<leader>es") 'eval-expression
+	(kbd "<leader>er") 'eval-region
+	(kbd "<leader>er") 'eval-defun
+	(kbd "S") 'evil-surround-edit
+	(kbd ",r") 'evil-surround-delete
+	(kbd ",c") 'evil-surround-change)
+
+(evil-define-key 'insert 'global (kbd "C-<backspace>") 'evil-delete-backward-word)
 (evil-define-key 'visual 'global (kbd "<leader>gg") 'google-this-noconfirm)
-(evil-define-key 'normal 'global (kbd "<leader>l") 'evil-window-right)
-(evil-define-key 'normal 'global (kbd "<leader>h") 'evil-window-left)
-(evil-define-key 'normal 'global (kbd "<leader>ee") 'eval-buffer)
-(evil-define-key 'normal 'global (kbd "<leader>es") 'eval-expression)
-(evil-define-key 'normal 'global (kbd "<leader>er") 'eval-region)
-(evil-define-key 'normal 'global (kbd "<leader>er") 'eval-defun)
-(evil-define-key 'normal 'global (kbd "S") 'evil-surround-edit)
-(evil-define-key 'normal 'global (kbd ",r") 'evil-surround-delete)
-(evil-define-key 'normal 'global (kbd ",c") 'evil-surround-change)
 
 (use-package evil-goggles
 	:straight t
@@ -180,7 +187,7 @@
 (use-package lsp-mode
 	:straight t
 	:config
-	(setq lsp-tex-server 'digestif)
+	(setq lsp-tex-server 'texlab)
 	(setq lsp-enable-symbol-highlighting nil)
 	(setq lsp-lens-enable nil)
 	;; (setq lsp-headerline-breadcrumb-enable nil)
@@ -200,21 +207,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package company
-	:straight t
-	:config
-	(setq company-idle-delay 0)
-	(add-to-list 'company-backends 'company-capf)
-	(add-to-list 'company-backends 'company-files)
-	(add-to-list 'company-backends 'company-yasnippet)
-	:init
-	(global-company-mode)
-	(add-hook 'after-init-hook 'global-company-mode 1))
-
-;; COmpany
-;; (defun my-latex-hook-company ()
-;;	(set (make-local-variable 'company-backends)
-;;			 '((company-files company-capf company-auctex company-yasnippet company-reftex-labels company-math-symbols-latex))))
+(use-package company)
+(setq company-idle-delay 0)
+(add-hook 'after-init-hook 'global-company-mode)
 
 (use-package company-math)
 (use-package company-auctex
@@ -229,14 +224,6 @@
 (use-package company-reftex
 	:config
 	(setq company-minimum-prefix-length 1))
-
-(defun my-elisp-mode-hook ()
-	"Hook for `emacs-lisp-mode'"
-	(set (make-local-variable 'company-backends)
-			 '((company-capf company-dabbrev-code company-yasnippet company-files))))
-
-(add-hook 'emacs-lisp-mode-hook 'my-elisp-mode-hook)
-(add-hook 'emacs-lisp-mode-hook 'company-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -368,7 +355,6 @@
 
 (setq TeX-save-query nil)
 (setq TeX-clean-confirm nil)
-
 (setq TeX-source-correlate-method 'synctex)
 (TeX-source-correlate-mode)
 (setq TeX-source-correlate-start-server t)
@@ -377,8 +363,8 @@
 						 '(output-pdf "Zathura"))
 
 (evil-define-key 'normal LaTeX-mode-map
-	(kbd "<leader>tt") 'reftex-toc)
-
+	(kbd "<leader>tm") 'reftex-toc
+	(kbd "<leader>tt") 'lsp-ui-imenu)
 
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -416,24 +402,8 @@
 (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
 (use-package yasnippet
 	:ensure t
-	;; :hook ((LaTeX-mode . yas-minor-mode))
-	;;			 (post-self-insert . my/yas-try-expanding-auto-snippets))
 	:config
 	(yas-global-mode))
-;; (use-package warnings
-;;	:config
-;;	(cl-pushnew '(yasnippet backquote-change)
-;;							warning-suppress-types
-;;							:test 'equal))
-
-;; (setq yas-triggers-in-field t)
-
-;; ;; Function that tries to autoexpand YaSnippets
-;; ;; The double quoting is NOT a typo!
-;; (defun my/yas-try-expanding-auto-snippets ()
-;;	(when (and (boundp 'yas-minor-mode) yas-minor-mode)
-;;		(let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
-;;			(yas-expand)))))
 
 (use-package format-all
 	:init
@@ -449,6 +419,35 @@
 							("C-c M-." . consult-reftex-goto-label))
 	:config (setq consult-reftex-preview-function
 								#'consult-reftex-make-window-preview))
+
+(use-package latex-table-wizard)
+
+(defun some-useful-name (stuff-to-configure)
+	"Some useful documentation here!."
+	(dolist (entry stuff-to-configure)
+		(add-to-list 'latex-table-wizard-transient-keys
+								 (cons (intern (concat "latex-table-wizard-" (symbol-name (car entry))))
+											 (cdr entry)))))
+
+;; example use
+(some-useful-name '((right . "l")
+										(left . "h")
+										(beginning-of-cell . "ii")
+										(down . "j")
+										(up . "k")
+										(end-of-cell . "a")
+										(beginning-of-row . "II")
+										(end-of-row . "A")
+										(bottom . "G")
+										(top . "gg")
+										(mark-cell . "m")
+										(insert-column . "C")
+										(insert-row .	"R")
+										(kill-column-content ."DCC"	)
+										(kill-row-content . "DRC"	)
+										(delete-column . "Dc"	)
+										(delete-row . "Dr"	)
+										))
 
 ;;;;;;;;;;;;;;;
 ;; AvyConfig ;;
@@ -525,3 +524,7 @@
 			(nyan-mode 1))
 	;; Terminal mode
 	())
+
+(use-package org-modern
+	:hook
+	(add-hook 'org-mode-hook #'org-modern-mode))
