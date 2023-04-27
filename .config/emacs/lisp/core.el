@@ -207,7 +207,14 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package company)
+(use-package company
+	:config
+	;; Show number before and after current candidates
+	(setq company-tooltip-offset-display 'lines)
+	;; Avoid screen breaking when at the bottom of the buffer
+	(setq company-tooltip-flip-when-above t)
+	(setq company-tooltip-minimum 2)
+	(setq company-tooltip-limit 5))
 (setq company-idle-delay 0)
 (add-hook 'after-init-hook 'global-company-mode)
 
@@ -388,6 +395,14 @@
 						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
 		"Span" (lambda () (interactive)
 						 (yas-expand-snippet "\\Span($1)$0"))
+		"inti" (lambda () (interactive)
+						 (yas-expand-snippet "\\int"))
+		"intd" (lambda () (interactive)
+						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+		"df" (lambda () (interactive)
+					 (yas-expand-snippet "_{$1}$0"))
+		"rt" (lambda () (interactive)
+					 (yas-expand-snippet "^{$1}$0"))
 		;; add accent snippets
 		:cond #'laas-object-on-left-condition
 		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
@@ -480,6 +495,8 @@
 (use-package expand-region)
 
 (use-package org-fragtog)
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.6))
+(plist-put org-format-latex-options :justify 'center)
 
 ;; Daemon mode configs
 
@@ -528,3 +545,14 @@
 (use-package org-modern
 	:hook
 	(add-hook 'org-mode-hook #'org-modern-mode))
+
+(use-package obsidian
+	:ensure t
+	:demand t
+	:config
+	(obsidian-specify-path "~/GoogleDrive/Obsidian")
+	(global-obsidian-mode t)
+	;; (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
+	:custom
+	;; This directory will be used for `obsidian-capture' if set.
+	(obsidian-inbox-directory "Inbox"))
