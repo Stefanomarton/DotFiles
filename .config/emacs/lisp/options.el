@@ -23,6 +23,9 @@
 (add-hook 'before-save-hook 'whitespace-cleanup)
 (add-hook 'before-save-hook (lambda() (delete-trailing-whitespace)))
 
+;; Wrap line
+(add-hook 'text-mode-hook 'visual-line-mode)
+
 (use-package linum-relative
 	:straight t
 	:init
