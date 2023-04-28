@@ -15,6 +15,7 @@ xinput --set-prop 11 316 1 &
 # gnome-keyring-daemon --login &
 kmonad ~/.config/kmonad/laptop.kbd &
 xset r rate 150 50 &
+~/.config/X11/laptop/statusbar.sh &
 exec dwm 
 ;;
 
