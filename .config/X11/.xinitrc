@@ -3,6 +3,7 @@ case $HOSTNAME in
 laptop)
 # xrdb -merge ~/.config/X11/.Xresources &
 feh --no-fehbg --bg-fill /home/stefanom/.local/share/Wallpapers/NordicWallpapers/earth-in-space.png 
+picom &
 xmodmap ~/.config/X11/.XmodmapDesktop &
 flameshot &
 redshift -l 45.69651:9.1818 &
