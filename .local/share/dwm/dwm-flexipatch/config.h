@@ -163,7 +163,7 @@ static const char dmenufont[]            = "JetBrainsMono Nerd Font Mono:size=13
 static char c000000[]                    = "#000000"; // placeholder value
 
 static char normfgcolor[]                = "#bbbbbb";
-static char normbgcolor[]                = "#222222";
+static char normbgcolor[]                = "#3b4252";
 static char normbordercolor[]            = "#444444";
 static char normfloatcolor[]             = "#b48ead";
 
@@ -173,7 +173,7 @@ static char selbordercolor[]             = "#8fbcbb";
 static char selfloatcolor[]              = "#a3be8c";
 
 static char titlenormfgcolor[]           = "#bbbbbb";
-static char titlenormbgcolor[]           = "#222222";
+static char titlenormbgcolor[]           = "#3b4252";
 static char titlenormbordercolor[]       = "#444444";
 static char titlenormfloatcolor[]        = "#b48ead";
 
@@ -183,7 +183,7 @@ static char titleselbordercolor[]        = "#005577";
 static char titleselfloatcolor[]         = "#005577";
 
 static char tagsnormfgcolor[]            = "#bbbbbb";
-static char tagsnormbgcolor[]            = "#222222";
+static char tagsnormbgcolor[]            = "#3b4252";
 static char tagsnormbordercolor[]        = "#444444";
 static char tagsnormfloatcolor[]         = "#b48ead";
 

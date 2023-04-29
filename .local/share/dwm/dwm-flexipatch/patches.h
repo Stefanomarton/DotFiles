@@ -77,7 +77,7 @@
 #define BAR_LAYOUTMENU_PATCH 0
 
 /* Show layout symbol in bar */
-#define BAR_LTSYMBOL_PATCH 1
+#define BAR_LTSYMBOL_PATCH 0
 
 /* Adds powerline arrows for the status.
  * This uses statuscolors logic for choosing colors for the powerline. As these markers
@@ -130,7 +130,7 @@
  *
  * https://dwm.suckless.org/patches/tag-previews/
  */
-#define BAR_TAGPREVIEW_PATCH 1
+#define BAR_TAGPREVIEW_PATCH 0
 
 /* Show status in bar */
 #define BAR_STATUS_PATCH 1
@@ -360,7 +360,7 @@
 /* This patch adds vertical and horizontal space between the statusbar and the edge of the screen.
  * https://dwm.suckless.org/patches/barpadding/
  */
-#define BAR_PADDING_PATCH 1
+#define BAR_PADDING_PATCH 0
 
 /* Same as barpadding patch but specifically tailored for the vanitygaps patch in that the outer
  * bar padding is derived from the vanitygaps settings. In addition to this the bar padding is
@@ -544,7 +544,7 @@
  * hold MOD and then press and hold 1 and 3 together.
  * https://dwm.suckless.org/patches/combo/
  */
-#define COMBO_PATCH 1
+#define COMBO_PATCH 0
 
 /* Allow dwm to execute commands from autostart array in your config.h file. When dwm exits
  * then all processes from autostart array will be killed.
