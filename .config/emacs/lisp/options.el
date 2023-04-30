@@ -93,3 +93,5 @@
 ;; Set ⏎ symbol for newlines
 (setq whitespace-display-mappings
 			'((newline-mark 10 [32 ?\x23CE 10])))
+
+(use-package unicode-fonts)

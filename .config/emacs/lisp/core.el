@@ -1,6 +1,4 @@
 (provide 'core)
-;; (use-package tree-sitter)
-;; (use-package tree-sitter-langs)
 
 (use-package restart-emacs)
 (use-package evil
@@ -41,7 +39,8 @@
 ;; Use escape to remove hightlight in normal mode
 (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
 (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
-;; (keymap-set vertico-map "<escape>" #'keyboard-escape-quit)
+;; (keymap-set vertico-map "C-i" #'vertico-quick-insert)
+;; (keymap-set vertico-map "C-j" #'vertico-quick-jump)
 (evil-set-leader 'normal (kbd "SPC"))
 (evil-set-leader 'visual (kbd "SPC"))
 
@@ -73,6 +72,7 @@
 
 (evil-define-key 'insert 'global (kbd "C-<backspace>") 'evil-delete-backward-word)
 (evil-define-key 'visual 'global (kbd "<leader>gg") 'google-this-noconfirm)
+(evil-define-key 'normal 'prog-mode-map (kbd "<leader>m") 'rainbow-mode)
 
 (use-package evil-goggles
 	:straight t
@@ -207,30 +207,49 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package company
-	:config
-	;; Show number before and after current candidates
-	(setq company-tooltip-offset-display 'lines)
-	;; Avoid screen breaking when at the bottom of the buffer
-	(setq company-tooltip-flip-when-above t)
-	(setq company-tooltip-minimum 2)
-	(setq company-tooltip-limit 5))
-(setq company-idle-delay 0)
-(add-hook 'after-init-hook 'global-company-mode)
-
-(use-package company-math)
-(use-package company-auctex
-	:init
-	(company-auctex-init))
+ (use-package company-auctex)
 (use-package reftex
 	:init
 	(add-hook 'LaTeX-mode-hook 'reftex-mode)
 	:config
 	(setq reftex-plug-into-AUCTeX t))
 
-(use-package company-reftex
-	:config
-	(setq company-minimum-prefix-length 1))
+;; (use-package company-reftex
+;;	:config
+;;	(setq company-minimum-prefix-length 1))
+
+(use-package corfu
+	;; Optional customizations
+	:custom
+	(corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+	(corfu-auto t)                 ;; Enable auto completion
+	(corfu-separator ?\s)          ;; Orderless field separator
+	;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+	(corfu-quit-no-match 'separator)      ;; Never quit, even if there is no match
+	;; (corfu-preview-current nil)    ;; Disable current candidate preview
+	(corfu-preselect 'prompt)      ;; Preselect the prompt
+	;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+	;; (corfu-scroll-margin 5)        ;; Use scroll margin
+	(defun orderless-fast-dispatch (word index total)
+		(and (= index 0) (= total 1) (length< word 4)
+				 `(orderless-regexp . ,(concat "^" (regexp-quote word)))))
+
+	(orderless-define-completion-style orderless-fast
+		(orderless-style-dispatchers '(orderless-fast-dispatch))
+		(orderless-matching-styles '(orderless-literal orderless-regexp)))
+
+	(setq-local corfu-auto t
+							corfu-auto-delay 0
+							corfu-auto-prefix 0
+							completion-styles '(orderless-fast))
+	:bind
+	(:map corfu-map
+				("TAB" . corfu-next)
+				([tab] . corfu-next)
+				("S-TAB" . corfu-previous)
+				([backtab] . corfu-previous))
+	:init
+	(global-corfu-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -355,16 +374,15 @@
 	(setq markdown-enable-math t))
 ;; :init (setq markdown-command "multimarkdown"))
 
-
 ;;;;;;;;;;;
 ;; Latex ;;
 ;;;;;;;;;;;
 
-(setq TeX-save-query nil)
-(setq TeX-clean-confirm nil)
-(setq TeX-source-correlate-method 'synctex)
-(TeX-source-correlate-mode)
-(setq TeX-source-correlate-start-server t)
+;; (setq TeX-save-query nil)
+;; (setq TeX-clean-confirm nil)
+;; (setq TeX-source-correlate-method 'synctex)
+;; (TeX-source-correlate-mode 1)
+;; (setq TeX-source-correlate-start-server t)
 
 (add-to-list 'TeX-view-program-selection
 						 '(output-pdf "Zathura"))
@@ -468,14 +486,12 @@
 ;; AvyConfig ;;
 ;;;;;;;;;;;;;;;
 
-
 (use-package avy
 	:straight t
 	:config
 	(setq avy-timeout-seconds 0.2)
 	(setq avy-keys (nconc (number-sequence ?a ?z)))
 	)
-
 
 ;; (evil-define-key 'operator 'global (kbd "l") 'avy-goto-line)
 
@@ -556,3 +572,8 @@
 	:custom
 	;; This directory will be used for `obsidian-capture' if set.
 	(obsidian-inbox-directory "Inbox"))
+
+(use-package all-the-icons-completion
+	:config
+	(all-the-icons-completion-mode))
+(add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
