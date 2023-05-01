@@ -57,8 +57,8 @@
 	(kbd "<leader>bb") 'consult-buffer
 	(kbd "<leader>bw") 'consult-buffer-other-window
 	(kbd "<leader>w") 'save-buffer
-	(kbd "<leader>qq") 'kill-buffer
-	(kbd "<leader>qa") 'kill-current-buffer
+	(kbd "<leader>qb") 'kill-buffer
+	(kbd "Q") 'evil-quit
 	(kbd "<leader>sv") 'split-and-follow-vertically
 	(kbd "<leader>sh") 'split-and-follow-horizontally
 	(kbd "<leader>gg") 'google-this
@@ -417,33 +417,33 @@
 	:hook (markdown-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-		;; set condition!
-		:cond #'texmathp ; expand only while in math
-		"supp" "\\supp"
-		"On" "O(n)"
-		"O1" "O(1)"
-		"Olog" "O(\\log n)"
-		"Olon" "O(n \\log n)"
-		;; bind to functions!
-		"sum" (lambda () (interactive)
-						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-		"Span" (lambda () (interactive)
-						 (yas-expand-snippet "\\Span($1)$0"))
-		"inti" (lambda () (interactive)
-						 (yas-expand-snippet "\\int"))
-		"intd" (lambda () (interactive)
-						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-		"df" (lambda () (interactive)
-					 (yas-expand-snippet "_{$1}$0"))
-		"rt" (lambda () (interactive)
-					 (yas-expand-snippet "^{$1}$0"))
-		;; add accent snippets
-		:cond #'laas-object-on-left-condition
-		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+										;; set condition!
+										:cond #'texmathp ; expand only while in math
+										"supp" "\\supp"
+										"On" "O(n)"
+										"O1" "O(1)"
+										"Olog" "O(\\log n)"
+										"Olon" "O(n \\log n)"
+										;; bind to functions!
+										"sum" (lambda () (interactive)
+														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+										"Span" (lambda () (interactive)
+														 (yas-expand-snippet "\\Span($1)$0"))
+										"inti" (lambda () (interactive)
+														 (yas-expand-snippet "\\int"))
+										"intd" (lambda () (interactive)
+														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+										"df" (lambda () (interactive)
+													 (yas-expand-snippet "_{$1}$0"))
+										"rt" (lambda () (interactive)
+													 (yas-expand-snippet "^{$1}$0"))
+										;; add accent snippets
+										:cond #'laas-object-on-left-condition
+										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (straight-use-package 'auctex
 											:hook
@@ -594,12 +594,29 @@
 	(obsidian-inbox-directory "Inbox"))
 
 (use-package kind-icon
-	:ensure t
 	:after corfu
 	:custom
-	(kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+	(kind-icon-use-icons t)
+	(kind-icon-default-face 'corfu-default) ; Have background color be the same as `corfu' face background
+	(kind-icon-blend-background nil)  ; Use midpoint color between foreground and background colors ("blended")?
+	(kind-icon-blend-frac 0.08)
+
+	;; NOTE 2022-02-05: `kind-icon' depends `svg-lib' which creates a cache
+	;; directory that defaults to the `user-emacs-directory'. Here, I change that
+	;; directory to a location appropriate to `no-littering' conventions, a
+	;; package which moves directories of other packages to sane locations.
+	(svg-lib-icons-dir (no-littering-expand-var-file-name "svg-lib/cache/")) ; Change cache dir
 	:config
-	(add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+	(add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter) ; Enable `kind-icon'
+
+	;; Add hook to reset cache so the icon colors match my theme
+	;; NOTE 2022-02-05: This is a hook which resets the cache whenever I switch
+	;; the theme using my custom defined command for switching themes. If I don't
+	;; do this, then the backgound color will remain the same, meaning it will not
+	;; match the background color corresponding to the current theme. Important
+	;; since I have a light theme and dark theme I switch between. This has no
+	;; function unless you use something similar
+	(add-hook 'kb/themes-hooks #'(lambda () (interactive) (kind-icon-reset-cache))))
 
 ;; Configure Tempel
 (use-package tempel
@@ -607,8 +624,8 @@
 	;; :custom
 	;; (tempel-trigger-prefix "<")
 
-	:bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
-				 ("M-*" . tempel-insert))
+	:bind (("<leader>nc" . tempel-complete) ;; Alternative tempel-expand
+				 ("<leader>ni" . tempel-insert))
 
 	:init
 
@@ -637,3 +654,8 @@
 ;; Optional: Add tempel-collection.
 ;; The package is young and doesn't have comprehensive coverage.
 (use-package tempel-collection)
+(use-package pandoc-mode
+	:config
+	(add-hook 'markdown-mode-hook 'pandoc-mode))
+
+(use-package gptel)

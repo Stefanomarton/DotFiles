@@ -18,6 +18,8 @@
 			ring-bell-function 'ignore
 			frame-resize-pixelwise t)
 
+(setq make-backup-files nil)
+
 ;; Remove useless whitespace before saving a file
 (setq-default nuke-trailing-whitespace-p t)
 (add-hook 'before-save-hook 'whitespace-cleanup)
