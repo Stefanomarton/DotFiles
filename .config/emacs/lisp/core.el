@@ -32,6 +32,7 @@
 	(split-window-below)
 	(balance-windows)
 	(other-window 1))
+
 (defun split-and-follow-vertically ()
 	(interactive)
 	(split-window-right)
@@ -54,6 +55,8 @@
 	(kbd "<leader>fw") 'find-file-other-window
 	(kbd "<leader>fr") 'consult-recent-file
 	(kbd "<leader>fg") 'consult-grep
+	(kbd "<leader>dj") 'dired-jump
+	(kbd "<leader>dd") 'dired
 	(kbd "<leader>bb") 'consult-buffer
 	(kbd "<leader>bw") 'consult-buffer-other-window
 	(kbd "<leader>w") 'save-buffer
@@ -115,7 +118,24 @@
 ;; Enable vertico
 (use-package vertico
 	:straight t
-	:init
+	:config
+	(setq vertico-multiform-commands
+				'((consult-line
+					 posframe
+					 (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
+					 (vertico-posframe-border-width . 10)
+					 ;; NOTE: This is useful when emacs is used in both in X and
+					 ;; terminal, for posframe do not work well in terminal, so
+					 ;; vertico-buffer-mode will be used as fallback at the
+					 ;; moment.
+					 (vertico-posframe-fallback-mode . vertico-buffer-mode))
+					(t posframe)))
+	(vertico-multiform-mode 1)
+	;; Using vertico-multiform-mode is possibile to avoid use of posframe in certain buffer
+	;; (setq vertico-multiform-commands
+	;;			'((execute-extended-command (:not posframe))
+	;;				(t posframe)))
+	;; :init
 	(vertico-mode)
 	(setq vertico-count 20)
 	(setq vertico-scroll-margin 3)
@@ -150,11 +170,6 @@
 				'(read-only t cursor-intangible t face minibuffer-prompt))
 	(add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-	;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-	;; Vertico commands are hidden in normal buffers.
-	;; (setq read-extended-command-predicate
-	;;       #'command-completion-default-include-p)
-
 	;; Enable recursive minibuffers
 	(setq enable-recursive-minibuffers t))
 
@@ -177,10 +192,9 @@
 	(setq vertico-posframe-min-width 50)
 	(setq vertico-posframe-width 123)
 	(vertico-posframe-mode 1)
-	;; (setq vertico-posframe-parameters
-	;;     '((left-fringe . 8)
-	;;       (right-fringe . 8)))
-	)
+	(setq vertico-posframe-parameters
+				'((left-fringe . 10)
+					(right-fringe . 10))))
 
 (use-package doom-modeline
 	:straight t
@@ -195,6 +209,7 @@
 	;; (setq lsp-headerline-breadcrumb-enable nil)
 	(setq lsp-keymap-prefix "C-c l")
 	:hook (
+				 (LaTex-mode . lsp)
 				 (lua-mode . lsp)
 				 (lsp-mode . lsp-enable-which-key-integration)) ;whichkey-integration
 	:commands lsp)
@@ -209,18 +224,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package tex
-	:straight auctex)
-
-(use-package reftex
-	:init
-	(add-hook 'LaTeX-mode-hook 'reftex-mode)
-	:config
-	(setq reftex-plug-into-AUCTeX t))
-
-;; (use-package company-reftex
-;;	:config
-;;	(setq company-minimum-prefix-length 1))
 
 (use-package corfu
 	;; Optional customizations
@@ -266,7 +269,7 @@
 	;;(add-to-list 'completion-at-point-functions #'cape-tex)
 	;;(add-to-list 'completion-at-point-functions #'cape-sgml)
 	;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-	;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+	(add-to-list 'completion-at-point-functions #'cape-abbrev)
 	;;(add-to-list 'completion-at-point-functions #'cape-dict)
 	;;(add-to-list 'completion-at-point-functions #'cape-symbol)
 	;;(add-to-list 'completion-at-point-functions #'cape-line)
@@ -309,8 +312,8 @@
 	(setq dashboard-set-heading-icons t)
 	(setq dashboard-set-file-icons t)
 	(setq dashboard-set-navigator t)
-	(setq dashboard-items '((recents  . 5)))
-	;; (bookmarks . 5)
+	(setq dashboard-items '((recents  . 5)
+													(bookmarks . 5)))
 	;; (projects . 5)
 	;; (agenda . 5)
 	;; (registers . 5)))
@@ -394,18 +397,27 @@
 	(setq markdown-enable-math t))
 ;; :init (setq markdown-command "multimarkdown"))
 
+(use-package pandoc-mode
+	:config
+	(add-hook 'markdown-mode-hook 'pandoc-mode))
+
 ;;;;;;;;;;;
 ;; Latex ;;
 ;;;;;;;;;;;
 
-;; (setq TeX-save-query nil)
-;; (setq TeX-clean-confirm nil)
-;; (setq TeX-source-correlate-method 'synctex)
-;; (TeX-source-correlate-mode 1)
-;; (setq TeX-source-correlate-start-server t)
+(use-package tex
+	:straight auctex
+	:config
+	(setq TeX-save-query nil)
+	(setq TeX-clean-confirm nil)
+	(setq TeX-source-correlate-method 'synctex)
+	(TeX-source-correlate-mode 1)
+	(setq TeX-source-correlate-start-server t)
 
-(add-to-list 'TeX-view-program-selection
-						 '(output-pdf "Zathura"))
+	(add-to-list 'TeX-view-program-selection
+							 '(output-pdf "Zathura"))
+	:hook
+	(add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
 
 (evil-define-key 'normal LaTeX-mode-map
 	(kbd "<leader>tm") 'reftex-toc
@@ -417,61 +429,33 @@
 	:hook (markdown-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-										;; set condition!
-										:cond #'texmathp ; expand only while in math
-										"supp" "\\supp"
-										"On" "O(n)"
-										"O1" "O(1)"
-										"Olog" "O(\\log n)"
-										"Olon" "O(n \\log n)"
-										;; bind to functions!
-										"sum" (lambda () (interactive)
-														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-										"Span" (lambda () (interactive)
-														 (yas-expand-snippet "\\Span($1)$0"))
-										"inti" (lambda () (interactive)
-														 (yas-expand-snippet "\\int"))
-										"intd" (lambda () (interactive)
-														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-										"df" (lambda () (interactive)
-													 (yas-expand-snippet "_{$1}$0"))
-										"rt" (lambda () (interactive)
-													 (yas-expand-snippet "^{$1}$0"))
-										;; add accent snippets
-										:cond #'laas-object-on-left-condition
-										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
-
-(straight-use-package 'auctex
-											:hook
-											(add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
-(add-hook 'LaTeX-mode 'reftex-mode)
-
-;; Yasnippet settings
-
-(setq yas-snippet-dirs '("~/.config/emacs/snippets"))
-(use-package yasnippet
-	:ensure t
-	:config
-	(yas-global-mode))
-
-(use-package format-all
-	:init
-	(add-hook 'format-all-mode-hook 'format-all-ensure-formatter)
-	(add-hook 'prog-mode-hook 'format-all-mode)
-	(add-hook 'LaTeX-mode-hook 'format-all-mode)
-	)
-(use-package consult-reftex
-	:straight (consult-reftex :type git :host github :repo "karthink/consult-reftex")
-	:after (reftex consult embark)
-	:bind (:map reftex-mode-map
-							("C-c )"   . consult-reftex-insert-reference)
-							("C-c M-." . consult-reftex-goto-label))
-	:config (setq consult-reftex-preview-function
-								#'consult-reftex-make-window-preview))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+		;; set condition!
+		:cond #'texmathp ; expand only while in math
+		"supp" "\\supp"
+		"On" "O(n)"
+		"O1" "O(1)"
+		"Olog" "O(\\log n)"
+		"Olon" "O(n \\log n)"
+		;; bind to functions!
+		"sum" (lambda () (interactive)
+						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+		"Span" (lambda () (interactive)
+						 (yas-expand-snippet "\\Span($1)$0"))
+		"inti" (lambda () (interactive)
+						 (yas-expand-snippet "\\int"))
+		"intd" (lambda () (interactive)
+						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+		"df" (lambda () (interactive)
+					 (yas-expand-snippet "_{$1}$0"))
+		"rt" (lambda () (interactive)
+					 (yas-expand-snippet "^{$1}$0"))
+		;; add accent snippets
+		:cond #'laas-object-on-left-condition
+		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard)
 
@@ -593,42 +577,14 @@
 	;; This directory will be used for `obsidian-capture' if set.
 	(obsidian-inbox-directory "Inbox"))
 
-(use-package kind-icon
-	:after corfu
-	:custom
-	(kind-icon-use-icons t)
-	(kind-icon-default-face 'corfu-default) ; Have background color be the same as `corfu' face background
-	(kind-icon-blend-background nil)  ; Use midpoint color between foreground and background colors ("blended")?
-	(kind-icon-blend-frac 0.08)
-
-	;; NOTE 2022-02-05: `kind-icon' depends `svg-lib' which creates a cache
-	;; directory that defaults to the `user-emacs-directory'. Here, I change that
-	;; directory to a location appropriate to `no-littering' conventions, a
-	;; package which moves directories of other packages to sane locations.
-	(svg-lib-icons-dir (no-littering-expand-var-file-name "svg-lib/cache/")) ; Change cache dir
-	:config
-	(add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter) ; Enable `kind-icon'
-
-	;; Add hook to reset cache so the icon colors match my theme
-	;; NOTE 2022-02-05: This is a hook which resets the cache whenever I switch
-	;; the theme using my custom defined command for switching themes. If I don't
-	;; do this, then the backgound color will remain the same, meaning it will not
-	;; match the background color corresponding to the current theme. Important
-	;; since I have a light theme and dark theme I switch between. This has no
-	;; function unless you use something similar
-	(add-hook 'kb/themes-hooks #'(lambda () (interactive) (kind-icon-reset-cache))))
-
 ;; Configure Tempel
 (use-package tempel
 	;; Require trigger prefix before template name when completing.
 	;; :custom
 	;; (tempel-trigger-prefix "<")
-
 	:bind (("<leader>nc" . tempel-complete) ;; Alternative tempel-expand
-				 ("<leader>ni" . tempel-insert))
-
+				 ("C-c i" . tempel-insert))
 	:init
-
 	;; Setup completion at point
 	(defun tempel-setup-capf ()
 		;; Add the Tempel Capf to `completion-at-point-functions'.
@@ -647,15 +603,17 @@
 
 	;; Optionally make the Tempel templates available to Abbrev,
 	;; either locally or globally. `expand-abbrev' is bound to C-x '.
-	;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
-	;; (global-tempel-abbrev-mode)
+	(add-hook 'prog-mode-hook #'tempel-abbrev-mode)
+	(global-tempel-abbrev-mode)
 	)
 
-;; Optional: Add tempel-collection.
-;; The package is young and doesn't have comprehensive coverage.
 (use-package tempel-collection)
-(use-package pandoc-mode
-	:config
-	(add-hook 'markdown-mode-hook 'pandoc-mode))
 
 (use-package gptel)
+
+(use-package format-all
+	:init
+	(add-hook 'format-all-mode-hook 'format-all-ensure-formatter)
+	(add-hook 'prog-mode-hook 'format-all-mode)
+	(add-hook 'LaTeX-mode-hook 'format-all-mode)
+	)
