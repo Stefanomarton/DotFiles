@@ -1,5 +1,4 @@
 (provide 'core)
-
 (use-package restart-emacs)
 (use-package evil
 	:straight t
@@ -102,7 +101,8 @@
 
 (evil-define-key 'normal 'global (kbd "gcA") 'comment_end_of_line)
 (evil-define-key 'normal 'global (kbd "gcc") 'comment-line)
-(evil-define-key 'visual 'global (kbd "gc") 'comment-line)
+(evil-define-key 'visual 'global (kbd "gc") 'comment-region)
+(evil-define-key 'visual 'global (kbd "gb") 'comment-box)
 
 (use-package which-key
 	:straight t
@@ -135,7 +135,7 @@
 	;; (setq vertico-multiform-commands
 	;;			'((execute-extended-command (:not posframe))
 	;;				(t posframe)))
-	;; :init
+	:init
 	(vertico-mode)
 	(setq vertico-count 20)
 	(setq vertico-scroll-margin 3)
@@ -184,7 +184,7 @@
 				completion-category-defaults nil
 				completion-category-overrides '((file (styles partial-completion)))))
 
-;;Vertico postframe
+;; Vertico postframe
 (use-package vertico-posframe
 	:straight t
 	:init
@@ -429,33 +429,33 @@
 	:hook (markdown-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-		;; set condition!
-		:cond #'texmathp ; expand only while in math
-		"supp" "\\supp"
-		"On" "O(n)"
-		"O1" "O(1)"
-		"Olog" "O(\\log n)"
-		"Olon" "O(n \\log n)"
-		;; bind to functions!
-		"sum" (lambda () (interactive)
-						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-		"Span" (lambda () (interactive)
-						 (yas-expand-snippet "\\Span($1)$0"))
-		"inti" (lambda () (interactive)
-						 (yas-expand-snippet "\\int"))
-		"intd" (lambda () (interactive)
-						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-		"df" (lambda () (interactive)
-					 (yas-expand-snippet "_{$1}$0"))
-		"rt" (lambda () (interactive)
-					 (yas-expand-snippet "^{$1}$0"))
-		;; add accent snippets
-		:cond #'laas-object-on-left-condition
-		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+										;; set condition!
+										:cond #'texmathp ; expand only while in math
+										"supp" "\\supp"
+										"On" "O(n)"
+										"O1" "O(1)"
+										"Olog" "O(\\log n)"
+										"Olon" "O(n \\log n)"
+										;; bind to functions!
+										"sum" (lambda () (interactive)
+														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+										"Span" (lambda () (interactive)
+														 (yas-expand-snippet "\\Span($1)$0"))
+										"inti" (lambda () (interactive)
+														 (yas-expand-snippet "\\int"))
+										"intd" (lambda () (interactive)
+														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+										"df" (lambda () (interactive)
+													 (yas-expand-snippet "_{$1}$0"))
+										"rt" (lambda () (interactive)
+													 (yas-expand-snippet "^{$1}$0"))
+										;; add accent snippets
+										:cond #'laas-object-on-left-condition
+										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard)
 
@@ -582,7 +582,7 @@
 	;; Require trigger prefix before template name when completing.
 	;; :custom
 	;; (tempel-trigger-prefix "<")
-	:bind (("<leader>nc" . tempel-complete) ;; Alternative tempel-expand
+	:bind (("C-c c" . tempel-complete) ;; Alternative tempel-expand
 				 ("C-c i" . tempel-insert))
 	:init
 	;; Setup completion at point
