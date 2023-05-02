@@ -132,9 +132,9 @@
 					(t posframe)))
 	(vertico-multiform-mode 1)
 	;; Using vertico-multiform-mode is possibile to avoid use of posframe in certain buffer
-	;; (setq vertico-multiform-commands
-	;;			'((execute-extended-command (:not posframe))
-	;;				(t posframe)))
+	(setq vertico-multiform-commands
+				'((evil-ex (:not posframe))
+					(t posframe)))
 	:init
 	(vertico-mode)
 	(setq vertico-count 20)
@@ -429,33 +429,33 @@
 	:hook (markdown-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-										;; set condition!
-										:cond #'texmathp ; expand only while in math
-										"supp" "\\supp"
-										"On" "O(n)"
-										"O1" "O(1)"
-										"Olog" "O(\\log n)"
-										"Olon" "O(n \\log n)"
-										;; bind to functions!
-										"sum" (lambda () (interactive)
-														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-										"Span" (lambda () (interactive)
-														 (yas-expand-snippet "\\Span($1)$0"))
-										"inti" (lambda () (interactive)
-														 (yas-expand-snippet "\\int"))
-										"intd" (lambda () (interactive)
-														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-										"df" (lambda () (interactive)
-													 (yas-expand-snippet "_{$1}$0"))
-										"rt" (lambda () (interactive)
-													 (yas-expand-snippet "^{$1}$0"))
-										;; add accent snippets
-										:cond #'laas-object-on-left-condition
-										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+		;; set condition!
+		:cond #'texmathp ; expand only while in math
+		"supp" "\\supp"
+		"On" "O(n)"
+		"O1" "O(1)"
+		"Olog" "O(\\log n)"
+		"Olon" "O(n \\log n)"
+		;; bind to functions!
+		"sum" (lambda () (interactive)
+						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+		"Span" (lambda () (interactive)
+						 (yas-expand-snippet "\\Span($1)$0"))
+		"inti" (lambda () (interactive)
+						 (yas-expand-snippet "\\int"))
+		"intd" (lambda () (interactive)
+						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+		"df" (lambda () (interactive)
+					 (yas-expand-snippet "_{$1}$0"))
+		"rt" (lambda () (interactive)
+					 (yas-expand-snippet "^{$1}$0"))
+		;; add accent snippets
+		:cond #'laas-object-on-left-condition
+		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard)
 
@@ -617,3 +617,9 @@
 	(add-hook 'prog-mode-hook 'format-all-mode)
 	(add-hook 'LaTeX-mode-hook 'format-all-mode)
 	)
+
+;; Bookmarks configuration
+(setq bookmark-file "~/.config/emacs/bookmarks.el")
+(evil-define-key 'normal 'global (kbd "<leader>pj") 'bookmark-jump)
+(evil-define-key 'normal 'global (kbd "<leader>ps") 'bookmark-set)
+(evil-define-key 'normal 'global (kbd "<leader>ps") 'bookmark-delete)
