@@ -9,13 +9,14 @@ flameshot &
 redshift -l 45.69651:9.1818 &
 insync start &
 xbanish -s -t 2 &
-xinput --set-prop 11 337 1 &
-xinput --set-prop 11 316 1 &
+xinput --set-prop 11 318 1 &
+xinput --set-prop 11 345 1 &
 # dbus-update-activation-environment --all &
 # gnome-keyring-daemon --start --components=secrets &
 # gnome-keyring-daemon --login &
 kmonad ~/.config/kmonad/laptop.kbd &
-xset r rate 150 50 &
+sleep 10 &
+xset r rate 150 50 
 ~/.config/X11/laptop/statusbar.sh &
 exec dwm 
 ;;
