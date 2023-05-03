@@ -866,7 +866,7 @@ static const char *xkb_layouts[]  = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 #endif // NODMENU_PATCH
 static const char *dmenucmd[] = {
-	"dmenu_run",
+	"dmenu_run", "-l", "2",
 	#if !NODMENU_PATCH
 	"-m", dmenumon,
 	#endif // NODMENU_PATCH
@@ -914,10 +914,10 @@ static const Key keys[] = {
 	#if KEYMODES_PATCH
 	{ MODKEY,                       XK_Escape,     setkeymode,             {.ui = COMMANDMODE} },
 	#endif // KEYMODES_PATCH
-	{ MODKEY,                       XK_p,          spawn,                  {.v = dmenucmd } },
+	{ MODKEY,                       XK_p,          spawn,                  {.v = screencmd } },
 	{ MODKEY,                       XK_Return,     spawn,                  {.v = termcmd } },
 	{ MODKEY,                       XK_f,          spawn,                  {.v = firefoxcmd } },
-	{ MODKEY,                       XK_s,          spawn,                  {.v = screencmd } },
+	{ MODKEY,                       XK_s,          spawn,                  {.v = dmenucmd } },
 	{ MODKEY|ControlMask,           XK_f,          spawn,                  SHCMD("/home/stefanom/.local/bin/scripts/searchOnFirefox.sh")},
 	#if RIODRAW_PATCH
 	{ MODKEY|ControlMask,           XK_p,          riospawnsync,           {.v = dmenucmd } },
@@ -964,8 +964,8 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_j,          pushdown,               {0} },
 	{ MODKEY|ControlMask,           XK_k,          pushup,                 {0} },
 	#endif // PUSH_PATCH / PUSH_NO_MASTER_PATCH
-	{ MODKEY,                       XK_i,          incnmaster,             {.i = +1 } },
-	{ MODKEY,                       XK_d,          incnmaster,             {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_i,          incnmaster,             {.i = +1 } },
+	{ MODKEY|ControlMask,           XK_d,          incnmaster,             {.i = -1 } },
 	#if FLEXTILE_DELUXE_LAYOUT
 	{ MODKEY|ControlMask,           XK_i,          incnstack,              {.i = +1 } },
 	{ MODKEY|ControlMask,           XK_u,          incnstack,              {.i = -1 } },
