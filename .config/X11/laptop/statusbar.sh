@@ -8,7 +8,7 @@ has_battery() {
 }
 get_battery_status() {
     charge="$(get_charge)"
-    echo ""BAT" "$charge"%"
+    echo """ "$charge"%"
 }
 
 get_charging_status() {
@@ -20,7 +20,7 @@ get_charge() {
 }
 
 get_datetime() {
-    date +"%a %d %b %Y | %I:%M %p %Z"
+    date +"%a %d %b %Y | %I:%M"
 }
 
 get_status() {
