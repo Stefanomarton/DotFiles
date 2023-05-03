@@ -104,6 +104,8 @@
 (evil-define-key 'visual 'global (kbd "gc") 'comment-region)
 (evil-define-key 'visual 'global (kbd "gb") 'comment-box)
 
+(use-package dired-hacks)
+
 (use-package which-key
 	:straight t
 	:init
@@ -202,17 +204,19 @@
 
 (use-package lsp-mode
 	:straight t
+	:init
+	(add-hook 'LaTeX-mode-hook 'lsp)
 	:config
 	(setq lsp-tex-server 'texlab)
 	(setq lsp-enable-symbol-highlighting nil)
 	(setq lsp-lens-enable nil)
 	;; (setq lsp-headerline-breadcrumb-enable nil)
 	(setq lsp-keymap-prefix "C-c l")
-	:hook (
-				 (LaTex-mode . lsp)
-				 (lua-mode . lsp)
-				 (lsp-mode . lsp-enable-which-key-integration)) ;whichkey-integration
+	:hook
+	((lua-mode . lsp)
+	 (lsp-mode . lsp-enable-which-key-integration)) ;whichkey-integration
 	:commands lsp)
+
 
 (use-package lua-mode
 	:straight t)
@@ -299,8 +303,8 @@
 	(add-hook 'prog-mode #'rainbow-mode))
 
 (use-package consult)
-(use-package embark)
-(use-package embark-consult)
+;; (use-package embark)
+;; (use-package embark-consult)
 
 (use-package dashboard
 	:ensure t
@@ -413,49 +417,54 @@
 	(setq TeX-source-correlate-method 'synctex)
 	(TeX-source-correlate-mode 1)
 	(setq TeX-source-correlate-start-server t)
-
 	(add-to-list 'TeX-view-program-selection
 							 '(output-pdf "Zathura"))
-	:hook
+	:init
 	(add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
 
 (evil-define-key 'normal LaTeX-mode-map
 	(kbd "<leader>tm") 'reftex-toc
 	(kbd "<leader>tt") 'lsp-ui-imenu)
 
+(use-package yasnippet
+	:hook
+	(laas-mode . yas-minor-mode)
+	)
+
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
 	:hook (LaTeX-mode . laas-mode)
-	:hook (markdown-mode . laas-mode)
+	(markdown-mode . laas-mode)
+	(org-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-		;; set condition!
-		:cond #'texmathp ; expand only while in math
-		"supp" "\\supp"
-		"On" "O(n)"
-		"O1" "O(1)"
-		"Olog" "O(\\log n)"
-		"Olon" "O(n \\log n)"
-		;; bind to functions!
-		"sum" (lambda () (interactive)
-						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-		"Span" (lambda () (interactive)
-						 (yas-expand-snippet "\\Span($1)$0"))
-		"inti" (lambda () (interactive)
-						 (yas-expand-snippet "\\int"))
-		"intd" (lambda () (interactive)
-						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-		"df" (lambda () (interactive)
-					 (yas-expand-snippet "_{$1}$0"))
-		"rt" (lambda () (interactive)
-					 (yas-expand-snippet "^{$1}$0"))
-		;; add accent snippets
-		:cond #'laas-object-on-left-condition
-		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+										;; set condition!
+										:cond #'texmathp ; expand only while in math
+										"supp" "\\supp"
+										"On" "O(n)"
+										"O1" "O(1)"
+										"Olog" "O(\\log n)"
+										"Olon" "O(n \\log n)"
+										;; bind to functions!
+										"sum" (lambda () (interactive)
+														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+										"Span" (lambda () (interactive)
+														 (yas-expand-snippet "\\Span($1)$0"))
+										"inti" (lambda () (interactive)
+														 (yas-expand-snippet "\\int"))
+										"intd" (lambda () (interactive)
+														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+										"df" (lambda () (interactive)
+													 (yas-expand-snippet "_{$1}$0"))
+										"rt" (lambda () (interactive)
+													 (yas-expand-snippet "^{$1}$0"))
+										;; add accent snippets
+										:cond #'laas-object-on-left-condition
+										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard)
 
@@ -514,10 +523,11 @@
 
 (use-package expand-region)
 
-(use-package org-fragtog)
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.6))
-(plist-put org-format-latex-options :justify 'center)
-
+(use-package org-fragtog
+	:config
+	(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.6))
+	(plist-put org-format-latex-options :justify 'center)
+	)
 ;; Daemon mode configs
 
 (pcase system-type
