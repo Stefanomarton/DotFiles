@@ -5,6 +5,7 @@
 			user-mail-address "sstefanomarton@gmail.com")
 
 ;; UI settings
+(global-visual-line-mode 1)
 (add-to-list 'default-frame-alist '(alpha 100 100)) ;; opacity settings
 (setq inhibit-startup-message t) ;; don't show startup messages
 (scroll-bar-mode -1) ;; no scrollbar
