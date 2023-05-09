@@ -112,6 +112,7 @@
 		(kbd "f") 'dired-narrow-fuzzy
 		(kbd "T") 'dired-create-empty-file
 		(kbd "<RET>") 'dired-find-alternate-file
+		(kbd "<escape>") 'keyboard-escape-quit
 		(kbd "u") 'dired-up-directory))
 
 (use-package dired-narrow
@@ -123,31 +124,6 @@
 	(setq dired-narrow-exit-when-1-left t)
 	(setq dired-narrow-exit-action 'dired-narrow-ex-ac)
 	)
-
-(use-package dired-rainbow
-	:config
-	(progn
-		(dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
-		(dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
-		(dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
-		(dired-rainbow-define document "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx"))
-		(dired-rainbow-define markdown "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt"))
-		(dired-rainbow-define database "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc"))
-		(dired-rainbow-define media "#de751f" ("mp3" "mp4" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac"))
-		(dired-rainbow-define image "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg"))
-		(dired-rainbow-define log "#c17d11" ("log"))
-		(dired-rainbow-define shell "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim"))
-		(dired-rainbow-define interpreted "#38c172" ("py" "ipynb" "rb" "pl" "t" "msql" "mysql" "pgsql" "sql" "r" "clj" "cljs" "scala" "js"))
-		(dired-rainbow-define compiled "#4dc0b5" ("asm" "cl" "lisp" "el" "c" "h" "c++" "h++" "hpp" "hxx" "m" "cc" "cs" "cp" "cpp" "go" "f" "for" "ftn" "f90" "f95" "f03" "f08" "s" "rs" "hi" "hs" "pyc" ".java"))
-		(dired-rainbow-define executable "#8cc4ff" ("exe" "msi"))
-		(dired-rainbow-define compressed "#51d88a" ("7z" "zip" "bz2" "tgz" "txz" "gz" "xz" "z" "Z" "jar" "war" "ear" "rar" "sar" "xpi" "apk" "xz" "tar"))
-		(dired-rainbow-define packaged "#faad63" ("deb" "rpm" "apk" "jad" "jar" "cab" "pak" "pk3" "vdf" "vpk" "bsp"))
-		(dired-rainbow-define encrypted "#ffed4a" ("gpg" "pgp" "asc" "bfe" "enc" "signature" "sig" "p12" "pem"))
-		(dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf"))
-		(dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak"))
-		(dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
-		(dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*")
-		))
 
 (use-package which-key
 	:straight t
@@ -179,6 +155,9 @@
 	;; Using vertico-multiform-mode is possibile to avoid use of posframe in certain buffer
 	(setq vertico-multiform-commands
 				'((evil-ex (:not posframe))
+					(t posframe)))
+	(setq vertico-multiform-commands
+				'((consult-yasnippet (:not posframe))
 					(t posframe)))
 	:init
 	(vertico-mode)
@@ -476,9 +455,8 @@
 	(kbd "<leader>tt") 'lsp-ui-imenu)
 
 (use-package yasnippet
-	:hook
-	(laas-mode . yas-minor-mode)
-	)
+	:init
+	(yas-minor-mode))
 
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -487,33 +465,33 @@
 	(org-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-										;; set condition!
-										:cond #'texmathp ; expand only while in math
-										"supp" "\\supp"
-										"On" "O(n)"
-										"O1" "O(1)"
-										"Olog" "O(\\log n)"
-										"Olon" "O(n \\log n)"
-										;; bind to functions!
-										"sum" (lambda () (interactive)
-														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-										"Span" (lambda () (interactive)
-														 (yas-expand-snippet "\\Span($1)$0"))
-										"inti" (lambda () (interactive)
-														 (yas-expand-snippet "\\int"))
-										"intd" (lambda () (interactive)
-														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-										"df" (lambda () (interactive)
-													 (yas-expand-snippet "_{$1}$0"))
-										"rt" (lambda () (interactive)
-													 (yas-expand-snippet "^{$1}$0"))
-										;; add accent snippets
-										:cond #'laas-object-on-left-condition
-										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+		;; set condition!
+		:cond #'texmathp ; expand only while in math
+		"supp" "\\supp"
+		"On" "O(n)"
+		"O1" "O(1)"
+		"Olog" "O(\\log n)"
+		"Olon" "O(n \\log n)"
+		;; bind to functions!
+		"sum" (lambda () (interactive)
+						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+		"Span" (lambda () (interactive)
+						 (yas-expand-snippet "\\Span($1)$0"))
+		"inti" (lambda () (interactive)
+						 (yas-expand-snippet "\\int"))
+		"intd" (lambda () (interactive)
+						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+		"df" (lambda () (interactive)
+					 (yas-expand-snippet "_{$1}$0"))
+		"rt" (lambda () (interactive)
+					 (yas-expand-snippet "^{$1}$0"))
+		;; add accent snippets
+		:cond #'laas-object-on-left-condition
+		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard)
 
@@ -675,3 +653,18 @@
 (evil-define-key 'normal 'global (kbd "<leader>pj") 'bookmark-jump)
 (evil-define-key 'normal 'global (kbd "<leader>ps") 'bookmark-set)
 (evil-define-key 'normal 'global (kbd "<leader>pd") 'bookmark-delete)
+
+(use-package consult-yasnippet)
+
+(use-package yasnippet
+	:commands (yas-minor-mode) ; autoload `yasnippet' when `yas-minor-mode' is called
+																				; using any means: via a hook or by user
+																				; Feel free to add more commands to this
+																				; list to suit your needs.
+	:hook
+	(prog-mode . yas-minor-mode)
+	(laas-mode . yas-minor-mode)
+	:config ; stuff to do after requiring the package
+	(setq yas-snippet-dirs '("~/.config/emacs/snippets"))
+	(progn
+		(yas-reload-all)))

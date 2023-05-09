@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Reagent_Table
+# key: Reagent_Table
+# --
+
+| Reagente | m   (g) | V (mL) | MM (g/mol) | n (mmol) | RS | d (g/mL) |
+|:--------:|:-------:|:------:|:----------:|:--------:|:--:|:--------:|
+|          |         |        |            |          |    |          |
+|          |         |        |            |          |    |          |
+|          |         |        |            |          |    |          |
