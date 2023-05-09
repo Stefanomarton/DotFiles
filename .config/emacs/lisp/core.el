@@ -423,15 +423,27 @@
 	:hook
 	(add-hook 'dired-mode-hook 'org-download-enable))
 
+(defun export-buffer-to-pdf ()
+	"Export current buffer to PDF using Pandoc asynchronously without minibuffer output."
+	(interactive)
+	(let ((output-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
+		(start-process "pandoc-export" nil "pandoc" (buffer-file-name) "-o" output-file "-V" "geometry:margin=30mm")))
+
+(defun open-pdf-with-zathura ()
+	"Open the PDF file associated with the current buffer in Zathura."
+	(interactive)
+	(let ((pdf-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
+		(start-process "zathura" nil "zathura" pdf-file)))
+
 (use-package markdown-mode
+	:config
+	(evil-define-key 'normal markdown-mode-map
+		(kbd "<leader>ee") 'export-buffer-to-pdf
+		(kbd "<leader>ez") 'open-pdf-with-zathura)
 	:mode ("README\\.md\\'" . gfm-mode)
 	:init
 	(setq markdown-enable-math t))
 ;; :init (setq markdown-command "multimarkdown"))
-
-(use-package pandoc-mode
-	:config
-	(add-hook 'markdown-mode-hook 'pandoc-mode))
 
 ;;;;;;;;;;;
 ;; Latex ;;
