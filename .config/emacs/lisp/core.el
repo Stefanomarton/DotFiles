@@ -296,6 +296,7 @@
 	(add-to-list 'completion-at-point-functions #'cape-file)
 	(add-to-list 'completion-at-point-functions #'cape-elisp-block)
 	;;(add-to-list 'completion-at-point-functions #'cape-history)
+	(add-to-list 'completion-at-point-functions #'cape-yasnippet)
 	;;(add-to-list 'completion-at-point-functions #'cape-keyword)
 	;;(add-to-list 'completion-at-point-functions #'cape-tex)
 	;;(add-to-list 'completion-at-point-functions #'cape-sgml)
@@ -305,6 +306,12 @@
 	;;(add-to-list 'completion-at-point-functions #'cape-symbol)
 	;;(add-to-list 'completion-at-point-functions #'cape-line)
 	)
+
+(straight-use-package '(cape-yasnippet :type git :host github
+																			 :repo "elken/cape-yasnippet"
+																			 ))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -426,8 +433,15 @@
 (defun export-buffer-to-pdf ()
 	"Export current buffer to PDF using Pandoc asynchronously without minibuffer output."
 	(interactive)
-	(let ((output-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
-		(start-process "pandoc-export" nil "pandoc" (buffer-file-name) "-o" output-file "-V" "geometry:margin=30mm")))
+	(let* ((output-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
+				 (process-buffer (generate-new-buffer "*pandoc-export*"))
+				 (exit-code (call-process "pandoc" nil process-buffer nil
+																	(buffer-file-name) "-o" output-file "-V" "geometry:margin=30mm")))
+		(if (zerop exit-code)
+				(message "Exported to %s" output-file)
+			(with-current-buffer process-buffer
+				(message "Export failed: %s" (buffer-string))))
+		(kill-buffer process-buffer)))
 
 (defun open-pdf-with-zathura ()
 	"Open the PDF file associated with the current buffer in Zathura."
@@ -462,9 +476,14 @@
 	:init
 	(add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
 
+(defun tex-compile ()
+	(TeX-command-run-all)
+	(TeX-clean))
+
 (evil-define-key 'normal LaTeX-mode-map
 	(kbd "<leader>tm") 'reftex-toc
-	(kbd "<leader>tt") 'lsp-ui-imenu)
+	(kbd "<leader>tt") 'lsp-ui-imenu
+	(kbd "<leader>ee") 'tex-compile)
 
 (use-package yasnippet
 	:init
