@@ -46,6 +46,23 @@
 (evil-set-leader 'normal (kbd "SPC"))
 (evil-set-leader 'visual (kbd "SPC"))
 
+(defun my-kill-this-buffer ()
+	(interactive)
+	(catch 'quit
+		(save-window-excursion
+			(let (done)
+				(when (and buffer-file-name (buffer-modified-p))
+					(while (not done)
+						(let ((response (read-char-choice
+														 (format "Save file %s? (y, n, d, q) " (buffer-file-name))
+														 '(?y ?n ?d ?q))))
+							(setq done (cond
+													((eq response ?q) (throw 'quit nil))
+													((eq response ?y) (save-buffer) t)
+													((eq response ?n) (set-buffer-modified-p nil) t)
+													((eq response ?d) (diff-buffer-with-file) nil))))))
+				(kill-buffer (current-buffer))))))
+
 ;;Settings normal global keybindings
 (evil-define-key 'normal 'global
 	(kbd ";") 'evil-ex
@@ -60,7 +77,7 @@
 	(kbd "<leader>bw") 'consult-buffer-other-window
 	(kbd "<leader>w") 'save-buffer
 	(kbd "<leader>qb") 'kill-buffer
-	(kbd "Q") 'evil-quit
+	(kbd "Q") 'my-kill-this-buffer
 	(kbd "<leader>sv") 'split-and-follow-vertically
 	(kbd "<leader>sh") 'split-and-follow-horizontally
 	(kbd "<leader>gg") 'google-this
@@ -73,6 +90,7 @@
 	(kbd "S") 'evil-surround-edit
 	(kbd ",r") 'evil-surround-delete
 	(kbd ",c") 'evil-surround-change)
+
 
 (evil-define-key 'insert 'global (kbd "C-<backspace>") 'evil-delete-backward-word)
 (evil-define-key 'visual 'global (kbd "<leader>gg") 'google-this-noconfirm)
@@ -496,33 +514,33 @@
 	(org-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-		;; set condition!
-		:cond #'texmathp ; expand only while in math
-		"supp" "\\supp"
-		"On" "O(n)"
-		"O1" "O(1)"
-		"Olog" "O(\\log n)"
-		"Olon" "O(n \\log n)"
-		;; bind to functions!
-		"sum" (lambda () (interactive)
-						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-		"Span" (lambda () (interactive)
-						 (yas-expand-snippet "\\Span($1)$0"))
-		"inti" (lambda () (interactive)
-						 (yas-expand-snippet "\\int"))
-		"intd" (lambda () (interactive)
-						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-		"df" (lambda () (interactive)
-					 (yas-expand-snippet "_{$1}$0"))
-		"rt" (lambda () (interactive)
-					 (yas-expand-snippet "^{$1}$0"))
-		;; add accent snippets
-		:cond #'laas-object-on-left-condition
-		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+										;; set condition!
+										:cond #'texmathp ; expand only while in math
+										"supp" "\\supp"
+										"On" "O(n)"
+										"O1" "O(1)"
+										"Olog" "O(\\log n)"
+										"Olon" "O(n \\log n)"
+										;; bind to functions!
+										"sum" (lambda () (interactive)
+														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+										"Span" (lambda () (interactive)
+														 (yas-expand-snippet "\\Span($1)$0"))
+										"inti" (lambda () (interactive)
+														 (yas-expand-snippet "\\int"))
+										"intd" (lambda () (interactive)
+														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+										"df" (lambda () (interactive)
+													 (yas-expand-snippet "_{$1}$0"))
+										"rt" (lambda () (interactive)
+													 (yas-expand-snippet "^{$1}$0"))
+										;; add accent snippets
+										:cond #'laas-object-on-left-condition
+										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard)
 
