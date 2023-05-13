@@ -22,9 +22,9 @@
 (setq make-backup-files nil)
 
 ;; Remove useless whitespace before saving a file
-(setq-default nuke-trailing-whitespace-p t)
-(add-hook 'before-save-hook 'whitespace-cleanup)
-(add-hook 'before-save-hook (lambda() (delete-trailing-whitespace)))
+;; (setq nuke-trailing-whitespace-p t)
+;; (add-hook 'before-save-hook 'whitespace-cleanup)
+;; (add-hook 'before-save-hook (lambda() (delete-trailing-whitespace)))
 
 ;; Wrap line
 (add-hook 'text-mode-hook 'visual-line-mode)
@@ -97,4 +97,6 @@
 (setq whitespace-display-mappings
 			'((newline-mark 10 [32 ?\x23CE 10])))
 
-(use-package unicode-fonts)
+(use-package unicode-fonts
+	:config
+	(unicode-fonts-setup))

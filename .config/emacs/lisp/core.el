@@ -63,6 +63,12 @@
 													((eq response ?d) (diff-buffer-with-file) nil))))))
 				(kill-buffer (current-buffer))))))
 
+(defun open-buffer-list ()
+  "Open the buffer list and automatically focus on it."
+  (interactive)
+  (list-buffers)
+  (other-window 1))
+
 ;;Settings normal global keybindings
 (evil-define-key 'normal 'global
 	(kbd ";") 'evil-ex
@@ -73,7 +79,7 @@
 	(kbd "<leader>fg") 'consult-grep
 	(kbd "<leader>dj") 'dired-jump
 	(kbd "<leader>dd") 'dired
-	(kbd "<leader>bb") 'consult-buffer
+	(kbd "<leader>bb") 'open-buffer-list
 	(kbd "<leader>bw") 'consult-buffer-other-window
 	(kbd "<leader>w") 'save-buffer
 	(kbd "<leader>qb") 'kill-buffer
@@ -369,9 +375,9 @@
 	(setq dashboard-set-heading-icons t)
 	(setq dashboard-set-file-icons t)
 	(setq dashboard-set-navigator t)
-	(setq dashboard-items '((recents  . 5)
-													(bookmarks . 5)))
-	;; (projects . 5)
+	(setq dashboard-items '((recents  . 5)))
+	;; (bookmarks . 5)))
+	;; (projects . 5)))
 	;; (agenda . 5)
 	;; (registers . 5)))
 	(dashboard-setup-startup-hook))
@@ -467,11 +473,43 @@
 	(let ((pdf-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
 		(start-process "zathura" nil "zathura" pdf-file)))
 
+(defun open-pdf-with-pdf-tools ()
+  "Open the PDF file associated with the current buffer in pdf-tools."
+  (interactive)
+  (let ((pdf-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
+    (if (file-exists-p pdf-file)
+        (progn
+          (pdf-tools-install)
+          (find-file pdf-file))
+      (message "PDF file not found."))))
+
+;; Auto reload pdf and suppress messages
+(global-auto-revert-mode 1)
+(setq auto-revert-verbose nil)
+
+(use-package pdf-tools
+	:config
+	(setq-default pdf-view-display-size 'fit-page) ; Fit page width
+	(setq pdf-annot-activate-created-annotations t) ; Enable annotations
+	(define-key pdf-view-mode-map (kbd "j") 'pdf-view-next-line-or-next-page)
+	(define-key pdf-view-mode-map (kbd "k") 'pdf-view-previous-line-or-previous-page)
+	(define-key pdf-view-mode-map (kbd "h") 'image-backward-hscroll)
+	(define-key pdf-view-mode-map (kbd "l") 'image-forward-hscroll)
+	(define-key pdf-view-mode-map (kbd "g") 'pdf-view-first-page)
+	(define-key pdf-view-mode-map (kbd "G") 'pdf-view-last-page)
+	(define-key pdf-view-mode-map (kbd "C-j") 'pdf-view-next-page)
+	(define-key pdf-view-mode-map (kbd "C-k") 'pdf-view-previous-page)
+	(define-key pdf-view-mode-map (kbd "C-d") 'pdf-view-scroll-up-or-next-page)
+	(define-key pdf-view-mode-map (kbd "C-u") 'pdf-view-scroll-down-or-previous-page)
+	)
+
 (use-package markdown-mode
 	:config
 	(evil-define-key 'normal markdown-mode-map
 		(kbd "<leader>ee") 'export-buffer-to-pdf
-		(kbd "<leader>ez") 'open-pdf-with-zathura)
+		(kbd "<leader>ez") 'open-pdf-with-zathura
+		(kbd "<leader>ep") 'open-pdf-with-pdf-tools)
+	(setq nuke-trailing-whitespace-p nil)
 	:mode ("README\\.md\\'" . gfm-mode)
 	:init
 	(setq markdown-enable-math t))
@@ -697,12 +735,6 @@
 	(add-hook 'LaTeX-mode-hook 'format-all-mode)
 	)
 
-;; Bookmarks configuration
-(setq bookmark-file "~/.config/emacs/bookmarks.el")
-(evil-define-key 'normal 'global (kbd "<leader>pj") 'bookmark-jump)
-(evil-define-key 'normal 'global (kbd "<leader>ps") 'bookmark-set)
-(evil-define-key 'normal 'global (kbd "<leader>pd") 'bookmark-delete)
-
 (use-package consult-yasnippet)
 
 (use-package yasnippet
@@ -717,3 +749,37 @@
 	(setq yas-snippet-dirs '("~/.config/emacs/snippets"))
 	(progn
 		(yas-reload-all)))
+
+;; Project management configuration
+(use-package project
+	:config
+	(defgroup project-local nil
+		"Local, non-VC-backed project.el root directories."
+		:group 'project)
+
+	(defcustom project-local-identifier ".project"
+
+		"You can specify a single filename or a list of names."
+		:type '(choice (string :tag "Single file")
+									 (repeat (string :tag "Filename")))
+		:group 'project-local)
+
+	(cl-defmethod project-root ((project (head local)))
+		"Return root directory of current PROJECT."
+		(cdr project))
+
+	(defun project-local-try-local (dir)
+		"Determine if DIR is a non-VC project.
+DIR must include a file with the name determined by the
+variable `project-local-identifier' to be considered a project."
+		(if-let ((root (if (listp project-local-identifier)
+											 (seq-some (lambda (n)
+																	 (locate-dominating-file dir n))
+																 project-local-identifier)
+										 (locate-dominating-file dir project-local-identifier))))
+				(cons 'local root)))
+
+	(customize-set-variable 'project-find-functions
+													(list #'project-try-vc
+																#'project-local-try-local))
+	(setq project-list-file "~/.config/emacs/project.el"))
