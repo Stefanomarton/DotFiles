@@ -165,24 +165,24 @@
 	:straight t
 	:config
 	(setq vertico-multiform-commands
-				'((consult-line
-					 posframe
-					 (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
-					 (vertico-posframe-border-width . 10)
-					 ;; NOTE: This is useful when emacs is used in both in X and
-					 ;; terminal, for posframe do not work well in terminal, so
-					 ;; vertico-buffer-mode will be used as fallback at the
-					 ;; moment.
-					 (vertico-posframe-fallback-mode . vertico-buffer-mode))
-					(t posframe)))
+	 			'((consult-line
+	 				 posframe
+	 				 (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
+	 				 (vertico-posframe-border-width . 10)
+	 				 ;; NOTE: This is useful when emacs is used in both in X and
+	 				 ;; terminal, for posframe do not work well in terminal, so
+	 				 ;; vertico-buffer-mode will be used as fallback at the
+	 				 ;; moment.
+	 				 (vertico-posframe-fallback-mode . vertico-buffer-mode))
+	 				(t posframe)))
 	(vertico-multiform-mode 1)
 	;; Using vertico-multiform-mode is possibile to avoid use of posframe in certain buffer
 	(setq vertico-multiform-commands
-				'((evil-ex (:not posframe))
-					(t posframe)))
+	 			'((evil-ex (:not posframe))
+	 				(t posframe)))
 	(setq vertico-multiform-commands
-				'((consult-yasnippet (:not posframe))
-					(t posframe)))
+	 			'((consult-yasnippet (:not posframe))
+	 				(t posframe)))
 	:init
 	(vertico-mode)
 	(setq vertico-count 20)
@@ -234,18 +234,20 @@
 
 ;; Vertico postframe
 (use-package vertico-posframe
-	:straight t
-	:init
-	:config
-	(setq vertico-posframe-min-width 50)
-	(setq vertico-posframe-width 123)
-	(vertico-posframe-mode 1)
-	(setq vertico-posframe-parameters
-				'((left-fringe . 10)
-					(right-fringe . 10))))
+ 	:straight t
+ 	:init
+ 	:config
+ 	(setq vertico-posframe-min-width 50)
+ 	(setq vertico-posframe-width 123)
+ 	(vertico-posframe-mode 1)
+ 	(setq vertico-posframe-parameters
+ 				'((left-fringe . 10)
+ 					(right-fringe . 10))))
 
 (use-package doom-modeline
 	:straight t
+	:config
+	(setq doom-modeline-buffer-encoding nil)
 	:init (doom-modeline-mode 1))
 
 (use-package lsp-mode
@@ -271,9 +273,6 @@
 (use-package lsp-ui
 	:straight t
 	:commands lsp-ui-mode)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 (use-package corfu
 	;; Optional customizations
@@ -341,7 +340,7 @@
 
 (use-package solaire-mode
 	:straight t)
-(solaire-global-mode +1)
+(solaire-global-mode 1)
 
 ;; Editorconfig, auto set indenting
 (use-package editorconfig
@@ -349,7 +348,7 @@
 	(editorconfig-mode 1))
 
 ;; Autopair
-(electric-pair-mode 1)
+;; (electric-pair-mode 1)
 
 ;; Highlight nested parentheses (from Jamie's)
 (use-package rainbow-delimiters
@@ -362,8 +361,6 @@
 	(add-hook 'prog-mode #'rainbow-mode))
 
 (use-package consult)
-;; (use-package embark)
-;; (use-package embark-consult)
 
 (use-package dashboard
 	:ensure t
@@ -375,8 +372,8 @@
 	(setq dashboard-set-heading-icons t)
 	(setq dashboard-set-file-icons t)
 	(setq dashboard-set-navigator t)
-	(setq dashboard-items '((recents  . 5)))
-	;; (bookmarks . 5)))
+	(setq dashboard-items '((recents  . 10)))
+	;; (bookmarks . 5))
 	;; (projects . 5)))
 	;; (agenda . 5)
 	;; (registers . 5)))
@@ -545,6 +542,21 @@
 	:init
 	(yas-minor-mode))
 
+(use-package aas
+  :hook (markdown-mode . aas-activate-for-major-mode)
+  :hook (LaTeX-mode . aas-activate-for-major-mode)
+  :config
+  (aas-set-snippets 'latex-mode
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+	(aas-set-snippets 'markdown-mode
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "$ $1 $ $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
 	:hook (LaTeX-mode . laas-mode)
@@ -552,10 +564,6 @@
 	(org-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] $0"))
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
 										;; set condition!
 										:cond #'texmathp ; expand only while in math
 										"supp" "\\supp"
@@ -701,31 +709,6 @@
 	;; This directory will be used for `obsidian-capture' if set.
 	(obsidian-inbox-directory "Inbox"))
 
-;; Configure Tempel
-(use-package tempel
-	;; Require trigger prefix before template name when completing.
-	;; :custom
-	;; (tempel-trigger-prefix "<")
-	:bind (("C-c c" . tempel-complete) ;; Alternative tempel-expand
-				 ("C-c i" . tempel-insert))
-	:init
-	;; Setup completion at point
-	(defun tempel-setup-capf ()
-		(setq-local completion-at-point-functions
-								(cons #'tempel-expand
-											completion-at-point-functions)))
-
-	(add-hook 'prog-mode-hook 'tempel-setup-capf)
-	(add-hook 'text-mode-hook 'tempel-setup-capf)
-
-	;; Optionally make the Tempel templates available to Abbrev,
-	;; either locally or globally. `expand-abbrev' is bound to C-x '.
-	(add-hook 'prog-mode-hook #'tempel-abbrev-mode)
-	(global-tempel-abbrev-mode)
-	)
-
-(use-package tempel-collection)
-
 (use-package gptel)
 
 (use-package format-all
@@ -750,7 +733,9 @@
 	(progn
 		(yas-reload-all)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Project management configuration
+
 (use-package project
 	:config
 	(defgroup project-local nil
@@ -782,4 +767,30 @@ variable `project-local-identifier' to be considered a project."
 	(customize-set-variable 'project-find-functions
 													(list #'project-try-vc
 																#'project-local-try-local))
-	(setq project-list-file "~/.config/emacs/project.el"))
+
+	(setq project-list-file "~/.config/emacs/project.el")
+
+	(setq project-switch-commands
+				;; Set custom command for switch action
+				'((project-find-file "Find File")
+					(project-find-regexp "Find Regexp")
+					(project-dired "Dired")
+					(project-switch-to-buffer "Buffer" ?b)))
+	)
+
+(use-package consult-project-extra
+  :straight (consult-project-extra :type git :host github :repo "Qkessler/consult-project-extra")
+  :bind
+  (("C-c p f" . consult-project-extra-find)
+   ("C-c p o" . consult-project-extra-find-other-window)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package smartparens
+	:config
+	(smartparens-mode)
+	(smartparens-strict-mode))
+
+(use-package evil-smartparens
+	:config
+	(evil-smartparens-mode))
