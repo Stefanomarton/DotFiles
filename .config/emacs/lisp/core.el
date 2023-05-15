@@ -188,6 +188,9 @@
 	(setq vertico-multiform-commands
 	 			'((consult-projectile-switch-to-buffer (:not posframe))
 	 				(t posframe)))
+	(setq vertico-multiform-commands
+	 			'((consult-projectile (:not posframe))
+	 				(t posframe)))
 	:init
 	(vertico-mode)
 	(setq vertico-count 20)
