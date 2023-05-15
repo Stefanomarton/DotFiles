@@ -124,9 +124,11 @@
 	(call-interactively 'evil-append))
 
 (evil-define-key 'normal 'global (kbd "gcA") 'comment_end_of_line)
-(evil-define-key 'normal 'global (kbd "gcc") 'comment-line)
-(evil-define-key 'visual 'global (kbd "gc") 'comment-region)
+;; (evil-define-key 'normal 'global (kbd "gcc") 'comment-line)
+;; (evil-define-key 'visual 'global (kbd "gc") 'comment-region)
 (evil-define-key 'visual 'global (kbd "gb") 'comment-box)
+(define-key evil-normal-state-map (kbd "Y") (kbd "y$"))
+
 
 (use-package dired
 	:straight nil
@@ -182,6 +184,9 @@
 	 				(t posframe)))
 	(setq vertico-multiform-commands
 	 			'((consult-yasnippet (:not posframe))
+	 				(t posframe)))
+	(setq vertico-multiform-commands
+	 			'((consult-projectile-switch-to-buffer (:not posframe))
 	 				(t posframe)))
 	:init
 	(vertico-mode)
@@ -736,53 +741,53 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Project management configuration
 
-(use-package project
-	:config
-	(defgroup project-local nil
-		"Local, non-VC-backed project.el root directories."
-		:group 'project)
+;; (use-package project
+;; 	:config
+;; 	(defgroup project-local nil
+;; 		"Local, non-VC-backed project.el root directories."
+;; 		:group 'project)
 
-	(defcustom project-local-identifier ".project"
+;; 	(defcustom project-local-identifier ".project"
 
-		"You can specify a single filename or a list of names."
-		:type '(choice (string :tag "Single file")
-									 (repeat (string :tag "Filename")))
-		:group 'project-local)
+;; 		"You can specify a single filename or a list of names."
+;; 		:type '(choice (string :tag "Single file")
+;; 									 (repeat (string :tag "Filename")))
+;; 		:group 'project-local)
 
-	(cl-defmethod project-root ((project (head local)))
-		"Return root directory of current PROJECT."
-		(cdr project))
+;; 	(cl-defmethod project-root ((project (head local)))
+;; 		"Return root directory of current PROJECT."
+;; 		(cdr project))
 
-	(defun project-local-try-local (dir)
-		"Determine if DIR is a non-VC project.
-DIR must include a file with the name determined by the
-variable `project-local-identifier' to be considered a project."
-		(if-let ((root (if (listp project-local-identifier)
-											 (seq-some (lambda (n)
-																	 (locate-dominating-file dir n))
-																 project-local-identifier)
-										 (locate-dominating-file dir project-local-identifier))))
-				(cons 'local root)))
+;; 	(defun project-local-try-local (dir)
+;; 		"Determine if DIR is a non-VC project.
+;; DIR must include a file with the name determined by the
+;; variable `project-local-identifier' to be considered a project."
+;; 		(if-let ((root (if (listp project-local-identifier)
+;; 											 (seq-some (lambda (n)
+;; 																	 (locate-dominating-file dir n))
+;; 																 project-local-identifier)
+;; 										 (locate-dominating-file dir project-local-identifier))))
+;; 				(cons 'local root)))
 
-	(customize-set-variable 'project-find-functions
-													(list #'project-try-vc
-																#'project-local-try-local))
+;; 	(customize-set-variable 'project-find-functions
+;; 													(list #'project-try-vc
+;; 																#'project-local-try-local))
 
-	(setq project-list-file "~/.config/emacs/project.el")
+;; 	(setq project-list-file "~/.config/emacs/project.el")
 
-	(setq project-switch-commands
-				;; Set custom command for switch action
-				'((project-find-file "Find File")
-					(project-find-regexp "Find Regexp")
-					(project-dired "Dired")
-					(project-switch-to-buffer "Buffer" ?b)))
-	)
+;; 	(setq project-switch-commands
+;; 				;; Set custom command for switch action
+;; 				'((project-find-file "Find File")
+;; 					(project-find-regexp "Find Regexp")
+;; 					(project-dired "Dired")
+;; 					(project-switch-to-buffer "Buffer" ?b)))
+;; 	)
 
-(use-package consult-project-extra
-  :straight (consult-project-extra :type git :host github :repo "Qkessler/consult-project-extra")
-  :bind
-  (("C-c p f" . consult-project-extra-find)
-   ("C-c p o" . consult-project-extra-find-other-window)))
+;; (use-package consult-project-extra
+;;   :straight (consult-project-extra :type git :host github :repo "Qkessler/consult-project-extra")
+;;   :bind
+;;   (("C-c p f" . consult-project-extra-find)
+;;    ("C-c p o" . consult-project-extra-find-other-window)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -794,3 +799,18 @@ variable `project-local-identifier' to be considered a project."
 (use-package evil-smartparens
 	:config
 	(evil-smartparens-mode))
+
+(use-package evil-commentary
+	:config
+	(evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
+	(evil-define-key 'normal 'global (kbd "gcc") 'evil-commentary-line))
+
+(use-package projectile
+	:config
+	(define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+	(setq projectile-known-projects-file "~/.config/emacs/project.el")
+	(setq projectile-track-known-projects-automatically nil)
+	:init
+	(projectile-mode))
+
+(use-package consult-projectile)
