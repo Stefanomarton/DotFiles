@@ -808,9 +808,9 @@
 (use-package projectile
 	:config
 	(define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-	(setq projectile-known-projects-file "~/.config/emacs/project.el")
 	(setq projectile-track-known-projects-automatically nil)
 	:init
+	(setq projectile-known-projects-file "~/.config/emacs/project.el")
 	(projectile-mode))
 
 (use-package consult-projectile)
