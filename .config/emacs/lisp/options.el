@@ -12,11 +12,11 @@
 ;; Wrap line
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(use-package linum-relative
-	:straight t
-	:init
-	(add-hook 'prog-mode-hook 'linum-relative-mode)
-	(add-hook 'LaTeX-mode-hook 'linum-relative-mode))
+;; Display line number relative and absolute
+(setq display-line-numbers-grow-only t)
+(setq display-line-numbers-width-start 50)
+(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode)
 
 (add-hook 'prog-mode-hook 'hl-line-mode) ;; Highlight the current line
 (setq hl-line-sticky-flag nil)
@@ -45,6 +45,7 @@
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 (load-theme 'doom-nord t)
 
+;; Display symbol for newline
 (add-hook 'prog-mode-hook
 					(lambda ()
 						(whitespace-newline-mode t)))
@@ -56,3 +57,13 @@
 (use-package unicode-fonts
 	:config
 	(unicode-fonts-setup))
+
+(use-package frame
+	:straight (:type built-in)
+	:custom
+	(window-divider-default-right-width 12)
+	(window-divider-default-bottom-width 1)
+	(window-divider-default-places 'right-only)
+	(window-divider-mode t))
+;; Make sure new frames use window-divider
+(add-hook 'before-make-frame-hook 'window-divider-mode)
