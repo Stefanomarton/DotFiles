@@ -1,5 +1,6 @@
 (provide 'core)
 (use-package restart-emacs)
+
 (use-package evil
 	:straight t
 	:init
@@ -190,6 +191,9 @@
 	 				(t posframe)))
 	(setq vertico-multiform-commands
 	 			'((consult-projectile (:not posframe))
+	 				(t posframe)))
+	(setq vertico-multiform-commands
+	 			'((find-file (:not posframe))
 	 				(t posframe)))
 	:init
 	(vertico-mode)
@@ -537,14 +541,10 @@
 	:init
 	(add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
 
-(defun tex-compile ()
-	(TeX-command-run-all)
-	(TeX-clean))
-
 (evil-define-key 'normal LaTeX-mode-map
 	(kbd "<leader>tm") 'reftex-toc
 	(kbd "<leader>tt") 'lsp-ui-imenu
-	(kbd "<leader>ee") 'tex-compile)
+	)
 
 (use-package yasnippet
 	:init
@@ -741,67 +741,14 @@
 	(progn
 		(yas-reload-all)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Project management configuration
-
-;; (use-package project
+;; (use-package smartparens
 ;; 	:config
-;; 	(defgroup project-local nil
-;; 		"Local, non-VC-backed project.el root directories."
-;; 		:group 'project)
+;; 	(smartparens-mode)
+;; 	(smartparens-strict-mode))
 
-;; 	(defcustom project-local-identifier ".project"
-
-;; 		"You can specify a single filename or a list of names."
-;; 		:type '(choice (string :tag "Single file")
-;; 									 (repeat (string :tag "Filename")))
-;; 		:group 'project-local)
-
-;; 	(cl-defmethod project-root ((project (head local)))
-;; 		"Return root directory of current PROJECT."
-;; 		(cdr project))
-
-;; 	(defun project-local-try-local (dir)
-;; 		"Determine if DIR is a non-VC project.
-;; DIR must include a file with the name determined by the
-;; variable `project-local-identifier' to be considered a project."
-;; 		(if-let ((root (if (listp project-local-identifier)
-;; 											 (seq-some (lambda (n)
-;; 																	 (locate-dominating-file dir n))
-;; 																 project-local-identifier)
-;; 										 (locate-dominating-file dir project-local-identifier))))
-;; 				(cons 'local root)))
-
-;; 	(customize-set-variable 'project-find-functions
-;; 													(list #'project-try-vc
-;; 																#'project-local-try-local))
-
-;; 	(setq project-list-file "~/.config/emacs/project.el")
-
-;; 	(setq project-switch-commands
-;; 				;; Set custom command for switch action
-;; 				'((project-find-file "Find File")
-;; 					(project-find-regexp "Find Regexp")
-;; 					(project-dired "Dired")
-;; 					(project-switch-to-buffer "Buffer" ?b)))
-;; 	)
-
-;; (use-package consult-project-extra
-;;   :straight (consult-project-extra :type git :host github :repo "Qkessler/consult-project-extra")
-;;   :bind
-;;   (("C-c p f" . consult-project-extra-find)
-;;    ("C-c p o" . consult-project-extra-find-other-window)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package smartparens
-	:config
-	(smartparens-mode)
-	(smartparens-strict-mode))
-
-(use-package evil-smartparens
-	:config
-	(evil-smartparens-mode))
+;; (use-package evil-smartparens
+;; 	:config
+;; 	(evil-smartparens-mode))
 
 (use-package evil-commentary
 	:config
@@ -810,10 +757,23 @@
 
 (use-package projectile
 	:config
-	(define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
 	(setq projectile-track-known-projects-automatically nil)
+	(define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+	;; (evil-define-key 'normal 'global (kbd "<leader> p p") 'consult-projectile)
+	;; (evil-define-key 'normal 'global (kbd "C-x p f") 'consult-projectile-find-file)
+	;; (evil-define-key 'normal 'global (kbd "C-x p b") 'consult-project-buffer)
+	;; (evil-define-key 'normal 'global (kbd "C-x p D") 'consult-projectile-find-dir)
+	;; (evil-define-key 'normal 'global (kbd "C-x p d") 'projectile-dired)
 	:init
 	(setq projectile-known-projects-file "~/.config/emacs/project.el")
 	(projectile-mode))
 
 (use-package consult-projectile)
+
+(defun smart-for-files ()
+  (interactive)
+  (if (projectile-project-p)
+      (consult-projectile)
+    (find-file default-directory)))
+
+(define-key projectile-mode-map (kbd "<f9>") 'smart-for-files)
