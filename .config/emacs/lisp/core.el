@@ -23,6 +23,12 @@
 	:config
 	(evil-collection-init))
 
+(use-package evil-commentary
+	;; Better Comment Action
+	:config
+	(evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
+	(evil-define-key 'normal 'global (kbd "gcc") 'evil-commentary-line))
+
 ;; breaks the evil undo sequence when the buffer is changed over a line boundary
 (use-package evil-nl-break-undo
 	:hook ((text-mode prog-mode) . evil-nl-break-undo-mode))
@@ -47,6 +53,7 @@
 (evil-set-leader 'normal (kbd "SPC"))
 (evil-set-leader 'visual (kbd "SPC"))
 
+;; Offer to diff buffer when closing it
 (defun my-kill-this-buffer ()
 	(interactive)
 	(catch 'quit
@@ -70,17 +77,29 @@
   (list-buffers)
   (other-window 1))
 
+(defun smart-for-files ()
+  (interactive)
+  (if (projectile-project-p)
+      (consult-projectile-find-file)
+    (call-interactively #'find-file)))
+
+(defun smart-for-buffer ()
+  (interactive)
+  (if (projectile-project-p)
+      (consult-projectile-switch-to-buffer)
+    (consult-buffer)))
+
 ;;Settings normal global keybindings
 (evil-define-key 'normal 'global
 	(kbd ";") 'evil-ex
 	(kbd ":") 'execute-extended-command
-	(kbd "<leader>ff") 'find-file
+	(kbd "<leader>ff") 'smart-for-files
 	(kbd "<leader>fw") 'find-file-other-window
 	(kbd "<leader>fr") 'consult-recent-file
 	(kbd "<leader>fg") 'consult-grep
 	(kbd "<leader>dj") 'dired-jump
 	(kbd "<leader>dd") 'dired
-	(kbd "<leader>bb") 'open-buffer-list
+	(kbd "<leader>bb") 'smart-for-buffer
 	(kbd "<leader>bw") 'consult-buffer-other-window
 	(kbd "<leader>w") 'save-buffer
 	(kbd "<leader>qb") 'kill-buffer
@@ -88,16 +107,17 @@
 	(kbd "<leader>sv") 'split-and-follow-vertically
 	(kbd "<leader>sh") 'split-and-follow-horizontally
 	(kbd "<leader>gg") 'google-this
+	(kbd "<leader>gh") 'dashboard-open
 	(kbd "<leader>l") 'evil-window-right
 	(kbd "<leader>h") 'evil-window-left
 	(kbd "<leader>ee") 'eval-buffer
 	(kbd "<leader>es") 'eval-expression
 	(kbd "<leader>er") 'eval-region
-	(kbd "<leader>er") 'eval-defun
+	(kbd "<leader>ef") 'eval-defun
 	(kbd "S") 'evil-surround-edit
 	(kbd ",r") 'evil-surround-delete
-	(kbd ",c") 'evil-surround-change)
-
+	(kbd ",c") 'evil-surround-change
+	)
 
 (evil-define-key 'insert 'global (kbd "C-<backspace>") 'evil-delete-backward-word)
 (evil-define-key 'visual 'global (kbd "<leader>gg") 'google-this-noconfirm)
@@ -163,9 +183,27 @@
 	:init
 	(savehist-mode))
 
+(setq read-buffer-completion-ignore-case t)
+(setq read-file-name-completion-ignore-case t)
+
+(add-to-list 'completion-ignored-extensions ".pdf")
+(add-to-list 'completion-ignored-extensions "some-dir/")
+
 ;; Enable vertico
 (use-package vertico
-	:straight t
+	;; :straight (vertico :files (:defaults "extensions/*")
+	;;                    :includes (vertico-indexed
+	;;                               vertico-flat
+	;;                               vertico-grid
+	;;                               vertico-mouse
+	;;                               vertico-quick
+	;;                               vertico-buffer
+	;;                               vertico-repeat
+	;;                               vertico-reverse
+	;;                               vertico-directory
+	;;                               vertico-multiform
+	;;                               vertico-unobtrusive
+	;;                               ))
 	:config
 	(setq vertico-multiform-commands
 	 			'((consult-line
@@ -192,14 +230,20 @@
 	(setq vertico-multiform-commands
 	 			'((consult-projectile (:not posframe))
 	 				(t posframe)))
-	(setq vertico-multiform-commands
-	 			'((find-file (:not posframe))
-	 				(t posframe)))
+	(advice-add #'vertico--format-candidate :around
+							(lambda (orig cand prefix suffix index _start)
+								(setq cand (funcall orig cand prefix suffix index _start))
+								(concat
+								 (if (= vertico--index index)
+										 (propertize "» " 'face 'vertico-current)
+									 "  ")
+								 cand)))
 	:init
 	(vertico-mode)
 	(setq vertico-count 20)
 	(setq vertico-scroll-margin 3)
 	)
+(require 'vertico-directory)
 
 (use-package marginalia
 	:config
@@ -360,7 +404,7 @@
 	(editorconfig-mode 1))
 
 ;; Autopair
-;; (electric-pair-mode 1)
+(electric-pair-mode 1)
 
 ;; Highlight nested parentheses (from Jamie's)
 (use-package rainbow-delimiters
@@ -483,14 +527,14 @@
 		(start-process "zathura" nil "zathura" pdf-file)))
 
 (defun open-pdf-with-pdf-tools ()
-  "Open the PDF file associated with the current buffer in pdf-tools."
-  (interactive)
-  (let ((pdf-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
-    (if (file-exists-p pdf-file)
-        (progn
-          (pdf-tools-install)
-          (find-file pdf-file))
-      (message "PDF file not found."))))
+	"Open the PDF file associated with the current buffer in pdf-tools."
+	(interactive)
+	(let ((pdf-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
+		(if (file-exists-p pdf-file)
+				(progn
+					(pdf-tools-install)
+					(find-file pdf-file))
+			(message "PDF file not found."))))
 
 ;; Auto reload pdf and suppress messages
 (global-auto-revert-mode 1)
@@ -551,10 +595,10 @@
 	(yas-minor-mode))
 
 (use-package aas
-  :hook (markdown-mode . aas-activate-for-major-mode)
-  :hook (LaTeX-mode . aas-activate-for-major-mode)
-  :config
-  (aas-set-snippets 'latex-mode
+	:hook (markdown-mode . aas-activate-for-major-mode)
+	:hook (LaTeX-mode . aas-activate-for-major-mode)
+	:config
+	(aas-set-snippets 'latex-mode
 										"mk" (lambda () (interactive)
 													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
 										"dm" (lambda () (interactive)
@@ -644,14 +688,21 @@
 (evil-define-key 'normal 'global (kbd "f") 'evil-avy-goto-char-in-line)
 (evil-define-key 'motion 'global (kbd "f") 'evil-avy-goto-char-in-line)
 (evil-define-key 'operator 'global (kbd "f") 'evil-avy-goto-char-in-line)
-(evil-define-key 'normal 'global (kbd "C-SPC") 'er/expand-region)
-(evil-define-key 'visual 'global (kbd "SPC SPC") 'er/expand-region)
-;; (evil-define-key 'motion 'global (kbd "L") 'avy-copy-line)
 (evil-define-key 'operator 'global (kbd "R") 'avy-copy-region)
+;; (evil-define-key 'motion 'global (kbd "L") 'avy-copy-line)
 
 (setq avy-timeout-seconds 0.25)
 
-(use-package expand-region)
+(use-package expand-region
+	:config
+	(defun expand-region ()
+		"Repeat the `er/expand-region' command."
+		(interactive)
+		(dotimes (_ 2)
+			(call-interactively 'er/expand-region)))
+	(evil-define-key 'normal 'global (kbd "C-SPC") 'expand-region)
+	(setq expand-region-subword-enabled t)
+	)
 
 (use-package org-fragtog
 	:config
@@ -726,7 +777,8 @@
 	(add-hook 'LaTeX-mode-hook 'format-all-mode)
 	)
 
-(use-package consult-yasnippet)
+(use-package consult-yasnippet
+	:after yasnippet)
 
 (use-package yasnippet
 	:commands (yas-minor-mode) ; autoload `yasnippet' when `yas-minor-mode' is called
@@ -741,20 +793,6 @@
 	(progn
 		(yas-reload-all)))
 
-;; (use-package smartparens
-;; 	:config
-;; 	(smartparens-mode)
-;; 	(smartparens-strict-mode))
-
-;; (use-package evil-smartparens
-;; 	:config
-;; 	(evil-smartparens-mode))
-
-(use-package evil-commentary
-	:config
-	(evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
-	(evil-define-key 'normal 'global (kbd "gcc") 'evil-commentary-line))
-
 (use-package projectile
 	:config
 	(setq projectile-track-known-projects-automatically nil)
@@ -768,12 +806,5 @@
 	(setq projectile-known-projects-file "~/.config/emacs/project.el")
 	(projectile-mode))
 
-(use-package consult-projectile)
-
-(defun smart-for-files ()
-  (interactive)
-  (if (projectile-project-p)
-      (consult-projectile)
-    (find-file default-directory)))
-
-(define-key projectile-mode-map (kbd "<f9>") 'smart-for-files)
+(use-package consult-projectile
+	:after projectile)
