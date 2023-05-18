@@ -239,6 +239,7 @@
 	;; 									 (propertize "» " 'face 'vertico-current)
 	;; 								 "  ")
 	;; 							 cand)))
+	(setq vertico-cycle t)								; Allow to cycle from top to bottom
 	:init
 	(vertico-mode)
 	(setq vertico-count 20)
