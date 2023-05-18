@@ -22,10 +22,12 @@
 (setq hl-line-sticky-flag nil)
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
 
-(use-package centered-cursor-mode				;Add centered cursor
-	:straight t
-	:init
-	(global-centered-cursor-mode))
+;; Better Then Global Centered Cursor Mode
+(setq indicate-empty-lines nil)
+(setq ccm-recenter-at-end-of-file t)
+(setq scroll-conservatively 1000)
+(setq scroll-margin 1000)
+(setq maximum-scroll-margin 0.5)
 
 (use-package all-the-icons
 	:straight t
