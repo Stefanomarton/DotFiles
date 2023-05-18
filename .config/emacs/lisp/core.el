@@ -418,6 +418,18 @@
 
 (use-package consult)
 
+(consult-customize
+ consult-ripgrep consult-git-grep consult-grep
+ consult-bookmark consult-recent-file consult-xref
+ consult--source-bookmark consult--source-file-register
+ consult--source-recent-file consult--source-project-recent-file find-file
+ ;; my/command-wrapping-consult    ;; disable auto previews inside my command
+ :preview-key '(:debounce 0.4 any) ;; Option 1: Delay preview
+ ;; :preview-key "M-.")            ;; Option 2: Manual preview
+ )
+
+
+
 (use-package dashboard
 	:ensure t
 	:config
@@ -808,3 +820,11 @@
 
 (use-package consult-projectile
 	:after projectile)
+
+(use-package helm
+	:config
+	(evil-define-key 'global 'helm-map (kbd "<escape>") 'keyboard-escape-quit))
+;; (use-package helm-posframe
+;; 	:config
+;; 	(helm-posframe-enable))
+(use-package helm-projectile)
