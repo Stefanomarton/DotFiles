@@ -106,7 +106,7 @@
 	(kbd "Q") 'my-kill-this-buffer
 	(kbd "<leader>sv") 'split-and-follow-vertically
 	(kbd "<leader>sh") 'split-and-follow-horizontally
-	(kbd "<leader>gg") 'google-this
+	(kbd "<leader>gt") 'google-this
 	(kbd "<leader>gh") 'dashboard-open
 	(kbd "<leader>l") 'evil-window-right
 	(kbd "<leader>h") 'evil-window-left
@@ -821,10 +821,41 @@
 (use-package consult-projectile
 	:after projectile)
 
-(use-package helm
-	:config
-	(evil-define-key 'global 'helm-map (kbd "<escape>") 'keyboard-escape-quit))
+;; (use-package helm
+;;   :bind
+;;   (("M-x" . helm-M-x)
+;;    ("C-x C-f" . helm-find-files)
+;;    :map helm-map
+;;    ("C-j" . helm-next-line)
+;;    ("C-k" . helm-previous-line)
+;;    ("<escape>" . helm-keyboard-quit))
+;; 	:config
+;; 	(evil-define-key 'global 'helm-map (kbd "<escape>") 'keyboard-escape-quit))
 ;; (use-package helm-posframe
 ;; 	:config
 ;; 	(helm-posframe-enable))
-(use-package helm-projectile)
+;; (use-package helm-projectile)
+
+(use-package magit)
+
+;; prepare the arguments
+(setq dotfiles-git-dir (concat "--git-dir=" (expand-file-name "~/.dotfiles")))
+(setq dotfiles-work-tree (concat "--work-tree=" (expand-file-name "~")))
+
+;; function to start magit on dotfiles
+(defun dotfiles-magit-status ()
+  (interactive)
+  (add-to-list 'magit-git-global-arguments dotfiles-git-dir)
+  (add-to-list 'magit-git-global-arguments dotfiles-work-tree)
+  (call-interactively 'magit-status))
+(global-set-key (kbd "<leader> gd") 'dotfiles-magit-status)
+
+;; wrapper to remove additional args before starting magit
+(defun magit-status-with-removed-dotfiles-args ()
+  (interactive)
+  (setq magit-git-global-arguments (remove dotfiles-git-dir magit-git-global-arguments))
+  (setq magit-git-global-arguments (remove dotfiles-work-tree magit-git-global-arguments))
+  (call-interactively 'magit-status))
+;; redirect global magit hotkey to our wrapper
+(global-set-key (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
+(define-key magit-mode-map (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
