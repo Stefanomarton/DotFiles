@@ -114,6 +114,7 @@
 	(kbd "<leader>es") 'eval-expression
 	(kbd "<leader>er") 'eval-region
 	(kbd "<leader>ef") 'eval-defun
+	(kbd "<leader>pp") 'consult-projectile
 	(kbd "S") 'evil-surround-edit
 	(kbd ",r") 'evil-surround-delete
 	(kbd ",c") 'evil-surround-change
@@ -205,39 +206,39 @@
 	;;                               vertico-unobtrusive
 	;;                               ))
 	:config
-	(setq vertico-multiform-commands
-	 			'((consult-line
-	 				 posframe
-	 				 (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
-	 				 (vertico-posframe-border-width . 10)
-	 				 ;; NOTE: This is useful when emacs is used in both in X and
-	 				 ;; terminal, for posframe do not work well in terminal, so
-	 				 ;; vertico-buffer-mode will be used as fallback at the
-	 				 ;; moment.
-	 				 (vertico-posframe-fallback-mode . vertico-buffer-mode))
-	 				(t posframe)))
-	(vertico-multiform-mode 1)
-	;; Using vertico-multiform-mode is possibile to avoid use of posframe in certain buffer
-	(setq vertico-multiform-commands
-	 			'((evil-ex (:not posframe))
-	 				(t posframe)))
-	(setq vertico-multiform-commands
-	 			'((consult-yasnippet (:not posframe))
-	 				(t posframe)))
-	(setq vertico-multiform-commands
-	 			'((consult-projectile-switch-to-buffer (:not posframe))
-	 				(t posframe)))
-	(setq vertico-multiform-commands
-	 			'((consult-projectile (:not posframe))
-	 				(t posframe)))
-	(advice-add #'vertico--format-candidate :around
-							(lambda (orig cand prefix suffix index _start)
-								(setq cand (funcall orig cand prefix suffix index _start))
-								(concat
-								 (if (= vertico--index index)
-										 (propertize "» " 'face 'vertico-current)
-									 "  ")
-								 cand)))
+	;; (setq vertico-multiform-commands
+	;;  			'((consult-line
+	;;  				 posframe
+	;;  				 (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
+	;;  				 (vertico-posframe-border-width . 10)
+	;;  				 ;; NOTE: This is useful when emacs is used in both in X and
+	;;  				 ;; terminal, for posframe do not work well in terminal, so
+	;;  				 ;; vertico-buffer-mode will be used as fallback at the
+	;;  				 ;; moment.
+	;;  				 (vertico-posframe-fallback-mode . vertico-buffer-mode))
+	;;  				(t posframe)))
+	;; (vertico-multiform-mode 1)
+	;; ;; Using vertico-multiform-mode is possibile to avoid use of posframe in certain buffer
+	;; (setq vertico-multiform-commands
+	;;  			'((evil-ex (:not posframe))
+	;;  				(t posframe)))
+	;; (setq vertico-multiform-commands
+	;;  			'((consult-yasnippet (:not posframe))
+	;;  				(t posframe)))
+	;; (setq vertico-multiform-commands
+	;;  			'((consult-projectile-switch-to-buffer (:not posframe))
+	;;  				(t posframe)))
+	;; (setq vertico-multiform-commands
+	;;  			'((consult-projectile (:not posframe))
+	;;  				(t posframe)))
+	;; (advice-add #'vertico--format-candidate :around
+	;; 						(lambda (orig cand prefix suffix index _start)
+	;; 							(setq cand (funcall orig cand prefix suffix index _start))
+	;; 							(concat
+	;; 							 (if (= vertico--index index)
+	;; 									 (propertize "» " 'face 'vertico-current)
+	;; 								 "  ")
+	;; 							 cand)))
 	:init
 	(vertico-mode)
 	(setq vertico-count 20)
@@ -289,16 +290,16 @@
 				completion-category-overrides '((file (styles partial-completion)))))
 
 ;; Vertico postframe
-(use-package vertico-posframe
- 	:straight t
- 	:init
- 	:config
- 	(setq vertico-posframe-min-width 50)
- 	(setq vertico-posframe-width 123)
- 	(vertico-posframe-mode 1)
- 	(setq vertico-posframe-parameters
- 				'((left-fringe . 10)
- 					(right-fringe . 10))))
+;; (use-package vertico-posframe
+;;  	:straight t
+;;  	:init
+;;  	:config
+;;  	(setq vertico-posframe-min-width 50)
+;;  	(setq vertico-posframe-width 123)
+;;  	(vertico-posframe-mode 1)
+;;  	(setq vertico-posframe-parameters
+;;  				'((left-fringe . 10)
+;;  					(right-fringe . 10))))
 
 (use-package doom-modeline
 	:straight t
@@ -859,3 +860,12 @@
 ;; redirect global magit hotkey to our wrapper
 (global-set-key (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
 (define-key magit-mode-map (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
+
+;; (defun my-recenter-after-exit-minibuffer ()
+;;   "Recenter the window after exiting the minibuffer."
+;;   (when (active-minibuffer-window)
+;;     (with-selected-window (minibuffer-selected-window)
+;;       (recenter))))
+
+;; (add-hook 'minibuffer-exit-hook #'my-recenter-after-exit-minibuffer)
+;; (add-hook 'vertico-posframe--minibuffer-exit-hook #'my-recenter-after-exit-minibuffer)
