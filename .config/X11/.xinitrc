@@ -9,8 +9,8 @@ flameshot &
 redshift -l 45.69651:9.1818 &
 insync start &
 xbanish -s -t 2 &
-xinput --set-prop 11 318 1 &
-xinput --set-prop 11 345 1 &
+xinput --set-prop 10 318 1 &
+xinput --set-prop 10 345 1 &
 # dbus-update-activation-environment --all &
 # gnome-keyring-daemon --start --components=secrets &
 # gnome-keyring-daemon --login &
