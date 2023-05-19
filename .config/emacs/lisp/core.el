@@ -27,6 +27,8 @@
 	;; Better Comment Action
 	:config
 	(evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
+	(evil-define-key 'normal 'global (kbd "gcA") 'comment_end_of_line)
+	(evil-define-key 'visual 'global (kbd "gb") 'comment-box)
 	(evil-define-key 'normal 'global (kbd "gcc") 'evil-commentary-line))
 
 ;; ;; breaks the evil undo sequence when the buffer is changed over a line boundary
@@ -144,10 +146,6 @@
 	(call-interactively 'comment-dwim)
 	(call-interactively 'evil-append))
 
-(evil-define-key 'normal 'global (kbd "gcA") 'comment_end_of_line)
-;; (evil-define-key 'normal 'global (kbd "gcc") 'comment-line)
-;; (evil-define-key 'visual 'global (kbd "gc") 'comment-region)
-(evil-define-key 'visual 'global (kbd "gb") 'comment-box)
 (define-key evil-normal-state-map (kbd "Y") (kbd "y$"))
 
 (use-package dired
