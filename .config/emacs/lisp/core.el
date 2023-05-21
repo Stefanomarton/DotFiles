@@ -1,10 +1,10 @@
 (provide 'core)
+
 (use-package restart-emacs)
 
 (use-package evil
 	:straight t
 	:init
-	(setq completion-in-region-function 'consult-completion-in-region)
 	(setq evil-want-integration t)
 	(setq evil-echo-state nil)
 	(setq evil-want-keybinding nil)
@@ -80,19 +80,20 @@
 (defun smart-for-files ()
   (interactive)
   (if (projectile-project-p)
-      (consult-projectile-find-file)
-    (call-interactively #'find-file)))
+      (helm-projectile-find-file)
+    (call-interactively #'helm-find-files)))
 
 (defun smart-for-buffer ()
   (interactive)
   (if (projectile-project-p)
-      (consult-projectile-switch-to-buffer)
-    (consult-buffer)))
+      (helm-projectile-switch-to-buffer)
+    (helm-buffer-list)))
 
 ;;Settings normal global keybindings
 (evil-define-key 'normal 'global
 	(kbd ";") 'evil-ex
-	(kbd ":") 'execute-extended-command
+	;; (kbd ":") 'execute-extended-command
+	(kbd ":") 'helm-M-x
 	(kbd "<leader>ff") 'smart-for-files
 	(kbd "<leader>fw") 'find-file-other-window
 	(kbd "<leader>fr") 'consult-recent-file
@@ -104,8 +105,8 @@
 	(kbd "<leader>w") 'save-buffer
 	(kbd "<leader>qb") 'kill-buffer
 	(kbd "Q") 'my-kill-this-buffer
-	(kbd "<leader>sv") 'split-and-follow-vertically
-	(kbd "<leader>sh") 'split-and-follow-horizontally
+	(kbd "C-s v") 'split-and-follow-vertically
+	(kbd "C-s h") 'split-and-follow-horizontally
 	(kbd "<leader>gt") 'google-this
 	(kbd "<leader>gh") 'dashboard-open
 	(kbd "<leader>l") 'evil-window-right
@@ -114,7 +115,9 @@
 	(kbd "<leader>es") 'eval-expression
 	(kbd "<leader>er") 'eval-region
 	(kbd "<leader>ef") 'eval-defun
-	(kbd "<leader>pp") 'consult-projectile
+	(kbd "<leader>pp") 'helm-projectile-switch-project
+	(kbd "<leader>c") 'calc
+	(kbd "<leader>q") 'quick-calc
 	(kbd "S") 'evil-surround-edit
 	(kbd ",r") 'evil-surround-delete
 	(kbd ",c") 'evil-surround-change
@@ -129,8 +132,10 @@
 	:after evil
 	:config
 	(evil-goggles-mode)
-	(setq evil-goggle-duration 0.2)
+	(setq evil-goggle-duration 0.5)
 	(evil-goggles-use-diff-faces))
+
+(use-package consult)
 
 (use-package undo-fu
 	:straight t)
@@ -190,63 +195,6 @@
 (add-to-list 'completion-ignored-extensions ".pdf")
 (add-to-list 'completion-ignored-extensions "some-dir/")
 
-;; Enable vertico
-(use-package vertico
-	;; :straight (vertico :files (:defaults "extensions/*")
-	;;                    :includes (vertico-indexed
-	;;                               vertico-flat
-	;;                               vertico-grid
-	;;                               vertico-mouse
-	;;                               vertico-quick
-	;;                               vertico-buffer
-	;;                               vertico-repeat
-	;;                               vertico-reverse
-	;;                               vertico-directory
-	;;                               vertico-multiform
-	;;                               vertico-unobtrusive
-	;;                               ))
-	:config
-	;; (setq vertico-multiform-commands
-	;;  			'((consult-line
-	;;  				 posframe
-	;;  				 (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
-	;;  				 (vertico-posframe-border-width . 10)
-	;;  				 ;; NOTE: This is useful when emacs is used in both in X and
-	;;  				 ;; terminal, for posframe do not work well in terminal, so
-	;;  				 ;; vertico-buffer-mode will be used as fallback at the
-	;;  				 ;; moment.
-	;;  				 (vertico-posframe-fallback-mode . vertico-buffer-mode))
-	;;  				(t posframe)))
-	;; (vertico-multiform-mode 1)
-	;; ;; Using vertico-multiform-mode is possibile to avoid use of posframe in certain buffer
-	;; (setq vertico-multiform-commands
-	;;  			'((evil-ex (:not posframe))
-	;;  				(t posframe)))
-	;; (setq vertico-multiform-commands
-	;;  			'((consult-yasnippet (:not posframe))
-	;;  				(t posframe)))
-	;; (setq vertico-multiform-commands
-	;;  			'((consult-projectile-switch-to-buffer (:not posframe))
-	;;  				(t posframe)))
-	;; (setq vertico-multiform-commands
-	;;  			'((consult-projectile (:not posframe))
-	;;  				(t posframe)))
-	;; (advice-add #'vertico--format-candidate :around
-	;; 						(lambda (orig cand prefix suffix index _start)
-	;; 							(setq cand (funcall orig cand prefix suffix index _start))
-	;; 							(concat
-	;; 							 (if (= vertico--index index)
-	;; 									 (propertize "» " 'face 'vertico-current)
-	;; 								 "  ")
-	;; 							 cand)))
-	(setq vertico-cycle t)								; Allow to cycle from top to bottom
-	:init
-	(vertico-mode)
-	(setq vertico-count 20)
-	(setq vertico-scroll-margin 3)
-	)
-(require 'vertico-directory)
-
 (use-package marginalia
 	:config
 	(marginalia-mode))
@@ -279,33 +227,11 @@
 	;; Enable recursive minibuffers
 	(setq enable-recursive-minibuffers t))
 
-;; Optionally use the `orderless' completion style.
-(use-package orderless
-	:straight t
-	:init
-	;; Configure a custom style dispatcher (see the Consult wiki)
-	;; (setq orderless-style-dispatchers '(+orderless-dispatch)
-	;;       orderless-component-separator #'orderless-escapable-split-on-space)
-	(setq completion-styles '(orderless basic)
-				completion-category-defaults nil
-				completion-category-overrides '((file (styles partial-completion)))))
-
-;; Vertico postframe
-;; (use-package vertico-posframe
-;;  	:straight t
-;;  	:init
-;;  	:config
-;;  	(setq vertico-posframe-min-width 50)
-;;  	(setq vertico-posframe-width 123)
-;;  	(vertico-posframe-mode 1)
-;;  	(setq vertico-posframe-parameters
-;;  				'((left-fringe . 10)
-;;  					(right-fringe . 10))))
-
 (use-package doom-modeline
 	:straight t
 	:config
 	(setq doom-modeline-buffer-encoding nil)
+	(setq doom-modeline-height 40)
 	:init (doom-modeline-mode 1))
 
 (use-package lsp-mode
@@ -350,8 +276,8 @@
 				 `(orderless-regexp . ,(concat "^" (regexp-quote word)))))
 
 	(orderless-define-completion-style orderless-fast
-		(orderless-style-dispatchers '(orderless-fast-dispatch))
-		(orderless-matching-styles '(orderless-literal orderless-regexp)))
+																		 (orderless-style-dispatchers '(orderless-fast-dispatch))
+																		 (orderless-matching-styles '(orderless-literal orderless-regexp)))
 
 	(setq-local corfu-auto t
 							corfu-auto-delay 0
@@ -375,30 +301,24 @@
 	:init
 	(add-to-list 'completion-at-point-functions #'cape-dabbrev)
 	(add-to-list 'completion-at-point-functions #'cape-file)
-	(add-to-list 'completion-at-point-functions #'cape-elisp-block)
-	;;(add-to-list 'completion-at-point-functions #'cape-history)
+	;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+	;; (add-to-list 'completion-at-point-functions #'cape-history)
 	(add-to-list 'completion-at-point-functions #'cape-yasnippet)
-	;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-	;;(add-to-list 'completion-at-point-functions #'cape-tex)
-	;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-	;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-	(add-to-list 'completion-at-point-functions #'cape-abbrev)
-	;;(add-to-list 'completion-at-point-functions #'cape-dict)
-	;;(add-to-list 'completion-at-point-functions #'cape-symbol)
-	;;(add-to-list 'completion-at-point-functions #'cape-line)
+	;; (add-to-list 'completion-at-point-functions #'cape-keyword)
+	;; (add-to-list 'completion-at-point-functions #'cape-tex)
+	;; (add-to-list 'completion-at-point-functions #'cape-sgml)
+	;; (add-to-list 'completion-at-point-functions #'cape-rfc1345)
+	;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
+	;; (add-to-list 'completion-at-point-functions #'cape-dict)
+	;; (add-to-list 'completion-at-point-functions #'cape-symbol)
+	;; (add-to-list 'completion-at-point-functions #'cape-line)
 	)
 
 (straight-use-package '(cape-yasnippet :type git :host github
 																			 :repo "elken/cape-yasnippet"
 																			 ))
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package solaire-mode
-	:straight t)
-(solaire-global-mode 1)
 
 ;; Editorconfig, auto set indenting
 (use-package editorconfig
@@ -408,7 +328,7 @@
 ;; Autopair
 (electric-pair-mode 1)
 
-;; Highlight nested parentheses (from Jamie's)
+;; Highlight nested parentheses
 (use-package rainbow-delimiters
 	:config
 	(add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
@@ -417,20 +337,6 @@
 (use-package rainbow-mode
 	:config
 	(add-hook 'prog-mode #'rainbow-mode))
-
-(use-package consult)
-
-(consult-customize
- consult-ripgrep consult-git-grep consult-grep
- consult-bookmark consult-recent-file consult-xref
- consult--source-bookmark consult--source-file-register
- consult--source-recent-file consult--source-project-recent-file find-file
- ;; my/command-wrapping-consult    ;; disable auto previews inside my command
- :preview-key '(:debounce 0.4 any) ;; Option 1: Delay preview
- ;; :preview-key "M-.")            ;; Option 2: Manual preview
- )
-
-
 
 (use-package dashboard
 	:ensure t
@@ -617,9 +523,14 @@
 													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
 										"dm" (lambda () (interactive)
 													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+	(aas-set-snippets 'org-mode
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'markdown-mode
 										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "$ $1 $ $0"))
+													 (yas-expand-snippet "$$1$ $0"))
 										"dm" (lambda () (interactive)
 													 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
@@ -791,9 +702,6 @@
 	(add-hook 'LaTeX-mode-hook 'format-all-mode)
 	)
 
-(use-package consult-yasnippet
-	:after yasnippet)
-
 (use-package yasnippet
 	:commands (yas-minor-mode) ; autoload `yasnippet' when `yas-minor-mode' is called
 																				; using any means: via a hook or by user
@@ -809,34 +717,61 @@
 
 (use-package projectile
 	:config
+	(setq projectile-enable-caching t)
 	(setq projectile-track-known-projects-automatically nil)
+	(setq projectile-completion-system 'helm)
 	(define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-	;; (evil-define-key 'normal 'global (kbd "<leader> p p") 'consult-projectile)
-	;; (evil-define-key 'normal 'global (kbd "C-x p f") 'consult-projectile-find-file)
-	;; (evil-define-key 'normal 'global (kbd "C-x p b") 'consult-project-buffer)
-	;; (evil-define-key 'normal 'global (kbd "C-x p D") 'consult-projectile-find-dir)
-	;; (evil-define-key 'normal 'global (kbd "C-x p d") 'projectile-dired)
 	:init
 	(setq projectile-known-projects-file "~/.config/emacs/project.el")
 	(projectile-mode))
 
-(use-package consult-projectile
-	:after projectile)
+(use-package helm
+	:init
+	(helm-mode 1)
+  :bind
+  (("M-x" . helm-M-x)
+   ("C-x C-f" . helm-find-files)
+   :map helm-map
+   ("C-j" . helm-next-line)
+   ("C-k" . helm-previous-line)
+   ("<escape>" . helm-keyboard-quit)
+	 ("<tab>" . helm-execute-persistent-action)
+	 ("C-i" . helm-execute-persistent-action)
+	 ("C-<backspace>" . helm-find-files-up-one-level)
+	 ("C-z"  . helm-select-action))
+	;; (defadvice helm-display-mode-line (after undisplay-header activate)
+	;; 	(setq header-line-format nil))
+	;; (defadvice helm-persistent-help-string (around avoid-help-message activate))
+	:config
+	(evil-define-key 'global 'helm-map (kbd "<escape>") 'keyboard-escape-quit)
+	(global-set-key (kbd "C-c h") 'helm-command-prefix)
+	(setq helm-split-window-in-side-p           t
+				helm-move-to-line-cycle-in-source     t
+				helm-ff-search-library-in-sexp        t
+				helm-scroll-amount                    8
+				helm-ff-file-name-history-use-recentf t
+				helm-echo-input-in-header-line t
+				helm-autoresize-max-height 40
+				helm-autoresize-min-height 40
+				helm-M-x-fuzzy-math t
+				helm-buffers-fuzzy-matching t
+				helm-recentf-fuzzy-match    t
+				helm-mode-fuzzy-match    t
+				helm-follow-mode-persistent t)
+	(helm-autoresize-mode 1)
+	)
 
-;; (use-package helm
-;;   :bind
-;;   (("M-x" . helm-M-x)
-;;    ("C-x C-f" . helm-find-files)
-;;    :map helm-map
-;;    ("C-j" . helm-next-line)
-;;    ("C-k" . helm-previous-line)
-;;    ("<escape>" . helm-keyboard-quit))
-;; 	:config
-;; 	(evil-define-key 'global 'helm-map (kbd "<escape>") 'keyboard-escape-quit))
-;; (use-package helm-posframe
-;; 	:config
-;; 	(helm-posframe-enable))
-;; (use-package helm-projectile)
+(with-eval-after-load 'helm-files
+	(dolist (keymap (list helm-find-files-map helm-read-file-map))
+		(define-key keymap (kbd "C-l") 'helm-execute-persistent-action)
+		(define-key keymap (kbd "C-h") 'helm-find-files-up-one-level)
+		;; rebind `describe-key' for convenience
+		(define-key keymap (kbd "C-S-h") 'describe-key)))
+
+
+(use-package rg)
+
+(use-package helm-projectile)
 
 (use-package magit)
 
@@ -846,27 +781,18 @@
 
 ;; function to start magit on dotfiles
 (defun dotfiles-magit-status ()
-  (interactive)
-  (add-to-list 'magit-git-global-arguments dotfiles-git-dir)
-  (add-to-list 'magit-git-global-arguments dotfiles-work-tree)
-  (call-interactively 'magit-status))
+	(interactive)
+	(add-to-list 'magit-git-global-arguments dotfiles-git-dir)
+	(add-to-list 'magit-git-global-arguments dotfiles-work-tree)
+	(call-interactively 'magit-status))
 (global-set-key (kbd "<leader> gd") 'dotfiles-magit-status)
 
 ;; wrapper to remove additional args before starting magit
 (defun magit-status-with-removed-dotfiles-args ()
-  (interactive)
-  (setq magit-git-global-arguments (remove dotfiles-git-dir magit-git-global-arguments))
-  (setq magit-git-global-arguments (remove dotfiles-work-tree magit-git-global-arguments))
-  (call-interactively 'magit-status))
+	(interactive)
+	(setq magit-git-global-arguments (remove dotfiles-git-dir magit-git-global-arguments))
+	(setq magit-git-global-arguments (remove dotfiles-work-tree magit-git-global-arguments))
+	(call-interactively 'magit-status))
 ;; redirect global magit hotkey to our wrapper
 (global-set-key (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
 (define-key magit-mode-map (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
-
-;; (defun my-recenter-after-exit-minibuffer ()
-;;   "Recenter the window after exiting the minibuffer."
-;;   (when (active-minibuffer-window)
-;;     (with-selected-window (minibuffer-selected-window)
-;;       (recenter))))
-
-;; (add-hook 'minibuffer-exit-hook #'my-recenter-after-exit-minibuffer)
-;; (add-hook 'vertico-posframe--minibuffer-exit-hook #'my-recenter-after-exit-minibuffer)

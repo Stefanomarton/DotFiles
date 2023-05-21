@@ -16,7 +16,7 @@
 (setq display-line-numbers-grow-only t)
 (setq display-line-numbers-width-start 50)
 (setq display-line-numbers-type 'relative)
-(global-display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 (add-hook 'prog-mode-hook 'hl-line-mode) ;; Highlight the current line
 (setq hl-line-sticky-flag nil)
@@ -56,9 +56,9 @@
 (setq whitespace-display-mappings
 			'((newline-mark 10 [32 ?\x23CE 10])))
 
-(use-package unicode-fonts
-	:config
-	(unicode-fonts-setup))
+;; (use-package unicode-fonts
+;; 	:config
+;; 	(unicode-fonts-setup))
 
 (use-package frame
 	:straight (:type built-in)
