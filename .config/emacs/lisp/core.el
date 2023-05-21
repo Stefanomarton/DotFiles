@@ -29,9 +29,9 @@
 	(evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
 	(evil-define-key 'normal 'global (kbd "gcc") 'evil-commentary-line))
 
-;; breaks the evil undo sequence when the buffer is changed over a line boundary
-(use-package evil-nl-break-undo
-	:hook ((text-mode prog-mode) . evil-nl-break-undo-mode))
+;; ;; breaks the evil undo sequence when the buffer is changed over a line boundary
+;; (use-package evil-nl-break-undo
+;; 	:hook ((text-mode prog-mode) . evil-nl-break-undo-mode))
 
 (defun split-and-follow-horizontally ()
 	(interactive)
@@ -70,12 +70,6 @@
 													((eq response ?n) (set-buffer-modified-p nil) t)
 													((eq response ?d) (diff-buffer-with-file) nil))))))
 				(kill-buffer (current-buffer))))))
-
-(defun open-buffer-list ()
-  "Open the buffer list and automatically focus on it."
-  (interactive)
-  (list-buffers)
-  (other-window 1))
 
 (defun smart-for-files ()
   (interactive)
@@ -155,7 +149,6 @@
 ;; (evil-define-key 'visual 'global (kbd "gc") 'comment-region)
 (evil-define-key 'visual 'global (kbd "gb") 'comment-box)
 (define-key evil-normal-state-map (kbd "Y") (kbd "y$"))
-
 
 (use-package dired
 	:straight nil
@@ -248,7 +241,6 @@
 	((lua-mode . lsp)
 	 (lsp-mode . lsp-enable-which-key-integration)) ;whichkey-integration
 	:commands lsp)
-
 
 (use-package lua-mode
 	:straight t)
@@ -765,6 +757,7 @@
 	(dolist (keymap (list helm-find-files-map helm-read-file-map))
 		(define-key keymap (kbd "C-l") 'helm-execute-persistent-action)
 		(define-key keymap (kbd "C-h") 'helm-find-files-up-one-level)
+		(define-key keymap (kbd "C-d") 'helm-ff-run-delete-file)
 		;; rebind `describe-key' for convenience
 		(define-key keymap (kbd "C-S-h") 'describe-key)))
 
@@ -774,7 +767,6 @@
 (use-package helm-projectile)
 
 (use-package magit)
-
 ;; prepare the arguments
 (setq dotfiles-git-dir (concat "--git-dir=" (expand-file-name "~/.dotfiles")))
 (setq dotfiles-work-tree (concat "--work-tree=" (expand-file-name "~")))
