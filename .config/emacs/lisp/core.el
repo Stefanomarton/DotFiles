@@ -185,9 +185,6 @@
 (setq read-buffer-completion-ignore-case t)
 (setq read-file-name-completion-ignore-case t)
 
-(add-to-list 'completion-ignored-extensions ".pdf")
-(add-to-list 'completion-ignored-extensions "some-dir/")
-
 (use-package marginalia
 	:config
 	(marginalia-mode))
@@ -761,6 +758,9 @@
 		;; rebind `describe-key' for convenience
 		(define-key keymap (kbd "C-S-h") 'describe-key)))
 
+(with-eval-after-load 'helm-buffers
+	(dolist (keymap (list helm-buffer-map))
+		(define-key keymap (kbd "C-d") 'helm-buffer-run-kill-buffers)))
 
 (use-package rg)
 
