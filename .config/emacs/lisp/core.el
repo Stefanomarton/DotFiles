@@ -83,7 +83,7 @@
   (interactive)
   (if (projectile-project-p)
       (helm-projectile-switch-to-buffer)
-    (helm-buffer-list)))
+    (helm-buffers-list)))
 
 ;;Settings normal global keybindings
 (evil-define-key 'normal 'global
@@ -105,8 +105,6 @@
 	(kbd "C-s h") 'split-and-follow-horizontally
 	(kbd "<leader>gt") 'google-this
 	(kbd "<leader>gh") 'dashboard-open
-	(kbd "<leader>l") 'evil-window-right
-	(kbd "<leader>h") 'evil-window-left
 	(kbd "<leader>ee") 'eval-buffer
 	(kbd "<leader>es") 'eval-expression
 	(kbd "<leader>er") 'eval-region
@@ -114,6 +112,7 @@
 	(kbd "<leader>pp") 'helm-projectile-switch-project
 	(kbd "<leader>c") 'calc
 	(kbd "<leader>q") 'quick-calc
+	(kbd "<leader>h") 'helm-mini
 	(kbd "S") 'evil-surround-edit
 	(kbd ",r") 'evil-surround-delete
 	(kbd ",c") 'evil-surround-change
@@ -420,7 +419,7 @@
 	(let* ((output-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
 				 (process-buffer (generate-new-buffer "*pandoc-export*"))
 				 (exit-code (call-process "pandoc" nil process-buffer nil
-																	(buffer-file-name) "-o" output-file "-V" "geometry:margin=30mm")))
+																	(buffer-file-name) "-o" output-file "-V" "geometry:margin=30mm" "--template=template.latex" "--pdf-engine=xelatex")))
 		(if (zerop exit-code)
 				(message "Exported to %s" output-file)
 			(with-current-buffer process-buffer
@@ -506,20 +505,20 @@
 	:hook (LaTeX-mode . aas-activate-for-major-mode)
 	:config
 	(aas-set-snippets 'latex-mode
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\($1\\\\) $0"))
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "\\\\($1\\\\) $0"))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'org-mode
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'markdown-mode
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "$$1$ $0"))
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "$$1$ $0"))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -528,29 +527,29 @@
 	(org-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-										;; set condition!
-										:cond #'texmathp ; expand only while in math
-										"supp" "\\supp"
-										"On" "O(n)"
-										"O1" "O(1)"
-										"Olog" "O(\\log n)"
-										"Olon" "O(n \\log n)"
-										;; bind to functions!
-										"sum" (lambda () (interactive)
-														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-										"Span" (lambda () (interactive)
-														 (yas-expand-snippet "\\Span($1)$0"))
-										"inti" (lambda () (interactive)
-														 (yas-expand-snippet "\\int"))
-										"intd" (lambda () (interactive)
-														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-										"df" (lambda () (interactive)
-													 (yas-expand-snippet "_{$1}$0"))
-										"rt" (lambda () (interactive)
-													 (yas-expand-snippet "^{$1}$0"))
-										;; add accent snippets
-										:cond #'laas-object-on-left-condition
-										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+		;; set condition!
+		:cond #'texmathp ; expand only while in math
+		"supp" "\\supp"
+		"On" "O(n)"
+		"O1" "O(1)"
+		"Olog" "O(\\log n)"
+		"Olon" "O(n \\log n)"
+		;; bind to functions!
+		"sum" (lambda () (interactive)
+						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+		"Span" (lambda () (interactive)
+						 (yas-expand-snippet "\\Span($1)$0"))
+		"inti" (lambda () (interactive)
+						 (yas-expand-snippet "\\int"))
+		"intd" (lambda () (interactive)
+						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+		"df" (lambda () (interactive)
+					 (yas-expand-snippet "_{$1}$0"))
+		"rt" (lambda () (interactive)
+					 (yas-expand-snippet "^{$1}$0"))
+		;; add accent snippets
+		:cond #'laas-object-on-left-condition
+		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard)
 
@@ -758,7 +757,7 @@
 
 (with-eval-after-load 'helm-buffers
 	(dolist (keymap (list helm-buffer-map))
-		(define-key keymap (kbd "C-d") 'helm-buffer-run-kill-buffers)))
+		(define-key keymap (kbd "c-d") 'helm-buffer-run-kill-buffers)))
 
 (use-package rg)
 
@@ -766,13 +765,13 @@
 	:after yasnippet)
 
 (use-package helm
-   :bind
-   (("M-x" . helm-M-x)
-    ("C-x C-f" . helm-find-files)
-    :map helm-map
-    ("C-j" . helm-next-line)
-    ("C-k" . helm-previous-line)
-    ("<escape>" . helm-keyboard-quit))
+  :bind
+  (("M-x" . helm-M-x)
+   ("C-x C-f" . helm-find-files)
+   :map helm-map
+   ("C-j" . helm-next-line)
+   ("C-k" . helm-previous-line)
+   ("<escape>" . helm-keyboard-quit))
 	:config
 	(setq helm-fuzzy-matching t)
 	(define-key helm-map (kbd "<escape>") 'keyboard-escape-quit))
