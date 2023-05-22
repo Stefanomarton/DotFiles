@@ -99,7 +99,7 @@
 	(kbd "<leader>bb") 'smart-for-buffer
 	(kbd "<leader>bw") 'consult-buffer-other-window
 	(kbd "<leader>w") 'save-buffer
-	(kbd "<leader>qb") 'kill-buffer
+	(kbd "<leader> q b") 'kill-buffer
 	(kbd "Q") 'my-kill-this-buffer
 	(kbd "C-s v") 'split-and-follow-vertically
 	(kbd "C-s h") 'split-and-follow-horizontally
@@ -110,8 +110,8 @@
 	(kbd "<leader>er") 'eval-region
 	(kbd "<leader>ef") 'eval-defun
 	(kbd "<leader>pp") 'helm-projectile-switch-project
-	(kbd "<leader>c") 'calc
-	(kbd "<leader>q") 'quick-calc
+	(kbd "<leader>cc") 'calc
+	(kbd "<leader> q c") 'quick-calc
 	(kbd "<leader>h") 'helm-mini
 	(kbd "S") 'evil-surround-edit
 	(kbd ",r") 'evil-surround-delete
@@ -732,7 +732,7 @@
 	(evil-define-key 'global 'helm-map (kbd "<escape>") 'keyboard-escape-quit)
 	(global-set-key (kbd "C-c h") 'helm-command-prefix)
 	(setq helm-split-window-in-side-p           t
-				helm-move-to-line-cycle-in-source     t
+				helm-move-to-line-cycle-in-source     nil
 				helm-ff-search-library-in-sexp        t
 				helm-scroll-amount                    8
 				helm-ff-file-name-history-use-recentf t
@@ -804,3 +804,10 @@
 ;; redirect global magit hotkey to our wrapper
 (global-set-key (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
 (define-key magit-mode-map (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
+
+(use-package vterm
+	:config
+	(setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"
+				vterm-max-scrollback 10000
+				vterm-shell "zsh"
+				))
