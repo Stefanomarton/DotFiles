@@ -509,7 +509,7 @@
 	:config
 	(aas-set-snippets 'latex-mode
 										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+													 (yas-expand-snippet "\\\\($1\\\\) $0"))
 										"dm" (lambda () (interactive)
 													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'org-mode
@@ -763,6 +763,25 @@
 		(define-key keymap (kbd "C-d") 'helm-buffer-run-kill-buffers)))
 
 (use-package rg)
+
+(use-package helm-c-yasnippet
+	:after yasnippet)
+
+(use-package helm
+   :bind
+   (("M-x" . helm-M-x)
+    ("C-x C-f" . helm-find-files)
+    :map helm-map
+    ("C-j" . helm-next-line)
+    ("C-k" . helm-previous-line)
+    ("<escape>" . helm-keyboard-quit))
+	:config
+	(setq helm-fuzzy-matching t)
+	(define-key helm-map (kbd "<escape>") 'keyboard-escape-quit))
+
+;; (use-package helm-posframe
+;; 	:config
+;; 	(helm-posframe-enable))
 
 (use-package helm-projectile)
 
