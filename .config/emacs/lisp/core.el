@@ -25,7 +25,7 @@
 
 (use-package evil-commentary
 	;; Better Comment Action
-	:config
+		:config
 	(evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
 	(evil-define-key 'normal 'global (kbd "gcA") 'comment_end_of_line)
 	(evil-define-key 'visual 'global (kbd "gb") 'comment-box)
@@ -50,6 +50,7 @@
 ;; Use escape to remove hightlight in normal mode
 (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
 (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
+(evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
 ;; (keymap-set vertico-map "C-i" #'vertico-quick-insert)
 ;; (keymap-set vertico-map "C-j" #'vertico-quick-jump)
 (evil-set-leader 'normal (kbd "SPC"))
@@ -505,20 +506,20 @@
 	:hook (LaTeX-mode . aas-activate-for-major-mode)
 	:config
 	(aas-set-snippets 'latex-mode
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\($1\\\\) $0"))
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\($1\\\\) $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'org-mode
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'markdown-mode
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "$$1$ $0"))
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "$$1$ $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -527,29 +528,29 @@
 	(org-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-		;; set condition!
-		:cond #'texmathp ; expand only while in math
-		"supp" "\\supp"
-		"On" "O(n)"
-		"O1" "O(1)"
-		"Olog" "O(\\log n)"
-		"Olon" "O(n \\log n)"
-		;; bind to functions!
-		"sum" (lambda () (interactive)
-						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-		"Span" (lambda () (interactive)
-						 (yas-expand-snippet "\\Span($1)$0"))
-		"inti" (lambda () (interactive)
-						 (yas-expand-snippet "\\int"))
-		"intd" (lambda () (interactive)
-						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-		"df" (lambda () (interactive)
-					 (yas-expand-snippet "_{$1}$0"))
-		"rt" (lambda () (interactive)
-					 (yas-expand-snippet "^{$1}$0"))
-		;; add accent snippets
-		:cond #'laas-object-on-left-condition
-		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+										;; set condition!
+										:cond #'texmathp ; expand only while in math
+										"supp" "\\supp"
+										"On" "O(n)"
+										"O1" "O(1)"
+										"Olog" "O(\\log n)"
+										"Olon" "O(n \\log n)"
+										;; bind to functions!
+										"sum" (lambda () (interactive)
+														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+										"Span" (lambda () (interactive)
+														 (yas-expand-snippet "\\Span($1)$0"))
+										"inti" (lambda () (interactive)
+														 (yas-expand-snippet "\\int"))
+										"intd" (lambda () (interactive)
+														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+										"df" (lambda () (interactive)
+													 (yas-expand-snippet "_{$1}$0"))
+										"rt" (lambda () (interactive)
+													 (yas-expand-snippet "^{$1}$0"))
+										;; add accent snippets
+										:cond #'laas-object-on-left-condition
+										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard)
 
@@ -757,7 +758,7 @@
 
 (with-eval-after-load 'helm-buffers
 	(dolist (keymap (list helm-buffer-map))
-		(define-key keymap (kbd "c-d") 'helm-buffer-run-kill-buffers)))
+		(define-key keymap (kbd "C-d") 'helm-buffer-run-kill-buffers)))
 
 (use-package rg)
 
@@ -767,7 +768,7 @@
 (use-package helm
   :bind
   (("M-x" . helm-M-x)
-   ("C-x C-f" . helm-find-files)
+   ("C-x f" . helm-find-files)
    :map helm-map
    ("C-j" . helm-next-line)
    ("C-k" . helm-previous-line)
