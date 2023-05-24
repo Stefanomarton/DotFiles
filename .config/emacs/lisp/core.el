@@ -2,6 +2,10 @@
 
 (use-package restart-emacs)
 
+(use-package helpful
+	:defer t
+	)
+
 (use-package evil
 	:straight t
 	:init
@@ -17,7 +21,6 @@
 	(evil-mode 1))
 
 (use-package evil-collection
-	:straight t
 	:after evil
 	;; :custom (evil-collection-setup-minibuffer t) ; enable evil mode in minibuffer
 	:config
@@ -25,7 +28,8 @@
 
 (use-package evil-commentary
 	;; Better Comment Action
-		:config
+	:after evil
+	:config
 	(evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
 	(evil-define-key 'normal 'global (kbd "gcA") 'comment_end_of_line)
 	(evil-define-key 'visual 'global (kbd "gb") 'comment-box)
@@ -137,6 +141,7 @@
 	:straight t)
 
 (use-package evil-surround
+	:after evil
 	:straight t
 	:config
 	(global-evil-surround-mode 1))
@@ -149,6 +154,7 @@
 (define-key evil-normal-state-map (kbd "Y") (kbd "y$"))
 
 (use-package dired
+	:commands dired
 	:straight nil
 	:ensure nil
 	:config
@@ -170,6 +176,7 @@
 	)
 
 (use-package which-key
+	:defer t
 	:straight t
 	:init
 	(which-key-setup-minibuffer)
@@ -238,10 +245,12 @@
 	:commands lsp)
 
 (use-package lua-mode
+	:defer t
 	:straight t)
 
 ;; optionally
 (use-package lsp-ui
+	:defer t
 	:straight t
 	:commands lsp-ui-mode)
 
@@ -342,8 +351,11 @@
 	;; (registers . 5)))
 	(dashboard-setup-startup-hook))
 
-(use-package google-this)
+(use-package google-this
+	:defer t)
+
 (use-package org-bullets
+	:defer t
 	:config
 	;; use org-bullets-mode for utf8 symbols as org bullets
 	(require 'org-bullets)
@@ -411,6 +423,7 @@
 (use-package nyan-mode)
 
 (use-package org-download
+	:after org-mode
 	:hook
 	(add-hook 'dired-mode-hook 'org-download-enable))
 
@@ -498,12 +511,15 @@
 	)
 
 (use-package yasnippet
+	:defer t
 	:init
 	(yas-minor-mode))
 
 (use-package aas
-	:hook (markdown-mode . aas-activate-for-major-mode)
-	:hook (LaTeX-mode . aas-activate-for-major-mode)
+	:hook
+	(org-mode . aas-activate-for-major-mode)
+	(markdown-mode . aas-activate-for-major-mode)
+	(LaTeX-mode . aas-activate-for-major-mode)
 	:config
 	(aas-set-snippets 'latex-mode
 										"mk" (lambda () (interactive)
@@ -552,7 +568,8 @@
 										:cond #'laas-object-on-left-condition
 										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
-(use-package latex-table-wizard)
+(use-package latex-table-wizard
+	:after tex)
 
 (defun some-useful-name (stuff-to-configure)
 	"Some useful documentation here!."
@@ -617,8 +634,9 @@
 	)
 
 (use-package org-fragtog
+	:after org-mode
 	:config
-	(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.6))
+	;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.6))
 	(plist-put org-format-latex-options :justify 'center)
 	)
 ;; Daemon mode configs
@@ -666,6 +684,7 @@
 	())
 
 (use-package org-modern
+	:after org-mode
 	:hook
 	(add-hook 'org-mode-hook #'org-modern-mode))
 
@@ -715,13 +734,13 @@
 (use-package helm
 	:init
 	(helm-mode 1)
-  :bind
-  (("M-x" . helm-M-x)
-   ("C-x C-f" . helm-find-files)
-   :map helm-map
-   ("C-j" . helm-next-line)
-   ("C-k" . helm-previous-line)
-   ("<escape>" . helm-keyboard-quit)
+	:bind
+	(("M-x" . helm-M-x)
+	 ("C-x C-f" . helm-find-files)
+	 :map helm-map
+	 ("C-j" . helm-next-line)
+	 ("C-k" . helm-previous-line)
+	 ("<escape>" . helm-keyboard-quit)
 	 ("<tab>" . helm-execute-persistent-action)
 	 ("C-i" . helm-execute-persistent-action)
 	 ("C-<backspace>" . helm-find-files-up-one-level)
@@ -766,13 +785,13 @@
 	:after yasnippet)
 
 (use-package helm
-  :bind
-  (("M-x" . helm-M-x)
-   ("C-x f" . helm-find-files)
-   :map helm-map
-   ("C-j" . helm-next-line)
-   ("C-k" . helm-previous-line)
-   ("<escape>" . helm-keyboard-quit))
+	:bind
+	(("M-x" . helm-M-x)
+	 ("C-x f" . helm-find-files)
+	 :map helm-map
+	 ("C-j" . helm-next-line)
+	 ("C-k" . helm-previous-line)
+	 ("<escape>" . helm-keyboard-quit))
 	:config
 	(setq helm-fuzzy-matching t)
 	(define-key helm-map (kbd "<escape>") 'keyboard-escape-quit))
@@ -807,8 +826,23 @@
 (define-key magit-mode-map (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
 
 (use-package vterm
+	:commands vterm
 	:config
 	(setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"
 				vterm-max-scrollback 10000
 				vterm-shell "zsh"
 				))
+
+(use-package python-mode
+	:defer t
+	:config
+	(autoload 'python-mode "python-mode" "Python Mode." t)
+	(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+	(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+	(setq python-shell-interpreter "ipython"
+				python-shell-interpreter-args "-i --simple-prompt"))
+
+(use-package elpy
+  :defer t
+  :init
+  (advice-add 'python-mode :before 'elpy-enable))
