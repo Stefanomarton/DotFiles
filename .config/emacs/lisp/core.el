@@ -289,8 +289,8 @@
       (let ((old-point (point))
             (old-tick (buffer-chars-modified-tick))
             (func-list
-             (if (equal major-mode 'org-mode) '(org-cycle yas-expand yas-next-field)
-               '(yas-expand yas-next-field))))
+             (if (equal major-mode 'org-mode) '(org-cycle yas-expand yas-next-field tab-jump-out)
+               '(yas-expand yas-next-field tab-jump-out))))
         (catch 'func-suceed
           (dolist (func func-list)
             (ignore-errors (call-interactively func))
