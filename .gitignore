@@ -8,3 +8,4 @@
 .config/zsh/.zcompdump
 .config/nvim/plugin
 .config/emacs/elpa
+.config/lazygit/state.yml
