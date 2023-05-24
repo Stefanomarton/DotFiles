@@ -905,13 +905,15 @@
 		(yas-reload-all)))
 
 (use-package projectile
-	:config
+	:custom
 	(setq projectile-enable-caching t)
 	(setq projectile-track-known-projects-automatically nil)
 	(setq projectile-completion-system 'helm)
+	:config
 	(define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
 	:init
 	(setq projectile-known-projects-file "~/.config/emacs/project.el")
+	(setq projectile-indexing-method 'native)
 	(projectile-mode))
 
 (use-package helm
