@@ -50,8 +50,6 @@
 (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
 (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
 (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
-;; (keymap-set vertico-map "C-i" #'vertico-quick-insert)
-;; (keymap-set vertico-map "C-j" #'vertico-quick-jump)
 (evil-set-leader 'normal (kbd "SPC"))
 (evil-set-leader 'visual (kbd "SPC"))
 
@@ -718,20 +716,20 @@
 	(LaTeX-mode . aas-activate-for-major-mode)
 	:config
 	(aas-set-snippets 'latex-mode
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\($1\\\\) $0"))
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\($1\\\\) $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'org-mode
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'markdown-mode
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "$$1$ $0"))
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "$$1$ $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -740,29 +738,29 @@
 	(org-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-		;; set condition!
-		:cond #'texmathp ; expand only while in math
-		"supp" "\\supp"
-		"On" "O(n)"
-		"O1" "O(1)"
-		"Olog" "O(\\log n)"
-		"Olon" "O(n \\log n)"
-		;; bind to functions!
-		"sum" (lambda () (interactive)
-						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-		"Span" (lambda () (interactive)
-						 (yas-expand-snippet "\\Span($1)$0"))
-		"inti" (lambda () (interactive)
-						 (yas-expand-snippet "\\int"))
-		"intd" (lambda () (interactive)
-						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-		"df" (lambda () (interactive)
-					 (yas-expand-snippet "_{$1}$0"))
-		"rt" (lambda () (interactive)
-					 (yas-expand-snippet "^{$1}$0"))
-		;; add accent snippets
-		:cond #'laas-object-on-left-condition
-		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+										;; set condition!
+										:cond #'texmathp ; expand only while in math
+										"supp" "\\supp"
+										"On" "O(n)"
+										"O1" "O(1)"
+										"Olog" "O(\\log n)"
+										"Olon" "O(n \\log n)"
+										;; bind to functions!
+										"sum" (lambda () (interactive)
+														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+										"Span" (lambda () (interactive)
+														 (yas-expand-snippet "\\Span($1)$0"))
+										"inti" (lambda () (interactive)
+														 (yas-expand-snippet "\\int"))
+										"intd" (lambda () (interactive)
+														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+										"df" (lambda () (interactive)
+													 (yas-expand-snippet "_{$1}$0"))
+										"rt" (lambda () (interactive)
+													 (yas-expand-snippet "^{$1}$0"))
+										;; add accent snippets
+										:cond #'laas-object-on-left-condition
+										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard
 	:after tex)
@@ -930,9 +928,6 @@
 	 ("C-i" . helm-execute-persistent-action)
 	 ("C-<backspace>" . helm-find-files-up-one-level)
 	 ("C-z"  . helm-select-action))
-	;; (defadvice helm-display-mode-line (after undisplay-header activate)
-	;; 	(setq header-line-format nil))
-	;; (defadvice helm-persistent-help-string (around avoid-help-message activate))
 	:config
 	(evil-define-key 'global 'helm-map (kbd "<escape>") 'keyboard-escape-quit)
 	(global-set-key (kbd "C-c h") 'helm-command-prefix)
@@ -981,10 +976,6 @@
 	(setq helm-fuzzy-matching t)
 	(define-key helm-map (kbd "<escape>") 'keyboard-escape-quit))
 
-;; (use-package helm-posframe
-;; 	:config
-;; 	(helm-posframe-enable))
-
 (use-package helm-projectile)
 
 (use-package magit)
@@ -1032,4 +1023,4 @@
 (use-package lsp-pyright
   :hook (python-mode . (lambda () (require 'lsp-pyright)))
   :custom
-  (lsp-pyright-multi-root nil))
+  (LSP-PYRight-multi-root nil))
