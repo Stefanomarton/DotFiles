@@ -5,22 +5,38 @@
 			user-mail-address "sstefanomarton@gmail.com")
 
 ;; Remove useless whitespace before saving a file
-;; (setq nuke-trailing-whitespace-p t)
-;; (add-hook 'before-save-hook 'whitespace-cleanup)
-;; (add-hook 'before-save-hook (lambda() (delete-trailing-whitespace)))
+(unless (derived-mode-p 'markdown-mode)
+	(setq nuke-trailing-whitespace-p t))
+
+(add-hook 'before-save-hook
+          (lambda ()
+            (unless (derived-mode-p 'markdown-mode)
+							(lambda() (delete-trailing-whitespace))
+              )))
+
+(add-hook 'before-save-hook
+          (lambda ()
+            (unless (derived-mode-p 'markdown-mode)
+							'whitespace-cleanup
+              )))
 
 ;; Wrap line
 (add-hook 'text-mode-hook 'visual-line-mode)
 
 ;; Display line number relative and absolute
 (setq display-line-numbers-grow-only t)
-(setq display-line-numbers-width-start 50)
+(setq display-line-numbers-width-start 70)
 (setq display-line-numbers-type 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 (add-hook 'prog-mode-hook 'hl-line-mode) ;; Highlight the current line
 (setq hl-line-sticky-flag nil)
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
+
+;; Italic comments
+(set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+(set-face-attribute 'font-lock-function-name-face nil :slant 'italic)
+(set-face-attribute 'font-lock-variable-name-face nil :slant 'italic)
 
 ;; Better Then Global Centered Cursor Mode
 (setq indicate-empty-lines nil)
