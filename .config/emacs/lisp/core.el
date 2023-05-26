@@ -627,7 +627,7 @@
 	(let* ((output-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
 				 (process-buffer (generate-new-buffer "*pandoc-export*"))
 				 (exit-code (call-process "pandoc" nil process-buffer nil
-																	(buffer-file-name) "-o" output-file "-V" "geometry:margin=30mm" "--template=template.latex" "--pdf-engine=xelatex")))
+																	(buffer-file-name) "-o" output-file "-V" "geometry:margin=10mm" "--template=template.latex" "--pdf-engine=xelatex")))
 		(if (zerop exit-code)
 				(message "Exported to %s" output-file)
 			(with-current-buffer process-buffer
