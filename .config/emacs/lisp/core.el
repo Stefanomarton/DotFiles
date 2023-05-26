@@ -91,7 +91,7 @@
 	(kbd "<leader>ff") 'smart-for-files
 	(kbd "<leader>fw") 'find-file-other-window
 	(kbd "<leader>fr") 'consult-recent-file
-	(kbd "<leader>fg") 'consult-grep
+	(kbd "<leader>fg") 'helm-do-grep-ag
 	(kbd "<leader>dj") 'dired-jump
 	(kbd "<leader>dd") 'dired
 	(kbd "<leader>bb") 'smart-for-buffer
@@ -716,20 +716,20 @@
 	(LaTeX-mode . aas-activate-for-major-mode)
 	:config
 	(aas-set-snippets 'latex-mode
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\($1\\\\) $0"))
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "\\\\($1\\\\) $0"))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'org-mode
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'markdown-mode
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "$$1$ $0"))
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "$$1$ $0"))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -738,29 +738,29 @@
 	(org-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-										;; set condition!
-										:cond #'texmathp ; expand only while in math
-										"supp" "\\supp"
-										"On" "O(n)"
-										"O1" "O(1)"
-										"Olog" "O(\\log n)"
-										"Olon" "O(n \\log n)"
-										;; bind to functions!
-										"sum" (lambda () (interactive)
-														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-										"Span" (lambda () (interactive)
-														 (yas-expand-snippet "\\Span($1)$0"))
-										"inti" (lambda () (interactive)
-														 (yas-expand-snippet "\\int"))
-										"intd" (lambda () (interactive)
-														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-										"df" (lambda () (interactive)
-													 (yas-expand-snippet "_{$1}$0"))
-										"rt" (lambda () (interactive)
-													 (yas-expand-snippet "^{$1}$0"))
-										;; add accent snippets
-										:cond #'laas-object-on-left-condition
-										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+		;; set condition!
+		:cond #'texmathp ; expand only while in math
+		"supp" "\\supp"
+		"On" "O(n)"
+		"O1" "O(1)"
+		"Olog" "O(\\log n)"
+		"Olon" "O(n \\log n)"
+		;; bind to functions!
+		"sum" (lambda () (interactive)
+						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+		"Span" (lambda () (interactive)
+						 (yas-expand-snippet "\\Span($1)$0"))
+		"inti" (lambda () (interactive)
+						 (yas-expand-snippet "\\int"))
+		"intd" (lambda () (interactive)
+						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+		"df" (lambda () (interactive)
+					 (yas-expand-snippet "_{$1}$0"))
+		"rt" (lambda () (interactive)
+					 (yas-expand-snippet "^{$1}$0"))
+		;; add accent snippets
+		:cond #'laas-object-on-left-condition
+		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard
 	:after tex)
@@ -963,20 +963,10 @@
 
 (use-package rg)
 
+(use-package helm-rg)
+
 (use-package helm-c-yasnippet
 	:after yasnippet)
-
-(use-package helm
-	:bind
-	(("M-x" . helm-M-x)
-	 ("C-x f" . helm-find-files)
-	 :map helm-map
-	 ("C-j" . helm-next-line)
-	 ("C-k" . helm-previous-line)
-	 ("<escape>" . helm-keyboard-quit))
-	:config
-	(setq helm-fuzzy-matching t)
-	(define-key helm-map (kbd "<escape>") 'keyboard-escape-quit))
 
 (use-package helm-projectile)
 
