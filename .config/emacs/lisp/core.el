@@ -996,7 +996,10 @@
 (use-package vterm
 	:commands vterm
 	:config
+	(set-fontset-font t 'unicode (font-spec :family "JetBrainsMono Nerd Font"))
+	:custom
 	(setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"
+				vterm-internal-use-ligatures t
 				vterm-max-scrollback 10000
 				vterm-shell "zsh"
 				))
