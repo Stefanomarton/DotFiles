@@ -1,6 +1,5 @@
-(provide 'core)
-
-(use-package restart-emacs)
+(use-package restart-emacs
+	:defer t)
 
 (use-package helpful
 	:defer t)
@@ -15,14 +14,31 @@
 	(setq evil-undo-system 'undo-fu)
 	(setq evil-search-module 'evil-search)
 	:config
-	;; (modify-syntax-entry ?_ "w")
-	;; (modify-syntax-entry ?- "w")
 	(evil-mode 1))
 
 (use-package evil-collection
 	:after evil
 	:config
 	(evil-collection-init))
+
+(use-package evil-tex
+	:after evil
+	:hook
+	(LaTeX-mode . evil-tex-mode)
+	)
+
+(use-package evil-embrace
+	:after evil
+	:config
+	(evil-embrace-enable-evil-surround-integration)
+	)
+
+(use-package embrace
+	:config
+	(evil-define-key 'normal 'global (kbd "e e") 'evil-embrace-evil-surround-region)
+	(evil-define-key 'normal 'global (kbd "e c") 'evil-embrace-evil-surround-change)
+	(evil-define-key 'normal 'global (kbd "e d") 'evil-embrace-evil-surround-delete)
+	(evil-define-key 'visual 'global (kbd "e") 'evil-embrace-evil-surround-region))
 
 (use-package evil-commentary
 	;; Better Comment Action
@@ -74,66 +90,64 @@
 
 (use-package consult-projectile)
 
+(use-package consult-dir)
+
+(use-package consult-flycheck)
+
 ;; Enable vertico
 (use-package vertico
 	:bind
 	(:map vertico-map
-				("C-e" . embark-act)
+				("C-e" . embark-minimal-act)
 				("C-j" . vertico-next)
 				("C-k" . vertico-previous)
 				("<escape>" . keyboard-escape-quit))
+	:config
+	;; Different scroll margin
+	(setq vertico-scroll-margin 0)
+	;; Show more candidates
+	(setq vertico-count 10)
+	(setq vertico-resize nil)
+	(setq vertico-cycle t)
   :init
-  (vertico-mode)
-
-  ;; Different scroll margin
-  (setq vertico-scroll-margin 0)
-
-  ;; Show more candidates
-  (setq vertico-count 10)
-
-  ;; Grow and shrink the Vertico minibuffer
-  ;; (setq vertico-resize t)
-
-  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  (setq vertico-cycle t)
-  )
+  (vertico-mode))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
-  :init
-  (savehist-mode))
+	:init
+	(savehist-mode))
 
 ;; A few more useful configurations...
 (use-package emacs
-  :init
-  ;; Add prompt indicator to `completing-read-multiple'.
-  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
-  (defun crm-indicator (args)
-    (cons (format "[CRM%s] %s"
-                  (replace-regexp-in-string
-                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                   crm-separator)
-                  (car args))
-          (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+	:init
+	;; Add prompt indicator to `completing-read-multiple'.
+	;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+	(defun crm-indicator (args)
+		(cons (format "[CRM%s] %s"
+									(replace-regexp-in-string
+									 "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+									 crm-separator)
+									(car args))
+					(cdr args)))
+	(advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
-  ;; Do not allow the cursor in the minibuffer prompt
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+	;; Do not allow the cursor in the minibuffer prompt
+	(setq minibuffer-prompt-properties
+				'(read-only t cursor-intangible t face minibuffer-prompt))
+	(add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-  ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t))
+	;; Enable recursive minibuffers
+	(setq enable-recursive-minibuffers t))
 
 ;; Optionally use the `orderless' completion style.
 (use-package orderless
-  :init
-  ;; Configure a custom style dispatcher (see the Consult wiki)
-  ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
-  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion)))))
+	:init
+	;; Configure a custom style dispatcher (see the Consult wiki)
+	;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
+	;;       orderless-component-separator #'orderless-escapable-split-on-space)
+	(setq completion-styles '(orderless basic)
+				completion-category-defaults nil
+				completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia
 	:config
@@ -141,29 +155,73 @@
 
 (use-package embark
 	:config
-	(evil-define-key 'normal 'global (kbd "m") 'embark-act)
-	(evil-define-key 'insert 'global (kbd "C-e") 'embark-act)
-	(evil-define-key 'visual 'global (kbd "m") 'embark-act)
-  :init
-  (setq prefix-help-command #'embark-prefix-help-command)
-  :config
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
+
+	;; Base keybindings
+	(evil-define-key 'normal 'global (kbd "m") 'embark-minimal-act)
+	(evil-define-key 'normal 'global (kbd "M") 'embark-dwim)
+	(evil-define-key 'insert 'global (kbd "C-e") 'embark-minimal-act)
+	(evil-define-key 'visual 'global (kbd "M") 'embark-dwim)
+
+	;; Which-key style indicator
+	(defun embark-minimal-act (&optional arg)
+		(interactive "P")
+		(let ((embark-indicators
+					 '(embark-which-key-indicator
+						 embark-highlight-indicator
+						 embark-isearch-highlight-indicator)))
+			(embark-act arg)))
+
+	(defun embark-minimal-act-noexit ()
+		(interactive)
+		(embark-minimal-act 4))
+	;; Hide the mode line of the Embark live/completions buffers
+	(add-to-list 'display-buffer-alist
+							 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+								 nil
+								 (window-parameters (mode-line-format . none))))
+	(add-to-list 'embark-indicators #'embark-which-key-indicator)
+	(defun embark-which-key-indicator ()
+		"An embark indicator that displays keymaps using which-key.
+The which-key help message will show the type and value of the
+current target followed by an ellipsis if there are further
+targets."
+		(lambda (&optional keymap targets prefix)
+			(if (null keymap)
+					(which-key--hide-popup-ignore-command)
+				(which-key--show-keymap
+				 (if (eq (caar targets) 'embark-become)
+						 "Become"
+					 (format "Act on %s '%s'%s"
+									 (plist-get (car targets) :type)
+									 (embark--truncate-target (plist-get (car targets) :target))
+									 (if (cdr targets) "…" "")))
+				 (if prefix
+						 (pcase (lookup-key keymap prefix 'accept-default)
+							 ((and (pred keymapp) km) km)
+							 (_ (key-binding prefix 'accept-default)))
+					 keymap)
+				 nil nil t))))
+	(setq embark-cycle-key "SPC")
+	(setq embark-quit-after-action t)
+	:init
+	(setq prefix-help-command #'embark-prefix-help-command))
 
 ;; Consult users will also want the embark-consult package.
 (use-package embark-consult
-  :ensure t ; only need to install it, embark loads it after consult if found
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+	:straight (:host github :repo "oantolin/embark"
+									 :files ("embark-consult.el"))
+	:after (embark consult)
+	:demand
+	:bind (:map embark-become-file+buffer-map
+							("m" . consult-bookmark)
+							("b" . consult-buffer)
+							("j" . consult-find)))
 
 (defun smart-for-files ()
 	(interactive)
 	(if (projectile-project-p)
 			(consult-projectile-find-file)
-		(call-interactively #'find-files)))
+		(call-interactively #'find-file)))
 
 (defun smart-for-buffer ()
 	(interactive)
@@ -181,9 +239,9 @@
 	(kbd "<leader>fr") 'consult-recent-file
 	(kbd "<leader>fg") 'consult-ripgrep
 	(kbd "<leader>dj") 'dired-jump
-	(kbd "<leader>dd") 'dired
+	(kbd "<leader>dD") 'dired
+	(kbd "<leader>dd") 'consult-dir
 	(kbd "<leader>bb") 'smart-for-buffer
-	(kbd "<leader>bw") 'consult-buffer-other-window
 	(kbd "<leader>w") 'save-buffer
 	(kbd "<leader> q b") 'kill-buffer
 	(kbd "Q") 'my-kill-this-buffer
@@ -197,10 +255,7 @@
 	(kbd "<leader>ef") 'eval-defun
 	(kbd "<leader>pp") 'consult-projectile-switch-project
 	(kbd "<leader>cc") 'calc
-	(kbd "<leader> q c") 'quick-calc
-	(kbd "S") 'evil-surround-edit
-	(kbd ",r") 'evil-surround-delete
-	(kbd ",c") 'evil-surround-change
+	(kbd "<leader>qc") 'quick-calc
 	)
 
 (evil-define-key 'insert 'global (kbd "C-<backspace>") 'evil-delete-backward-word)
@@ -223,8 +278,7 @@
 (use-package evil-surround
 	:after evil
 	:straight t
-	:config
-	(global-evil-surround-mode 1))
+	)
 
 (defun comment_end_of_line ()
 	(interactive)
@@ -1039,6 +1093,8 @@
 				vterm-shell "zsh"
 				))
 
+;; Python mode setup
+
 (use-package python-mode
 	:defer t
 	:config
@@ -1054,3 +1110,10 @@
 	:hook (python-mode . (lambda () (require 'lsp-pyright)))
 	:custom
 	(LSP-PYRight-multi-root nil))
+
+(use-package flycheck)
+
+(use-package csv-mode)
+
+(provide 'core)
+;; core.el ends here
