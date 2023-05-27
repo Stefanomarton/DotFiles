@@ -3,8 +3,7 @@
 (use-package restart-emacs)
 
 (use-package helpful
-	:defer t
-	)
+	:defer t)
 
 (use-package evil
 	:straight t
@@ -71,27 +70,116 @@
 													((eq response ?d) (diff-buffer-with-file) nil))))))
 				(kill-buffer (current-buffer))))))
 
+(use-package consult)
+
+(use-package consult-projectile)
+
+;; Enable vertico
+(use-package vertico
+	:bind
+	(:map vertico-map
+				("C-e" . embark-act)
+				("C-j" . vertico-next)
+				("C-k" . vertico-previous)
+				("<escape>" . keyboard-escape-quit))
+  :init
+  (vertico-mode)
+
+  ;; Different scroll margin
+  (setq vertico-scroll-margin 0)
+
+  ;; Show more candidates
+  (setq vertico-count 10)
+
+  ;; Grow and shrink the Vertico minibuffer
+  ;; (setq vertico-resize t)
+
+  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
+  (setq vertico-cycle t)
+  )
+
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :init
+  (savehist-mode))
+
+;; A few more useful configurations...
+(use-package emacs
+  :init
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+  (defun crm-indicator (args)
+    (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string
+                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                   crm-separator)
+                  (car args))
+          (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))
+
+;; Optionally use the `orderless' completion style.
+(use-package orderless
+  :init
+  ;; Configure a custom style dispatcher (see the Consult wiki)
+  ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
+  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
+
+(use-package marginalia
+	:config
+	(marginalia-mode))
+
+(use-package embark
+	:config
+	(evil-define-key 'normal 'global (kbd "m") 'embark-act)
+	(evil-define-key 'insert 'global (kbd "C-e") 'embark-act)
+	(evil-define-key 'visual 'global (kbd "m") 'embark-act)
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :ensure t ; only need to install it, embark loads it after consult if found
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
 (defun smart-for-files ()
-  (interactive)
-  (if (projectile-project-p)
-      (helm-projectile-find-file)
-    (call-interactively #'helm-find-files)))
+	(interactive)
+	(if (projectile-project-p)
+			(consult-projectile-find-file)
+		(call-interactively #'find-files)))
 
 (defun smart-for-buffer ()
-  (interactive)
-  (if (projectile-project-p)
-      (helm-projectile-switch-to-buffer)
-    (helm-buffers-list)))
+	(interactive)
+	(if (projectile-project-p)
+			(consult-projectile-switch-to-buffer)
+		(consult-buffer)))
 
 ;;Settings normal global keybindings
 (evil-define-key 'normal 'global
 	(kbd ";") 'evil-ex
 	;; (kbd ":") 'execute-extended-command
-	(kbd ":") 'helm-M-x
+	(kbd ":") 'execute-extended-command
 	(kbd "<leader>ff") 'smart-for-files
 	(kbd "<leader>fw") 'find-file-other-window
 	(kbd "<leader>fr") 'consult-recent-file
-	(kbd "<leader>fg") 'helm-do-grep-ag
+	(kbd "<leader>fg") 'consult-ripgrep
 	(kbd "<leader>dj") 'dired-jump
 	(kbd "<leader>dd") 'dired
 	(kbd "<leader>bb") 'smart-for-buffer
@@ -107,10 +195,9 @@
 	(kbd "<leader>es") 'eval-expression
 	(kbd "<leader>er") 'eval-region
 	(kbd "<leader>ef") 'eval-defun
-	(kbd "<leader>pp") 'helm-projectile-switch-project
+	(kbd "<leader>pp") 'consult-projectile-switch-project
 	(kbd "<leader>cc") 'calc
 	(kbd "<leader> q c") 'quick-calc
-	(kbd "<leader>h") 'helm-mini
 	(kbd "S") 'evil-surround-edit
 	(kbd ",r") 'evil-surround-delete
 	(kbd ",c") 'evil-surround-change
@@ -254,13 +341,13 @@
 (use-package company-jedi)
 
 (use-package company
-  :diminish company-mode
+	:diminish company-mode
 	:hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
 	:bind
-  (:map company-active-map
-        ([tab] . smarter-tab-to-complete)
-        ("C-d" . company-box-doc-manually)
-        ("TAB" . smarter-tab-to-complete))
+	(:map company-active-map
+				([tab] . smarter-tab-to-complete)
+				("c-d" . company-box-doc-manually)
+				("tab" . smarter-tab-to-complete))
 	:custom
 	(setq company-tooltip-offset-display 'lines	;; Show number before and after current candidates
 				company-tooltip-flip-when-above t	;; Avoid screen breaking when at the bottom of the buffer
@@ -270,7 +357,7 @@
 				;; company-require-match 'never
 				company-tooltip-limit 5
 				company-idle-delay 0.0)
-  (company-global-modes '(not shell-mode eaf-mode))
+	(company-global-modes '(not shell-mode eaf-mode))
 	:init
 	(setq company-backends '((company-capf :separate company-files company-yasnippet)))
 	:config
@@ -282,231 +369,231 @@
 							(set (make-local-variable 'company-backends) '(company-capf company-math company-files))))
 	(global-company-mode 1)
 	(defun smarter-tab-to-complete ()
-    "Try to `org-cycle', `yas-expand', and `yas-next-field' at current cursor position.
+		"Try to `org-cycle', `yas-expand', and `yas-next-field' at current cursor position.
      If all failed, try to complete the common part with `company-complete-common'"
-    (interactive)
-    (when yas-minor-mode
-      (let ((old-point (point))
-            (old-tick (buffer-chars-modified-tick))
-            (func-list
-             (if (equal major-mode 'org-mode) '(org-cycle yas-expand yas-next-field tab-jump-out)
-               '(yas-expand yas-next-field tab-jump-out))))
-        (catch 'func-suceed
-          (dolist (func func-list)
-            (ignore-errors (call-interactively func))
-            (unless (and (eq old-point (point))
-                         (eq old-tick (buffer-chars-modified-tick)))
-              (throw 'func-suceed t)))
-          (company-complete-common)))))
+		(interactive)
+		(when yas-minor-mode
+			(let ((old-point (point))
+						(old-tick (buffer-chars-modified-tick))
+						(func-list
+						 (if (equal major-mode 'org-mode) '(org-cycle yas-expand yas-next-field tab-jump-out)
+							 '(yas-expand yas-next-field tab-jump-out))))
+				(catch 'func-suceed
+					(dolist (func func-list)
+						(ignore-errors (call-interactively func))
+						(unless (and (eq old-point (point))
+												 (eq old-tick (buffer-chars-modified-tick)))
+							(throw 'func-suceed t)))
+					(company-complete-common)))))
 	)
 
 (use-package company-box
-  :diminish
-  :if (display-graphic-p)
-  :defines company-box-icons-all-the-icons
-  :hook (company-mode . company-box-mode)
-  :custom
+	:diminish
+	:if (display-graphic-p)
+	:defines company-box-icons-all-the-icons
+	:hook (company-mode . company-box-mode)
+	:custom
 	(company-box-doc-enable nil)
 	(company-box-scrollbar nil)
-  (company-box-backends-colors nil)
-  (company-box-doc-delay 0.1)
-  (company-box-doc-frame-parameters '((internal-border-width . 1)
-                                      (left-fringe . 3)
-                                      (right-fringe . 3)))
-  :config
-  (with-no-warnings
-    ;; Prettify icons
-    (defun my-company-box-icons--elisp (candidate)
-      (when (or (derived-mode-p 'emacs-lisp-mode) (derived-mode-p 'lisp-mode))
-        (let ((sym (intern candidate)))
-          (cond ((fboundp sym) 'Function)
-                ((featurep sym) 'Module)
-                ((facep sym) 'Color)
-                ((boundp sym) 'Variable)
-                ((symbolp sym) 'Text)
-                (t . nil)))))
-    (advice-add #'company-box-icons--elisp :override #'my-company-box-icons--elisp)
+	(company-box-backends-colors nil)
+	(company-box-doc-delay 0.1)
+	(company-box-doc-frame-parameters '((internal-border-width . 1)
+																			(left-fringe . 3)
+																			(right-fringe . 3)))
+	:config
+	(with-no-warnings
+		;; Prettify icons
+		(defun my-company-box-icons--elisp (candidate)
+			(when (or (derived-mode-p 'emacs-lisp-mode) (derived-mode-p 'lisp-mode))
+				(let ((sym (intern candidate)))
+					(cond ((fboundp sym) 'Function)
+								((featurep sym) 'Module)
+								((facep sym) 'Color)
+								((boundp sym) 'Variable)
+								((symbolp sym) 'Text)
+								(t . nil)))))
+		(advice-add #'company-box-icons--elisp :override #'my-company-box-icons--elisp)
 
-    ;; Credits to Centaur for these configurations
-    ;; Display borders and optimize performance
-    (defun my-company-box--display (string on-update)
-      "Display the completions."
-      (company-box--render-buffer string on-update)
+		;; Credits to Centaur for these configurations
+		;; Display borders and optimize performance
+		(defun my-company-box--display (string on-update)
+			"Display the completions."
+			(company-box--render-buffer string on-update)
 
-      (let ((frame (company-box--get-frame))
-            (border-color (face-foreground 'font-lock-comment-face nil t)))
-        (unless frame
-          (setq frame (company-box--make-frame))
-          (company-box--set-frame frame))
-        (company-box--compute-frame-position frame)
-        (company-box--move-selection t)
-        (company-box--update-frame-position frame)
-        (unless (frame-visible-p frame)
-          (make-frame-visible frame))
-        (company-box--update-scrollbar frame t)
-        (set-face-background 'internal-border border-color frame)
-        (when (facep 'child-frame-border)
-          (set-face-background 'child-frame-border border-color frame)))
-      (with-current-buffer (company-box--get-buffer)
-        (company-box--maybe-move-number (or company-box--last-start 1))))
-    (advice-add #'company-box--display :override #'my-company-box--display)
+			(let ((frame (company-box--get-frame))
+						(border-color (face-foreground 'font-lock-comment-face nil t)))
+				(unless frame
+					(setq frame (company-box--make-frame))
+					(company-box--set-frame frame))
+				(company-box--compute-frame-position frame)
+				(company-box--move-selection t)
+				(company-box--update-frame-position frame)
+				(unless (frame-visible-p frame)
+					(make-frame-visible frame))
+				(company-box--update-scrollbar frame t)
+				(set-face-background 'internal-border border-color frame)
+				(when (facep 'child-frame-border)
+					(set-face-background 'child-frame-border border-color frame)))
+			(with-current-buffer (company-box--get-buffer)
+				(company-box--maybe-move-number (or company-box--last-start 1))))
+		(advice-add #'company-box--display :override #'my-company-box--display)
 
-    (defun my-company-box-doc--make-buffer (object)
-      (let* ((buffer-list-update-hook nil)
-             (inhibit-modification-hooks t)
-             (string (cond ((stringp object) object)
-                           ((bufferp object) (with-current-buffer object (buffer-string))))))
-        (when (and string (> (length (string-trim string)) 0))
-          (with-current-buffer (company-box--get-buffer "doc")
-            (erase-buffer)
-            (insert (propertize "\n" 'face '(:height 0.5)))
-            (insert string)
-            (insert (propertize "\n\n" 'face '(:height 0.5)))
+		(defun my-company-box-doc--make-buffer (object)
+			(let* ((buffer-list-update-hook nil)
+						 (inhibit-modification-hooks t)
+						 (string (cond ((stringp object) object)
+													 ((bufferp object) (with-current-buffer object (buffer-string))))))
+				(when (and string (> (length (string-trim string)) 0))
+					(with-current-buffer (company-box--get-buffer "doc")
+						(erase-buffer)
+						(insert (propertize "\n" 'face '(:height 0.5)))
+						(insert string)
+						(insert (propertize "\n\n" 'face '(:height 0.5)))
 
-            ;; Handle hr lines of markdown
-            ;; @see `lsp-ui-doc--handle-hr-lines'
-            (with-current-buffer (company-box--get-buffer "doc")
-              (let (bolp next before after)
-                (goto-char 1)
-                (while (setq next (next-single-property-change (or next 1) 'markdown-hr))
-                  (when (get-text-property next 'markdown-hr)
-                    (goto-char next)
-                    (setq bolp (bolp)
-                          before (char-before))
-                    (delete-region (point) (save-excursion (forward-visible-line 1) (point)))
-                    (setq after (char-after (1+ (point))))
-                    (insert
-                     (concat
-                      (and bolp (not (equal before ?\n)) (propertize "\n" 'face '(:height 0.5)))
-                      (propertize "\n" 'face '(:height 0.5))
-                      (propertize " "
-                                  'display '(space :height (1))
-                                  'company-box-doc--replace-hr t
-                                  'face `(:background ,(face-foreground 'font-lock-comment-face)))
-                      (propertize " " 'display '(space :height (1)))
-                      (and (not (equal after ?\n)) (propertize " \n" 'face '(:height 0.5)))))))))
+						;; Handle hr lines of markdown
+						;; @see `lsp-ui-doc--handle-hr-lines'
+						(with-current-buffer (company-box--get-buffer "doc")
+							(let (bolp next before after)
+								(goto-char 1)
+								(while (setq next (next-single-property-change (or next 1) 'markdown-hr))
+									(when (get-text-property next 'markdown-hr)
+										(goto-char next)
+										(setq bolp (bolp)
+													before (char-before))
+										(delete-region (point) (save-excursion (forward-visible-line 1) (point)))
+										(setq after (char-after (1+ (point))))
+										(insert
+										 (concat
+											(and bolp (not (equal before ?\n)) (propertize "\n" 'face '(:height 0.5)))
+											(propertize "\n" 'face '(:height 0.5))
+											(propertize " "
+																	'display '(space :height (1))
+																	'company-box-doc--replace-hr t
+																	'face `(:background ,(face-foreground 'font-lock-comment-face)))
+											(propertize " " 'display '(space :height (1)))
+											(and (not (equal after ?\n)) (propertize " \n" 'face '(:height 0.5)))))))))
 
-            (setq mode-line-format nil
-                  display-line-numbers nil
-                  header-line-format nil
-                  show-trailing-whitespace nil
-                  cursor-in-non-selected-windows nil)
-            (current-buffer)))))
-    (advice-add #'company-box-doc--make-buffer :override #'my-company-box-doc--make-buffer)
+						(setq mode-line-format nil
+									display-line-numbers nil
+									header-line-format nil
+									show-trailing-whitespace nil
+									cursor-in-non-selected-windows nil)
+						(current-buffer)))))
+		(advice-add #'company-box-doc--make-buffer :override #'my-company-box-doc--make-buffer)
 
-    ;; Display the border and fix the markdown header properties
-    (defun my-company-box-doc--show (selection frame)
-      (cl-letf (((symbol-function 'completing-read) #'company-box-completing-read)
-                (window-configuration-change-hook nil)
-                (inhibit-redisplay t)
-                (display-buffer-alist nil)
-                (buffer-list-update-hook nil))
-        (-when-let* ((valid-state (and (eq (selected-frame) frame)
-                                       company-box--bottom
-                                       company-selection
-                                       (company-box--get-frame)
-                                       (frame-visible-p (company-box--get-frame))))
-                     (candidate (nth selection company-candidates))
-                     (doc (or (company-call-backend 'quickhelp-string candidate)
-                              (company-box-doc--fetch-doc-buffer candidate)))
-                     (doc (company-box-doc--make-buffer doc)))
-          (let ((frame (frame-local-getq company-box-doc-frame))
-                (border-color (face-foreground 'font-lock-comment-face nil t)))
-            (unless (frame-live-p frame)
-              (setq frame (company-box-doc--make-frame doc))
-              (frame-local-setq company-box-doc-frame frame))
-            (set-face-background 'internal-border border-color frame)
-            (when (facep 'child-frame-border)
-              (set-face-background 'child-frame-border border-color frame))
-            (company-box-doc--set-frame-position frame)
+		;; Display the border and fix the markdown header properties
+		(defun my-company-box-doc--show (selection frame)
+			(cl-letf (((symbol-function 'completing-read) #'company-box-completing-read)
+								(window-configuration-change-hook nil)
+								(inhibit-redisplay t)
+								(display-buffer-alist nil)
+								(buffer-list-update-hook nil))
+				(-when-let* ((valid-state (and (eq (selected-frame) frame)
+																			 company-box--bottom
+																			 company-selection
+																			 (company-box--get-frame)
+																			 (frame-visible-p (company-box--get-frame))))
+										 (candidate (nth selection company-candidates))
+										 (doc (or (company-call-backend 'quickhelp-string candidate)
+															(company-box-doc--fetch-doc-buffer candidate)))
+										 (doc (company-box-doc--make-buffer doc)))
+					(let ((frame (frame-local-getq company-box-doc-frame))
+								(border-color (face-foreground 'font-lock-comment-face nil t)))
+						(unless (frame-live-p frame)
+							(setq frame (company-box-doc--make-frame doc))
+							(frame-local-setq company-box-doc-frame frame))
+						(set-face-background 'internal-border border-color frame)
+						(when (facep 'child-frame-border)
+							(set-face-background 'child-frame-border border-color frame))
+						(company-box-doc--set-frame-position frame)
 
-            ;; Fix hr props. @see `lsp-ui-doc--fix-hr-props'
-            (with-current-buffer (company-box--get-buffer "doc")
-              (let (next)
-                (while (setq next (next-single-property-change (or next 1) 'company-box-doc--replace-hr))
-                  (when (get-text-property next 'company-box-doc--replace-hr)
-                    (put-text-property next (1+ next) 'display
-                                       '(space :align-to (- right-fringe 1) :height (1)))
-                    (put-text-property (1+ next) (+ next 2) 'display
-                                       '(space :align-to right-fringe :height (1)))))))
+						;; Fix hr props. @see `lsp-ui-doc--fix-hr-props'
+						(with-current-buffer (company-box--get-buffer "doc")
+							(let (next)
+								(while (setq next (next-single-property-change (or next 1) 'company-box-doc--replace-hr))
+									(when (get-text-property next 'company-box-doc--replace-hr)
+										(put-text-property next (1+ next) 'display
+																			 '(space :align-to (- right-fringe 1) :height (1)))
+										(put-text-property (1+ next) (+ next 2) 'display
+																			 '(space :align-to right-fringe :height (1)))))))
 
-            (unless (frame-visible-p frame)
-              (make-frame-visible frame))))))
-    (advice-add #'company-box-doc--show :override #'my-company-box-doc--show)
+						(unless (frame-visible-p frame)
+							(make-frame-visible frame))))))
+		(advice-add #'company-box-doc--show :override #'my-company-box-doc--show)
 
-    (defun my-company-box-doc--set-frame-position (frame)
-      (-let* ((frame-resize-pixelwise t)
+		(defun my-company-box-doc--set-frame-position (frame)
+			(-let* ((frame-resize-pixelwise t)
 
-              (box-frame (company-box--get-frame))
-              (box-position (frame-position box-frame))
-              (box-width (frame-pixel-width box-frame))
-              (box-height (frame-pixel-height box-frame))
-              (box-border-width (frame-border-width box-frame))
+							(box-frame (company-box--get-frame))
+							(box-position (frame-position box-frame))
+							(box-width (frame-pixel-width box-frame))
+							(box-height (frame-pixel-height box-frame))
+							(box-border-width (frame-border-width box-frame))
 
-              (window (frame-root-window frame))
-              ((text-width . text-height) (window-text-pixel-size window nil nil
-                                                                  (/ (frame-pixel-width) 2)
-                                                                  (/ (frame-pixel-height) 2)))
-              (border-width (or (alist-get 'internal-border-width company-box-doc-frame-parameters) 0))
+							(window (frame-root-window frame))
+							((text-width . text-height) (window-text-pixel-size window nil nil
+																																	(/ (frame-pixel-width) 2)
+																																	(/ (frame-pixel-height) 2)))
+							(border-width (or (alist-get 'internal-border-width company-box-doc-frame-parameters) 0))
 
-              (x (- (+ (car box-position) box-width) border-width))
-              (space-right (- (frame-pixel-width) x))
-              (space-left (car box-position))
-              (fringe-left (or (alist-get 'left-fringe company-box-doc-frame-parameters) 0))
-              (fringe-right (or (alist-get 'right-fringe company-box-doc-frame-parameters) 0))
-              (width (+ text-width border-width fringe-left fringe-right))
-              (x (if (> width space-right)
-                     (if (> space-left width)
-                         (- space-left width)
-                       space-left)
-                   x))
-              (y (cdr box-position))
-              (bottom (+ company-box--bottom (frame-border-width)))
-              (height (+ text-height (* 2 border-width)))
-              (y (cond ((= x space-left)
-                        (if (> (+ y box-height height) bottom)
-                            (+ (- y height) border-width)
-                          (- (+ y box-height) border-width)))
-                       ((> (+ y height) bottom)
-                        (- (+ y box-height) height))
-                       (t y))))
-        (set-frame-position frame (max x 0) (max y 0))
-        (set-frame-size frame text-width text-height t)))
-    (advice-add #'company-box-doc--set-frame-position :override #'my-company-box-doc--set-frame-position))
+							(x (- (+ (car box-position) box-width) border-width))
+							(space-right (- (frame-pixel-width) x))
+							(space-left (car box-position))
+							(fringe-left (or (alist-get 'left-fringe company-box-doc-frame-parameters) 0))
+							(fringe-right (or (alist-get 'right-fringe company-box-doc-frame-parameters) 0))
+							(width (+ text-width border-width fringe-left fringe-right))
+							(x (if (> width space-right)
+										 (if (> space-left width)
+												 (- space-left width)
+											 space-left)
+									 x))
+							(y (cdr box-position))
+							(bottom (+ company-box--bottom (frame-border-width)))
+							(height (+ text-height (* 2 border-width)))
+							(y (cond ((= x space-left)
+												(if (> (+ y box-height height) bottom)
+														(+ (- y height) border-width)
+													(- (+ y box-height) border-width)))
+											 ((> (+ y height) bottom)
+												(- (+ y box-height) height))
+											 (t y))))
+				(set-frame-position frame (max x 0) (max y 0))
+				(set-frame-size frame text-width text-height t)))
+		(advice-add #'company-box-doc--set-frame-position :override #'my-company-box-doc--set-frame-position))
 
-  (when (require 'all-the-icons nil t)
-    (declare-function all-the-icons-faicon 'all-the-icons)
-    (declare-function all-the-icons-material 'all-the-icons)
-    (declare-function all-the-icons-octicon 'all-the-icons)
-    (setq company-box-icons-all-the-icons
-          `((Unknown . ,(all-the-icons-material "find_in_page" :height 1.0 :v-adjust -0.2))
-            (Text . ,(all-the-icons-faicon "text-width" :height 1.0 :v-adjust -0.02))
-            (Method . ,(all-the-icons-faicon "cube" :height 1.0 :v-adjust -0.02 :face 'all-the-icons-purple))
-            (Function . ,(all-the-icons-faicon "cube" :height 1.0 :v-adjust -0.02 :face 'all-the-icons-purple))
-            (Constructor . ,(all-the-icons-faicon "cube" :height 1.0 :v-adjust -0.02 :face 'all-the-icons-purple))
-            (Field . ,(all-the-icons-octicon "tag" :height 1.1 :v-adjust 0 :face 'all-the-icons-lblue))
-            (Variable . ,(all-the-icons-octicon "tag" :height 1.1 :v-adjust 0 :face 'all-the-icons-lblue))
-            (Class . ,(all-the-icons-material "settings_input_component" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Interface . ,(all-the-icons-material "share" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Module . ,(all-the-icons-material "view_module" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Property . ,(all-the-icons-faicon "wrench" :height 1.0 :v-adjust -0.02))
-            (Unit . ,(all-the-icons-material "settings_system_daydream" :height 1.0 :v-adjust -0.2))
-            (Value . ,(all-the-icons-material "format_align_right" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-lblue))
-            (Enum . ,(all-the-icons-material "storage" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Keyword . ,(all-the-icons-material "filter_center_focus" :height 1.0 :v-adjust -0.2))
-            (Snippet . ,(all-the-icons-material "format_align_center" :height 1.0 :v-adjust -0.2))
-            (Color . ,(all-the-icons-material "palette" :height 1.0 :v-adjust -0.2))
-            (File . ,(all-the-icons-faicon "file-o" :height 1.0 :v-adjust -0.02))
-            (Reference . ,(all-the-icons-material "collections_bookmark" :height 1.0 :v-adjust -0.2))
-            (Folder . ,(all-the-icons-faicon "folder-open" :height 1.0 :v-adjust -0.02))
-            (EnumMember . ,(all-the-icons-material "format_align_right" :height 1.0 :v-adjust -0.2))
-            (Constant . ,(all-the-icons-faicon "square-o" :height 1.0 :v-adjust -0.1))
-            (Struct . ,(all-the-icons-material "settings_input_component" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-orange))
-            (Event . ,(all-the-icons-octicon "zap" :height 1.0 :v-adjust 0 :face 'all-the-icons-orange))
-            (Operator . ,(all-the-icons-material "control_point" :height 1.0 :v-adjust -0.2))
-            (TypeParameter . ,(all-the-icons-faicon "arrows" :height 1.0 :v-adjust -0.02))
-            (Template . ,(all-the-icons-material "format_align_left" :height 1.0 :v-adjust -0.2)))
-          company-box-icons-alist 'company-box-icons-all-the-icons)))
+	(when (require 'all-the-icons nil t)
+		(declare-function all-the-icons-faicon 'all-the-icons)
+		(declare-function all-the-icons-material 'all-the-icons)
+		(declare-function all-the-icons-octicon 'all-the-icons)
+		(setq company-box-icons-all-the-icons
+					`((Unknown . ,(all-the-icons-material "find_in_page" :height 1.0 :v-adjust -0.2))
+						(Text . ,(all-the-icons-faicon "text-width" :height 1.0 :v-adjust -0.02))
+						(Method . ,(all-the-icons-faicon "cube" :height 1.0 :v-adjust -0.02 :face 'all-the-icons-purple))
+						(Function . ,(all-the-icons-faicon "cube" :height 1.0 :v-adjust -0.02 :face 'all-the-icons-purple))
+						(Constructor . ,(all-the-icons-faicon "cube" :height 1.0 :v-adjust -0.02 :face 'all-the-icons-purple))
+						(Field . ,(all-the-icons-octicon "tag" :height 1.1 :v-adjust 0 :face 'all-the-icons-lblue))
+						(Variable . ,(all-the-icons-octicon "tag" :height 1.1 :v-adjust 0 :face 'all-the-icons-lblue))
+						(Class . ,(all-the-icons-material "settings_input_component" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-orange))
+						(Interface . ,(all-the-icons-material "share" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-lblue))
+						(Module . ,(all-the-icons-material "view_module" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-lblue))
+						(Property . ,(all-the-icons-faicon "wrench" :height 1.0 :v-adjust -0.02))
+						(Unit . ,(all-the-icons-material "settings_system_daydream" :height 1.0 :v-adjust -0.2))
+						(Value . ,(all-the-icons-material "format_align_right" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-lblue))
+						(Enum . ,(all-the-icons-material "storage" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-orange))
+						(Keyword . ,(all-the-icons-material "filter_center_focus" :height 1.0 :v-adjust -0.2))
+						(Snippet . ,(all-the-icons-material "format_align_center" :height 1.0 :v-adjust -0.2))
+						(Color . ,(all-the-icons-material "palette" :height 1.0 :v-adjust -0.2))
+						(File . ,(all-the-icons-faicon "file-o" :height 1.0 :v-adjust -0.02))
+						(Reference . ,(all-the-icons-material "collections_bookmark" :height 1.0 :v-adjust -0.2))
+						(Folder . ,(all-the-icons-faicon "folder-open" :height 1.0 :v-adjust -0.02))
+						(EnumMember . ,(all-the-icons-material "format_align_right" :height 1.0 :v-adjust -0.2))
+						(Constant . ,(all-the-icons-faicon "square-o" :height 1.0 :v-adjust -0.1))
+						(Struct . ,(all-the-icons-material "settings_input_component" :height 1.0 :v-adjust -0.2 :face 'all-the-icons-orange))
+						(Event . ,(all-the-icons-octicon "zap" :height 1.0 :v-adjust 0 :face 'all-the-icons-orange))
+						(Operator . ,(all-the-icons-material "control_point" :height 1.0 :v-adjust -0.2))
+						(TypeParameter . ,(all-the-icons-faicon "arrows" :height 1.0 :v-adjust -0.02))
+						(Template . ,(all-the-icons-material "format_align_left" :height 1.0 :v-adjust -0.2)))
+					company-box-icons-alist 'company-box-icons-all-the-icons)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -716,20 +803,20 @@
 	(LaTeX-mode . aas-activate-for-major-mode)
 	:config
 	(aas-set-snippets 'latex-mode
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\($1\\\\) $0"))
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\($1\\\\) $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'org-mode
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'markdown-mode
-		"mk" (lambda () (interactive)
-					 (yas-expand-snippet "$$1$ $0"))
-		"dm" (lambda () (interactive)
-					 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+										"mk" (lambda () (interactive)
+													 (yas-expand-snippet "$$1$ $0"))
+										"dm" (lambda () (interactive)
+													 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -738,29 +825,29 @@
 	(org-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-		;; set condition!
-		:cond #'texmathp ; expand only while in math
-		"supp" "\\supp"
-		"On" "O(n)"
-		"O1" "O(1)"
-		"Olog" "O(\\log n)"
-		"Olon" "O(n \\log n)"
-		;; bind to functions!
-		"sum" (lambda () (interactive)
-						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-		"Span" (lambda () (interactive)
-						 (yas-expand-snippet "\\Span($1)$0"))
-		"inti" (lambda () (interactive)
-						 (yas-expand-snippet "\\int"))
-		"intd" (lambda () (interactive)
-						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-		"df" (lambda () (interactive)
-					 (yas-expand-snippet "_{$1}$0"))
-		"rt" (lambda () (interactive)
-					 (yas-expand-snippet "^{$1}$0"))
-		;; add accent snippets
-		:cond #'laas-object-on-left-condition
-		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+										;; set condition!
+										:cond #'texmathp ; expand only while in math
+										"supp" "\\supp"
+										"On" "O(n)"
+										"O1" "O(1)"
+										"Olog" "O(\\log n)"
+										"Olon" "O(n \\log n)"
+										;; bind to functions!
+										"sum" (lambda () (interactive)
+														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+										"Span" (lambda () (interactive)
+														 (yas-expand-snippet "\\Span($1)$0"))
+										"inti" (lambda () (interactive)
+														 (yas-expand-snippet "\\int"))
+										"intd" (lambda () (interactive)
+														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+										"df" (lambda () (interactive)
+													 (yas-expand-snippet "_{$1}$0"))
+										"rt" (lambda () (interactive)
+													 (yas-expand-snippet "^{$1}$0"))
+										;; add accent snippets
+										:cond #'laas-object-on-left-condition
+										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard
 	:after tex)
@@ -908,7 +995,7 @@
 	:custom
 	(setq projectile-enable-caching t)
 	(setq projectile-track-known-projects-automatically nil)
-	(setq projectile-completion-system 'helm)
+	(setq projectile-completion-system 'consult)
 	:config
 	(define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
 	:init
@@ -916,59 +1003,7 @@
 	(setq projectile-indexing-method 'native)
 	(projectile-mode))
 
-(use-package helm
-	:init
-	(helm-mode 1)
-	:bind
-	(("M-x" . helm-M-x)
-	 ("C-x C-f" . helm-find-files)
-	 :map helm-map
-	 ("C-j" . helm-next-line)
-	 ("C-k" . helm-previous-line)
-	 ("<escape>" . helm-keyboard-quit)
-	 ("<tab>" . helm-execute-persistent-action)
-	 ("C-i" . helm-execute-persistent-action)
-	 ("C-<backspace>" . helm-find-files-up-one-level)
-	 ("C-z"  . helm-select-action))
-	:config
-	(evil-define-key 'global 'helm-map (kbd "<escape>") 'keyboard-escape-quit)
-	(global-set-key (kbd "C-c h") 'helm-command-prefix)
-	(setq helm-split-window-in-side-p           t
-				helm-move-to-line-cycle-in-source     nil
-				helm-ff-search-library-in-sexp        t
-				helm-scroll-amount                    8
-				helm-ff-file-name-history-use-recentf t
-				helm-echo-input-in-header-line t
-				helm-autoresize-max-height 40
-				helm-autoresize-min-height 40
-				helm-M-x-fuzzy-math t
-				helm-buffers-fuzzy-matching t
-				helm-recentf-fuzzy-match    t
-				helm-mode-fuzzy-match    t
-				helm-follow-mode-persistent t)
-	(helm-autoresize-mode 1)
-	)
-
-(with-eval-after-load 'helm-files
-	(dolist (keymap (list helm-find-files-map helm-read-file-map))
-		(define-key keymap (kbd "C-l") 'helm-execute-persistent-action)
-		(define-key keymap (kbd "C-h") 'helm-find-files-up-one-level)
-		(define-key keymap (kbd "C-d") 'helm-ff-run-delete-file)
-		;; rebind `describe-key' for convenience
-		(define-key keymap (kbd "C-S-h") 'describe-key)))
-
-(with-eval-after-load 'helm-buffers
-	(dolist (keymap (list helm-buffer-map))
-		(define-key keymap (kbd "C-d") 'helm-buffer-run-kill-buffers)))
-
 (use-package rg)
-
-(use-package helm-rg)
-
-(use-package helm-c-yasnippet
-	:after yasnippet)
-
-(use-package helm-projectile)
 
 (use-package magit)
 ;; prepare the arguments
@@ -1011,11 +1046,11 @@
 	(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 	(add-to-list 'interpreter-mode-alist '("python" . python-mode))
 	:custom
-  (python-indent-offset 4)
+	(python-indent-offset 4)
 	(setq python-shell-interpreter "ipython"
 				python-shell-interpreter-args "-i --simple-prompt"))
 
 (use-package lsp-pyright
-  :hook (python-mode . (lambda () (require 'lsp-pyright)))
-  :custom
-  (LSP-PYRight-multi-root nil))
+	:hook (python-mode . (lambda () (require 'lsp-pyright)))
+	:custom
+	(LSP-PYRight-multi-root nil))
