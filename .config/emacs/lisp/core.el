@@ -229,6 +229,18 @@ targets."
 			(consult-projectile-switch-to-buffer)
 		(consult-buffer)))
 
+(defun smart-for-terminal-otherw ()
+	(interactive)
+	(if (projectile-project-p)
+			(projectile-run-vterm-other-window)
+		(call-interactively #'vterm-other-window)))
+
+(defun smart-for-terminal ()
+	(interactive)
+	(if (projectile-project-p)
+			(projectile-run-vterm)
+		(call-interactively #'vterm)))
+
 ;;Settings normal global keybindings
 (evil-define-key 'normal 'global
 	(kbd ";") 'evil-ex
@@ -256,6 +268,8 @@ targets."
 	(kbd "<leader>pp") 'consult-projectile-switch-project
 	(kbd "<leader>cc") 'calc
 	(kbd "<leader>qc") 'quick-calc
+	(kbd "<leader>t") 'smart-for-terminal-otherw
+	(kbd "<leader>T") 'smart-for-terminal
 	)
 
 (evil-define-key 'insert 'global (kbd "C-<backspace>") 'evil-delete-backward-word)
@@ -410,6 +424,7 @@ targets."
 				company-tooltip-align-annotations t
 				;; company-require-match 'never
 				company-tooltip-limit 5
+				company-auto-complete t
 				company-idle-delay 0.0)
 	(company-global-modes '(not shell-mode eaf-mode))
 	:init
@@ -830,20 +845,44 @@ targets."
 (use-package tex
 	:straight auctex
 	:config
-	(setq TeX-save-query nil)
-	(setq TeX-clean-confirm nil)
-	(setq TeX-source-correlate-method 'synctex)
+	(setq TeX-save-query nil
+				TeX-clean-confirm nil
+				TeX-command-default "XeLaTeX"
+				TeX-source-correlate-start-server t
+				TeX-source-correlate-method 'synctex)
 	(TeX-source-correlate-mode 1)
-	(setq TeX-source-correlate-start-server t)
 	(add-to-list 'TeX-view-program-selection
 							 '(output-pdf "Zathura"))
+
+	(defun my-export-to-pdf ()
+		"Export the current LaTeX document to PDF using AUCTeX."
+		(interactive)
+		(TeX-command "LaTeX" 'TeX-master-file nil))
+
+	(evil-define-key 'normal 'LaTeX-mode-map
+		(kbd "C-c e") 'my-export-to-pdf
+		(kbd "C-c E") 'my-export-to-pdf-all
+		(kbd "C-c t") 'lsp-ui-imenu)
+
+	(defvar my-latex-original-master nil
+		"Variable to store the original value of TeX-master.")
+
+	(defun my-latex-toggle-command ()
+		"Toggle between executing commands on master and current file."
+		(interactive)
+		(if my-latex-original-master
+				(progn
+					(setq TeX-master my-latex-original-master)
+					(setq my-latex-original-master nil))
+			(progn
+				(setq my-latex-original-master TeX-master)
+				(setq TeX-master nil)))
+		(message "Switched command: %s" (if TeX-master "master" "current")))
+
+	(global-set-key (kbd "C-c T") 'my-latex-toggle-command)
 	:init
 	(add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
 
-(evil-define-key 'normal LaTeX-mode-map
-	(kbd "<leader>tm") 'reftex-toc
-	(kbd "<leader>tt") 'lsp-ui-imenu
-	)
 
 (use-package yasnippet
 	:defer t
@@ -857,20 +896,20 @@ targets."
 	(LaTeX-mode . aas-activate-for-major-mode)
 	:config
 	(aas-set-snippets 'latex-mode
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\($1\\\\) $0"))
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "\\\\($1\\\\) $0"))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'org-mode
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'markdown-mode
-										"mk" (lambda () (interactive)
-													 (yas-expand-snippet "$$1$ $0"))
-										"dm" (lambda () (interactive)
-													 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+		"mk" (lambda () (interactive)
+					 (yas-expand-snippet "$$1$ $0"))
+		"dm" (lambda () (interactive)
+					 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -879,29 +918,29 @@ targets."
 	(org-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-										;; set condition!
-										:cond #'texmathp ; expand only while in math
-										"supp" "\\supp"
-										"On" "O(n)"
-										"O1" "O(1)"
-										"Olog" "O(\\log n)"
-										"Olon" "O(n \\log n)"
-										;; bind to functions!
-										"sum" (lambda () (interactive)
-														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-										"Span" (lambda () (interactive)
-														 (yas-expand-snippet "\\Span($1)$0"))
-										"inti" (lambda () (interactive)
-														 (yas-expand-snippet "\\int"))
-										"intd" (lambda () (interactive)
-														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-										"df" (lambda () (interactive)
-													 (yas-expand-snippet "_{$1}$0"))
-										"rt" (lambda () (interactive)
-													 (yas-expand-snippet "^{$1}$0"))
-										;; add accent snippets
-										:cond #'laas-object-on-left-condition
-										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+		;; set condition!
+		:cond #'texmathp ; expand only while in math
+		"supp" "\\supp"
+		"On" "O(n)"
+		"O1" "O(1)"
+		"Olog" "O(\\log n)"
+		"Olon" "O(n \\log n)"
+		;; bind to functions!
+		"sum" (lambda () (interactive)
+						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+		"Span" (lambda () (interactive)
+						 (yas-expand-snippet "\\Span($1)$0"))
+		"inti" (lambda () (interactive)
+						 (yas-expand-snippet "\\int"))
+		"intd" (lambda () (interactive)
+						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+		"df" (lambda () (interactive)
+					 (yas-expand-snippet "_{$1}$0"))
+		"rt" (lambda () (interactive)
+					 (yas-expand-snippet "^{$1}$0"))
+		;; add accent snippets
+		:cond #'laas-object-on-left-condition
+		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package latex-table-wizard
 	:after tex)
