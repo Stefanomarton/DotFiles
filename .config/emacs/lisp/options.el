@@ -31,7 +31,6 @@
 
 (add-hook 'prog-mode-hook 'hl-line-mode) ;; Highlight the current line
 (setq hl-line-sticky-flag nil)
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
 
 ;; Italic comments
 (set-face-attribute 'font-lock-comment-face nil :slant 'italic)

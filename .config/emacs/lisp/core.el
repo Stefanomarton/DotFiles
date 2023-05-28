@@ -1054,13 +1054,13 @@ targets."
 
 (defun efs/set-font-faces ()
 	(message "Setting faces!")
-	(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150)
+	(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 135)
 
 	;; Set the fixed pitch face
-	(set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 150)
+	(set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 135)
 
 	;; Set the variable pitch face
-	(set-face-attribute 'variable-pitch nil :font "JetBrainsMono Nerd Font" :height 150 :weight 'regular))
+	(set-face-attribute 'variable-pitch nil :font "JetBrainsMono Nerd Font" :height 135 :weight 'regular))
 
 (if (daemonp)
 		(add-hook 'after-make-frame-functions
