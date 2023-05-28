@@ -392,6 +392,16 @@ targets."
 	 (lsp-mode . lsp-enable-which-key-integration)) ;whichkey-integration
 	:commands lsp)
 
+(use-package lsp-latex
+	:straight (lsp-latex :type git :host github :repo "ROCKTAKEY/lsp-latex")
+	:config
+	(setq lsp-latex-build-forward-search-after nil)
+	(setq lsp-latex-build-executable "tectonic")
+	(setq lsp-latex-forward-search-executable "zathura")
+	(setq lsp-latex-forward-search-args '("--synctex-forward" "%l:1:%f" "%p"))
+	(setq lsp-latex-build-on-save nil)
+	(setq lsp-latex-build-args '("-X" "compile" "%f" "--synctex")))
+
 (use-package lua-mode
 	:defer t
 	:straight t)
@@ -857,11 +867,20 @@ targets."
 	(defun my-export-to-pdf ()
 		"Export the current LaTeX document to PDF using AUCTeX."
 		(interactive)
-		(TeX-command "LaTeX" 'TeX-master-file nil))
+		(TeX-command "LaTeX" 'TeX-master-file nil)
+		(TeX-clean))
+
+	(defun my-export-to-pdf-and-view ()
+		"Export the current LaTeX document to PDF using AUCTeX."
+		(interactive)
+		(TeX-command "LaTeX" 'TeX-master-file nil)
+		(TeX-clean)
+		(TeX-view)
+		)
 
 	(evil-define-key 'normal 'LaTeX-mode-map
 		(kbd "C-c e") 'my-export-to-pdf
-		(kbd "C-c E") 'my-export-to-pdf-all
+		(kbd "C-c E") 'my-export-to-pdf-view
 		(kbd "C-c t") 'lsp-ui-imenu)
 
 	(defvar my-latex-original-master nil
