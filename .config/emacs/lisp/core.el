@@ -94,6 +94,8 @@
 
 (use-package consult-flycheck)
 
+(use-package consult-flyspell)
+
 ;; Enable vertico
 (use-package vertico
 	:bind
@@ -374,7 +376,7 @@ targets."
 	:straight t
 	:config
 	(setq doom-modeline-buffer-encoding nil)
-	(setq doom-modeline-height 40)
+	(setq doom-modeline-height 10)
 	:init (doom-modeline-mode 1))
 
 (use-package lsp-mode
@@ -385,6 +387,7 @@ targets."
 	(setq lsp-tex-server 'texlab)
 	(setq lsp-enable-symbol-highlighting nil)
 	(setq lsp-lens-enable nil)
+	(setq lsp-completion-provider :none) ;; must have to make yasnippet backend work correctly
 	;; (setq lsp-headerline-breadcrumb-enable nil)
 	(setq lsp-keymap-prefix "C-c l")
 	:hook
@@ -414,8 +417,6 @@ targets."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package company-math)
-
 (use-package company-jedi)
 
 (use-package company
@@ -424,7 +425,7 @@ targets."
 	:bind
 	(:map company-active-map
 				([tab] . smarter-tab-to-complete)
-				("c-d" . company-box-doc-manually)
+				("C-d" . company-box-doc-manually)
 				("tab" . smarter-tab-to-complete))
 	:custom
 	(setq company-tooltip-offset-display 'lines	;; Show number before and after current candidates
@@ -438,15 +439,16 @@ targets."
 				company-idle-delay 0.0)
 	(company-global-modes '(not shell-mode eaf-mode))
 	:init
-	(setq company-backends '((company-capf :separate company-files company-yasnippet)))
+	(setq company-backends '((:separate company-capf company-files company-yasnippet)))
 	:config
-	(add-hook 'python-mode-hook
-						(lambda ()
-							(set (make-local-variable 'company-backends) '(company-capf company-jedi company-files))))
-	(add-hook 'LaTeX-mode-hook
-						(lambda ()
-							(set (make-local-variable 'company-backends) '(company-capf company-math company-files))))
+	;; (add-hook 'python-mode-hook
+	;; 					(lambda ()
+	;; 						(set (make-local-variable 'company-backends) '(company-capf company-jedi company-files))))
+	;; (add-hook 'LaTeX-mode-hook
+	;; 					(lambda ()
+	;; 						(set (make-local-variable 'company-backends) '(:separate company-capf company-yasnippet company-files))))
 	(global-company-mode 1)
+
 	(defun smarter-tab-to-complete ()
 		"Try to `org-cycle', `yas-expand', and `yas-next-field' at current cursor position.
      If all failed, try to complete the common part with `company-complete-common'"
@@ -878,11 +880,7 @@ targets."
 		(TeX-view)
 		)
 
-	(evil-define-key 'normal 'LaTeX-mode-map
-		(kbd "C-c e") 'my-export-to-pdf
-		(kbd "C-c E") 'my-export-to-pdf-view
-		(kbd "C-c t") 'lsp-ui-imenu)
-
+	;; Toggle between master and current compilation
 	(defvar my-latex-original-master nil
 		"Variable to store the original value of TeX-master.")
 
@@ -898,7 +896,12 @@ targets."
 				(setq TeX-master nil)))
 		(message "Switched command: %s" (if TeX-master "master" "current")))
 
-	(global-set-key (kbd "C-c T") 'my-latex-toggle-command)
+	(evil-define-key 'normal LaTeX-mode-map
+		(kbd "C-c e") 'my-export-to-pdf
+		(kbd "C-c T") 'my-latex-toggle-command
+		(kbd "C-c E") 'my-export-to-pdf-view
+		(kbd "C-c t") 'lsp-ui-imenu)
+
 	:init
 	(add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
 
@@ -915,19 +918,19 @@ targets."
 	(LaTeX-mode . aas-activate-for-major-mode)
 	:config
 	(aas-set-snippets 'latex-mode
-		"mk" (lambda () (interactive)
+		"jf" (lambda () (interactive)
 					 (yas-expand-snippet "\\\\($1\\\\) $0"))
-		"dm" (lambda () (interactive)
+		"kd" (lambda () (interactive)
 					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'org-mode
-		"mk" (lambda () (interactive)
+		"jf" (lambda () (interactive)
 					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-		"dm" (lambda () (interactive)
+		"kd" (lambda () (interactive)
 					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'markdown-mode
-		"mk" (lambda () (interactive)
+		"jf" (lambda () (interactive)
 					 (yas-expand-snippet "$$1$ $0"))
-		"dm" (lambda () (interactive)
+		"kd" (lambda () (interactive)
 					 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
@@ -960,6 +963,12 @@ targets."
 		;; add accent snippets
 		:cond #'laas-object-on-left-condition
 		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+
+;; (use-package cdlatex
+;; 	:hook (LaTeX-mode . cdlatex-mode)
+;; 	:custom
+;; 	(cdlatex-takeover-dollar nil)
+;; 	(cdlatex-math-modify-prefix 59))
 
 (use-package latex-table-wizard
 	:after tex)

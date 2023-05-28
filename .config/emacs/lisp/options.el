@@ -40,6 +40,7 @@
 
 ;; Better Then Global Centered Cursor Mode
 (setq indicate-empty-lines nil)
+(setq scroll-preserve-screen-position t)
 (setq ccm-recenter-at-end-of-file t)
 (setq scroll-conservatively 1000)
 (setq scroll-margin 1000)
