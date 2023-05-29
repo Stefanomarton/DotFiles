@@ -11,6 +11,10 @@
 	(setq evil-echo-state nil)
 	(setq evil-want-keybinding nil)
 	(setq evil-want-empty-ex-last-command nil)
+	(setq evil-want-C-u-scroll t) ;; allow scroll up with 'C-u'
+  (setq evil-want-C-d-scroll nil) ;; avoid scroll down with 'C-d'
+  (setq evil-split-window-below t)
+  (setq evil-vsplit-window-right t)
 	(setq evil-undo-system 'undo-fu)
 	(setq evil-search-module 'evil-search)
 	:config
@@ -420,8 +424,11 @@ targets."
 	:config
 	(editorconfig-mode 1))
 
-;; Autopair
-(electric-pair-mode 1)
+(use-package electric
+  :straight (:type built-in)
+  :init
+  (electric-pair-mode +1) ;; automatically insert closing parens
+  (setq electric-pair-preserve-balance nil)) ;; more annoying than useful
 
 ;; Highlight nested parentheses
 (use-package rainbow-delimiters
@@ -440,9 +447,10 @@ targets."
 	;; Content is not centered by default. To center, set
 	(setq dashboard-startup-banner "~/.config/emacs/themes/logo.txt")
 	(setq dashboard-center-content t)
-	(setq dashboard-set-heading-icons t)
+	(setq dashboard-icon-type 'nerd-icons) ;; use `nerd-icons' package
+	;; (setq dashboard-set-navigator t)
+	;; (setq dashboard-set-heading-icons t)
 	(setq dashboard-set-file-icons t)
-	(setq dashboard-set-navigator t)
 	(setq dashboard-items '((recents  . 10)))
 	;; (bookmarks . 5))
 	;; (projects . 5)))
@@ -655,20 +663,20 @@ targets."
 	(LaTeX-mode . aas-activate-for-major-mode)
 	:config
 	(aas-set-snippets 'latex-mode
-		"jf" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\($1\\\\) $0"))
-		"kd" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+										"jf" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\($1\\\\) $0"))
+										"kd" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'org-mode
-		"jf" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-		"kd" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+										"jf" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+										"kd" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
 	(aas-set-snippets 'markdown-mode
-		"jf" (lambda () (interactive)
-					 (yas-expand-snippet "$$1$ $0"))
-		"kd" (lambda () (interactive)
-					 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+										"jf" (lambda () (interactive)
+													 (yas-expand-snippet "$$1$ $0"))
+										"kd" (lambda () (interactive)
+													 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
 	:straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -677,35 +685,35 @@ targets."
 	(org-mode . laas-mode)
 	:config ; do whatever here
 	(aas-set-snippets 'laas-mode
-		;; set condition!
-		:cond #'texmathp ; expand only while in math
-		"supp" "\\supp"
-		"On" "O(n)"
-		"O1" "O(1)"
-		"Olog" "O(\\log n)"
-		"Olon" "O(n \\log n)"
-		;; bind to functions!
-		"sum" (lambda () (interactive)
-						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-		"Span" (lambda () (interactive)
-						 (yas-expand-snippet "\\Span($1)$0"))
-		"inti" (lambda () (interactive)
-						 (yas-expand-snippet "\\int"))
-		"intd" (lambda () (interactive)
-						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-		"df" (lambda () (interactive)
-					 (yas-expand-snippet "_{$1}$0"))
-		"rt" (lambda () (interactive)
-					 (yas-expand-snippet "^{$1}$0"))
-		;; add accent snippets
-		:cond #'laas-object-on-left-condition
-		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+										;; set condition!
+										:cond #'texmathp ; expand only while in math
+										"supp" "\\supp"
+										"On" "O(n)"
+										"O1" "O(1)"
+										"Olog" "O(\\log n)"
+										"Olon" "O(n \\log n)"
+										;; bind to functions!
+										"sum" (lambda () (interactive)
+														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+										"Span" (lambda () (interactive)
+														 (yas-expand-snippet "\\Span($1)$0"))
+										"inti" (lambda () (interactive)
+														 (yas-expand-snippet "\\int"))
+										"intd" (lambda () (interactive)
+														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+										"df" (lambda () (interactive)
+													 (yas-expand-snippet "_{$1}$0"))
+										"rt" (lambda () (interactive)
+													 (yas-expand-snippet "^{$1}$0"))
+										;; add accent snippets
+										:cond #'laas-object-on-left-condition
+										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
-;; (use-package cdlatex
-;; 	:hook (LaTeX-mode . cdlatex-mode)
-;; 	:custom
-;; 	(cdlatex-takeover-dollar nil)
-;; 	(cdlatex-math-modify-prefix 59))
+(use-package cdlatex
+	:hook (LaTeX-mode . cdlatex-mode)
+	:custom
+	(cdlatex-takeover-dollar nil)
+	(cdlatex-math-modify-prefix 59))
 
 (use-package latex-table-wizard
 	:after tex)
@@ -778,49 +786,50 @@ targets."
 	;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.6))
 	(plist-put org-format-latex-options :justify 'center)
 	)
-;; Daemon mode configs
 
-(pcase system-type
-	('gnu/linux "It's Linux!")
-	('windows-nt "It's Windows!")
-	('darwin "It's macOS!"))
+;; ;; Daemon mode configs
 
-(if (daemonp)
-		(message "Loading in the daemon!")
-	(message "Loading in regular Emacs!"))
+;; (pcase system-type
+;; 	('gnu/linux "It's Linux!")
+;; 	('windows-nt "It's Windows!")
+;; 	('darwin "It's macOS!"))
 
-(defun efs/set-font-faces ()
-	(message "Setting faces!")
-	(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 135)
+;; (if (daemonp)
+;; 		(message "Loading in the daemon!")
+;; 	(message "Loading in regular Emacs!"))
 
-	;; Set the fixed pitch face
-	(set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 135)
+;; (defun efs/set-font-faces ()
+;; 	(message "Setting faces!")
+;; 	(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 135)
 
-	;; Set the variable pitch face
-	(set-face-attribute 'variable-pitch nil :font "JetBrainsMono Nerd Font" :height 135 :weight 'regular))
+;; 	;; Set the fixed pitch face
+;; 	(set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 135)
 
-(if (daemonp)
-		(add-hook 'after-make-frame-functions
-							(lambda (frame)
-								;; (setq doom-modeline-icon t)
-								(with-selected-frame frame
-									(efs/set-font-faces))))
-	(efs/set-font-faces)
-	(setq highlight-indent-guides-method 'character)
-	(setq doom-modeline-icon t)
-	)
-(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+;; 	;; Set the variable pitch face
+;; 	(set-face-attribute 'variable-pitch nil :font "JetBrainsMono Nerd Font" :height 135 :weight 'regular))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (if (daemonp)
+;; 		(add-hook 'after-make-frame-functions
+;; 							(lambda (frame)
+;; 								;; (setq doom-modeline-icon t)
+;; 								(with-selected-frame frame
+;; 									(efs/set-font-faces))))
+;; 	(efs/set-font-faces)
+;; 	(setq highlight-indent-guides-method 'character)
+;; 	(setq doom-modeline-icon t)
+;; 	)
+;; (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 
-;; Terminal specific configuration
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(if (display-graphic-p)
-		;; GUI mode
-		(progn
-			(nyan-mode 1))
-	;; Terminal mode
-	())
+;; ;; Terminal specific configuration
+
+;; (if (display-graphic-p)
+;; 		;; GUI mode
+;; 		(progn
+;; 			(nyan-mode 1))
+;; 	;; Terminal mode
+;; 	())
 
 (use-package org-modern
 	:after org-mode
@@ -889,7 +898,7 @@ targets."
 (use-package vterm
 	:commands vterm
 	:config
-	(set-fontset-font t 'unicode (font-spec :family "JetBrainsMono Nerd Font"))
+	;; (set-fontset-font t 'unicode (font-spec :family "JetBrainsMono Nerd Font"))
 	:custom
 	(setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"
 				vterm-internal-use-ligatures t
@@ -915,9 +924,18 @@ targets."
 	:custom
 	(LSP-PYRight-multi-root nil))
 
-(use-package flycheck)
+(use-package flycheck
+	:defer t
+	)
 
-(use-package csv-mode)
+(use-package csv-mode
+	:defer t
+	)
+
+(use-package hl-todo
+	:defer t
+  :init
+  (global-hl-todo-mode))
 
 (provide 'core)
 ;; core.el ends here
