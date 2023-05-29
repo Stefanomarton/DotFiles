@@ -18,6 +18,7 @@
 (setq straight-use-package-by-default t) ;Auto install package use in the configuration
 
 (require 'options)
+(require 'setup-company)
 (require 'core)
 
 (setq custom-file "~/.config/emacs/custom.el")
