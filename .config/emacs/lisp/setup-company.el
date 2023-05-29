@@ -49,7 +49,15 @@
 						(unless (and (eq old-point (point))
 												 (eq old-tick (buffer-chars-modified-tick)))
 							(throw 'func-suceed t)))
-					(company-complete-common)))))
+					(company-complete-common))))
+
+		;; the following stops company from using the orderless completion style
+		;; makes company much more useful
+		(define-advice company-capf
+				(:around (orig-fun &rest args) set-completion-styles)
+			(let ((completion-styles '(basic partial-completion)))
+				(apply orig-fun args))))
+
 
 	;; (custom-set-faces
 	;;  '(company-tooltip
