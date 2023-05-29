@@ -14,7 +14,7 @@
 		ret (tap-hold-next-release 150 ret lmet)
 		n (tap-hold-next-release 150 n ralt) 
 		c (tap-hold-next-release 150 c ralt) 
-		pr (tap-hold-next-release 150 esc rctl)
+		pr (tap-hold-next-release 100 esc rctl)
 		shp (tap-hold-next-release 150 p rsft)
 		stab (tap-hold-next-release 150 tab ralt)
 		sq (tap-hold-next-release 150 q rsft)
