@@ -10,6 +10,7 @@
 	(setq evil-want-integration t)
 	(setq evil-echo-state nil)
 	(setq evil-want-keybinding nil)
+	(setq evil-respect-visual-line-mode t)
 	(setq evil-want-empty-ex-last-command nil)
 	(setq evil-want-C-u-scroll t) ;; allow scroll up with 'C-u'
   (setq evil-want-C-d-scroll nil) ;; avoid scroll down with 'C-d'
