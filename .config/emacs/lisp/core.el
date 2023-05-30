@@ -945,5 +945,18 @@ targets."
   :init
   (global-hl-todo-mode))
 
+(use-package git-gutter
+  :hook ((prog-mode LaTeX-mode) . git-gutter-mode)
+  :config
+  (setq git-gutter:update-interval 0.02))
+
+(use-package git-gutter-fringe
+  :config
+	(fringe-mode nil)
+	(setq-default left-margin-width 1)
+  (define-fringe-bitmap 'git-gutter-fr:added [224] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:modified [224] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:deleted [224] nil nil '(center repeated)))
+
 (provide 'core)
 ;; core.el ends here
