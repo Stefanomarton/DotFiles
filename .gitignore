@@ -9,3 +9,4 @@
 .config/nvim/plugin
 .config/emacs/elpa
 .config/lazygit/state.yml
+.config/pcmanfm/default
