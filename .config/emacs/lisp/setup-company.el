@@ -27,7 +27,7 @@
 							(set (make-local-variable 'company-backends) '(company-capf :with company-jedi company-files))))
 	(add-hook 'markdown-mode-hook
 						(lambda ()
-							(set (make-local-variable 'company-backends) '(:separate company-capf company-yasnippet company-files))))
+							(set (make-local-variable 'company-backends) '(company-yasnippet company-files))))
 	(add-hook 'emacs-lisp-mode-hook
 						(lambda ()
 							(set (make-local-variable 'company-backends) '(company-elisp :with ( company-yasnippet company-files )))))
