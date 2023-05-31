@@ -3,7 +3,8 @@
 ;;;
 (yas-define-snippets 'markdown-mode
 										 '(("reagent_Table" "| Reagente | m / g | V / mL | MM / $g \\ mol^{-1}$ | n / mmol | RS | d / $g \\ mL^{-1}$ |\n|:--------:|:-----:|:------:|:-------------------:|:--------:|:--:|:-----------------:|\n| $0         |       |        |                     |          |    |                   |\n|          |       |        |                     |          |    |                   |\n|          |       |        |                     |          |    |                   |\n" "Reagent_Table" nil nil nil "/home/stefanom/.config/emacs/snippets/markdown-mode/reagent_table" nil nil)
-											 ("cristallisation_Table" "| Composto | m / g | MW / $g mol^{-1}$ | n / mmol | RS | Solvente | V / mL | Note |\n|:--------:|:-----:|:-----------------:|:--------:|:--:|:--------:|:------:|:----:|\n| $0         |       |                   |          |    |          |        |      |\n|          |       |                   |          |    |          |        |      |" "Cristallisation_Table" nil nil nil "/home/stefanom/.config/emacs/snippets/markdown-mode/cristallisation_table" nil nil)))
+											 ("cristallisation_Table" "| Composto | m / g | MW / $g mol^{-1}$ | n / mmol | RS | Solvente | V / mL | Note |\n|:--------:|:-----:|:-----------------:|:--------:|:--:|:--------:|:------:|:----:|\n| $0         |       |                   |          |    |          |        |      |\n|          |       |                   |          |    |          |        |      |" "Cristallisation_Table" nil nil nil "/home/stefanom/.config/emacs/snippets/markdown-mode/cristallisation_table" nil nil)
+											 ("bdit" "***$1***$0" "***$1*** $0" nil nil nil "/home/stefanom/.config/emacs/snippets/markdown-mode/bdi" nil nil)))
 
 
-;;; Do not edit! File generated at Fri May 26 11:38:26 2023
+;;; Do not edit! File generated at Wed May 31 16:13:42 2023
