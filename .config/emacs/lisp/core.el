@@ -13,7 +13,7 @@
 	(setq evil-respect-visual-line-mode t)
 	(setq evil-want-empty-ex-last-command nil)
 	(setq evil-want-C-u-scroll t) ;; allow scroll up with 'C-u'
-  (setq evil-want-C-d-scroll nil) ;; avoid scroll down with 'C-d'
+  (setq evil-want-C-d-scroll t) ;; avoid scroll down with 'C-d'
   (setq evil-split-window-below t)
   (setq evil-vsplit-window-right t)
 	(setq evil-undo-system 'undo-fu)
@@ -590,7 +590,6 @@ targets."
 		(kbd "<leader>ee") 'export-buffer-to-pdf
 		(kbd "<leader>ez") 'open-pdf-with-zathura
 		(kbd "<leader>ep") 'open-pdf-with-pdf-tools)
-	(setq nuke-trailing-whitespace-p nil)
 	:mode ("README\\.md\\'" . gfm-mode)
 	:init
 	(setq markdown-enable-math t))
