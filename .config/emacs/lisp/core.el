@@ -917,11 +917,14 @@ targets."
 ;; Python mode setup
 
 (use-package python-mode
-	:defer t
 	:config
 	(autoload 'python-mode "python-mode" "Python Mode." t)
 	(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 	(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+	(evil-define-key 'normal 'python-mode-map (kbd "C-l") 'evil-shift-right-line)
+	(evil-define-key 'normal 'python-mode-map (kbd "C-h") 'evil-shift-left-line)
+	(evil-define-key 'visual 'python-mode-map (kbd "C-l") 'evil-shift-right)
+	(evil-define-key 'visual 'python-mode-map (kbd "C-h") 'evil-shift-left)
 	:custom
 	(python-indent-offset 4)
 	(setq python-shell-interpreter "ipython"
