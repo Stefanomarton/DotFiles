@@ -1,8 +1,11 @@
-(use-package restart-emacs
-  :defer t)
-
 (use-package helpful
-  :defer t)
+  :commands (helpful-callable helpful-variable helpful-command helpful-key)
+  :bind
+  ([remap describe-command] . helpful-command)
+  ([remap describe-key] . helpful-key))
+
+(use-package esup
+  :commands esup)
 
 (use-package evil
   :straight t
@@ -19,24 +22,24 @@
   (setq evil-undo-system 'undo-fu)
   (setq evil-search-module 'evil-search)
   :config
-	(evil-define-key 'normal 'global (kbd "C-d") 'evil-scroll-down)
+  (evil-define-key 'normal 'global (kbd "C-d") 'evil-scroll-down)
   (evil-mode 1))
 
 (use-package evil-collection
-	:requires evil
+  :requires evil
   :after evil
   :config
   (evil-collection-init))
 
 (use-package evil-tex
-	:requires evil
+  :commands (LaTeX-mode)
   :after evil
   :hook
   (LaTeX-mode . evil-tex-mode)
   )
 
 (use-package evil-embrace
-	:requires evil
+  :requires evil
   :after evil
   :config
   (evil-embrace-enable-evil-surround-integration)
@@ -51,7 +54,7 @@
 
 (use-package evil-commentary
   ;; Better Comment Action
-	:requires evil
+  :requires evil
   :after evil
   :config
   (evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
@@ -82,38 +85,46 @@
 (defun my-kill-this-buffer ()
   (interactive)
   (catch 'quit
-		(save-window-excursion
-			(let (done)
-				(when (and buffer-file-name (buffer-modified-p))
-					(while (not done)
-						(let ((response (read-char-choice
-														 (format "Save file %s? (y, n, d, q) " (buffer-file-name))
-														 '(?y ?n ?d ?q))))
-							(setq done (cond
-													((eq response ?q) (throw 'quit nil))
-													((eq response ?y) (save-buffer) t)
-													((eq response ?n) (set-buffer-modified-p nil) t)
-													((eq response ?d) (diff-buffer-with-file) nil))))))
-				(kill-buffer (current-buffer))))))
+    (save-window-excursion
+      (let (done)
+	(when (and buffer-file-name (buffer-modified-p))
+	  (while (not done)
+	    (let ((response (read-char-choice
+			     (format "Save file %s? (y, n, d, q) " (buffer-file-name))
+			     '(?y ?n ?d ?q))))
+	      (setq done (cond
+			  ((eq response ?q) (throw 'quit nil))
+			  ((eq response ?y) (save-buffer) t)
+			  ((eq response ?n) (set-buffer-modified-p nil) t)
+			  ((eq response ?d) (diff-buffer-with-file) nil))))))
+	(kill-buffer (current-buffer))))))
 
-(use-package consult)
+(use-package consult
+  :commands
+  (evil-collection-consult-mark consult-dir consult-man consult-find consult-grep consult-info consult-line consult-mark consult-imenu consult-theme consult-buffer consult-kmacro consult-locate consult-narrow consult-flymake consult-history consult-outline consult-ripgrep consult-bookmark consult-flycheck consult-flyspell consult-git-grep consult-register consult-yank-pop consult-dir-dired consult-goto-line consult-keep-lines consult-line-multi consult-org-agenda consult-projectile consult-focus-lines consult-global-mark consult-imenu-multi consult-narrow-help consult-org-heading consult-recent-file consult-mode-command consult-yank-replace consult-compile-error consult-dir-jump-file consult-register-load consult-project-buffer consult-register-store consult-complex-command consult-isearch-forward consult-isearch-history consult-minor-mode-menu consult-isearch-backward consult-preview-at-point consult-buffer-other-frame consult-projectile-recentf consult-buffer-other-window consult-projectile-find-dir consult-yank-from-kill-ring consult-projectile-find-file consult-preview-at-point-mode consult-projectile-switch-project evil-collection-consult-jump-list consult-projectile-switch-to-buffer)
+  )
 
-(use-package consult-projectile)
+(use-package consult-projectile
+  :after consult)
 
-(use-package consult-dir)
+(use-package consult-dir
+  :after consult)
 
-(use-package consult-flycheck)
+(use-package consult-flycheck
+  :after consult)
 
-(use-package consult-flyspell)
+(use-package consult-flyspell
+  :after consult)
 
 ;; Enable vertico
 (use-package vertico
+  :defer t
   :bind
   (:map vertico-map
-				("C-e" . embark-minimal-act)
-				("C-j" . vertico-next)
-				("C-k" . vertico-previous)
-				("<escape>" . keyboard-escape-quit))
+	("C-e" . embark-minimal-act)
+	("C-j" . vertico-next)
+	("C-k" . vertico-previous)
+	("<escape>" . keyboard-escape-quit))
   :config
   ;; Different scroll margin
   (setq vertico-scroll-margin 0)
@@ -135,17 +146,17 @@
   ;; Add prompt indicator to `completing-read-multiple'.
   ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
   (defun crm-indicator (args)
-		(cons (format "[CRM%s] %s"
-									(replace-regexp-in-string
-									 "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-									 crm-separator)
-									(car args))
-					(cdr args)))
+    (cons (format "[CRM%s] %s"
+		  (replace-regexp-in-string
+		   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+		   crm-separator)
+		  (car args))
+	  (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
-				'(read-only t cursor-intangible t face minibuffer-prompt))
+	'(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
   ;; Enable recursive minibuffers
@@ -158,8 +169,8 @@
   ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
   ;;       orderless-component-separator #'orderless-escapable-split-on-space)
   (setq completion-styles '(orderless basic)
-				completion-category-defaults nil
-				completion-category-overrides '((file (styles partial-completion)))))
+	completion-category-defaults nil
+	completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia
   :config
@@ -176,43 +187,43 @@
 
   ;; Which-key style indicator
   (defun embark-minimal-act (&optional arg)
-		(interactive "P")
-		(let ((embark-indicators
-					 '(embark-which-key-indicator
-						 embark-highlight-indicator
-						 embark-isearch-highlight-indicator)))
-			(embark-act arg)))
+    (interactive "P")
+    (let ((embark-indicators
+	   '(embark-which-key-indicator
+	     embark-highlight-indicator
+	     embark-isearch-highlight-indicator)))
+      (embark-act arg)))
 
   (defun embark-minimal-act-noexit ()
-		(interactive)
-		(embark-minimal-act 4))
+    (interactive)
+    (embark-minimal-act 4))
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
-							 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-								 nil
-								 (window-parameters (mode-line-format . none))))
+	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+		 nil
+		 (window-parameters (mode-line-format . none))))
   (add-to-list 'embark-indicators #'embark-which-key-indicator)
   (defun embark-which-key-indicator ()
-		"An embark indicator that displays keymaps using which-key.
+    "An embark indicator that displays keymaps using which-key.
 The which-key help message will show the type and value of the
 current target followed by an ellipsis if there are further
 targets."
-		(lambda (&optional keymap targets prefix)
-			(if (null keymap)
-					(which-key--hide-popup-ignore-command)
-				(which-key--show-keymap
-				 (if (eq (caar targets) 'embark-become)
-						 "Become"
-					 (format "Act on %s '%s'%s"
-									 (plist-get (car targets) :type)
-									 (embark--truncate-target (plist-get (car targets) :target))
-									 (if (cdr targets) "…" "")))
-				 (if prefix
-						 (pcase (lookup-key keymap prefix 'accept-default)
-							 ((and (pred keymapp) km) km)
-							 (_ (key-binding prefix 'accept-default)))
-					 keymap)
-				 nil nil t))))
+    (lambda (&optional keymap targets prefix)
+      (if (null keymap)
+	  (which-key--hide-popup-ignore-command)
+	(which-key--show-keymap
+	 (if (eq (caar targets) 'embark-become)
+	     "Become"
+	   (format "Act on %s '%s'%s"
+		   (plist-get (car targets) :type)
+		   (embark--truncate-target (plist-get (car targets) :target))
+		   (if (cdr targets) "…" "")))
+	 (if prefix
+	     (pcase (lookup-key keymap prefix 'accept-default)
+	       ((and (pred keymapp) km) km)
+	       (_ (key-binding prefix 'accept-default)))
+	   keymap)
+	 nil nil t))))
   (setq embark-cycle-key "SPC")
   (setq embark-quit-after-action t)
   :init
@@ -221,37 +232,37 @@ targets."
 ;; Consult users will also want the embark-consult package.
 (use-package embark-consult
   :straight (:host github :repo "oantolin/embark"
-									 :files ("embark-consult.el"))
+		   :files ("embark-consult.el"))
   :after (embark consult)
   :demand
   :bind (:map embark-become-file+buffer-map
-							("m" . consult-bookmark)
-							("b" . consult-buffer)
-							("j" . consult-find)))
+	      ("m" . consult-bookmark)
+	      ("b" . consult-buffer)
+	      ("j" . consult-find)))
 
 (defun smart-for-files ()
   (interactive)
   (if (projectile-project-p)
-			(consult-projectile-find-file)
-		(call-interactively #'find-file)))
+      (consult-projectile-find-file)
+    (call-interactively #'find-file)))
 
 (defun smart-for-buffer ()
   (interactive)
   (if (projectile-project-p)
-			(consult-projectile-switch-to-buffer)
-		(consult-buffer)))
+      (consult-projectile-switch-to-buffer)
+    (consult-buffer)))
 
 (defun smart-for-terminal-otherw ()
   (interactive)
   (if (projectile-project-p)
-			(projectile-run-vterm-other-window)
-		(call-interactively #'vterm-other-window)))
+      (projectile-run-vterm-other-window)
+    (call-interactively #'vterm-other-window)))
 
 (defun smart-for-terminal ()
   (interactive)
   (if (projectile-project-p)
-			(projectile-run-vterm)
-		(call-interactively #'vterm)))
+      (projectile-run-vterm)
+    (call-interactively #'vterm)))
 
 ;;Settings normal global keybindings
 (evil-define-key 'normal 'global
@@ -282,6 +293,8 @@ targets."
   (kbd "<leader>qc") 'quick-calc
   (kbd "<leader>t") 'smart-for-terminal-otherw
   (kbd "<leader>T") 'smart-for-terminal
+  (kbd "<leader>gg") 'magit-status-with-removed-dotfiles-args
+  (kbd "<leader>gd") 'dotfiles-magit-status
   )
 
 (evil-define-key 'insert 'global (kbd "C-<backspace>") 'evil-delete-backward-word)
@@ -319,28 +332,28 @@ targets."
   :ensure nil
   :config
   (evil-define-key 'normal dired-mode-map
-		(kbd "f") 'dired-narrow-fuzzy
-		(kbd "T") 'dired-create-empty-file
-		(kbd "<RET>") 'dired-find-alternate-file
-		(kbd "<escape>") 'keyboard-escape-quit
-		(kbd "u") 'dired-up-directory))
+    (kbd "f") 'dired-narrow-fuzzy
+    (kbd "T") 'dired-create-empty-file
+    (kbd "<RET>") 'dired-find-alternate-file
+    (kbd "<escape>") 'keyboard-escape-quit
+    (kbd "h") 'dired-up-directory))
 
 (use-package dired-narrow
   :config
   (defun dired-narrow-ex-ac ()
-		;; Revert buffer and enter the directory after narrowing
-		(revert-buffer)
-		(dired-find-alternate-file))
+    ;; Revert buffer and enter the directory after narrowing
+    (revert-buffer)
+    (dired-find-alternate-file))
   (setq dired-narrow-exit-when-1-left t)
   (setq dired-narrow-exit-action 'dired-narrow-ex-ac)
   )
 
 (use-package which-key
-  :defer t
-  :straight t
-  :init
-  (which-key-setup-minibuffer)
-  (which-key-mode))
+  :defer 0
+  :diminish which-key-mode
+  :config
+  (which-key-mode)
+  (setq which-key-idle-delay 1))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
@@ -366,49 +379,59 @@ targets."
   ;; Add prompt indicator to `completing-read-multiple'.
   ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
   (defun crm-indicator (args)
-		(cons (format "[CRM%s] %s"
-									(replace-regexp-in-string
-									 "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-									 crm-separator)
-									(car args))
-					(cdr args)))
+    (cons (format "[CRM%s] %s"
+		  (replace-regexp-in-string
+		   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+		   crm-separator)
+		  (car args))
+	  (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
-				'(read-only t cursor-intangible t face minibuffer-prompt))
+	'(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t))
 
 (use-package doom-modeline
-  :straight t
   :config
   (setq doom-modeline-buffer-encoding nil)
   (setq doom-modeline-height 10)
   :init (doom-modeline-mode 1))
 
 (use-package lsp-mode
+  :commands (lsp lsp-deferred)
   :straight t
   :init
-  (add-hook 'LaTeX-mode-hook 'lsp)
-  (add-hook 'python-mode-hook 'lsp)
+  (setq lsp-keymap-prefix "C-c l")
   :config
-	(setq max-specpdl-size 64000) ;; HACK - fix bug in LSP
+  ;; (setq max-specpdl-size 64000) ;; HACK - fix bug in LSP
   (setq lsp-tex-server 'texlab)
   (setq lsp-enable-symbol-highlighting nil)
   (setq lsp-lens-enable nil)
   (setq lsp-completion-provider :none) ;; must have to make yasnippet backend work correctly
   (setq lsp-completion-enable t)
-  ;; (setq lsp-headerline-breadcrumb-enable nil)
-  (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode)
   :hook
   ((lua-mode . lsp)
-   (lsp-mode . lsp-enable-which-key-integration)) ;whichkey-integration
-  :commands lsp)
+   (lsp-mode . lsp-enable-which-key-integration)
+   (LaTeX-mode . lsp)
+   (python-mode . lsp)) ;whichkey-integration
+  )
+
+(use-package lsp-ui
+  :hook
+  (lsp-mode . lsp-ui-mode)
+  :straight t
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-doc-position 'bottom))
 
 (use-package lsp-latex
+  :commands (latex-mode)
   :straight (lsp-latex :type git :host github :repo "ROCKTAKEY/lsp-latex")
   :config
   (setq lsp-latex-build-forward-search-after nil)
@@ -422,11 +445,6 @@ targets."
   :defer t
   :straight t)
 
-;; optionally
-(use-package lsp-ui
-  :defer t
-  :straight t
-  :commands lsp-ui-mode)
 
 ;; Editorconfig, auto set indenting
 (use-package editorconfig
@@ -446,6 +464,7 @@ targets."
 
 ;; Highlight colorstring with the right color
 (use-package rainbow-mode
+  :commands rainbow-mode
   :config
   (add-hook 'prog-mode #'rainbow-mode))
 
@@ -492,49 +511,57 @@ targets."
   (add-hook 'org-mode-hook 'org-indent-mode)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
+(defun efs/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+	visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :hook (org-mode . efs/org-mode-visual-fill))
+
 (use-package tab-jump-out
   :custom
   (tab-jump-out-mode 1))
 
 (straight-use-package '(targets :type git :host github
-																:repo "dvzubarev/targets.el"
-																:branch "fix-remote"))
+				:repo "dvzubarev/targets.el"
+				:branch "fix-remote"))
 
 (use-package targets
   :config
   (setq targets-text-objects nil)
   (targets-setup nil)
   (targets-define-composite-to any-block
-		(("(" ")" pair)
-		 ("[" "]" pair)
-		 ("{" "}" pair)
-		 ;; ("<" ">" pair)
-		 )
-		:bind t
-		:next-key "N"
-		:last-key "L"
-		:around-key nil
-		:inside-key nil
-		:keys "b")
+    (("(" ")" pair)
+     ("[" "]" pair)
+     ("{" "}" pair)
+     ;; ("<" ">" pair)
+     )
+    :bind t
+    :next-key "N"
+    :last-key "L"
+    :around-key nil
+    :inside-key nil
+    :keys "b")
   (targets-define-composite-to any-quote
-		(("\"" "\"" quote)
-		 ("'" "'" quote))
-		:bind t
-		:next-key "N"
-		:last-key "L"
-		:around-key nil
-		:inside-key nil
-		:keys "q")
+    (("\"" "\"" quote)
+     ("'" "'" quote))
+    :bind t
+    :next-key "N"
+    :last-key "L"
+    :around-key nil
+    :inside-key nil
+    :keys "q")
   (targets-define-to word 'evil-word nil object :bind t :keys "w")
   (targets-define-to double-quote
-										 "\"" nil quote
-										 :bind t
-										 :next-key "N"
-										 :last-key "L"
-										 :around-key nil
-										 :inside-key nil
-										 :keys "q"
-										 :hooks (emacs-lisp-mode-hook)))
+		     "\"" nil quote
+		     :bind t
+		     :next-key "N"
+		     :last-key "L"
+		     :around-key nil
+		     :inside-key nil
+		     :keys "q"
+		     :hooks (emacs-lisp-mode-hook)))
 
 (use-package nyan-mode)
 
@@ -547,36 +574,37 @@ targets."
   "Export current buffer to PDF using Pandoc asynchronously without minibuffer output."
   (interactive)
   (let* ((output-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
-				 (process-buffer (generate-new-buffer "*pandoc-export*"))
-				 (exit-code (call-process "pandoc" nil process-buffer nil
-																	(buffer-file-name) "-o" output-file "-V" "geometry:margin=20mm" "--template=template.latex" "--pdf-engine=xelatex")))
-		(if (zerop exit-code)
-				(message "Exported to %s" output-file)
-			(with-current-buffer process-buffer
-				(message "Export failed: %s" (buffer-string))))
-		(kill-buffer process-buffer)))
+	 (process-buffer (generate-new-buffer "*pandoc-export*"))
+	 (exit-code (call-process "pandoc" nil process-buffer nil
+				  (buffer-file-name) "-o" output-file "-V" "geometry:margin=20mm" "--template=template.latex" "--pdf-engine=xelatex")))
+    (if (zerop exit-code)
+	(message "Exported to %s" output-file)
+      (with-current-buffer process-buffer
+	(message "Export failed: %s" (buffer-string))))
+    (kill-buffer process-buffer)))
 
 (defun open-pdf-with-zathura ()
   "Open the PDF file associated with the current buffer in Zathura."
   (interactive)
   (let ((pdf-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
-		(start-process "zathura" nil "zathura" pdf-file)))
+    (start-process "zathura" nil "zathura" pdf-file)))
 
 (defun open-pdf-with-pdf-tools ()
   "Open the PDF file associated with the current buffer in pdf-tools."
   (interactive)
   (let ((pdf-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
-		(if (file-exists-p pdf-file)
-				(progn
-					(pdf-tools-install)
-					(find-file pdf-file))
-			(message "PDF file not found."))))
+    (if (file-exists-p pdf-file)
+	(progn
+	  (pdf-tools-install)
+	  (find-file pdf-file))
+      (message "PDF file not found."))))
 
 ;; Auto reload pdf and suppress messages
 (global-auto-revert-mode 1)
 (setq auto-revert-verbose nil)
 
 (use-package pdf-tools
+  :after (latex-mode markdown-mode org-mode)
   :config
   (setq-default pdf-view-display-size 'fit-page) ; Fit page width
   (setq pdf-annot-activate-created-annotations t) ; Enable annotations
@@ -595,9 +623,9 @@ targets."
 (use-package markdown-mode
   :config
   (evil-define-key 'normal markdown-mode-map
-		(kbd "<leader>ee") 'export-buffer-to-pdf
-		(kbd "<leader>ez") 'open-pdf-with-zathura
-		(kbd "<leader>ep") 'open-pdf-with-pdf-tools)
+    (kbd "<leader>ee") 'export-buffer-to-pdf
+    (kbd "<leader>ez") 'open-pdf-with-zathura
+    (kbd "<leader>ep") 'open-pdf-with-pdf-tools)
   :mode ("README\\.md\\'" . gfm-mode)
   :init
   (setq markdown-enable-math t))
@@ -608,157 +636,164 @@ targets."
 ;;;;;;;;;;;
 
 (use-package tex
+  :commands latex-mode
   :straight auctex
   :config
   (setq TeX-save-query nil
-				TeX-clean-confirm nil
-				TeX-command-default "XeLaTeX"
-				TeX-source-correlate-start-server t
-				TeX-source-correlate-method 'synctex)
+	TeX-clean-confirm nil
+	TeX-command-default "XeLaTeX"
+	TeX-source-correlate-start-server t
+	TeX-source-correlate-method 'synctex)
   (TeX-source-correlate-mode 1)
   (add-to-list 'TeX-view-program-selection
-							 '(output-pdf "Zathura"))
+	       '(output-pdf "Zathura"))
 
   (defun my-export-to-pdf ()
-		"Export the current LaTeX document to PDF using AUCTeX."
-		(interactive)
-		(TeX-command "LaTeX" 'TeX-master-file nil)
-		(TeX-clean))
+    "Export the current LaTeX document to PDF using AUCTeX."
+    (interactive)
+    (TeX-command "LaTeX" 'TeX-master-file nil)
+    (TeX-clean))
 
   (defun my-export-to-pdf-and-view ()
-		"Export the current LaTeX document to PDF using AUCTeX."
-		(interactive)
-		(TeX-command "LaTeX" 'TeX-master-file nil)
-		(TeX-clean)
-		(TeX-view)
-		)
+    "Export the current LaTeX document to PDF using AUCTeX."
+    (interactive)
+    (TeX-command "LaTeX" 'TeX-master-file nil)
+    (TeX-clean)
+    (TeX-view)
+    )
 
   ;; Toggle between master and current compilation
   (defvar my-latex-original-master nil
-		"Variable to store the original value of TeX-master.")
+    "Variable to store the original value of TeX-master.")
 
   (defun my-latex-toggle-command ()
-		"Toggle between executing commands on master and current file."
-		(interactive)
-		(if my-latex-original-master
-				(progn
-					(setq TeX-master my-latex-original-master)
-					(setq my-latex-original-master nil))
-			(progn
-				(setq my-latex-original-master TeX-master)
-				(setq TeX-master nil)))
-		(message "Switched command: %s" (if TeX-master "master" "current")))
+    "Toggle between executing commands on master and current file."
+    (interactive)
+    (if my-latex-original-master
+	(progn
+	  (setq TeX-master my-latex-original-master)
+	  (setq my-latex-original-master nil))
+      (progn
+	(setq my-latex-original-master TeX-master)
+	(setq TeX-master nil)))
+    (message "Switched command: %s" (if TeX-master "master" "current")))
 
   (evil-define-key 'normal LaTeX-mode-map
-		(kbd "C-c e") 'my-export-to-pdf
-		(kbd "C-c T") 'my-latex-toggle-command
-		(kbd "C-c E") 'my-export-to-pdf-view
-		(kbd "C-c t") 'lsp-ui-imenu)
+    (kbd "C-c e") 'my-export-to-pdf
+    (kbd "C-c T") 'my-latex-toggle-command
+    (kbd "C-c E") 'my-export-to-pdf-view
+    (kbd "C-c t") 'lsp-ui-imenu)
 
   :init
   (add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
 
-
 (use-package yasnippet
-  :defer t
-  :init
-  (yas-minor-mode))
+  :hook
+  (prog-mode . yas-minor-mode)
+  (LaTeX-mode . yas-minor-mode)
+  (markdown-mode . yas-minor-mode)
+  (org-mode . yas-minor-mode)
+  :commands (yas-minor-mode))
 
 (use-package aas
+  :commands (org-mode markdown-mode latex-mode)
   :hook
   (org-mode . aas-activate-for-major-mode)
   (markdown-mode . aas-activate-for-major-mode)
   (LaTeX-mode . aas-activate-for-major-mode)
   :config
   (aas-set-snippets 'latex-mode
-										"jf" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\($1\\\\) $0"))
-										"kd" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+		    "jf" (lambda () (interactive)
+			   (yas-expand-snippet "\\\\($1\\\\) $0"))
+		    "kd" (lambda () (interactive)
+			   (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'org-mode
-										"jf" (lambda () (interactive)
-													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-										"kd" (lambda () (interactive)
-													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+		    "jf" (lambda () (interactive)
+			   (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+		    "kd" (lambda () (interactive)
+			   (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'markdown-mode
-										"jf" (lambda () (interactive)
-													 (yas-expand-snippet "$$1$ $0"))
-										"kd" (lambda () (interactive)
-													 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+		    "jf" (lambda () (interactive)
+			   (yas-expand-snippet "$$1$ $0"))
+		    "kd" (lambda () (interactive)
+			   (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
+  :commands (org-mode markdown-mode latex-mode)
   :straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
-  :hook (LaTeX-mode . laas-mode)
+  :hook
+  (LaTeX-mode . laas-mode)
   (markdown-mode . laas-mode)
   (org-mode . laas-mode)
   :config ; do whatever here
   (aas-set-snippets 'laas-mode
-										;; set condition!
-										:cond #'texmathp ; expand only while in math
-										"supp" "\\supp"
-										"On" "O(n)"
-										"O1" "O(1)"
-										"Olog" "O(\\log n)"
-										"Olon" "O(n \\log n)"
-										;; bind to functions!
-										"sum" (lambda () (interactive)
-														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-										"Span" (lambda () (interactive)
-														 (yas-expand-snippet "\\Span($1)$0"))
-										"inti" (lambda () (interactive)
-														 (yas-expand-snippet "\\int"))
-										"intd" (lambda () (interactive)
-														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-										"df" (lambda () (interactive)
-													 (yas-expand-snippet "_{$1}$0"))
-										"rt" (lambda () (interactive)
-													 (yas-expand-snippet "^{$1}$0"))
-										;; add accent snippets
-										:cond #'laas-object-on-left-condition
-										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+		    ;; set condition!
+		    :cond #'texmathp ; expand only while in math
+		    "supp" "\\supp"
+		    "On" "O(n)"
+		    "O1" "O(1)"
+		    "Olog" "O(\\log n)"
+		    "Olon" "O(n \\log n)"
+		    ;; bind to functions!
+		    "sum" (lambda () (interactive)
+			    (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+		    "Span" (lambda () (interactive)
+			     (yas-expand-snippet "\\Span($1)$0"))
+		    "inti" (lambda () (interactive)
+			     (yas-expand-snippet "\\int"))
+		    "intd" (lambda () (interactive)
+			     (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+		    "df" (lambda () (interactive)
+			   (yas-expand-snippet "_{$1}$0"))
+		    "rt" (lambda () (interactive)
+			   (yas-expand-snippet "^{$1}$0"))
+		    ;; add accent snippets
+		    :cond #'laas-object-on-left-condition
+		    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package cdlatex
+  :commands latex-mode
   :hook (LaTeX-mode . cdlatex-mode)
   :custom
   (cdlatex-takeover-dollar nil)
   (cdlatex-math-modify-prefix 59))
 
 (use-package latex-table-wizard
-  :after tex)
+  :commands latex-mode
+  :config
+  (defun some-useful-name (stuff-to-configure)
+    "Some useful documentation here!."
+    (dolist (entry stuff-to-configure)
+      (add-to-list 'latex-table-wizard-transient-keys
+		   (cons (intern (concat "latex-table-wizard-" (symbol-name (car entry))))
+			 (cdr entry)))))
 
-(defun some-useful-name (stuff-to-configure)
-  "Some useful documentation here!."
-  (dolist (entry stuff-to-configure)
-		(add-to-list 'latex-table-wizard-transient-keys
-								 (cons (intern (concat "latex-table-wizard-" (symbol-name (car entry))))
-											 (cdr entry)))))
-
-;; example use
-(some-useful-name '((right . "l")
-										(left . "h")
-										(beginning-of-cell . "ii")
-										(down . "j")
-										(up . "k")
-										(end-of-cell . "a")
-										(beginning-of-row . "II")
-										(end-of-row . "A")
-										(bottom . "G")
-										(top . "gg")
-										(mark-cell . "m")
-										(insert-column . "C")
-										(insert-row .	"R")
-										(kill-column-content ."DCC"	)
-										(kill-row-content . "DRC"	)
-										(delete-column . "Dc"	)
-										(delete-row . "Dr"	)
-										))
+  ;; example use
+  (some-useful-name '((right . "l")
+		      (left . "h")
+		      (beginning-of-cell . "ii")
+		      (down . "j")
+		      (up . "k")
+		      (end-of-cell . "a")
+		      (beginning-of-row . "II")
+		      (end-of-row . "A")
+		      (bottom . "G")
+		      (top . "gg")
+		      (mark-cell . "m")
+		      (insert-column . "C")
+		      (insert-row .	"R")
+		      (kill-column-content ."DCC"	)
+		      (kill-row-content . "DRC"	)
+		      (delete-column . "Dc"	)
+		      (delete-row . "Dr"	)
+		      )))
 
 ;;;;;;;;;;;;;;;
 ;; AvyConfig ;;
 ;;;;;;;;;;;;;;;
 
 (use-package avy
-  :straight t
+  :commands (prog-mode latex-mode markdown-mode org-mode)
   :config
   (setq avy-timeout-seconds 0.2)
   (setq avy-keys (nconc (number-sequence ?a ?z)))
@@ -778,17 +813,21 @@ targets."
 (setq avy-timeout-seconds 0.25)
 
 (use-package expand-region
+  :commands (prog-mode org-mode latex-mode markdown-mode)
   :config
   (defun expand-region ()
-		"Repeat the `er/expand-region' command."
-		(interactive)
-		(dotimes (_ 2)
-			(call-interactively 'er/expand-region)))
+    "Repeat the `er/expand-region' command."
+    (interactive)
+    (dotimes (_ 2)
+      (call-interactively 'er/expand-region)))
   (evil-define-key 'normal 'global (kbd "C-SPC") 'expand-region)
   (setq expand-region-subword-enabled t)
   )
 
 (use-package org-fragtog
+  :commands (org-mode)
+  :hook
+  (org-mode . org-fragtog-mode)
   :after org-mode
   :config
   ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.6))
@@ -840,11 +879,13 @@ targets."
 ;; 	())
 
 (use-package org-modern
+  :commands (org-mode)
   :after org-mode
   :hook
-  (add-hook 'org-mode-hook #'org-modern-mode))
+  (org-mode-hook . org-modern-mode))
 
-(use-package gptel)
+(use-package gptel
+  :commands gptel)
 
 (use-package format-all
   :init
@@ -864,9 +905,12 @@ targets."
   :config ; stuff to do after requiring the package
   (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
   (progn
-		(yas-reload-all)))
+    (yas-reload-all)))
 
 (use-package projectile
+  :diminish projectile-mode
+  :commands
+  (consult-projectile consult-project-buffer consult-projectile-recentf consult-projectile-find-dir consult-projectile-find-file consult-projectile-switch-project consult-projectile-switch-to-buffer)
   :custom
   (setq projectile-enable-caching t)
   (setq projectile-track-known-projects-automatically nil)
@@ -879,6 +923,7 @@ targets."
   (projectile-mode))
 
 (use-package magit
+  :commands (magit-status magit-file-dispatch magit-dispatch dotfiles-magit-status magit-status-with-removed-dotfiles-args)
   :config
   (setq magit-commit-ask-to-stage 'stage)
   ;; prepare the arguments
@@ -887,21 +932,21 @@ targets."
 
   ;; function to start magit on dotfiles
   (defun dotfiles-magit-status ()
-		(interactive)
-		(add-to-list 'magit-git-global-arguments dotfiles-git-dir)
-		(add-to-list 'magit-git-global-arguments dotfiles-work-tree)
-		(call-interactively 'magit-status))
-  (global-set-key (kbd "<leader> gd") 'dotfiles-magit-status)
+    (interactive)
+    (add-to-list 'magit-git-global-arguments dotfiles-git-dir)
+    (add-to-list 'magit-git-global-arguments dotfiles-work-tree)
+    (call-interactively 'magit-status))
+  ;; (global-set-key (kbd "<leader> gd") 'dotfiles-magit-status)
 
   ;; wrapper to remove additional args before starting magit
   (defun magit-status-with-removed-dotfiles-args ()
-		(interactive)
-		(setq magit-git-global-arguments (remove dotfiles-git-dir magit-git-global-arguments))
-		(setq magit-git-global-arguments (remove dotfiles-work-tree magit-git-global-arguments))
-		(call-interactively 'magit-status))
+    (interactive)
+    (setq magit-git-global-arguments (remove dotfiles-git-dir magit-git-global-arguments))
+    (setq magit-git-global-arguments (remove dotfiles-work-tree magit-git-global-arguments))
+    (call-interactively 'magit-status))
   ;; redirect global magit hotkey to our wrapper
-  (global-set-key (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
-  (define-key magit-mode-map (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
+  ;; (global-set-key (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
+  ;; (define-key magit-mode-map (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
 
   ;; Fixing keybinding
   (evil-define-key 'normal magit-mode-map (kbd "h") 'magit-section-backward-sibling)
@@ -915,32 +960,32 @@ targets."
   ;; (set-fontset-font t 'unicode (font-spec :family "JetBrainsMono Nerd Font"))
   :custom
   (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"
-				vterm-internal-use-ligatures t
-				vterm-max-scrollback 10000
-				vterm-shell "zsh"
-				))
+	vterm-internal-use-ligatures t
+	vterm-max-scrollback 10000
+	vterm-shell "zsh"
+	))
 
 ;; Python mode setup
 (use-package python-mode
-	:commands python-mode
-	:straight nil
-	:ensure nil
-	:init
-	(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-	(add-to-list 'interpreter-mode-alist '("python" . python-mode))
-	(evil-define-key 'normal python-mode-map (kbd "<tab>") 'evil-shift-right-line)
-	(evil-define-key 'normal python-mode-map (kbd "<backtab>") 'evil-shift-left-line)
-	(evil-define-key 'visual python-mode-map (kbd "<tab>") 'evil-shift-right)
-	(evil-define-key 'visual python-mode-map (kbd "<backtab>") 'evil-shift-left)
-	)
+  :commands python-mode
+  :straight (:type built-in)
+  :init
+  (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+  (add-to-list 'interpreter-mode-alist '("python" . python-mode))
+  (evil-define-key 'normal python-mode-map (kbd "<tab>") 'evil-shift-right-line)
+  (evil-define-key 'normal python-mode-map (kbd "<backtab>") 'evil-shift-left-line)
+  (evil-define-key 'visual python-mode-map (kbd "<tab>") 'evil-shift-right)
+  (evil-define-key 'visual python-mode-map (kbd "<backtab>") 'evil-shift-left)
+  )
 
 (use-package flycheck
+  :commands (flycheck-mode)
   :defer t
   )
 
 (use-package csv-mode
-	:commands csv-mode
-	)
+  :commands csv-mode
+  )
 
 (use-package hl-todo
   :defer t
@@ -948,7 +993,7 @@ targets."
   (global-hl-todo-mode))
 
 (use-package git-gutter
-  :hook ((prog-mode LaTeX-mode) . git-gutter-mode)
+  :hook ((prog-mode markdown-mode LaTeX-mode) . git-gutter-mode)
   :config
   (setq git-gutter:update-interval 0.02))
 
@@ -970,14 +1015,14 @@ targets."
   )
 
 (use-package langtool
-	:config
-	(setq langtool-java-classpath
-				"/usr/share/languagetool:/usr/share/java/languagetool/*"))
+  :config
+  (setq langtool-java-classpath
+	"/usr/share/languagetool:/usr/share/java/languagetool/*"))
 
 (use-package flycheck-languagetool
-	:after flycheck
-	:requires flyckeck langtool
-	:init
+  :after flycheck
+  :requires flyckeck langtool
+  :init
   (setq flycheck-languagetool-server-jar "~/Downloads/LanguageTool-6.1/languagetool-server.jar"))
 
 (provide 'core)

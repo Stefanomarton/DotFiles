@@ -66,6 +66,7 @@
 ;;  '(company-tooltip-annotation ((t (:foreground "MistyRose2")))))
 
 (use-package company-box
+	:commands (company-mode)
 	:diminish
 	:if (display-graphic-p)
 	:defines company-box-icons-all-the-icons
