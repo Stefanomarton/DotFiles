@@ -1,30 +1,27 @@
-(use-package company-jedi)
-
 (use-package company
+	:after evil
 	:diminish company-mode
 	:hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
-	:bind
-	(:map company-active-map
-				([tab] . smarter-tab-to-complete)
-				("C-d" . company-box-doc-manually)
-				("tab" . smarter-tab-to-complete))
 	:custom
 	(setq company-tooltip-offset-display 'lines	;; Show number before and after current candidates
 				company-tooltip-flip-when-above t	;; Avoid screen breaking when at the bottom of the buffer
 				company-tooltip-minimum 2
-				company-minimum-prefix-length 2
+				company-minimum-prefix-length 1
 				company-tooltip-align-annotations t
 				company-require-match 'never
 				company-tooltip-limit 5
 				company-auto-complete t
-				company-idle-delay 0.0)
+				company-idle-delay 0)
 	(company-global-modes '(not shell-mode eaf-mode))
 	:init
 	(setq company-backends '((company-capf :with company-yasnippet company-files)))
+	(global-company-mode)
 	:config
+	(define-key company-active-map (kbd "C-d") 'company-show-doc-buffer)
+	(evil-global-set-key 'insert (kbd "C-k") 'company-complete-common-or-cycle)
 	(add-hook 'python-mode-hook
 						(lambda ()
-							(set (make-local-variable 'company-backends) '(company-capf :with company-jedi company-files))))
+							(set (make-local-variable 'company-backends) '(company-capf :with company-files))))
 	(add-hook 'markdown-mode-hook
 						(lambda ()
 							(set (make-local-variable 'company-backends) '(company-yasnippet company-files))))
@@ -34,41 +31,39 @@
 	(global-company-mode 1)
 
 	(defun smarter-tab-to-complete ()
-		"Try to `org-cycle', `yas-expand', and `yas-next-field' at current cursor position.
-     If all failed, try to complete the common part with `company-complete-common'"
-		(interactive)
-		(when yas-minor-mode
-			(let ((old-point (point))
-						(old-tick (buffer-chars-modified-tick))
-						(func-list
-						 (if (equal major-mode 'org-mode) '(org-cycle yas-expand yas-next-field tab-jump-out)
-							 '(yas-expand yas-next-field tab-jump-out))))
-				(catch 'func-suceed
-					(dolist (func func-list)
-						(ignore-errors (call-interactively func))
-						(unless (and (eq old-point (point))
-												 (eq old-tick (buffer-chars-modified-tick)))
-							(throw 'func-suceed t)))
-					(company-complete-common))))
+	 	"Try to `org-cycle', `yas-expand', and `yas-next-field' at current cursor position.
+      If all failed, try to complete the common part with `company-complete-common'"
+	 	(interactive)
+	 	(when yas-minor-mode
+	 		(let ((old-point (point))
+	 					(old-tick (buffer-chars-modified-tick))
+	 					(func-list
+	 					 (if (equal major-mode 'org-mode) '(org-cycle yas-expand yas-next-field tab-jump-out)
+	 						 '(yas-expand yas-next-field tab-jump-out))))
+	 			(catch 'func-suceed
+	 				(dolist (func func-list)
+	 					(ignore-errors (call-interactively func))
+	 					(unless (and (eq old-point (point))
+	 											 (eq old-tick (buffer-chars-modified-tick)))
+	 						(throw 'func-suceed t)))
+	 				(company-complete-common)))))
 
-		;; the following stops company from using the orderless completion style
-		;; makes company much more useful
-		(define-advice company-capf
-				(:around (orig-fun &rest args) set-completion-styles)
-			(let ((completion-styles '(basic partial-completion)))
-				(apply orig-fun args))))
+	;; the following stops company from using the orderless completion style
+	;; makes company much more useful
+	(define-advice company-capf
+			(:around (orig-fun &rest args) set-completion-styles)
+		(let ((completion-styles '(basic partial-completion)))
+			(apply orig-fun args))))
 
-
-	;; (custom-set-faces
-	;;  '(company-tooltip
-	;; 	 ((t (:background "#191C25" :foreground "#ECEFF4"))))
-	;;  '(company-tooltip-selection
-	;; 	 ((t (:background "#81A1C1" :foreground "#ECEFF4"))))
-	;;  '(company-tooltip-common ((t (:weight bold :foreground "pink1"))))
-	;;  '(company-scrollbar-fg ((t (:background "ivory3"))))
-	;;  '(company-scrollbar-bg ((t (:background "ivory2"))))
-	;;  '(company-tooltip-annotation ((t (:foreground "MistyRose2")))))
-	)
+;; (custom-set-faces
+;;  '(company-tooltip
+;; 	 ((t (:background "#191C25" :foreground "#ECEFF4"))))
+;;  '(company-tooltip-selection
+;; 	 ((t (:background "#81A1C1" :foreground "#ECEFF4"))))
+;;  '(company-tooltip-common ((t (:weight bold :foreground "pink1"))))
+;;  '(company-scrollbar-fg ((t (:background "ivory3"))))
+;;  '(company-scrollbar-bg ((t (:background "ivory2"))))
+;;  '(company-tooltip-annotation ((t (:foreground "MistyRose2")))))
 
 (use-package company-box
 	:diminish
