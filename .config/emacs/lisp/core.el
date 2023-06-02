@@ -11,28 +11,32 @@
   (setq evil-echo-state nil)
   (setq evil-want-keybinding nil)
   (setq evil-respect-visual-line-mode t)
-  (setq evil-want-empty-ex-last-command nil)
+  (setq evil-want-empty-ex-last-command t)
   (setq evil-want-C-u-scroll t) ;; allow scroll up with 'C-u'
-  (setq evil-want-C-d-scroll t) ;; avoid scroll down with 'C-d'
+  (setq evil-want-C-d-scroll nil) ;; avoid scroll down with 'C-d'
   (setq evil-split-window-below t)
   (setq evil-vsplit-window-right t)
   (setq evil-undo-system 'undo-fu)
   (setq evil-search-module 'evil-search)
   :config
+	(evil-define-key 'normal 'global (kbd "C-d") 'evil-scroll-down)
   (evil-mode 1))
 
 (use-package evil-collection
+	:requires evil
   :after evil
   :config
   (evil-collection-init))
 
 (use-package evil-tex
+	:requires evil
   :after evil
   :hook
   (LaTeX-mode . evil-tex-mode)
   )
 
 (use-package evil-embrace
+	:requires evil
   :after evil
   :config
   (evil-embrace-enable-evil-surround-integration)
@@ -47,6 +51,7 @@
 
 (use-package evil-commentary
   ;; Better Comment Action
+	:requires evil
   :after evil
   :config
   (evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
@@ -390,6 +395,7 @@ targets."
   (add-hook 'LaTeX-mode-hook 'lsp)
   (add-hook 'python-mode-hook 'lsp)
   :config
+	(setq max-specpdl-size 64000) ;; HACK - fix bug in LSP
   (setq lsp-tex-server 'texlab)
   (setq lsp-enable-symbol-highlighting nil)
   (setq lsp-lens-enable nil)
@@ -665,20 +671,20 @@ targets."
   (LaTeX-mode . aas-activate-for-major-mode)
   :config
   (aas-set-snippets 'latex-mode
-		"jf" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\($1\\\\) $0"))
-		"kd" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+										"jf" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\($1\\\\) $0"))
+										"kd" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'org-mode
-		"jf" (lambda () (interactive)
-					 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-		"kd" (lambda () (interactive)
-					 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+										"jf" (lambda () (interactive)
+													 (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+										"kd" (lambda () (interactive)
+													 (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'markdown-mode
-		"jf" (lambda () (interactive)
-					 (yas-expand-snippet "$$1$ $0"))
-		"kd" (lambda () (interactive)
-					 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+										"jf" (lambda () (interactive)
+													 (yas-expand-snippet "$$1$ $0"))
+										"kd" (lambda () (interactive)
+													 (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
   :straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -687,29 +693,29 @@ targets."
   (org-mode . laas-mode)
   :config ; do whatever here
   (aas-set-snippets 'laas-mode
-		;; set condition!
-		:cond #'texmathp ; expand only while in math
-		"supp" "\\supp"
-		"On" "O(n)"
-		"O1" "O(1)"
-		"Olog" "O(\\log n)"
-		"Olon" "O(n \\log n)"
-		;; bind to functions!
-		"sum" (lambda () (interactive)
-						(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-		"Span" (lambda () (interactive)
-						 (yas-expand-snippet "\\Span($1)$0"))
-		"inti" (lambda () (interactive)
-						 (yas-expand-snippet "\\int"))
-		"intd" (lambda () (interactive)
-						 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-		"df" (lambda () (interactive)
-					 (yas-expand-snippet "_{$1}$0"))
-		"rt" (lambda () (interactive)
-					 (yas-expand-snippet "^{$1}$0"))
-		;; add accent snippets
-		:cond #'laas-object-on-left-condition
-		"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+										;; set condition!
+										:cond #'texmathp ; expand only while in math
+										"supp" "\\supp"
+										"On" "O(n)"
+										"O1" "O(1)"
+										"Olog" "O(\\log n)"
+										"Olon" "O(n \\log n)"
+										;; bind to functions!
+										"sum" (lambda () (interactive)
+														(yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+										"Span" (lambda () (interactive)
+														 (yas-expand-snippet "\\Span($1)$0"))
+										"inti" (lambda () (interactive)
+														 (yas-expand-snippet "\\int"))
+										"intd" (lambda () (interactive)
+														 (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+										"df" (lambda () (interactive)
+													 (yas-expand-snippet "_{$1}$0"))
+										"rt" (lambda () (interactive)
+													 (yas-expand-snippet "^{$1}$0"))
+										;; add accent snippets
+										:cond #'laas-object-on-left-condition
+										"qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package cdlatex
   :hook (LaTeX-mode . cdlatex-mode)
@@ -872,8 +878,6 @@ targets."
   (setq projectile-indexing-method 'native)
   (projectile-mode))
 
-(use-package rg)
-
 (use-package magit
   :config
   (setq magit-commit-ask-to-stage 'stage)
@@ -904,6 +908,7 @@ targets."
   (evil-define-key 'normal magit-mode-map (kbd "l") 'magit-section-forward-sibling)
   (evil-define-key 'normal magit-mode-map (kbd "SPC") 'magit-section-cycle)
   )
+
 (use-package vterm
   :commands vterm
   :config
@@ -916,19 +921,26 @@ targets."
 				))
 
 ;; Python mode setup
-
-(evil-define-key 'normal 'python-mode-map (kbd "<tab>") 'evil-shift-right-line)
-(evil-define-key 'normal 'python-mode-map (kbd "<backtab>") 'evil-shift-left-line)
-(evil-define-key 'visual 'python-mode-map (kbd "<tab>") 'evil-shift-right)
-(evil-define-key 'visual 'python-mode-map (kbd "<backtab>") 'evil-shift-left)
+(use-package python-mode
+	:commands python-mode
+	:straight nil
+	:ensure nil
+	:init
+	(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+	(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+	(evil-define-key 'normal python-mode-map (kbd "<tab>") 'evil-shift-right-line)
+	(evil-define-key 'normal python-mode-map (kbd "<backtab>") 'evil-shift-left-line)
+	(evil-define-key 'visual python-mode-map (kbd "<tab>") 'evil-shift-right)
+	(evil-define-key 'visual python-mode-map (kbd "<backtab>") 'evil-shift-left)
+	)
 
 (use-package flycheck
   :defer t
   )
 
 (use-package csv-mode
-  :defer t
-  )
+	:commands csv-mode
+	)
 
 (use-package hl-todo
   :defer t
@@ -963,6 +975,8 @@ targets."
 				"/usr/share/languagetool:/usr/share/java/languagetool/*"))
 
 (use-package flycheck-languagetool
+	:after flycheck
+	:requires flyckeck langtool
 	:init
   (setq flycheck-languagetool-server-jar "~/Downloads/LanguageTool-6.1/languagetool-server.jar"))
 
