@@ -1,11 +1,9 @@
-(provide 'options)
-
 (use-package emacs
 	:config
 	;; Set default font
 	(set-face-attribute 'default nil
 											:family "JetBrains Mono Nerd Font"
-											:height 135
+											:height 120
 											:weight 'normal
 											:width 'normal)
 
@@ -22,20 +20,11 @@
 	(unless (derived-mode-p 'markdown-mode)
 		(setq nuke-trailing-whitespace-p t))
 
-	(add-hook 'before-save-hook
-						(lambda ()
-							(unless (derived-mode-p 'markdown-mode)
-								(lambda() (delete-trailing-whitespace))
-								)))
-
-	(add-hook 'before-save-hook
-						(lambda ()
-							(unless (derived-mode-p 'markdown-mode)
-								'whitespace-cleanup
-								)))
-
 	;; Wrap line
-	(add-hook 'text-mode-hook 'visual-line-mode)
+	(global-visual-line-mode)
+
+	;; Abbreviate home-dir
+	(setq abbreviate-home-dir t)
 
 	;; Display line number relative and absolute
 	(setq display-line-numbers-grow-only t)
@@ -66,32 +55,45 @@
 				`((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 	(setq create-lockfiles nil)
 
-	(use-package frame
-		:straight (:type built-in)
-		:custom
-		(window-divider-default-right-width 12)
-		(window-divider-default-bottom-width 1)
-		(window-divider-default-places 'right-only)
-		(window-divider-mode t))
 	;; Make sure new frames use window-divider
 	(add-hook 'before-make-frame-hook 'window-divider-mode)
 
-	;; Display symbol for newline
-	(add-hook 'prog-mode-hook
+	;; ;; Display symbol for newline
+	;; (add-hook 'prog-mode-hook
+	;; 					(lambda ()
+	;; 						(whitespace-newline-mode t)))
+
+	;; ;; Set ⏎ symbol for newlines
+	;; (setq whitespace-display-mappings
+	;; 			'((newline-mark 10 [32 ?\x23CE 10])))
+
+	(add-hook 'before-save-hook
 						(lambda ()
-							(whitespace-newline-mode t)))
+							(unless (derived-mode-p 'markdown-mode)
+								(lambda() (delete-trailing-whitespace))
+								)))
 
-	;; Set ⏎ symbol for newlines
-	(setq whitespace-display-mappings
-				'((newline-mark 10 [32 ?\x23CE 10])))
+	(add-hook 'before-save-hook
+						(lambda ()
+							(unless (derived-mode-p 'markdown-mode)
+								'whitespace-cleanup
+								)))
+
 	)
-
-(use-package all-the-icons
-	:straight t)
 
 (use-package nerd-icons
 	:straight t)
 
+(use-package frame
+	:straight (:type built-in)
+	:custom
+	(window-divider-default-right-width 12)
+	(window-divider-default-bottom-width 1)
+	(window-divider-default-places 'right-only)
+	(window-divider-mode t))
+
 (use-package doom-themes)
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 (load-theme 'doom-nord t)
+
+(provide 'options)
