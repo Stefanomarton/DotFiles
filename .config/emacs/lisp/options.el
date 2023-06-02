@@ -26,6 +26,9 @@
 	;; Abbreviate home-dir
 	(setq abbreviate-home-dir t)
 
+	;; Hacky
+	(setq max-lisp-eval-depth 10000)
+
 	;; Display line number relative and absolute
 	(setq display-line-numbers-grow-only t)
 	(setq display-line-numbers-width-start 70)
