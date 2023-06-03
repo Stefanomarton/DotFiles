@@ -900,50 +900,6 @@ targets."
   (plist-put org-format-latex-options :justify 'center)
   )
 
-;; ;; Daemon mode configs
-
-;; (pcase system-type
-;; 	('gnu/linux "It's Linux!")
-;; 	('windows-nt "It's Windows!")
-;; 	('darwin "It's macOS!"))
-
-;; (if (daemonp)
-;; 		(message "Loading in the daemon!")
-;; 	(message "Loading in regular Emacs!"))
-
-;; (defun efs/set-font-faces ()
-;; 	(message "Setting faces!")
-;; 	(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 135)
-
-;; 	;; Set the fixed pitch face
-;; 	(set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 135)
-
-;; 	;; Set the variable pitch face
-;; 	(set-face-attribute 'variable-pitch nil :font "JetBrainsMono Nerd Font" :height 135 :weight 'regular))
-
-;; (if (daemonp)
-;; 		(add-hook 'after-make-frame-functions
-;; 							(lambda (frame)
-;; 								;; (setq doom-modeline-icon t)
-;; 								(with-selected-frame frame
-;; 									(efs/set-font-faces))))
-;; 	(efs/set-font-faces)
-;; 	(setq highlight-indent-guides-method 'character)
-;; 	(setq doom-modeline-icon t)
-;; 	)
-;; (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; ;; Terminal specific configuration
-
-;; (if (display-graphic-p)
-;; 		;; GUI mode
-;; 		(progn
-;; 			(nyan-mode 1))
-;; 	;; Terminal mode
-;; 	())
-
 (use-package org-modern
   :commands (org-mode)
   :after org-mode
