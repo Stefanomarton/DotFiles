@@ -1,4 +1,5 @@
-;; Straight package manager bootstrappping
+(setq straight-check-for-modifications 'live-with-find) ;; Maybe removed in the future by straight
+(add-to-list 'load-path "~/.config/emacs/lisp/")
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -12,16 +13,20 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(add-to-list 'load-path "~/.config/emacs/lisp/")
+;; Faster loading
+(setq package-enable-at-startup nil)
+
+;; Resizing the Emacs frame can be a terribly expensive part of changing the
+;; font. By inhibiting this, we easily halve startup times with fonts that are
+;; larger than the system default.
+(setq frame-inhibit-implied-resize t)
 
 (straight-use-package 'use-package) ; Base package for package configuration
 (setq straight-use-package-by-default t) ;Auto install package use in the configuration
-
 ;; Set custom file
 (require 'options)
 (require 'setup-company)
 (require 'core)
-
 (setq custom-file "~/.config/emacs/custom.el")
 (load custom-file)
 (put 'dired-find-alternate-file 'disabled nil)

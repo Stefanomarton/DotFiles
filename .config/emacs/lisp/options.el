@@ -1,5 +1,52 @@
 (use-package emacs
   :config
+  (setq-default line-spacing 1)
+  (setq default-directory "~/"
+	;; always follow symlinks when opening files
+	vc-follow-symlinks t
+	;; overwrite text when selected, like we expect.
+	delete-selection-mode t
+	;; quiet startup
+	inhibit-startup-message t
+	initial-scratch-message nil
+	;; hopefully all themes we install are safe
+	custom-safe-themes t
+	backup-by-copying t
+	delete-old-versions t
+	;; when quiting emacs, just kill processes
+	confirm-kill-processes nil
+	;; ask if local variables are safe once.
+	enable-local-variables t
+	;; life is too short to type yes or no
+	use-short-answers t
+
+	;; clean up dired buffers
+	dired-kill-when-opening-new-dired-buffer t)
+
+  ;; We also set the file-name-handler-alist to an empty list, and reset it after Emacs has finished initializing.
+  (defvar me/-file-name-handler-alist file-name-handler-alist)
+  (setq file-name-handler-alist nil)
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (setq file-name-handler-alist me/-file-name-handler-alist)))
+
+  (setq site-run-file nil)
+  (setq inhibit-compacting-font-caches t)
+
+  ;; fix color display when loading emacs in terminal
+  (defun enable-256color-term ()
+    (interactive)
+    (load-library "term/xterm")
+    (terminal-init-xterm))
+
+  (unless (display-graphic-p)
+    (if (string-suffix-p "256color" (getenv "TERM"))
+	(enable-256color-term)))
+
+  ;; Optimizations for improving I/O performance. Increase max bytes read from a sub-process in a single op (Emacs 27+)
+  (when (boundp 'read-process-output-max)
+    ;; 1MB in bytes, default 4096 bytes
+    (setq read-process-output-max 1048576))
   (setq inhibit-startup-screen t)
   (setq	initial-scratch-message nil)
   (setq	sentence-end-double-space nil)
@@ -7,11 +54,14 @@
   (setq frame-resize-pixelwise t)
   (setq tab-width 2)
 
+  ;; Enable debugging whenever we encounter an error.
+  (setq debug-on-error t)
+
   ;; Better Then Global Centered Cursor Mode
   (setq indicate-empty-lines nil)
   (setq scroll-preserve-screen-position t)
   (setq ccm-recenter-at-end-of-file t)
-  (setq scroll-conservatively 1000)
+  (setq scroll-conservatively 101)
   (setq scroll-margin 1000)
   (setq maximum-scroll-margin 0.5)
   ;; default to utf-8 for all the things
@@ -131,6 +181,7 @@
   )
 
 (use-package doom-themes
+  :defer t
   ;; :config
   ;; (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
   :init

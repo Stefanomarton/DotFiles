@@ -25,6 +25,15 @@
   (evil-define-key 'normal 'global (kbd "C-d") 'evil-scroll-down)
   (evil-mode 1))
 
+(use-package undo-fu
+  :after evil
+  :straight t)
+
+;; (use-package undo-tree
+;;   :demand t
+;;   :config
+;;   (global-undo-tree-mode))
+
 (use-package evil-collection
   :requires evil
   :after evil
@@ -100,18 +109,19 @@
 	(kill-buffer (current-buffer))))))
 
 (use-package consult
+  :defer 1
   :commands
   (evil-collection-consult-mark consult-dir consult-man consult-find consult-grep consult-info consult-line consult-mark consult-imenu consult-theme consult-buffer consult-kmacro consult-locate consult-narrow consult-flymake consult-history consult-outline consult-ripgrep consult-bookmark consult-flycheck consult-flyspell consult-git-grep consult-register consult-yank-pop consult-dir-dired consult-goto-line consult-keep-lines consult-line-multi consult-org-agenda consult-projectile consult-focus-lines consult-global-mark consult-imenu-multi consult-narrow-help consult-org-heading consult-recent-file consult-mode-command consult-yank-replace consult-compile-error consult-dir-jump-file consult-register-load consult-project-buffer consult-register-store consult-complex-command consult-isearch-forward consult-isearch-history consult-minor-mode-menu consult-isearch-backward consult-preview-at-point consult-buffer-other-frame consult-projectile-recentf consult-buffer-other-window consult-projectile-find-dir consult-yank-from-kill-ring consult-projectile-find-file consult-preview-at-point-mode consult-projectile-switch-project evil-collection-consult-jump-list consult-projectile-switch-to-buffer)
   )
 
 (use-package consult-projectile
-  :after consult)
+  :after ( consult projectile ))
 
 (use-package consult-dir
   :after consult)
 
 (use-package consult-flycheck
-  :after consult)
+  :after (consult flycheck))
 
 (use-package consult-flyspell
   :after consult)
@@ -173,10 +183,12 @@
 	completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia
+  :defer 1
   :config
   (marginalia-mode))
 
 (use-package embark
+  :after marginalia
   :config
 
   ;; Base keybindings
@@ -309,11 +321,6 @@ targets."
   (setq evil-goggle-duration 0.5)
   (evil-goggles-use-diff-faces))
 
-(use-package consult)
-
-(use-package undo-fu
-  :straight t)
-
 (use-package evil-surround
   :after evil
   :straight t
@@ -351,9 +358,14 @@ targets."
 (use-package which-key
   :defer 0
   :diminish which-key-mode
+  :custom
+  (which-key-allow-evil-operators t)
+  (which-key-show-remaining-keys t)
+  (which-key-sort-order 'which-key-prefix-then-key-order)
+  (which-key-idle-delay 1)
   :config
   (which-key-mode)
-  (setq which-key-idle-delay 1))
+  (which-key-setup-minibuffer))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
@@ -375,6 +387,9 @@ targets."
 
 ;; A few more useful configurations...
 (use-package emacs
+  :config
+  (setq fast-but-imprecise-scrolling t
+	jit-lock-defer-time 0)
   :init
   ;; Add prompt indicator to `completing-read-multiple'.
   ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
@@ -396,10 +411,13 @@ targets."
   (setq enable-recursive-minibuffers t))
 
 (use-package doom-modeline
-  :config
-  (setq doom-modeline-buffer-encoding nil)
-  (setq doom-modeline-height 10)
-  :init (doom-modeline-mode 1))
+  :custom
+  (inhibit-compacting-font-caches t)
+  (doom-modeline-buffer-encoding nil)
+  (doom-modeline-height 10)
+  (doom-modeline-hud t)
+  :init
+  (doom-modeline-mode 1))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -448,6 +466,7 @@ targets."
 
 ;; Editorconfig, auto set indenting
 (use-package editorconfig
+  :defer 1
   :config
   (editorconfig-mode 1))
 
@@ -459,8 +478,14 @@ targets."
 
 ;; Highlight nested parentheses
 (use-package rainbow-delimiters
+  :defer 1
+  :hook
+  (prog-mode . rainbow-delimiters-mode)
   :config
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+  (set-face-attribute 'rainbow-delimiters-unmatched-face nil
+                      :foreground "red"
+                      :inherit 'error
+                      :box t))
 
 ;; Highlight colorstring with the right color
 (use-package rainbow-mode
@@ -470,20 +495,22 @@ targets."
 
 (use-package dashboard
   :ensure t
-  :config
-  (setq dashboard-banner-logo-title "Welcome Back Goblin")
+  :custom
+  (initial-buffer-choice #'(lambda () (get-buffer-create "*dashboard*")))
+  (dashboard-banner-logo-title "Welcome Back Goblin")
   ;; Content is not centered by default. To center, set
-  (setq dashboard-startup-banner "~/.config/emacs/themes/logo.txt")
-  (setq dashboard-center-content t)
-  (setq dashboard-icon-type 'nerd-icons) ;; use `nerd-icons' package
+  (dashboard-startup-banner "~/.config/emacs/themes/logo.txt")
+  (dashboard-center-content t)
+  (dashboard-icon-type 'nerd-icons) ;; use `nerd-icons' package
   ;; (setq dashboard-set-navigator t)
   ;; (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-file-icons t)
-  (setq dashboard-items '((recents  . 10)))
+  (dashboard-set-file-icons t)
+  (dashboard-items '((recents  . 10)))
   ;; (bookmarks . 5))
   ;; (projects . 5)))
   ;; (agenda . 5)
   ;; (registers . 5)))
+  :config
   (dashboard-setup-startup-hook))
 
 (use-package google-this
@@ -954,6 +981,11 @@ targets."
   (evil-define-key 'normal magit-mode-map (kbd "SPC") 'magit-section-cycle)
   )
 
+(use-package magit-delta
+  :after magit
+  :commands magit-delta-mode
+  :hook (magit-mode . magit-delta-mode))
+
 (use-package vterm
   :commands vterm
   :config
@@ -969,9 +1001,9 @@ targets."
 (use-package python-mode
   :commands python-mode
   :straight (:type built-in)
+  :mode ".py"
+  :interpreter "python"
   :init
-  (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-  (add-to-list 'interpreter-mode-alist '("python" . python-mode))
   (evil-define-key 'normal python-mode-map (kbd "<tab>") 'evil-shift-right-line)
   (evil-define-key 'normal python-mode-map (kbd "<backtab>") 'evil-shift-left-line)
   (evil-define-key 'visual python-mode-map (kbd "<tab>") 'evil-shift-right)
@@ -1024,6 +1056,22 @@ targets."
   :requires flyckeck langtool
   :init
   (setq flycheck-languagetool-server-jar "~/Downloads/LanguageTool-6.1/languagetool-server.jar"))
+
+;; A more complex, more lazy-loaded config
+(use-package solaire-mode
+  :defer 1
+  :hook
+  ;; Ensure solaire-mode is running in all solaire-mode buffers
+  (change-major-mode . turn-on-solaire-mode)
+  ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
+  ;; itself off every time Emacs reverts the file
+  (after-revert . turn-on-solaire-mode)
+  ;; To enable solaire-mode unconditionally for certain modes:
+  (ediff-prepare-buffer . solaire-mode)
+  :custom
+  (solaire-mode-auto-swap-bg t)
+  :config
+  (solaire-global-mode +1))
 
 (provide 'core)
 ;; core.el ends here
