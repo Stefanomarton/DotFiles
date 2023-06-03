@@ -589,47 +589,11 @@ targets."
   :custom
   (tab-jump-out-mode 1))
 
-(straight-use-package '(targets :type git :host github
-				:repo "dvzubarev/targets.el"
-				:branch "fix-remote"))
+;; (use-package things
+;;   :straight (things :type git :host github
+;; 		    :repo "noctuid/things.el"))
 
-(use-package targets
-  :config
-  (setq targets-text-objects nil)
-  (targets-setup nil)
-  (targets-define-composite-to any-block
-    (("(" ")" pair)
-     ("[" "]" pair)
-     ("{" "}" pair)
-     ;; ("<" ">" pair)
-     )
-    :bind t
-    :next-key "N"
-    :last-key "L"
-    :around-key nil
-    :inside-key nil
-    :keys "b")
-  (targets-define-composite-to any-quote
-    (("\"" "\"" quote)
-     ("'" "'" quote))
-    :bind t
-    :next-key "N"
-    :last-key "L"
-    :around-key nil
-    :inside-key nil
-    :keys "q")
-  (targets-define-to word 'evil-word nil object :bind t :keys "w")
-  (targets-define-to double-quote
-		     "\"" nil quote
-		     :bind t
-		     :next-key "N"
-		     :last-key "L"
-		     :around-key nil
-		     :inside-key nil
-		     :keys "q"
-		     :hooks (emacs-lisp-mode-hook)))
-
-(use-package nyan-mode)
+;; (use-package nyan-mode)
 
 (use-package org-download
   :after org-mode
