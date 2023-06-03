@@ -818,29 +818,64 @@ targets."
 		      (delete-row . "Dr"	)
 		      )))
 
-;;;;;;;;;;;;;;;
-;; AvyConfig ;;
-;;;;;;;;;;;;;;;
-
 (use-package avy
-  :commands (prog-mode latex-mode markdown-mode org-mode)
+  :after evil
   :config
   (setq avy-timeout-seconds 0.2)
-  (setq avy-keys (nconc (number-sequence ?a ?z)))
+  (setq avy-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)) ;; Home row only (the default).
+  (setq avy-words
+	'("am" "by" "if" "is" "it" "my" "ox" "up"
+	  "ace" "act" "add" "age" "ago" "aim" "air"
+	  "ale" "all" "and" "ant" "any" "ape" "apt"))
+  ;; (evil-define-key 'operator 'global (kbd "l") 'avy-goto-line)
+  (evil-define-key 'normal 'global (kbd "<leader> s") 'evil-avy-goto-char-timer)
+  (evil-define-key 'normal 'global (kbd "s") 'evil-avy-goto-char-2-below)
+  (evil-define-key 'normal 'global (kbd "S") 'evil-avy-goto-char-2-above)
+  (evil-define-key 'motion 'global (kbd "s") 'evil-avy-goto-char-timer)
+  (evil-define-key 'operator 'global (kbd "s") 'evil-avy-goto-char-timer)
+  (evil-define-key 'motion 'global (kbd "f") 'evil-avy-find-char)
+  (evil-define-key 'operator 'global (kbd "f") 'evil-avy-goto-char-in-line)
+  (evil-define-key 'motion 'global (kbd "L") 'avy-copy-line)
+  (evil-define-key 'normal 'global (kbd "C-k") 'pop-global-mark)
+  (setq avy-timeout-seconds 0.3)
+  (defun avy-action-kill-whole-line (pt)
+    ;; Kill action for avy
+    (save-excursion
+      (goto-char pt)
+      (kill-whole-line))
+    (select-window
+     (cdr
+      (ring-ref avy-ring 0)))
+    t)
+  (setf (alist-get ?x avy-dispatch-alist) 'avy-action-kill-stay
+	(alist-get ?K avy-dispatch-alist) 'avy-action-kill-whole-line)
+  (defun avy-action-copy-whole-line (pt)
+    (save-excursion
+      (goto-char pt)
+      (cl-destructuring-bind (start . end)
+          (bounds-of-thing-at-point 'line)
+	(copy-region-as-kill start end)))
+    (select-window
+     (cdr
+      (ring-ref avy-ring 0)))
+    t)
+
+  (defun avy-action-yank-whole-line (pt)
+    (avy-action-copy-whole-line pt)
+    (save-excursion (yank))
+    t)
+  (setf (alist-get ?y avy-dispatch-alist) 'avy-action-yank
+	(alist-get ?c avy-dispatch-alist) 'avy-action-copy
+	(alist-get ?C avy-dispatch-alist) 'avy-action-copy-whole-line
+	(alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line)
   )
 
-;; (evil-define-key 'operator 'global (kbd "l") 'avy-goto-line)
-
-(evil-define-key 'normal 'global (kbd "s") 'evil-avy-goto-char-timer)
-(evil-define-key 'motion 'global (kbd "s") 'evil-avy-goto-char-timer)
-(evil-define-key 'operator 'global (kbd "s") 'evil-avy-goto-char-timer)
-(evil-define-key 'normal 'global (kbd "f") 'evil-avy-goto-char-in-line)
-(evil-define-key 'motion 'global (kbd "f") 'evil-avy-goto-char-in-line)
-(evil-define-key 'operator 'global (kbd "f") 'evil-avy-goto-char-in-line)
-(evil-define-key 'operator 'global (kbd "R") 'avy-copy-region)
-;; (evil-define-key 'motion 'global (kbd "L") 'avy-copy-line)
-
-(setq avy-timeout-seconds 0.25)
+(use-package evil-avy
+  :commands (latex-mode markdown-mode org-mode)
+  :after (evil avy)
+  :init
+  (evil-avy-mode 1)
+  )
 
 (use-package expand-region
   :commands (prog-mode org-mode latex-mode markdown-mode)
