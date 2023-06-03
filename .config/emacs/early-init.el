@@ -12,16 +12,6 @@
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
 
-;; Minimal UI
-;; (setq-default
-;;  default-frame-alist
-;;  '((tool-bar-lines . 0)
-;;    (menu-bar-lines . 0)
-;;    (undecorated . t)
-;;    (vertical-scroll-bars . nil)
-;;    (horizontal-scroll-bars . nil)))
-;; max memory available for gc on startup
-
 (defvar me/gc-cons-threshold 16777216)
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6)
