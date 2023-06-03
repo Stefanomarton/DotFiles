@@ -1,1 +1,1 @@
-("~/.config/emacs/" "~/Projects/Thesis/" "~/Projects/MySmallProgrammingJourney/" "~/GoogleDrive/Università/Internship/Label/" "~/GoogleDrive/Università/Internship/Report/" "~/.config/emacs/straight/repos/esup/")
+("~/.config/emacs/" "~/Projects/MySmallProgrammingJourney/" "~/Projects/Thesis/" "~/GoogleDrive/Università/Internship/Label/" "~/GoogleDrive/Università/Internship/Report/")
