@@ -10,6 +10,7 @@
 	delete-selection-mode t
 	;; quiet startup
 	inhibit-startup-message t
+	inhibit-startup-buffer-menu t
 	inhibit-startup-echo-area-message t
 	initial-scratch-message nil
 	;; hopefully all themes we install are safe
@@ -168,7 +169,6 @@
 	      (unless (derived-mode-p 'markdown-mode)
 		'whitespace-cleanup
 		)))
-
   )
 
 (use-package nerd-icons

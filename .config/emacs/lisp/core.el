@@ -147,6 +147,16 @@
   :init
   (savehist-mode))
 
+(use-package recentf
+  :config
+  (add-hook 'emacs-startup-hook 'recentf-mode)
+  (add-hook 'after-init-hook
+            (lambda ()
+              (setq inhibit-message t)
+              (run-with-idle-timer 0 nil (lambda () (setq inhibit-message nil)))))
+  (setq recentf-auto-cleanup 'never)
+  (setq recentf-max-saved-items 25))
+
 ;; A few more useful configurations...
 (use-package emacs
   :init
@@ -297,7 +307,8 @@ targets."
   (kbd "<leader>es") 'eval-expression
   (kbd "<leader>er") 'eval-region
   (kbd "<leader>ef") 'eval-defun
-  (kbd "<leader>pp") 'consult-projectile-switch-project
+  (kbd "<leader>pp") 'consult-projectile
+  (kbd "<leader>ps") 'consult-projectile-switch-project
   (kbd "<leader>cc") 'calc
   (kbd "<leader>qc") 'quick-calc
   (kbd "<leader>t") 'smart-for-terminal-otherw
@@ -411,7 +422,7 @@ targets."
   :custom
   (inhibit-compacting-font-caches t)
   (doom-modeline-buffer-encoding nil)
-  (doom-modeline-height 10)
+  (doom-modeline-height 15)
   (doom-modeline-hud t)
   :init
   (doom-modeline-mode 1))
@@ -492,6 +503,15 @@ targets."
 
 (use-package dashboard
   :ensure t
+  :config
+  (evil-define-key 'normal dashboard-mode-map
+    (kbd "f") 'find-file
+    (kbd "h") 'consult-projectile-switch-project
+    (kbd "c") (lambda ()
+                (interactive)
+                (let ((folder-path "~/.config/emacs"))
+                  (find-file folder-path))))
+
   :custom
   (initial-buffer-choice #'(lambda () (get-buffer-create "*dashboard*")))
   (dashboard-banner-logo-title "Welcome Back Goblin")
@@ -951,6 +971,7 @@ targets."
 (use-package magit
   :commands (magit-status magit-file-dispatch magit-dispatch dotfiles-magit-status magit-status-with-removed-dotfiles-args)
   :config
+  (magit-auto-revert-mode)
   (setq magit-commit-ask-to-stage 'stage)
   ;; prepare the arguments
   (setq dotfiles-git-dir (concat "--git-dir=" (expand-file-name "~/.dotfiles")))
@@ -962,7 +983,6 @@ targets."
     (add-to-list 'magit-git-global-arguments dotfiles-git-dir)
     (add-to-list 'magit-git-global-arguments dotfiles-work-tree)
     (call-interactively 'magit-status))
-  ;; (global-set-key (kbd "<leader> gd") 'dotfiles-magit-status)
 
   ;; wrapper to remove additional args before starting magit
   (defun magit-status-with-removed-dotfiles-args ()
@@ -970,9 +990,6 @@ targets."
     (setq magit-git-global-arguments (remove dotfiles-git-dir magit-git-global-arguments))
     (setq magit-git-global-arguments (remove dotfiles-work-tree magit-git-global-arguments))
     (call-interactively 'magit-status))
-  ;; redirect global magit hotkey to our wrapper
-  ;; (global-set-key (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
-  ;; (define-key magit-mode-map (kbd "<leader> gg") 'magit-status-with-removed-dotfiles-args)
 
   ;; Fixing keybinding
   (evil-define-key 'normal magit-mode-map (kbd "h") 'magit-section-backward-sibling)
