@@ -23,6 +23,18 @@
   (setq evil-undo-system 'undo-fu)
   (setq evil-search-module 'evil-search)
   (evil-define-key 'normal 'global (kbd "C-d") 'evil-scroll-down)
+  (defun toggle-transparency ()
+    (interactive)
+    (let ((alpha (frame-parameter nil 'alpha)))
+      (set-frame-parameter
+       nil 'alpha
+       (if (eql (cond ((numberp alpha) alpha)
+                      ((numberp (cdr alpha)) (cdr alpha))
+                      ;; Also handle undocumented (<active> <inactive>) form.
+                      ((numberp (cadr alpha)) (cadr alpha)))
+		100)
+           '(95 . 50) '(100 . 100)))))
+  (evil-define-key 'normal 'global (kbd "<leader> a") 'toggle-transparency)
   (evil-mode 1))
 
 (use-package undo-fu
