@@ -498,6 +498,7 @@ targets."
   ;; Content is not centered by default. To center, set
   (dashboard-startup-banner "~/.config/emacs/themes/logo.txt")
   (dashboard-center-content t)
+  (dashboard-set-footer nil)
   (dashboard-icon-type 'nerd-icons) ;; use `nerd-icons' package
   ;; (setq dashboard-set-navigator t)
   ;; (setq dashboard-set-heading-icons t)
