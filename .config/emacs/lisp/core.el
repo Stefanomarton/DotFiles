@@ -10,9 +10,10 @@
 (use-package evil
   :straight t
   :init
-  (setq evil-want-integration t)
-  (setq evil-echo-state nil)
   (setq evil-want-keybinding nil)
+  :config
+  (setq evil-want-integration nil)
+  (setq evil-echo-state nil)
   (setq evil-respect-visual-line-mode t)
   (setq evil-want-empty-ex-last-command t)
   (setq evil-want-C-u-scroll t) ;; allow scroll up with 'C-u'
@@ -21,7 +22,6 @@
   (setq evil-vsplit-window-right t)
   (setq evil-undo-system 'undo-fu)
   (setq evil-search-module 'evil-search)
-  :config
   (evil-define-key 'normal 'global (kbd "C-d") 'evil-scroll-down)
   (evil-mode 1))
 
@@ -35,6 +35,7 @@
 ;;   (global-undo-tree-mode))
 
 (use-package evil-collection
+  :demand t
   :requires evil
   :after evil
   :config
@@ -50,16 +51,28 @@
 (use-package evil-embrace
   :requires evil
   :after evil
+  :custom
+  (setq evil-embrace-show-help-p nil)
+  (setq evil-embrace-evil-surround-keys (?\( ?\[ ?\{ ?\) ?\] ?\} ?\" ?\' ?< ?> ?b ?B ?t))
   :config
-  (evil-embrace-enable-evil-surround-integration)
+  ;; (evil-embrace-enable-evil-surround-integration)
   )
 
 (use-package embrace
+  :custom
+  (embrace-show-help-p nil)
   :config
-  (evil-define-key 'normal 'global (kbd "e e") 'evil-embrace-evil-surround-region)
+  (evil-define-key 'normal 'global (kbd "e e") 'evil-surround-edit)
   (evil-define-key 'normal 'global (kbd "e c") 'evil-embrace-evil-surround-change)
   (evil-define-key 'normal 'global (kbd "e d") 'evil-embrace-evil-surround-delete)
   (evil-define-key 'visual 'global (kbd "e") 'evil-embrace-evil-surround-region))
+
+(use-package evil-surround
+  :after evil
+  :config
+  (add-hook 'prog-mode-hook (lambda ()
+                              (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+  )
 
 (use-package evil-commentary
   ;; Better Comment Action
@@ -152,8 +165,8 @@
   (add-hook 'emacs-startup-hook 'recentf-mode)
   (add-hook 'after-init-hook
             (lambda ()
-              (setq inhibit-message t)
-              (run-with-idle-timer 0 nil (lambda () (setq inhibit-message nil)))))
+	      (setq inhibit-message t)
+	      (run-with-idle-timer 0 nil (lambda () (setq inhibit-message nil)))))
   (setq recentf-auto-cleanup 'never)
   (setq recentf-max-saved-items 25))
 
@@ -329,11 +342,6 @@ targets."
   (setq evil-goggle-duration 0.5)
   (evil-goggles-use-diff-faces))
 
-(use-package evil-surround
-  :after evil
-  :straight t
-  )
-
 (defun comment_end_of_line ()
   (interactive)
   (call-interactively 'comment-dwim)
@@ -491,9 +499,9 @@ targets."
   (prog-mode . rainbow-delimiters-mode)
   :config
   (set-face-attribute 'rainbow-delimiters-unmatched-face nil
-                      :foreground "red"
-                      :inherit 'error
-                      :box t))
+		      :foreground "red"
+		      :inherit 'error
+		      :box t))
 
 ;; Highlight colorstring with the right color
 (use-package rainbow-mode
