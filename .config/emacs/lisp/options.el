@@ -1,5 +1,7 @@
 (use-package emacs
   :config
+  (defun display-startup-echo-area-message ()
+    (message 'nil))
   (setq-default line-spacing 1)
   (setq default-directory "~/"
 	;; always follow symlinks when opening files
@@ -8,6 +10,7 @@
 	delete-selection-mode t
 	;; quiet startup
 	inhibit-startup-message t
+	inhibit-startup-echo-area-message t
 	initial-scratch-message nil
 	;; hopefully all themes we install are safe
 	custom-safe-themes t
@@ -52,7 +55,7 @@
   (setq	sentence-end-double-space nil)
   (setq ring-bell-function 'ignore)
   (setq frame-resize-pixelwise t)
-  (setq tab-width 2)
+  (setq tab-width 4)
 
   ;; Enable debugging whenever we encounter an error.
   (setq debug-on-error t)
