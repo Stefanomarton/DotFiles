@@ -23,6 +23,12 @@
 
 (straight-use-package 'use-package) ; Base package for package configuration
 (setq straight-use-package-by-default t) ;Auto install package use in the configuration
+
+(use-package gcmh ;; Enforce a sneaky Garbage Collection strategy to minimize GC interference with user activity.
+  :demand t
+  :config
+  (gcmh-mode 1))
+
 ;; Set custom file
 (require 'options)
 (require 'setup-company)
