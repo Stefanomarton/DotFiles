@@ -109,13 +109,10 @@
 	(kill-buffer (current-buffer))))))
 
 (use-package consult
-  :defer 1
-  :commands
-  (evil-collection-consult-mark consult-dir consult-man consult-find consult-grep consult-info consult-line consult-mark consult-imenu consult-theme consult-buffer consult-kmacro consult-locate consult-narrow consult-flymake consult-history consult-outline consult-ripgrep consult-bookmark consult-flycheck consult-flyspell consult-git-grep consult-register consult-yank-pop consult-dir-dired consult-goto-line consult-keep-lines consult-line-multi consult-org-agenda consult-projectile consult-focus-lines consult-global-mark consult-imenu-multi consult-narrow-help consult-org-heading consult-recent-file consult-mode-command consult-yank-replace consult-compile-error consult-dir-jump-file consult-register-load consult-project-buffer consult-register-store consult-complex-command consult-isearch-forward consult-isearch-history consult-minor-mode-menu consult-isearch-backward consult-preview-at-point consult-buffer-other-frame consult-projectile-recentf consult-buffer-other-window consult-projectile-find-dir consult-yank-from-kill-ring consult-projectile-find-file consult-preview-at-point-mode consult-projectile-switch-project evil-collection-consult-jump-list consult-projectile-switch-to-buffer)
-  )
+  :defer 1)
 
 (use-package consult-projectile
-  :after ( consult projectile ))
+  :after (consult projectile))
 
 (use-package consult-dir
   :after consult)
@@ -505,7 +502,8 @@ targets."
   ;; (setq dashboard-set-navigator t)
   ;; (setq dashboard-set-heading-icons t)
   (dashboard-set-file-icons t)
-  (dashboard-items '((recents  . 10)))
+  (dashboard-items nil)
+  ;; (dashboard-items '((recents  . 10)))
   ;; (bookmarks . 5))
   ;; (projects . 5)))
   ;; (agenda . 5)
