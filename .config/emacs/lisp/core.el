@@ -64,17 +64,17 @@
   :requires evil
   :after evil
   :custom
-  (setq evil-embrace-show-help-p nil)
   (setq evil-embrace-evil-surround-keys (?\( ?\[ ?\{ ?\) ?\] ?\} ?\" ?\' ?< ?> ?b ?B ?t))
   :config
-  ;; (evil-embrace-enable-evil-surround-integration)
+  (setq evil-embrace-show-help-p nil)
+  (evil-embrace-enable-evil-surround-integration)
   )
 
 (use-package embrace
   :custom
   (embrace-show-help-p nil)
   :config
-  (evil-define-key 'normal 'global (kbd "e e") 'evil-surround-edit)
+  (evil-define-key 'normal 'global (kbd ",") 'evil-surround-edit)
   (evil-define-key 'normal 'global (kbd "e c") 'evil-embrace-evil-surround-change)
   (evil-define-key 'normal 'global (kbd "e d") 'evil-embrace-evil-surround-delete)
   (evil-define-key 'visual 'global (kbd "e") 'evil-embrace-evil-surround-region))
