@@ -12,7 +12,7 @@
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
 
-(defvar me/gc-cons-threshold 16777216)
+(defvar me/gc-cons-threshold 100000000)
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6)
 (add-hook 'emacs-startup-hook

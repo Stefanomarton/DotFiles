@@ -31,8 +31,8 @@
 
 ;; Set custom file
 (require 'options)
-(require 'setup-company)
 (require 'core)
+(require 'setup-company)
+
 (setq custom-file "~/.config/emacs/custom.el")
 (load custom-file)
-(put 'dired-find-alternate-file 'disabled nil)

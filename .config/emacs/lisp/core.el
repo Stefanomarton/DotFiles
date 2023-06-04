@@ -5,16 +5,17 @@
   ([remap describe-key] . helpful-key))
 
 (use-package esup
+  :straight t
   :commands esup)
 
 (use-package evil
   :straight t
   :init
+  (setq evil-respect-visual-line-mode t)
   (setq evil-want-keybinding nil)
   :config
   (setq evil-want-integration nil)
   (setq evil-echo-state nil)
-  (setq evil-respect-visual-line-mode t)
   (setq evil-want-empty-ex-last-command t)
   (setq evil-want-C-u-scroll t) ;; allow scroll up with 'C-u'
   (setq evil-want-C-d-scroll nil) ;; avoid scroll down with 'C-d'
@@ -38,17 +39,9 @@
   (evil-mode 1))
 
 (use-package undo-fu
-  :after evil
-  :straight t)
-
-;; (use-package undo-tree
-;;   :demand t
-;;   :config
-;;   (global-undo-tree-mode))
+  :after evil)
 
 (use-package evil-collection
-  :demand t
-  :requires evil
   :after evil
   :config
   (evil-collection-init))
@@ -60,30 +53,36 @@
   (LaTeX-mode . evil-tex-mode)
   )
 
-(use-package evil-embrace
-  :requires evil
-  :after evil
-  :custom
-  (setq evil-embrace-evil-surround-keys (?\( ?\[ ?\{ ?\) ?\] ?\} ?\" ?\' ?< ?> ?b ?B ?t))
-  :config
-  (setq evil-embrace-show-help-p nil)
-  (evil-embrace-enable-evil-surround-integration)
-  )
+;; (use-package evil-embrace
+;;   :requires evil
+;;   :after evil
+;;   :custom
+;;   (setq evil-embrace-evil-surround-keys (?\( ?\[ ?\{ ?\) ?\] ?\} ?\" ?\' ?< ?> ?b ?B ?t))
+;;   :config
+;;   (setq evil-embrace-show-help-p nil)
+;;   (evil-embrace-enable-evil-surround-integration)
+;;   )
 
-(use-package embrace
-  :custom
-  (embrace-show-help-p nil)
-  :config
-  (evil-define-key 'normal 'global (kbd ",") 'evil-surround-edit)
-  (evil-define-key 'normal 'global (kbd "e c") 'evil-embrace-evil-surround-change)
-  (evil-define-key 'normal 'global (kbd "e d") 'evil-embrace-evil-surround-delete)
-  (evil-define-key 'visual 'global (kbd "e") 'evil-embrace-evil-surround-region))
+;; (use-package embrace
+;;   :custom
+;;   (embrace-show-help-p nil)
+;;   :config
+;;   (evil-define-key 'normal 'global (kbd "e c") 'evil-embrace-evil-surround-change)
+;;   (evil-define-key 'normal 'global (kbd "e d") 'evil-embrace-evil-surround-delete)
+;;   (evil-define-key 'visual 'global (kbd "e") 'evil-embrace-evil-surround-region))
 
 (use-package evil-surround
   :after evil
   :config
+  (evil-define-key 'normal 'global (kbd ",") 'evil-surround-edit)
   (add-hook 'prog-mode-hook (lambda ()
-                              (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+			      (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+  (add-hook 'org-mode-hook (lambda ()
+			     (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+  (add-hook 'LaTeX-mode-hook (lambda ()
+			       (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+  (add-hook 'markdown-mode-hook (lambda ()
+				  (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
   )
 
 (use-package evil-commentary
@@ -206,7 +205,7 @@
 
 ;; Optionally use the `orderless' completion style.
 (use-package orderless
-  :init
+  :config
   ;; Configure a custom style dispatcher (see the Consult wiki)
   ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
   ;;       orderless-component-separator #'orderless-escapable-split-on-space)
@@ -215,7 +214,8 @@
 	completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia
-  :defer 1
+  :defer t
+  :commands vertico-mode
   :config
   (marginalia-mode))
 
@@ -278,7 +278,6 @@ targets."
   :straight (:host github :repo "oantolin/embark"
 		   :files ("embark-consult.el"))
   :after (embark consult)
-  :demand
   :bind (:map embark-become-file+buffer-map
 	      ("m" . consult-bookmark)
 	      ("b" . consult-buffer)
@@ -286,15 +285,19 @@ targets."
 
 (defun smart-for-files ()
   (interactive)
-  (if (projectile-project-p)
-      (consult-projectile-find-file)
-    (call-interactively #'find-file)))
+  (if (string= (buffer-name) "*dashboard*")
+      (call-interactively #'find-file)
+    (if (projectile-project-p)
+        (consult-projectile-find-file)
+      (call-interactively #'find-file))))
 
 (defun smart-for-buffer ()
   (interactive)
-  (if (projectile-project-p)
-      (consult-projectile-switch-to-buffer)
-    (consult-buffer)))
+  (if (string= (buffer-name) "*dashboard*")
+      (call-interactively #'consult-buffer)
+    (if (projectile-project-p)
+        (consult-projectile-switch-to-buffer)
+      (call-interactively #'consult-buffer))))
 
 (defun smart-for-terminal-otherw ()
   (interactive)
@@ -347,7 +350,6 @@ targets."
 (evil-define-key 'normal 'prog-mode-map (kbd "<leader>m") 'rainbow-mode)
 
 (use-package evil-goggles
-  :straight t
   :after evil
   :config
   (evil-goggles-mode)
@@ -409,7 +411,6 @@ targets."
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
-  :straight t
   :init
   (savehist-mode))
 
@@ -439,6 +440,7 @@ targets."
   (setq enable-recursive-minibuffers t))
 
 (use-package doom-modeline
+  :defer t
   :custom
   (inhibit-compacting-font-caches t)
   (doom-modeline-buffer-encoding nil)
@@ -449,7 +451,6 @@ targets."
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :straight t
   :init
   (setq lsp-keymap-prefix "C-c l")
   :config
@@ -471,7 +472,6 @@ targets."
 (use-package lsp-ui
   :hook
   (lsp-mode . lsp-ui-mode)
-  :straight t
   :commands lsp-ui-mode
   :custom
   (lsp-ui-doc-position 'bottom))
@@ -488,8 +488,7 @@ targets."
   (setq lsp-latex-build-args '("-X" "compile" "%f" "--synctex")))
 
 (use-package lua-mode
-  :defer t
-  :straight t)
+  :defer t)
 
 
 ;; Editorconfig, auto set indenting
@@ -522,16 +521,7 @@ targets."
   (add-hook 'prog-mode #'rainbow-mode))
 
 (use-package dashboard
-  :ensure t
-  :config
-  (evil-define-key 'normal dashboard-mode-map
-    (kbd "f") 'find-file
-    (kbd "h") 'consult-projectile-switch-project
-    (kbd "c") (lambda ()
-                (interactive)
-                (let ((folder-path "~/.config/emacs"))
-                  (find-file folder-path))))
-
+  :demand t
   :custom
   (initial-buffer-choice #'(lambda () (get-buffer-create "*dashboard*")))
   (dashboard-banner-logo-title "Welcome Back Goblin")
@@ -550,6 +540,13 @@ targets."
   ;; (agenda . 5)
   ;; (registers . 5)))
   :config
+  (evil-define-key 'normal dashboard-mode-map
+    (kbd "f") 'find-file
+    (kbd "h") 'consult-projectile-switch-project
+    (kbd "c") (lambda ()
+                (interactive)
+                (let ((folder-path "~/.config/emacs"))
+                  (find-file folder-path))))
   (dashboard-setup-startup-hook))
 
 (use-package google-this
@@ -931,17 +928,18 @@ targets."
 (use-package projectile
   :diminish projectile-mode
   :commands
-  (consult-projectile consult-project-buffer consult-projectile-recentf consult-projectile-find-dir consult-projectile-find-file consult-projectile-switch-project consult-projectile-switch-to-buffer)
+  (consult-projectile consult-project-buffer consult-projectile-recentf consult-projectile-find-dir consult-projectile-find-file consult-projectile-switch-project consult-projectile-switch-to-buffer smart-for-files smart-for-buffer)
   :custom
   (setq projectile-enable-caching t)
   (setq projectile-track-known-projects-automatically nil)
   (setq projectile-completion-system 'consult)
   :config
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+  (projectile-mode)
   :init
-  (setq projectile-known-projects-file "~/.config/emacs/project.el")
   (setq projectile-indexing-method 'native)
-  (projectile-mode))
+  (setq projectile-known-projects-file "~/.config/emacs/project.el")
+  )
 
 (use-package magit
   :commands (magit-status magit-file-dispatch magit-dispatch dotfiles-magit-status magit-status-with-removed-dotfiles-args)
@@ -982,6 +980,7 @@ targets."
   :config
   ;; (set-fontset-font t 'unicode (font-spec :family "JetBrainsMono Nerd Font"))
   :custom
+  (setq term-toggle-no-confirm-exit t)
   (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"
 	vterm-internal-use-ligatures t
 	vterm-max-scrollback 10000
@@ -1029,15 +1028,16 @@ targets."
   (define-fringe-bitmap 'git-gutter-fr:deleted [224] nil nil '(center repeated)))
 
 (use-package dirvish
-  :init
-  (dirvish-override-dired-mode)
   :commands (dired-jump dirvish-dwim)
   :config
   (evil-define-key 'normal dirvish-mode-map (kbd "q") 'dirvish-quit)
   (evil-define-key 'normal dirvish-mode-map (kbd "<escape>") 'dirvish-layout-toggle)
+  :init
+  (dirvish-override-dired-mode)
   )
 
 (use-package langtool
+  :commands langtoolcheck
   :config
   (setq langtool-java-classpath
 	"/usr/share/languagetool:/usr/share/java/languagetool/*"))
@@ -1063,6 +1063,22 @@ targets."
   (solaire-mode-auto-swap-bg t)
   :config
   (solaire-global-mode +1))
+
+(use-package jinx
+  :hook (LaTeX-mode . jinx-mode)
+  :bind (("<leader>jc" . jinx-correct)
+         ("<leader>jl" . jinx-languages)))
+
+;; (defun select-latex-frac ()
+;;   "Visually selects the LaTeX fraction expression under point."
+;;   (interactive)
+;;   (search-forward-regexp "\\\\frac{\\([^{}]*\\(?:{[^{}]*\\)*\\)}{\\([^{}]*\\(?:{[^{}]*\\)*\\)}")
+;;   (setq start (match-beginning 0))
+;;   (setq end (match-end 0))
+;;   (evil-visual-make-selection start end))
+
+;; (global-set-key (kbd "C-c f") 'select-latex-frac)
+
 
 (provide 'core)
 ;; core.el ends here

@@ -139,15 +139,11 @@
   (use-package no-littering
     :straight t)
 
-
   ;; no-littering doesn't set this by default so we must place
   ;; auto save files in the same path as it uses for sessions
   (setq auto-save-file-name-transforms
 	`((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
   (setq create-lockfiles nil)
-
-  ;; Make sure new frames use window-divider
-  (add-hook 'before-make-frame-hook 'window-divider-mode)
 
   ;; ;; Display symbol for newline
   ;; (add-hook 'prog-mode-hook
@@ -169,13 +165,20 @@
 	      (unless (derived-mode-p 'markdown-mode)
 		'whitespace-cleanup
 		)))
+
+  (put 'dired-find-alternate-file 'disabled nil)
   )
 
 (use-package nerd-icons
+  :after dashboard
   :straight t)
 
 (use-package frame
+  :defer t
   :straight (:type built-in)
+  :config
+  ;; Make sure new frames use window-divider
+  (add-hook 'before-make-frame-hook 'window-divider-mode)
   :custom
   (window-divider-default-right-width 12)
   (window-divider-default-bottom-width 1)
