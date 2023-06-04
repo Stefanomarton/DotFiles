@@ -548,12 +548,15 @@ targets."
   ;; (registers . 5)))
   :config
   (evil-define-key 'normal dashboard-mode-map
+    (kbd "<leader>ff") 'find-file
+    (kbd "<leader>fr") 'consult-recent-file
+    (kbd "<leader>b") 'consult-buffer
     (kbd "f") 'find-file
     (kbd "h") 'consult-projectile-switch-project
     (kbd "c") (lambda ()
-                (interactive)
-                (let ((folder-path "~/.config/emacs"))
-                  (find-file folder-path))))
+		(interactive)
+		(let ((folder-path "~/.config/emacs"))
+		  (find-file folder-path))))
   (dashboard-setup-startup-hook))
 
 (use-package google-this
