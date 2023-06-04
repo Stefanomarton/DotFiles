@@ -878,22 +878,18 @@ targets."
   )
 
 (use-package evil-avy
-  :commands (latex-mode markdown-mode org-mode)
   :after (evil avy)
-  :init
-  (evil-avy-mode 1)
   )
 
 (use-package expand-region
-  :commands (prog-mode org-mode latex-mode markdown-mode)
   :config
   (defun expand-region ()
     "Repeat the `er/expand-region' command."
     (interactive)
     (dotimes (_ 2)
       (call-interactively 'er/expand-region)))
-  (evil-define-key 'normal 'global (kbd "C-SPC") 'expand-region)
   (setq expand-region-subword-enabled t)
+  (evil-define-key 'normal 'global (kbd "C-SPC") 'expand-region)
   )
 
 (use-package org-fragtog
