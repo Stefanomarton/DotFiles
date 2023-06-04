@@ -336,10 +336,6 @@ targets."
   (kbd "C-s h") 'split-and-follow-horizontally
   (kbd "<leader>gt") 'google-this
   (kbd "<leader>gh") 'dashboard-open
-  (kbd "<leader>ee") 'eval-buffer
-  (kbd "<leader>es") 'eval-expression
-  (kbd "<leader>er") 'eval-region
-  (kbd "<leader>ef") 'eval-defun
   (kbd "<leader>pp") 'consult-projectile
   (kbd "<leader>ps") 'consult-projectile-switch-project
   (kbd "<leader>cc") 'calc
@@ -349,6 +345,12 @@ targets."
   (kbd "<leader>gg") 'magit-status-with-removed-dotfiles-args
   (kbd "<leader>gd") 'dotfiles-magit-status
   )
+
+(evil-define-key 'normal emacs-lisp-mode-map
+  (kbd "<leader>ee") 'eval-buffer
+  (kbd "<leader>es") 'eval-expression
+  (kbd "<leader>er") 'eval-region
+  (kbd "<leader>ef") 'eval-defun)
 
 (evil-define-key 'insert 'global (kbd "C-<backspace>") 'evil-delete-backward-word)
 (evil-define-key 'visual 'global (kbd "<leader>gg") 'google-this-noconfirm)
