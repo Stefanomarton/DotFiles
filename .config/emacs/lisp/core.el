@@ -79,7 +79,7 @@
 (use-package evil-surround
   :after evil
   :config
-  (evil-define-key 'normal 'global (kbd ",") 'evil-surround-edit)
+  (evil-define-key '(normal visual) 'global (kbd ",") 'evil-surround-edit)
   (add-hook 'prog-mode-hook (lambda ()
 			      (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
   (add-hook 'org-mode-hook (lambda ()
