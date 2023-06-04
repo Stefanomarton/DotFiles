@@ -716,7 +716,7 @@ targets."
     (message "Switched command: %s" (if TeX-master "master" "current")))
 
   (evil-define-key 'normal LaTeX-mode-map
-    (kbd "C-c e") 'my-export-to-pdf
+    (kbd "<leader> ee") 'my-export-to-pdf
     (kbd "C-c T") 'my-latex-toggle-command
     (kbd "C-c E") 'my-export-to-pdf-view
     (kbd "C-c t") 'lsp-ui-imenu)
