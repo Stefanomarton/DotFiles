@@ -13,6 +13,7 @@
   :init
   (setq evil-respect-visual-line-mode t)
   (setq evil-want-keybinding nil)
+  (setq evil-undo-system 'undo-fu)
   :config
   (setq evil-want-integration nil)
   (setq evil-echo-state nil)
@@ -21,7 +22,6 @@
   (setq evil-want-C-d-scroll nil) ;; avoid scroll down with 'C-d'
   (setq evil-split-window-below t)
   (setq evil-vsplit-window-right t)
-  (setq evil-undo-system 'undo-fu)
   (setq evil-search-module 'evil-search)
   (evil-define-key 'normal 'global (kbd "C-d") 'evil-scroll-down)
   (defun toggle-transparency ()
@@ -40,6 +40,11 @@
 
 (use-package undo-fu
   :after evil)
+
+(use-package undo-fu-session
+  :after undo-fu
+  :config
+  (undo-fu-session-global-mode))
 
 (use-package evil-collection
   :after evil
