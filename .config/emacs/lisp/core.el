@@ -52,7 +52,6 @@
   (evil-collection-init))
 
 (use-package evil-tex
-  :commands (LaTeX-mode)
   :after evil
   :hook
   (LaTeX-mode . evil-tex-mode)
@@ -442,70 +441,92 @@ targets."
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t))
 
-;; (use-package doom-modeline
-;;   :defer t
-;;   :custom
-;;   (inhibit-compacting-font-caches t)
-;;   (doom-modeline-buffer-encoding nil)
-;;   (doom-modeline-height 15)
-;;   (doom-modeline-hud t)
-;;   :init
-;;   (doom-modeline-mode 1))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Modeline
 
-(use-package nyan-mode
-  :config
-  (nyan-mode))
+(defface evil-visual-face
+  '((t (:foreground "#b48ead")))
+  "Face for Evil visual state")
+
+(defface evil-normal-face
+  '((t (:foreground "#81a1c1")))
+  "Face for Evil normal state")
+
+(defface evil-insert-face
+  '((t (:foreground "#ebcb8b")))
+  "Face for Evil insert state")
+
 (setq-default
  mode-line-format
  '(
    ;; point position
+   (:propertize "    " 'face 'font-lock-keyword-face)
    (8
-    (:propertize " %l:" face font-lock-string-face)
-    (:eval (propertize "%c" 'face (if (>= (current-column) 80)
-                                      'font-lock-warning-face
-                                    'font-lock-string-face)))
+    ;; (:propertize "  " 'face 'font-lock-keyword-face)
+    (:propertize " %l" face font-lock-string-face)
+    ;; (:eval (propertize ":%c" 'face (if (>= (current-column) 80)
+    ;;                                   'font-lock-warning-face
+    ;;                                 'font-lock-string-face)))
     )
+   (8
+    (:propertize " " 'face 'font-lock-keyword-face)
+    (:eval (cond
+            ((eq evil-state 'visual) (propertize "\uf111" 'face 'evil-visual-face))
+            ((eq evil-state 'normal) (propertize "\uf111" 'face 'evil-normal-face))
+            ((eq evil-state 'insert) (propertize "\uf111" 'face 'evil-insert-face))
+            (t (propertize "*" 'face 'font-lock-variable-name-face)))))
+   ;; (4
+   ;;  (:propertize "%m " face font-lock-variable-name-face
+   ;; 		 help-echo buffer-file-coding-system))
 
-   ;; major modes
-   ;; not interested in minor modes
-   ;; (can always be listed with C-h m)
-   (:propertize "%m: " face font-lock-variable-name-face
-                help-echo buffer-file-coding-system)
+   ;; (2 (:propertize face font-lock-comment-face))
 
    ;; shortened directory (if buffer have a corresponding file)
-   (:eval
+   (
+    :eval
     (when (buffer-file-name)
       (propertize (shorten-directory default-directory 35)
-                  'face 'font-lock-comment-face)))
+		  'face 'font-lock-comment-face)))
+
 
    ;; buffer name
-   (:propertize "%b" face font-lock-doc-face)
+   ;; (:propertize "%b" face font-lock-doc-face)
 
    ;; right aligned stuff
    (:eval
-    (let* ((status-offset 2)
-           (nyan-offset
-            (+ status-offset (if nyan-mode (+ 2 nyan-bar-length) 0))))
-
+    (let* ((status-offset 10))
       (concat
-
        ;; nyan-cat
-       (when nyan-mode
-         (concat
-          (propertize " " 'display `(space :align-to (- right ,nyan-offset)))
-          ;; (propertize "|" 'face 'vertical-border)
-          (nyan-create)
-          ;; (propertize "|" 'face 'vertical-border)
-	  ))
+       (concat
+	(propertize " " 'display `(space :align-to (- right ,status-offset)))
+	)
+       (propertize (format-time-string " %H:%M") 'face 'font-lock-keyword-face)))))
 
-       ;; ;; read-only / changed
-       ;; (propertize " " 'display `(space :align-to (- right ,status-offset)))
-       ;; (cond (buffer-read-only
-       ;;        (propertize "RO" 'face 'eshell-prompt))
-       ;;       ((buffer-modified-p)
-       ;;        (propertize "* " 'face 'eshell-prompt))
-       ;;       (t "  "))))
-       )))))
+ ;; for nyan cat
+ ;; (:eval
+ ;;  (let* ((status-offset 2)
+ ;;         (time-offset (- right 6)) ; Adjust the number (6) for desired spacing
+ ;;         (nyan-offset
+ ;;          (+ status-offset (if nyan-mode (+ 2 nyan-bar-length) 0))))
+
+ ;;    (concat
+
+ ;; nyan-cat
+ ;; (when nyan-mode
+ ;;   (concat
+ ;;    (propertize " " 'display `(space :align-to (- right ,nyan-offset)))
+ ;;    (nyan-create)
+ ;;    ))
+
+
+ ;; ;; read-only / changed
+ ;; (propertize " " 'display `(space :align-to (- right ,status-offset)))
+ ;; (cond (buffer-read-only
+ ;;        (propertize "RO" 'face 'eshell-prompt))
+ ;;       ((buffer-modified-p)
+ ;;        (propertize "* " 'face 'eshell-prompt))
+ ;;       (t "  "))))
+
+ )
 
 (defun special-buffer-p (buffer-name)
   "Check if buffer-name is the name of a special buffer."
@@ -533,6 +554,8 @@ targets."
          " " 'display
          `((space :align-to (- (+ right right-fringe right-margin)
 			       ,(+ 3 (string-width mode-name)))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -939,7 +962,7 @@ targets."
     (save-excursion
       (goto-char pt)
       (cl-destructuring-bind (start . end)
-          (bounds-of-thing-at-point 'line)
+	  (bounds-of-thing-at-point 'line)
 	(copy-region-as-kill start end)))
     (select-window
      (cdr
@@ -1011,9 +1034,10 @@ targets."
     (yas-reload-all)))
 
 (use-package projectile
+  :after consult
   :diminish projectile-mode
-  :commands
-  (consult-projectile consult-project-buffer consult-projectile-recentf consult-projectile-find-dir consult-projectile-find-file consult-projectile-switch-project consult-projectile-switch-to-buffer smart-for-files smart-for-buffer)
+  ;; :commands
+  ;; (consult-projectile consult-project-buffer consult-projectile-recentf consult-projectile-find-dir consult-projectile-find-file consult-projectile-switch-project consult-projectile-switch-to-buffer smart-for-files smart-for-buffer)
   :custom
   (setq projectile-enable-caching t)
   (setq projectile-track-known-projects-automatically nil)
