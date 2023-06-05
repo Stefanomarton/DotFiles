@@ -23,6 +23,12 @@
   (setq evil-split-window-below t)
   (setq evil-vsplit-window-right t)
   (setq evil-search-module 'evil-search)
+  (setq evil-want-fine-undo t)
+
+  ;; Undoing each character entered in insert mode one by one.
+  (advice-add 'undo-auto--last-boundary-amalgamating-number
+              :override #'ignore)
+
   (evil-define-key 'normal 'global (kbd "C-d") 'evil-scroll-down)
   (defun toggle-transparency ()
     (interactive)
@@ -595,20 +601,24 @@ targets."
   (setq lsp-latex-build-args '("-X" "compile" "%f" "--synctex")))
 
 (use-package lua-mode
-  :defer t)
+  :defer t
+  )
 
 
 ;; Editorconfig, auto set indenting
 (use-package editorconfig
   :defer 1
   :config
-  (editorconfig-mode 1))
+  (editorconfig-mode 1)
+  )
+
 
 (use-package electric
   :straight (:type built-in)
   :init
   (electric-pair-mode +1) ;; automatically insert closing parens
-  (setq electric-pair-preserve-balance nil)) ;; more annoying than useful
+  (setq electric-pair-preserve-balance nil) ;; more annoying than useful
+  )
 
 ;; Highlight nested parentheses
 (use-package rainbow-delimiters
@@ -619,13 +629,15 @@ targets."
   (set-face-attribute 'rainbow-delimiters-unmatched-face nil
 		      :foreground "red"
 		      :inherit 'error
-		      :box t))
+		      :box t)
+  )
 
 ;; Highlight colorstring with the right color
 (use-package rainbow-mode
   :commands rainbow-mode
   :config
-  (add-hook 'prog-mode #'rainbow-mode))
+  (add-hook 'prog-mode #'rainbow-mode)
+  )
 
 (use-package dashboard
   :demand t
@@ -657,10 +669,12 @@ targets."
 		(interactive)
 		(let ((folder-path "~/.config/emacs"))
 		  (find-file folder-path))))
-  (dashboard-setup-startup-hook))
+  (dashboard-setup-startup-hook)
+  )
 
 (use-package google-this
-  :defer t)
+  :defer t
+  )
 
 (use-package org-bullets
   :defer t
@@ -682,19 +696,23 @@ targets."
   :init
   ;; (add-hook 'org-mode-hook 'visual-line-mode)
   (add-hook 'org-mode-hook 'org-indent-mode)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  )
 
 (defun efs/org-mode-visual-fill ()
   (setq visual-fill-column-width 100
 	visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
+  (visual-fill-column-mode 1)
+  )
 
 (use-package visual-fill-column
-  :hook (org-mode . efs/org-mode-visual-fill))
+  :hook (org-mode . efs/org-mode-visual-fill)
+  )
 
 (use-package tab-jump-out
   :custom
-  (tab-jump-out-mode 1))
+  (tab-jump-out-mode 1)
+  )
 
 ;; (use-package things
 ;;   :straight (things :type git :host github
@@ -705,7 +723,8 @@ targets."
 (use-package org-download
   :after org-mode
   :hook
-  (add-hook 'dired-mode-hook 'org-download-enable))
+  (add-hook 'dired-mode-hook 'org-download-enable)
+  )
 
 (defun export-buffer-to-pdf ()
   "Export the current Markdown buffer to PDF using Pandoc with conditional flags."
@@ -836,7 +855,6 @@ targets."
   :commands (yas-minor-mode))
 
 (use-package aas
-  :commands (org-mode markdown-mode latex-mode)
   :hook
   (org-mode . aas-activate-for-major-mode)
   (markdown-mode . aas-activate-for-major-mode)
@@ -859,7 +877,6 @@ targets."
 			   (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
-  :commands (org-mode markdown-mode latex-mode)
   :straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
   :hook
   (LaTeX-mode . laas-mode)
@@ -1030,6 +1047,8 @@ targets."
                                         ; list to suit your needs.
   :hook
   (prog-mode . yas-minor-mode)
+  (LaTeX-mode . yas-minor-mode)
+  (markdown-mode . yas-minor-mode)
   (laas-mode . yas-minor-mode)
   :config ; stuff to do after requiring the package
   (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
@@ -1176,10 +1195,10 @@ targets."
   :config
   (solaire-global-mode +1))
 
-(use-package jinx
-  :hook (LaTeX-mode . jinx-mode)
-  :bind (("<leader>jc" . jinx-correct)
-         ("<leader>jl" . jinx-languages)))
+;; (use-package jinx
+;;   :hook (LaTeX-mode . jinx-mode)
+;;   :bind (("<leader>jc" . jinx-correct)
+;;          ("<leader>jl" . jinx-languages)))
 
 ;; (defun select-latex-frac ()
 ;;   "Visually selects the LaTeX fraction expression under point."
