@@ -8,12 +8,13 @@
   :commands esup)
 
 (use-package evil
-  :straight t
   :init
   (setq evil-respect-visual-line-mode t)
   (setq evil-want-keybinding nil)
   (setq evil-undo-system 'undo-fu)
   :config
+  (evil-set-leader 'normal (kbd "SPC"))
+  (evil-set-leader 'visual (kbd "SPC"))
   (setq evil-want-integration nil)
   (setq evil-echo-state nil)
   (setq evil-want-empty-ex-last-command t)
@@ -37,6 +38,12 @@
               :override #'ignore)
 
   (evil-define-key 'normal 'global (kbd "C-d") 'evil-scroll-down)
+
+  ;; Use escape to remove hightlight in normal mode
+  (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
+
+  (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
+  (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
   (defun toggle-transparency ()
     (interactive)
     (let ((alpha (frame-parameter nil 'alpha)))
@@ -68,6 +75,8 @@
   :after evil
   :hook
   (LaTeX-mode . evil-tex-mode)
+  :config
+  (setq evil-tex-toggle-override-m t)
   )
 
 ;; (use-package evil-embrace
@@ -159,7 +168,7 @@
 
 ;; Enable vertico
 (use-package vertico
-  :defer t
+  :defer 1
   :bind
   (:map vertico-map
 	("C-e" . embark-minimal-act)
@@ -168,7 +177,8 @@
 	("<escape>" . keyboard-escape-quit))
   :config
   ;; Different scroll margin
-  (setq vertico-scroll-margin 0)
+  (setq vertico-scroll-margin 2)
+
   ;; Show more candidates
   (setq vertico-count 10)
   (setq vertico-resize nil)
@@ -182,6 +192,7 @@
   (savehist-mode))
 
 (use-package recentf
+  :after evil
   :config
   (add-hook 'emacs-startup-hook 'recentf-mode)
   (add-hook 'after-init-hook
@@ -230,7 +241,7 @@
   (marginalia-mode))
 
 (use-package embark
-  :after marginalia
+  :after dashboard
   :config
 
   ;; Base keybindings
@@ -384,6 +395,7 @@ targets."
     (kbd "h") 'dired-up-directory))
 
 (use-package dired-narrow
+  :after dired
   :config
   (defun dired-narrow-ex-ac ()
     ;; Revert buffer and enter the directory after narrowing
@@ -407,6 +419,7 @@ targets."
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
+  :after vertico
   :init
   (savehist-mode))
 
@@ -416,11 +429,6 @@ targets."
 (use-package marginalia
   :config
   (marginalia-mode))
-
-;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist
-  :init
-  (savehist-mode))
 
 ;; A few more useful configurations...
 (use-package emacs
@@ -583,6 +591,7 @@ targets."
   )
 
 (use-package lsp-ui
+  :after lsp
   :hook
   (lsp-mode . lsp-ui-mode)
   :commands lsp-ui-mode
@@ -590,7 +599,7 @@ targets."
   (lsp-ui-doc-position 'bottom))
 
 (use-package lsp-latex
-  :commands (latex-mode)
+  :after tex
   :straight (lsp-latex :type git :host github :repo "ROCKTAKEY/lsp-latex")
   :config
   (setq lsp-latex-build-forward-search-after nil)
@@ -679,7 +688,6 @@ targets."
   :defer t
   :config
   ;; use org-bullets-mode for utf8 symbols as org bullets
-  (require 'org-bullets)
   ;; make available "org-bullet-face" such that I can control the font size individually
   (setq org-bullets-face-name (quote org-bullet-face))
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
@@ -842,6 +850,39 @@ targets."
     (kbd "C-c E") 'my-export-to-pdf-view
     (kbd "C-c t") 'lsp-ui-imenu)
 
+  (defun my-select-frac ()
+    "Select the \\frac command and move to the start of the nearest \\frac."
+    (interactive)
+    (let ((current-point (point))
+          (frac-start nil))
+      (save-excursion
+	(when (re-search-backward "\\\\frac" nil t)
+          (setq frac-start (match-beginning 0))
+          (when (and (<= frac-start current-point) (<= current-point (match-end 0)))
+            (setq current-point frac-start)
+            (setq frac-start nil))))
+      (if frac-start
+          (goto-char frac-start)
+	(message "No \\frac found")))
+    (when (looking-at "\\\\frac")
+      (let ((start (point))
+            (end (progn
+                   (search-forward "{")
+                   (backward-char)
+                   (let ((level 1))
+                     (while (> level 0)
+                       (search-forward-regexp "{\\|}" nil t)
+                       (if (string= (match-string 0) "{")
+                           (setq level (1+ level))
+			 (setq level (1- level)))))
+                   (backward-char)
+                   (point))))
+	(set-mark start)
+	(goto-char end))))
+
+  ;; (global-set-key (kbd "C-c f") 'my-select-frac)
+  (evil-define-key 'normal LaTeX-mode-map (kbd "<leader>r") 'my-select-frac)
+
   :init
   (add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
 
@@ -860,20 +901,20 @@ targets."
   (LaTeX-mode . aas-activate-for-major-mode)
   :config
   (aas-set-snippets 'latex-mode
-		    "jf" (lambda () (interactive)
-			   (yas-expand-snippet "\\\\($1\\\\) $0"))
-		    "kd" (lambda () (interactive)
-			   (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+    "jf" (lambda () (interactive)
+	   (yas-expand-snippet "\\\\($1\\\\) $0"))
+    "kd" (lambda () (interactive)
+	   (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'org-mode
-		    "jf" (lambda () (interactive)
-			   (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-		    "kd" (lambda () (interactive)
-			   (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+    "jf" (lambda () (interactive)
+	   (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+    "kd" (lambda () (interactive)
+	   (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'markdown-mode
-		    "jf" (lambda () (interactive)
-			   (yas-expand-snippet "$$1$ $0"))
-		    "kd" (lambda () (interactive)
-			   (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+    "jf" (lambda () (interactive)
+	   (yas-expand-snippet "$$1$ $0"))
+    "kd" (lambda () (interactive)
+	   (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
   :straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -883,29 +924,29 @@ targets."
   (org-mode . laas-mode)
   :config ; do whatever here
   (aas-set-snippets 'laas-mode
-		    ;; set condition!
-		    :cond #'texmathp ; expand only while in math
-		    "supp" "\\supp"
-		    "On" "O(n)"
-		    "O1" "O(1)"
-		    "Olog" "O(\\log n)"
-		    "Olon" "O(n \\log n)"
-		    ;; bind to functions!
-		    "sum" (lambda () (interactive)
-			    (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-		    "Span" (lambda () (interactive)
-			     (yas-expand-snippet "\\Span($1)$0"))
-		    "inti" (lambda () (interactive)
-			     (yas-expand-snippet "\\int"))
-		    "intd" (lambda () (interactive)
-			     (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-		    "df" (lambda () (interactive)
-			   (yas-expand-snippet "_{$1}$0"))
-		    "rt" (lambda () (interactive)
-			   (yas-expand-snippet "^{$1}$0"))
-		    ;; add accent snippets
-		    :cond #'laas-object-on-left-condition
-		    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+    ;; set condition!
+    :cond #'texmathp ; expand only while in math
+    "supp" "\\supp"
+    "On" "O(n)"
+    "O1" "O(1)"
+    "Olog" "O(\\log n)"
+    "Olon" "O(n \\log n)"
+    ;; bind to functions!
+    "sum" (lambda () (interactive)
+	    (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+    "Span" (lambda () (interactive)
+	     (yas-expand-snippet "\\Span($1)$0"))
+    "inti" (lambda () (interactive)
+	     (yas-expand-snippet "\\int"))
+    "intd" (lambda () (interactive)
+	     (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+    "df" (lambda () (interactive)
+	   (yas-expand-snippet "_{$1}$0"))
+    "rt" (lambda () (interactive)
+	   (yas-expand-snippet "^{$1}$0"))
+    ;; add accent snippets
+    :cond #'laas-object-on-left-condition
+    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package cdlatex
   :commands latex-mode
@@ -1198,17 +1239,6 @@ targets."
 ;;   :hook (LaTeX-mode . jinx-mode)
 ;;   :bind (("<leader>jc" . jinx-correct)
 ;;          ("<leader>jl" . jinx-languages)))
-
-;; (defun select-latex-frac ()
-;;   "Visually selects the LaTeX fraction expression under point."
-;;   (interactive)
-;;   (search-forward-regexp "\\\\frac{\\([^{}]*\\(?:{[^{}]*\\)*\\)}{\\([^{}]*\\(?:{[^{}]*\\)*\\)}")
-;;   (setq start (match-beginning 0))
-;;   (setq end (match-end 0))
-;;   (evil-visual-make-selection start end))
-
-;; (global-set-key (kbd "C-c f") 'select-latex-frac)
-
 
 (provide 'core)
 ;; core.el ends here
