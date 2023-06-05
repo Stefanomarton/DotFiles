@@ -708,17 +708,20 @@ targets."
   (add-hook 'dired-mode-hook 'org-download-enable))
 
 (defun export-buffer-to-pdf ()
-  "Export current buffer to PDF using Pandoc asynchronously without minibuffer output."
+  "Export the current Markdown buffer to PDF using Pandoc with conditional flags."
   (interactive)
-  (let* ((output-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
-	 (process-buffer (generate-new-buffer "*pandoc-export*"))
-	 (exit-code (call-process "pandoc" nil process-buffer nil
-				  (buffer-file-name) "-o" output-file "-V" "geometry:margin=20mm" "--template=template.latex" "--pdf-engine=xelatex")))
-    (if (zerop exit-code)
-	(message "Exported to %s" output-file)
-      (with-current-buffer process-buffer
-	(message "Export failed: %s" (buffer-string))))
-    (kill-buffer process-buffer)))
+  (let* ((md-file (buffer-file-name))
+         (output-file (concat (file-name-sans-extension md-file) ".pdf"))
+         (default-directory (file-name-directory md-file))
+         (config-file (concat default-directory "config.yaml"))
+         (template-file (concat default-directory "template.latex"))
+         (metadata-flag (if (file-exists-p config-file) (format "--metadata-file=%s" config-file) ""))
+         (template-flag (if (file-exists-p template-file) (format "--template=%s" template-file) ""))
+         (pandoc-command (format "pandoc -s %s %s %s -o %s"
+                                 md-file metadata-flag template-flag output-file)))
+
+    (message "Exporting Markdown file to PDF")
+    (start-process-shell-command "pandoc-export" nil pandoc-command)))
 
 (defun open-pdf-with-zathura ()
   "Open the PDF file associated with the current buffer in Zathura."
