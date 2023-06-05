@@ -1042,13 +1042,13 @@ targets."
   ;; :commands
   ;; (consult-projectile consult-project-buffer consult-projectile-recentf consult-projectile-find-dir consult-projectile-find-file consult-projectile-switch-project consult-projectile-switch-to-buffer smart-for-files smart-for-buffer)
   :custom
-  (setq projectile-enable-caching t)
   (setq projectile-track-known-projects-automatically nil)
   (setq projectile-completion-system 'consult)
   :config
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   (projectile-mode)
   :init
+  (setq projectile-enable-caching t)
   (setq projectile-indexing-method 'native)
   (setq projectile-known-projects-file "~/.config/emacs/project.el")
   )
