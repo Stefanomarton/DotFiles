@@ -104,7 +104,9 @@
 		      :width 'normal)
 
   ;; Italic comments
-  (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+  (set-face-attribute 'font-lock-comment-face nil
+		      :family "Cartograph"
+		      :slant 'italic)
   (set-face-attribute 'font-lock-function-name-face nil :slant 'italic)
   (set-face-attribute 'font-lock-variable-name-face nil :slant 'italic)
 
