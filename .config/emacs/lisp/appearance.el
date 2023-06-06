@@ -50,6 +50,7 @@
 
 ;; A more complex, more lazy-loaded config
 (use-package solaire-mode
+  :if window-system ;; This is not optimal but display-graphic-p does not work
   :defer 1
   :hook
   ;; Ensure solaire-mode is running in all solaire-mode buffers
@@ -66,24 +67,25 @@
 
 ;; Theming
 
+;; Suppose all custom themes are safe
 (setq custom-safe-themes t)
 
 (use-package doom-themes
   :defer t
-  ;; :config
-  ;; (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
+  :config
+  (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
   :init
   (load-theme 'doom-nord t))
 
 ;; fix color display when loading emacs in terminal
-(defun enable-256color-term ()
-  (interactive)
-  (load-library "term/xterm")
-  (terminal-init-xterm))
+;; (defun enable-256color-term ()
+;;   (interactive)
+;;   (load-library "term/xterm")
+;;   (terminal-init-xterm))
 
-(unless (display-graphic-p)
-  (if (string-suffix-p "256color" (getenv "TERM"))
-	  (enable-256color-term)))
+;; (unless (display-graphic-p)
+;;   (if (string-suffix-p "256color" (getenv "TERM"))
+;; 	  (enable-256color-term)))
 
 (use-package dashboard
   :custom

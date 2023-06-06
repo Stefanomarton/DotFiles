@@ -10,8 +10,36 @@
 ;; as that improves startup times. Taken from Doom Emacs [1].
 ;;
 ;; [1]: https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly
-(setq gc-cons-threshold most-positive-fixnum)
-(setq gc-cons-percentage 0.6)
+
+;; Wait till init to start emacs packages
+;; (setq package-enable-at-startup nil)
+
+(defvar me/gc-cons-threshold 100000000)
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.6)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold me/gc-cons-threshold
+                  gc-cons-percentage 0.1)))
+
+;; max memory available for gc when opening minibuffer
+(defun me/defer-garbage-collection-h ()
+  (setq gc-cons-threshold most-positive-fixnum))
+
+(defun me/restore-garbage-collection-h ()
+  ;; Defer it so that commands launched immediately after will enjoy the
+  ;; benefits.
+  (run-at-time
+   1 nil (lambda () (setq gc-cons-threshold me/gc-cons-threshold))))
+
+(add-hook 'minibuffer-setup-hook #'me/defer-garbage-collection-h)
+(add-hook 'minibuffer-exit-hook #'me/restore-garbage-collection-h)
+
+(defvar me/-file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq file-name-handler-alist me/-file-name-handler-alist)))
 
 ;; Fill whatever space the window manager has given us.
 (setq frame-resize-pixelwise t)

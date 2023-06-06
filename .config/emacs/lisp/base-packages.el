@@ -172,7 +172,6 @@
 
 (use-package evil-commentary
   ;; Better Comment Action
-  :requires evil
   :after evil
   :config
   (defun comment_end_of_line ()
@@ -213,7 +212,7 @@
   (setq recentf-max-saved-items 25))
 
 (use-package which-key
-  :defer 0
+  :defer 1
   :diminish which-key-mode
   :custom
   (which-key-allow-evil-operators t)
@@ -364,6 +363,7 @@ targets."
   :straight nil
   :ensure nil
   :config
+  (put 'dired-find-alternate-file 'disabled nil)
 
   (setq dired-kill-when-opening-new-dired-buffer t)
 

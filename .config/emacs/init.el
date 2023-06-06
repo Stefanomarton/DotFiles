@@ -33,12 +33,12 @@
 
 ;; Uncommented this sometimes for debugging
 ;;(setq use-package-verbose t)
+;;(setq debug-on-message t)
 
 ;; But we do want to reset the garbage collector settings eventually. When we
 ;; do, we'll use the GCMH [1] package to schedule the garbage collector to run
 ;; during idle time, rather than the haphazard "whenever some threshold is
 ;; reached".
-;;
 ;; [1]: https://gitlab.com/koral/gcmh/
 
 (use-package gcmh :defer t)
@@ -50,12 +50,12 @@
 	        (require 'gcmh)
 	        (gcmh-mode 1)))
 
-;; Everything above is what I classify as the "early-load" part of my configuration.
+;; Everything is what I classify as the "early-load" is in the early-init.el file.
 ;; The rest of my configuration is broken into "modules", which I include into
 ;; the init.el at macro expansion time.
 
-(defvar module-directory (expand-file-name "lisp" "~/.config/emacs"))
 ;;"Directory containing configuration 'modules'.")
+(defvar module-directory "~/.config/emacs/lisp")
 
 ;; Multiples macros to properly load submodules
 
@@ -85,13 +85,6 @@
       `(progn ,@form)
     '(progn)))
 
-;;We also set the file-name-handler-alist to an empty list, and reset it after Emacs has finished initializing.
-(defvar me/-file-name-handler-alist file-name-handler-alist)
-(setq file-name-handler-alist nil)
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (setq file-name-handler-alist me/-file-name-handler-alist)))
-
 (load-module "core")
 (load-module "modeline")
 (load-module "base-packages")
@@ -102,7 +95,3 @@
 (load-module "programming")
 (load-module "lsp")
 (load-module "document-production")
-
-;; (setq package-enable-at-startup nil)
-;; (setq inhibit-compacting-font-caches t)
-;; (setq debug-on-error t)
