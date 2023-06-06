@@ -5,7 +5,6 @@
   ([remap describe-key] . helpful-key))
 
 (use-package esup
-  :straight t
   :commands esup)
 
 (use-package evil
@@ -24,6 +23,14 @@
   (setq evil-vsplit-window-right t)
   (setq evil-search-module 'evil-search)
   (setq evil-want-fine-undo t)
+
+  ;; Use escape to remove hightlight in normal mode
+  (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
+  (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
+  (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
+  (evil-set-leader 'normal (kbd "SPC"))
+  (evil-set-leader 'visual (kbd "SPC"))
+
 
   ;; Undoing each character entered in insert mode one by one.
   (advice-add 'undo-auto--last-boundary-amalgamating-number
@@ -116,13 +123,6 @@
   (split-window-right)
   (balance-windows)
   (other-window 1))
-
-;; Use escape to remove hightlight in normal mode
-(evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
-(evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
-(evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
-(evil-set-leader 'normal (kbd "SPC"))
-(evil-set-leader 'visual (kbd "SPC"))
 
 ;; Offer to diff buffer when closing it
 (defun my-kill-this-buffer ()
@@ -607,7 +607,7 @@ targets."
 
 ;; Editorconfig, auto set indenting
 (use-package editorconfig
-  :defer 1
+  :after find-file
   :config
   (editorconfig-mode 1)
   )
@@ -640,7 +640,6 @@ targets."
   )
 
 (use-package dashboard
-  :demand t
   :custom
   (initial-buffer-choice #'(lambda () (get-buffer-create "*dashboard*")))
   (dashboard-banner-logo-title "Welcome Back Goblin")
