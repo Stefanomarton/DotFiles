@@ -10,3 +10,4 @@
 .config/emacs/elpa
 .config/lazygit/state.yml
 .config/pcmanfm/default
+.config/emacs/*.elc

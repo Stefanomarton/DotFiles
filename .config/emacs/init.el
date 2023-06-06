@@ -1,45 +1,108 @@
-(setq straight-check-for-modifications 'live-with-find) ;; Maybe removed in the future by straight
-(add-to-list 'load-path "~/.config/emacs/lisp/")
+;; init.el -*- lexical-binding: t; -*-
+(when (boundp 'read-process-output-max)
+  ;; 1MB in bytes, default 4096 bytes
+  (setq read-process-output-max 1048576))
+
+;; Straight is my package manager of choice
+;; Avoid check for modification at startup, save up to ~0.2 s.
+(setq straight-check-for-modifications 'live-with-find)
+
+;; Boostrapping function
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
+      (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
-	(url-retrieve-synchronously
-	 "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-	 'silent 'inhibit-cookies)
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; Faster loading
+;; Use shallow cloning as I don't need all the package branches
+(setq straight-vc-git-default-clone-depth '(1 single-branch))
+
+;; Install use-package and ensure listed packages are installed
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+
+;; Enable packages at startup
 (setq package-enable-at-startup nil)
 
-;; Resizing the Emacs frame can be a terribly expensive part of changing the
-;; font. By inhibiting this, we easily halve startup times with fonts that are
-;; larger than the system default.
-(setq frame-inhibit-implied-resize t)
+;; Uncommented this sometimes for debugging
+;;(setq use-package-verbose t)
 
-(straight-use-package 'use-package) ; Base package for package configuration
-(setq straight-use-package-by-default t) ;Auto install package use in the configuration
-;; (setq use-package-verbose t)
+;; But we do want to reset the garbage collector settings eventually. When we
+;; do, we'll use the GCMH [1] package to schedule the garbage collector to run
+;; during idle time, rather than the haphazard "whenever some threshold is
+;; reached".
+;;
+;; [1]: https://gitlab.com/koral/gcmh/
 
-(use-package gcmh ;; Enforce a sneaky Garbage Collection strategy to minimize GC interference with user activity.
-  :demand t
-  :custom
-  ()
-  :config
-  (setq gcmh-high-cons-threshold most-positive-fixnum)
-  (gcmh-mode 1))
+(use-package gcmh :defer t)
 
-(use-package straight
-  :defer 2)
+(add-hook 'emacs-startup-hook
+	      (lambda ()
+	        (setq gc-cons-threshold 16777216) ; 16mb
+	        (setq gc-cons-percentage 0.1)
+	        (require 'gcmh)
+	        (gcmh-mode 1)))
 
-;; Set custom file
-(require 'options)
-(require 'core)
-(require 'setup-company)
+;; Everything above is what I classify as the "early-load" part of my configuration.
+;; The rest of my configuration is broken into "modules", which I include into
+;; the init.el at macro expansion time.
 
-(setq custom-file "~/.config/emacs/custom.el")
-(load custom-file)
+(defvar module-directory (expand-file-name "lisp" "~/.config/emacs"))
+;;"Directory containing configuration 'modules'.")
+
+;; Multiples macros to properly load submodules
+
+(defmacro insert-code-from-file (path)
+  "Read the forms in the file at PATH into a progn."
+  (with-temp-buffer
+    (insert-file-contents path)
+    (goto-char (point-min))
+    (let (forms (eof nil))
+      (while (not eof)
+        (condition-case nil
+            (push (read (current-buffer)) forms)
+          (end-of-file (setq eof t))))
+      `(progn ,@(reverse forms)))))
+
+(defmacro load-module (name &optional condition)
+  "Locate the module NAME and insert its contents as a progn."
+  (let* ((file-name (concat name ".el"))
+         (path (expand-file-name file-name module-directory)))
+    (if condition
+        `(expand-when ,condition (insert-code-from-file ,path))
+      `(insert-code-from-file ,path))))
+
+(defmacro expand-when (conditional &rest form)
+  "Expand if and only if `CONDITIONAL' is truthy at compile-time."
+  (if (eval conditional)
+      `(progn ,@form)
+    '(progn)))
+
+;;We also set the file-name-handler-alist to an empty list, and reset it after Emacs has finished initializing.
+(defvar me/-file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq file-name-handler-alist me/-file-name-handler-alist)))
+
+(load-module "core")
+(load-module "modeline")
+(load-module "base-packages")
+(load-module "appearance")
+(load-module "editor-config")
+(load-module "tools")
+(load-module "project-management")
+(load-module "programming")
+(load-module "lsp")
+(load-module "document-production")
+
+;; (setq package-enable-at-startup nil)
+;; (setq inhibit-compacting-font-caches t)
+;; (setq debug-on-error t)

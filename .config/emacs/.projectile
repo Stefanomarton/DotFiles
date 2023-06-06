@@ -3,3 +3,4 @@
 -/eln-cache
 -/straight
 -/elgrep-data.el
+-/*.elc

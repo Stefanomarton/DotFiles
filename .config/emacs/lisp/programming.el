@@ -1,17 +1,38 @@
+;;; programming.el --- Programming languages configuration
+
+;; (use-package lua-mode
+;;   :defer t
+;;   )
+
+;; Python mode setup
+(use-package python-mode
+  :commands python-mode
+  :straight (:type built-in)
+  :mode ".py"
+  :interpreter "python"
+  :init
+  (evil-define-key 'normal python-mode-map (kbd "<tab>") 'evil-shift-right-line)
+  (evil-define-key 'normal python-mode-map (kbd "<backtab>") 'evil-shift-left-line)
+  (evil-define-key 'visual python-mode-map (kbd "<tab>") 'evil-shift-right)
+  (evil-define-key 'visual python-mode-map (kbd "<backtab>") 'evil-shift-left)
+  )
+
+;; Completions
+
 (use-package company
   :after evil
   :diminish company-mode
   :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
   :custom
   (setq company-tooltip-offset-display 'lines	;; Show number before and after current candidates
-	company-tooltip-flip-when-above t	;; Avoid screen breaking when at the bottom of the buffer
-	company-tooltip-minimum 2
-	company-minimum-prefix-length 1
-	company-tooltip-align-annotations t
-	company-require-match 'never
-	company-tooltip-limit 5
-	company-auto-complete t
-	company-idle-delay 0)
+	    company-tooltip-flip-when-above t	;; Avoid screen breaking when at the bottom of the buffer
+	    company-tooltip-minimum 2
+	    company-minimum-prefix-length 1
+	    company-tooltip-align-annotations t
+	    company-require-match 'never
+	    company-tooltip-limit 5
+	    company-auto-complete t
+	    company-idle-delay 0)
   (company-global-modes '(not shell-mode eaf-mode))
   :init
   (setq company-backends '((company-capf :with company-yasnippet company-files)))
@@ -20,32 +41,33 @@
   (define-key company-active-map (kbd "C-d") 'company-show-doc-buffer)
   (evil-global-set-key 'insert (kbd "C-k") 'company-complete-common-or-cycle)
   (add-hook 'python-mode-hook
-	    (lambda ()
-	      (set (make-local-variable 'company-backends) '(company-capf :with company-files))))
+	        (lambda ()
+	          (set (make-local-variable 'company-backends) '(company-capf :with company-files))))
   (add-hook 'markdown-mode-hook
-	    (lambda ()
-	      (set (make-local-variable 'company-backends) '(company-yasnippet company-files))))
+	        (lambda ()
+	          (set (make-local-variable 'company-backends) '(company-yasnippet company-files))))
   (add-hook 'emacs-lisp-mode-hook
-	    (lambda ()
-	      (set (make-local-variable 'company-backends) '(company-elisp :with ( company-yasnippet company-files )))))
+	        (lambda ()
+	          (set (make-local-variable 'company-backends) '(company-elisp :with ( company-yasnippet company-files )))))
   (global-company-mode 1)
+
   (defun smarter-tab-to-complete ()
     "Try to `org-cycle', `yas-expand', and `yas-next-field' at current cursor position.
       If all failed, try to complete the common part with `company-complete-common'"
     (interactive)
     (when yas-minor-mode
       (let ((old-point (point))
-	    (old-tick (buffer-chars-modified-tick))
-	    (func-list
-	     (if (equal major-mode 'org-mode) '(org-cycle yas-expand yas-next-field tab-jump-out)
-	       '(yas-expand yas-next-field tab-jump-out))))
-	(catch 'func-suceed
-	  (dolist (func func-list)
-	    (ignore-errors (call-interactively func))
-	    (unless (and (eq old-point (point))
-	 		 (eq old-tick (buffer-chars-modified-tick)))
-	      (throw 'func-suceed t)))
-	  (company-complete-common)))))
+	        (old-tick (buffer-chars-modified-tick))
+	        (func-list
+	         (if (equal major-mode 'org-mode) '(org-cycle yas-expand yas-next-field tab-jump-out)
+	           '(yas-expand yas-next-field tab-jump-out))))
+	    (catch 'func-suceed
+	      (dolist (func func-list)
+	        (ignore-errors (call-interactively func))
+	        (unless (and (eq old-point (point))
+	 		             (eq old-tick (buffer-chars-modified-tick)))
+	          (throw 'func-suceed t)))
+	      (company-complete-common)))))
 
   ;; the following stops company from using the orderless completion style
   ;; makes company much more useful
@@ -75,24 +97,24 @@
   (company-box-scrollbar nil)
   (company-box-doc-delay 0.1)
   (company-box-doc-frame-parameters '((internal-border-width . 1)
-				      (left-fringe . 3)
-				      (right-fringe . 3)))
+				                      (left-fringe . 3)
+				                      (right-fringe . 3)))
   :config
   ;; Fix company-yasnippet no sense colors
   (setq company-box-backends-colors
-	'((company-yasnippet :all "#191C25" :selected
-			     (:background "#191C25" :foreground "#ECEFF4"))))
+	    '((company-yasnippet :all "#191C25" :selected
+			                 (:background "#191C25" :foreground "#ECEFF4"))))
   (with-no-warnings
     ;; Prettify icons
     (defun my-company-box-icons--elisp (candidate)
       (when (or (derived-mode-p 'emacs-lisp-mode) (derived-mode-p 'lisp-mode))
-	(let ((sym (intern candidate)))
-	  (cond ((fboundp sym) 'Function)
-		((featurep sym) 'Module)
-		((facep sym) 'Color)
-		((boundp sym) 'Variable)
-		((symbolp sym) 'Text)
-		(t . nil)))))
+	    (let ((sym (intern candidate)))
+	      (cond ((fboundp sym) 'Function)
+		        ((featurep sym) 'Module)
+		        ((facep sym) 'Color)
+		        ((boundp sym) 'Variable)
+		        ((symbolp sym) 'Text)
+		        (t . nil)))))
     (advice-add #'company-box-icons--elisp :override #'my-company-box-icons--elisp)))
 
 ;; 		;; Credits to Centaur for these configurations
@@ -276,5 +298,7 @@
 ;; 						(Template . ,(all-the-icons-material "format_align_left" :height 1.0 :v-adjust -0.2)))
 ;; 					company-box-icons-alist 'company-box-icons-all-the-icons)))
 
-(provide 'setup-company)
-;; setup-company.el ends here
+
+(provide 'programming)
+
+;;; programming.el ends here
