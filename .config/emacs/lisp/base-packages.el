@@ -12,6 +12,7 @@
   (evil-set-leader 'visual (kbd "SPC"))
   (setq evil-want-integration nil)
   (setq evil-echo-state nil)
+  (setq evil-jumps-cross-buffers t)
   (setq evil-want-empty-ex-last-command t)
   (setq evil-want-C-u-scroll t) ;; allow scroll up with 'C-u'
   (setq evil-want-C-d-scroll nil) ;; avoid scroll down with 'C-d'
@@ -24,6 +25,11 @@
   (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
   (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
   (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
+  (evil-define-key 'normal 'global (kbd "H") 'evil-window-left)
+  (evil-define-key 'normal 'global (kbd "L") 'evil-window-right)
+  (evil-define-key 'normal 'global (kbd "m") 'register-to-point)
+  (evil-define-key 'normal 'global (kbd "'") 'jump-to-register)
+  (evil-define-key 'normal 'global (kbd "L") 'evil-window-right)
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-set-leader 'visual (kbd "SPC"))
 
@@ -125,7 +131,18 @@
     (kbd "<leader>ee") 'eval-buffer
     (kbd "<leader>es") 'eval-expression
     (kbd "<leader>er") 'eval-region
-    (kbd "<leader>ef") 'eval-defun)
+    (kbd "<leader>ef") 'eval-defun
+    (kbd "<leader>eb") 'byte-compile-file
+    (kbd "<leader>eB") 'byte-recompile-directory
+    )
+
+  (evil-define-key '(normal visual) 'global
+    (kbd "<leader> nn") 'narrow-to-region
+    (kbd "<leader> nw") 'widen
+    (kbd "<leader> np") 'narrow-to-page
+    (kbd "<leader> nf") 'narrow-to-defun
+    (kbd "<leader> ng") 'goto-line-relative
+    )
 
   (evil-define-key 'insert 'global (kbd "C-<backspace>") 'evil-delete-backward-word)
   (evil-define-key 'visual 'global (kbd "<leader>gg") 'google-this-noconfirm)
@@ -188,8 +205,8 @@
   :after evil
   :hook
   (LaTeX-mode . evil-tex-mode)
-  :config
-  (setq evil-tex-toggle-override-m t)
+  ;; :config
+  ;; (setq evil-tex-toggle-override-m t)
   )
 
 (use-package evil-goggles
@@ -299,10 +316,10 @@
   :config
 
   ;; Base keybindings
-  (evil-define-key 'normal 'global (kbd "m") 'embark-minimal-act)
-  (evil-define-key 'normal 'global (kbd "M") 'embark-dwim)
-  (evil-define-key 'insert 'global (kbd "C-e") 'embark-minimal-act)
-  (evil-define-key 'visual 'global (kbd "M") 'embark-dwim)
+  ;; (evil-define-key 'normal 'global (kbd "m") 'embark-minimal-act)
+  ;; (evil-define-key 'normal 'global (kbd "M") 'embark-dwim)
+  ;; (evil-define-key 'insert 'global (kbd "C-e") 'embark-minimal-act)
+  ;; (evil-define-key 'visual 'global (kbd "M") 'embark-dwim)
 
   ;; Which-key style indicator
   (defun embark-minimal-act (&optional arg)
