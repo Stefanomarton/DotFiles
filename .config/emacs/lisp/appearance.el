@@ -48,22 +48,24 @@
   (window-divider-mode t)
   )
 
+(add-to-list 'default-frame-alist '(alpha-background . 95))
+
 ;; A more complex, more lazy-loaded config
-(use-package solaire-mode
-  :if window-system ;; This is not optimal but display-graphic-p does not work
-  :defer 1
-  :hook
-  ;; Ensure solaire-mode is running in all solaire-mode buffers
-  (change-major-mode . turn-on-solaire-mode)
-  ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
-  ;; itself off every time Emacs reverts the file
-  (after-revert . turn-on-solaire-mode)
-  ;; To enable solaire-mode unconditionally for certain modes:
-  (ediff-prepare-buffer . solaire-mode)
-  :custom
-  (solaire-mode-auto-swap-bg t)
-  :config
-  (solaire-global-mode +1))
+;; (use-package solaire-mode
+;;   :if window-system ;; This is not optimal but display-graphic-p does not work
+;;   :defer 1
+;;   :hook
+;;   ;; Ensure solaire-mode is running in all solaire-mode buffers
+;;   (change-major-mode . turn-on-solaire-mode)
+;;   ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
+;;   ;; itself off every time Emacs reverts the file
+;;   (after-revert . turn-on-solaire-mode)
+;;   ;; To enable solaire-mode unconditionally for certain modes:
+;;   (ediff-prepare-buffer . solaire-mode)
+;;   :custom
+;;   (solaire-mode-auto-swap-bg t)
+;;   :config
+;;   (solaire-global-mode +1))
 
 ;; Theming
 
@@ -118,3 +120,4 @@
 		          (find-file folder-path))))
   (dashboard-setup-startup-hook)
   )
+
