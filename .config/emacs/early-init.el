@@ -2,6 +2,8 @@
 ;; More than half of the packages I use regularly produce compile warnings. It
 ;; gets to be quite annoying when the `*Warnings*' window pops up while I'm
 ;; trying to do work, so we will disable native-comp reporting.
+(setq native-comp-jit-compilation t)
+(setq native-compile-prune-cache t)
 (setq native-comp-async-report-warnings-errors nil)
 ;;(setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
 
@@ -55,6 +57,7 @@
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
 
+(setq frame-inhibit-implied-resize t)
 (setq inhibit-compacting-font-caches t)
 
 ;; Font settings
@@ -75,13 +78,7 @@
 		            :height 120
 		            :weight 'normal
 		            :width 'normal)
-
-;; Italic comments
-(set-face-attribute 'font-lock-comment-face nil
-		            :family "Cartograph"
-		            :slant 'italic)
-(set-face-attribute 'font-lock-function-name-face nil :slant 'italic)
-(set-face-attribute 'font-lock-variable-name-face nil :slant 'italic)
+;; ;; Set default font
 
 ;; Choose a fallback with size comparible to Terminus so that we don't break
 ;; vterm.
