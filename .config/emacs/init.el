@@ -25,14 +25,14 @@
 (setq straight-vc-git-default-clone-depth '(1 single-branch))
 
 ;; Install use-package and ensure listed packages are installed
-(straight-use-package 'use-package)
+;; (straight-use-package 'use-package) ;; No need for this after emacs 29+
 (setq straight-use-package-by-default t)
 
 ;; Enable packages at startup
 (setq package-enable-at-startup nil)
 
 ;; Uncommented this sometimes for debugging
-;;(setq use-package-verbose t)
+;; (setq use-package-verbose t)
 ;;(setq debug-on-message t)
 
 ;; But we do want to reset the garbage collector settings eventually. When we
