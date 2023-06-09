@@ -47,15 +47,16 @@
 ;; I don't use 'custom.el' to set variables, but a few of the packages I use do.
 ;; This snippet ensures that a massacre is not made of my init.el.
 
-(setq custom-file "~/.emacs.d/custom.el")
-(when (file-exists-p custom-file)
-  (load custom-file))
+;; (setq custom-file "~/.config/emacs/custom.el")
+;; (when (file-exists-p custom-file)
+;;   (load custom-file))
 
 ;; Set default directory to home and abbreviate it
 (setq default-directory "~/")
 
 ;; I care about having my history in minibuffers
 (use-package savehist
+  :after evil
   :init
   (savehist-mode))
 
@@ -129,3 +130,8 @@
 
 ;;Useless
 (setq ring-bell-function 'ignore)
+
+
+;; Enable functions
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
