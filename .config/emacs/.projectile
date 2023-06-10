@@ -1,6 +1,5 @@
--/auto-save-list
--/elpa
--/eln-cache
+-.elc
 -/straight
--/elgrep-data.el
--/*.elc
+-/eln-cache
+-/auto-save-list
+
