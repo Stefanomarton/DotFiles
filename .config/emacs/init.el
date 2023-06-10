@@ -86,9 +86,10 @@
     '(progn)))
 
 (load-module "core")
+(load-module "evil")
+(load-module "appearance")
 (load-module "modeline")
 (load-module "base-packages")
-(load-module "appearance")
 (load-module "editor-config")
 (load-module "tools")
 (load-module "project-management")
