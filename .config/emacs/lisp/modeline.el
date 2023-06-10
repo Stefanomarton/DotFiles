@@ -42,11 +42,11 @@
     :eval
     (when (buffer-file-name)
       (propertize (shorten-directory default-directory 35)
-		  'face 'font-lock-comment-face)))
+		          'face 'font-lock-comment-face)))
 
 
    ;; buffer name
-   ;; (:propertize "%b" face font-lock-doc-face)
+   (:propertize "%b" face font-lock-doc-face)
 
    ;; right aligned stuff
    (:eval
@@ -54,8 +54,8 @@
       (concat
        ;; nyan-cat
        (concat
-	(propertize " " 'display `(space :align-to (- right ,status-offset)))
-	)
+	    (propertize " " 'display `(space :align-to (- right ,status-offset)))
+	    )
        (propertize (format-time-string " %H:%M") 'face 'font-lock-keyword-face)))))
 
  ;; for nyan cat
@@ -110,7 +110,7 @@
 '(:eval (propertize
          " " 'display
          `((space :align-to (- (+ right right-fringe right-margin)
-			       ,(+ 3 (string-width mode-name)))))))
+			                   ,(+ 3 (string-width mode-name)))))))
 
 
 (provide 'modeline)
