@@ -20,7 +20,6 @@
 ;; ask if local variables are safe once.
 (setq enable-local-variables t)
 
-
 ;; Better resize
 (setq frame-resize-pixelwise t)
 
@@ -119,7 +118,6 @@
 (setq scroll-conservatively most-positive-fixnum
       indicate-empty-lines nil
       scroll-preserve-screen-position t
-      ;;ccm-recenter-at-end-of-file t
       scroll-margin 1000
       maximum-scroll-margin 0.5)
 
@@ -131,7 +129,6 @@
 
 ;;Useless
 (setq ring-bell-function 'ignore)
-
 
 ;; Enable functions
 (put 'narrow-to-region 'disabled nil)
