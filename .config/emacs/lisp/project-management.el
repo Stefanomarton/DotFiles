@@ -3,7 +3,8 @@
 (provide 'project-management)
 
 (use-package projectile
-  :after consult
+  :defer 1
+  :after vertico
   :diminish projectile-mode
   :custom
   (setq projectile-track-known-projects-automatically nil)
@@ -12,8 +13,8 @@
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   (projectile-mode)
   :init
-  (setq projectile-enable-caching t)
-  (setq projectile-indexing-method 'native)
+  ;; (setq projectile-enable-caching t)
+  (setq projectile-indexing-method 'hybrid)
   (setq projectile-known-projects-file "~/.config/emacs/project.el")
   )
 
