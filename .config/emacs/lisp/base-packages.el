@@ -3,6 +3,7 @@
 
 ;; Recent file list
 (use-package recentf
+  :defer .5
   :after evil
   :config
   (add-hook 'emacs-startup-hook 'recentf-mode)
@@ -201,7 +202,8 @@ targets."
 
 ;; Nice auto formatting
 (use-package format-all
-  :init
+  :after dashboard
+  :config
   (add-hook 'format-all-mode-hook 'format-all-ensure-formatter)
   (add-hook 'prog-mode-hook 'format-all-mode)
   (add-hook 'LaTeX-mode-hook 'format-all-mode)
