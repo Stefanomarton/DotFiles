@@ -17,6 +17,7 @@
   (setq evil-vsplit-window-right t)
   (setq evil-search-module 'evil-search)
   (setq evil-want-fine-undo t)
+  (setq evil-kill-on-visual-paste nil)
 
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-set-leader 'visual (kbd "SPC"))
