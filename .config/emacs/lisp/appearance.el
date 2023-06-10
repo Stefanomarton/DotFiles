@@ -25,6 +25,7 @@
 (setq display-line-numbers-width-start 70)
 (setq display-line-numbers-type 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'find-file-hook 'display-line-numbers-mode)
 
 (add-hook 'prog-mode-hook 'hl-line-mode) ;; Highlight the current line
 (setq hl-line-sticky-flag nil)
@@ -120,4 +121,3 @@
 		          (find-file folder-path))))
   (dashboard-setup-startup-hook)
   )
-

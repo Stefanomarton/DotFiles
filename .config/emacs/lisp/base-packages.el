@@ -80,7 +80,6 @@
 (use-package consult
   :init
   (setq consult-preview-allowed-hooks '(global-font-lock-mode-check-buffers save-place-find-file-hook display-line-numbers-mode))
-  :config
   :defer 1)
 
 (use-package consult-projectile
