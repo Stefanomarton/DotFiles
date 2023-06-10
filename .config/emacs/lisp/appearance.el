@@ -114,7 +114,7 @@
     (kbd "<leader>fr") 'consult-recent-file
     (kbd "<leader>b") 'consult-buffer
     (kbd "f") 'find-file
-    (kbd "h") 'consult-projectile-switch-project
+    (kbd "<leader>pp") 'projectile-switch-project
     (kbd "c") (lambda ()
 		        (interactive)
 		        (let ((folder-path "~/.config/emacs"))
