@@ -37,7 +37,7 @@
   :after dashboard)
 
 (use-package frame
-  :defer t
+  :after dashboard
   :straight (:type built-in)
   :config
   ;; Make sure new frames use window-divider
@@ -74,10 +74,10 @@
 (setq custom-safe-themes t)
 
 (use-package doom-themes
-  :defer t
+  ;; :defer .5
+  ;; :config
+  ;; (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
   :config
-  (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
-  :init
   (load-theme 'doom-nord t))
 
 ;; fix color display when loading emacs in terminal

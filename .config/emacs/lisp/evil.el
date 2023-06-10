@@ -149,11 +149,11 @@
 
   (evil-mode 1))
 
-;; Undo for evil
+;; ;; Undo for evil
 (use-package undo-fu
   :after evil)
 
-;; Persisten undo
+;; ;; Persisten undo
 (use-package undo-fu-session
   :after undo-fu
   :config
@@ -161,27 +161,30 @@
 
 ;; Evil integrations
 (use-package evil-collection
-  :after evil
+  :defer .5
+  :after dashboard
   :config
   (evil-collection-init))
 
 (use-package evil-surround
-  :after evil
+  :defer .5
+  :after dashboard
   :config
   (evil-define-key '(normal visual) 'global (kbd ",") 'evil-surround-edit)
   (add-hook 'prog-mode-hook (lambda ()
-			                  (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+ 			                  (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
   (add-hook 'org-mode-hook (lambda ()
-			                 (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+ 			                 (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
   (add-hook 'LaTeX-mode-hook (lambda ()
-			                   (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+ 			                   (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
   (add-hook 'markdown-mode-hook (lambda ()
-				                  (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+ 				                  (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
   )
 
 (use-package evil-commentary
   ;; Better Comment Action
-  :after evil
+  :defer .5
+  :after dashboard
   :config
   (defun comment_end_of_line ()
     (interactive)
@@ -201,7 +204,8 @@
   )
 
 (use-package evil-goggles
-  :after evil
+  :defer .5
+  :after dashboard
   :config
   (evil-goggles-mode)
   (setq evil-goggle-duration 0.5)
