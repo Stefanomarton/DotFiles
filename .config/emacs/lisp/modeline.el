@@ -12,6 +12,14 @@
   '((t (:foreground "#ebcb8b")))
   "Face for Evil insert state")
 
+(defface evil-operator-face
+  '((t (:foreground "#bf616a")))
+  "Face for Evil operator state")
+
+(defface evil-emacs-face
+  '((t (:foreground "#8fbcbb")))
+  "Face for Evil insert state")
+
 (setq-default
  mode-line-format
  '(
@@ -30,6 +38,8 @@
             ((eq evil-state 'visual) (propertize "\uf111" 'face 'evil-visual-face))
             ((eq evil-state 'normal) (propertize "\uf111" 'face 'evil-normal-face))
             ((eq evil-state 'insert) (propertize "\uf111" 'face 'evil-insert-face))
+            ((eq evil-state 'operator) (propertize "\uf111" 'face 'evil-operator-face))
+            ((eq evil-state 'emacs) (propertize "\uf111" 'face 'evil-emacs-face))
             (t (propertize "*" 'face 'font-lock-variable-name-face)))))
    ;; (4
    ;;  (:propertize "%m " face font-lock-variable-name-face
