@@ -13,8 +13,7 @@
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   (projectile-mode)
   :init
-  ;; (setq projectile-enable-caching t)
-  (setq projectile-indexing-method 'hybrid)
+  (setq projectile-indexing-method 'native)
   (setq projectile-known-projects-file "~/.config/emacs/project.el")
   )
 
