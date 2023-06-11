@@ -18,6 +18,10 @@
   (setq evil-search-module 'evil-search)
   (setq evil-want-fine-undo t)
   (setq evil-kill-on-visual-paste nil)
+  (setq evil-esc-delay 0.0001)
+  (setq evil-move-beyond-eol t)
+  (setq evil-want-Y-yank-to-eol t)
+  ;; (setq evil-cross-lines t)
 
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-set-leader 'visual (kbd "SPC"))
@@ -96,7 +100,6 @@
 	      (kill-buffer (current-buffer))))))
 
   (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
-  (define-key evil-normal-state-map (kbd "Y") (kbd "y$"))
   (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
   (evil-define-key 'normal 'global
     (kbd ";") 'evil-ex
