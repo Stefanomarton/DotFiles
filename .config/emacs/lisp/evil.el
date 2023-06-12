@@ -31,7 +31,7 @@
   (evil-define-key 'normal 'global (kbd "H") 'evil-window-left)
   (evil-define-key 'normal 'global (kbd "L") 'evil-window-right)
   (evil-define-key 'normal 'global (kbd "m") 'point-to-register)
-  (evil-define-key 'normal 'global (kbd "'") 'jump-to-register)
+  (evil-define-key 'normal 'global (kbd "gm") 'jump-t-register)
   (evil-define-key 'normal 'global (kbd "L") 'evil-window-right)
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-set-leader 'visual (kbd "SPC"))
@@ -109,6 +109,7 @@
     (kbd "<leader>fw") 'find-file-other-window
     (kbd "<leader>fr") 'consult-recent-file
     (kbd "<leader>fg") 'consult-ripgrep
+    (kbd "<leader>r") 'consult-register
     (kbd "<leader>dj") 'dirvish
     (kbd "<leader>dD") 'dired
     (kbd "<leader>dd") 'consult-dir
@@ -213,7 +214,8 @@
   :config
   (evil-goggles-mode)
   (setq evil-goggle-duration 0.5)
-  (evil-goggles-use-diff-faces))
+  ;; (evil-goggles-use-diff-faces))
+  )
 
 (use-package more-evil-avy
   :after avy
