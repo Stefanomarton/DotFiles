@@ -1,1 +1,1 @@
-("~/.config/emacs/" "~/Projects/thesis/")
+("~/Projects/MySmallProgrammingJourney/" "~/.config/emacs/" "~/Projects/thesis/" "~/Projects/MyQMK/")
