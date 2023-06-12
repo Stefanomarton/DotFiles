@@ -75,18 +75,27 @@
 	    '("am" "by" "if" "is" "it" "my" "ox" "up"
 	      "ace" "act" "add" "age" "ago" "aim" "air"
 	      "ale" "all" "and" "ant" "any" "ape" "apt"))
+
   ;; (evil-define-key 'operator 'global (kbd "l") 'avy-goto-line)
+
   (evil-define-key 'normal 'global (kbd "<leader> s") 'evil-avy-goto-char-timer)
+
   (evil-define-key 'normal 'global (kbd "s") 'evil-avy-goto-char-2-below)
   (evil-define-key 'normal 'global (kbd "S") 'evil-avy-goto-char-2-above)
-  (evil-define-key 'normal 'global (kbd "f") 'evil-avy-find-char)
-  (evil-define-key 'normal 'global (kbd "F") 'evil-avy-find-char-backward)
-  (evil-define-key 'motion 'global (kbd "s") 'evil-avy-goto-char-timer)
-  (evil-define-key 'operator 'global (kbd "s") 'evil-avy-goto-char-timer)
-  (evil-define-key 'motion 'global (kbd "f") 'evil-avy-goto-char-in-line)
-  (evil-define-key 'operator 'global (kbd "f") 'evil-avy-goto-char-in-line)
-  (evil-define-key 'motion 'global (kbd "L") 'avy-copy-line)
+
+  (evil-define-key 'normal 'global (kbd "F") 'evil-avy-goto-char-in-line-beg)
+  (evil-define-key 'visual 'global (kbd "F") 'evil-avy-goto-char-in-line-beg)
+  (evil-define-key 'operator 'global (kbd "F") 'evil-avy-goto-char-in-line-beg)
+
+  ;; (evil-define-key 'visual 'global (kbd "F") 'avy-goto-char)
+
+  (evil-define-key 'normal 'global (kbd "f") 'evil-avy-goto-char-in-line-end)
+  (evil-define-key 'visual 'global (kbd "f") 'evil-avy-goto-char-in-line-end)
+  (evil-define-key 'operator 'global (kbd "f") 'evil-avy-goto-char-in-line-end)
   (evil-define-key 'normal 'global (kbd "C-k") 'pop-global-mark)
+
+  ;; (evil-define-key 'motion 'global (kbd "L") 'avy-copy-line)
+
   (setq avy-timeout-seconds 0.3)
   (defun avy-action-kill-whole-line (pt)
     ;; Kill action for avy
@@ -118,10 +127,6 @@
 	    (alist-get ?c avy-dispatch-alist) 'avy-action-copy
 	    (alist-get ?C avy-dispatch-alist) 'avy-action-copy-whole-line
 	    (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line)
-  )
-
-(use-package evil-avy
-  :after (evil avy)
   )
 
 (use-package expand-region
