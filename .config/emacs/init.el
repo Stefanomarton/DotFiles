@@ -96,3 +96,5 @@
 (load-module "programming")
 (load-module "lsp")
 (load-module "document-production")
+
+;;; init.el ends here
