@@ -215,6 +215,10 @@
   (setq evil-goggle-duration 0.5)
   (evil-goggles-use-diff-faces))
 
+(use-package more-evil-avy
+  :after avy
+  :straight (:host github :repo "Stefanomarton/more-evil-avy"))
+
 (provide 'evil)
 
 ;;; evil.el ends here
