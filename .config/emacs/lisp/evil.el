@@ -31,7 +31,7 @@
   (evil-define-key 'normal 'global (kbd "H") 'evil-window-left)
   (evil-define-key 'normal 'global (kbd "L") 'evil-window-right)
   (evil-define-key 'normal 'global (kbd "m") 'point-to-register)
-  (evil-define-key 'normal 'global (kbd "gm") 'jump-t-register)
+  (evil-define-key 'normal 'global (kbd "gm") 'jump-to-register)
   (evil-define-key 'normal 'global (kbd "L") 'evil-window-right)
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-set-leader 'visual (kbd "SPC"))
