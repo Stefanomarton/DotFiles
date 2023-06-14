@@ -209,18 +209,44 @@
   ;; (setq evil-tex-toggle-override-m t)
   )
 
-(use-package evil-goggles
-  :defer .5
-  :after dashboard
-  :config
-  (evil-goggles-mode)
-  (setq evil-goggle-duration 0.5)
-  ;; (evil-goggles-use-diff-faces))
-  )
+;; (use-package evil-goggles
+;;   :defer .5
+;;   :after dashboard
+;;   :config
+;;   (evil-goggles-mode)
+;;   (setq evil-goggle-duration 0.0)
+;;   ;; (evil-goggles-use-diff-faces))
+;;   )
 
 (use-package more-evil-avy
   :after avy
   :straight (:host github :repo "Stefanomarton/more-evil-avy"))
+
+(use-package general
+
+  :after dashboard
+
+  :config
+  (defun my-evil-change-whole-line ()
+    (interactive)
+    (beginning-of-line)
+    (evil-change-line (point) (line-end-position)))
+
+  (defun my-evil-change-visual-selection ()
+    "Replace the region with an empty line and enter insert mode."
+    (interactive)
+    (let ((start (region-beginning))
+          (end (region-end)))
+      (delete-region start end)
+      (goto-char start)
+      (open-line 1)
+      (evil-insert 1)))
+  (general-evil-setup t)
+
+  (general-nmap "c" (general-key-dispatch 'evil-change
+                      "c" 'my-evil-change-whole-line))
+  (general-vmap "c" 'my-evil-change-visual-selection)
+  )
 
 (provide 'evil)
 
