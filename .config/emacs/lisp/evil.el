@@ -8,6 +8,7 @@
   :config
   (setq completion-in-region-function 'consult-completion-in-region)
   (setq evil-want-integration nil)
+  (setq evil-operator-state-cursor nil)
   (setq evil-echo-state nil)
   (setq evil-jumps-cross-buffers t)
   (setq evil-want-empty-ex-last-command t)
