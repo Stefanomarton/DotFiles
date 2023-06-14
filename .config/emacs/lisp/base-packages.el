@@ -73,9 +73,9 @@
 	    completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia
-  :defer t
+  :defer .1
   :after vertico
-  :config
+  :init
   (marginalia-mode))
 
 (use-package consult
