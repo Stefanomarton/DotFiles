@@ -176,7 +176,10 @@
   :defer .5
   :after dashboard
   :config
-  (evil-define-key '(normal visual) 'global (kbd ",") 'evil-surround-edit)
+  (evil-surround-mode)
+  (evil-define-key '(normal visual) 'global (kbd ", ,") 'evil-surround-edit)
+  (evil-define-key '(normal visual) 'global (kbd ", c") 'evil-surround-change)
+  (evil-define-key '(normal visual) 'global (kbd ", d") 'evil-surround-delete)
   (add-hook 'prog-mode-hook (lambda ()
  			                  (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
   (add-hook 'org-mode-hook (lambda ()
@@ -185,7 +188,9 @@
  			                   (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
   (add-hook 'markdown-mode-hook (lambda ()
  				                  (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
-  )
+
+  (add-hook 'markdown-mode-hook (lambda ()
+                                  (push '(?* . ("**" . "**")) evil-surround-pairs-alist))))
 
 (use-package evil-commentary
   ;; Better Comment Action
