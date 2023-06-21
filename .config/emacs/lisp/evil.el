@@ -228,9 +228,7 @@
   :straight (:host github :repo "Stefanomarton/more-evil-avy"))
 
 (use-package general
-
-  :after dashboard
-
+  :after consult
   :config
   (defun my-evil-change-whole-line ()
     (interactive)
