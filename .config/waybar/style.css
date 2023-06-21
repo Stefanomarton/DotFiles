@@ -3,7 +3,7 @@
     font-family: Font Awesome, Roboto, Arial, sans-serif;
     font-size: 14px;
     color: #ffffff;
-    border-radius: 8px;
+    border-radius: 0px;
 }
 
 
@@ -11,27 +11,27 @@ window {
 	/*font-weight: bold;*/
 }
 window#waybar {
-    background: rgba(0, 0, 0, 0);
+	background: #2e3440;
 }
 /*-----module groups----*/
 .modules-right {
-	background-color: rgba(0,43,51,0.85);
-    margin: 2px 10px 0 0;
+	background: #2e3440;
+    margin: 0px 0px 0 0;
 }
 .modules-center {
-	background-color: rgba(0,43,51,0.85);
+	background: #2e3440;
     margin: 2px 0 0 0;
     padding: 0 8px 0 8px;
 }
 .modules-left {
-    margin: 2px 0 0 5px;
-	background-color: rgba(0,119,179,0.6);
+    margin: 0 0 0 5px;
+	background: #2e3440;
 }
 /*-----modules indv----*/
 #workspaces {
-    padding: 1px 5px;
+    padding: 0px 0px;
     /* background-color: transparent; */
-    background-color: rgba(0,43,51,0.85);
+	background: #2e3440;
     border-radius: 8px;
 }
 #workspaces button {
@@ -51,10 +51,9 @@ window#waybar {
 }
 #workspaces button.active{
     /* background-color: transparent; */
-    background-color: rgba(0,43,51,1);
+    background-color: #4c566a;
     border-radius: 0px;
 }
-
 
 #clock,
 #battery,
@@ -100,10 +99,3 @@ window#waybar {
 #temperature.critical {
     color: #cc3436;
 }
-/*-----Colors----*/
-/*
- *rgba(0,85,102,1),#005566 --> Indigo(dye)
- *rgba(0,43,51,1),#002B33 --> Dark Green 
- *rgba(0,153,153,1),#009999 --> Persian Green 
- *
- */

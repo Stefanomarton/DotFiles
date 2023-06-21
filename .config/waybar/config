@@ -6,20 +6,14 @@
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
 
-    "modules-left": ["wlr/workspaces","sway/workspaces"],
+    "modules-left": ["wlr/workspaces"],
 
     "modules-center": ["hyprland/window"],
 
     "modules-right": ["tray", "idle_inhibitor", "pulseaudio", "network", "temperature", "battery", "battery#bat2", "clock"],
 
     "wlr/workspaces": {
-    	"format": "{name}: {icon}",
-    	"format-icons": {
-    		"urgent": "",
-    		"focused": "",
-    		"active": "",
-    		"default": ""
-    	},
+    	"format": "{name}",
         "on-click": "activate",
     },
 
