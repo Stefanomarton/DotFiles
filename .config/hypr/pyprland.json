@@ -1,0 +1,25 @@
+{
+    "pyprland": {
+        "plugins": [
+            "scratchpads",
+            "magnify"
+        ]
+    },
+    "scratchpads": {
+        "term": {
+            "command": "kitty --class alacritty-dropterm",
+            "animation": "fromTop",
+            "unfocus": "hide"
+        },
+        "ranger": {
+            "command": "kitty --class explorer -e ranger",
+            "animation": "fromBottom",
+            "unfocus": "hide"
+        },
+        "ncspot": {
+            "command": "kitty --class explorer -e ncspot",
+            "animation": "fromRight",
+            "unfocus": "hide"
+        }
+    }
+}
