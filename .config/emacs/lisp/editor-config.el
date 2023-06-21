@@ -141,6 +141,7 @@
   )
 
 (use-package aggressive-indent
+  :after dashboard
   :config
   (add-hook 'prog-mode-hook 'aggressive-indent-mode))
 
