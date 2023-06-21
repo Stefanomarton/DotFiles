@@ -1,5 +1,4 @@
-#include catppuccin
-include dracula
+include nord
 set scroll-step 40
 set selection-clipboard clipboard
 set recolor false
