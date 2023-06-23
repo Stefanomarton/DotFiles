@@ -33,8 +33,12 @@ autoload -U colors && colors
 
 # Vim mode
 bindkey -v
-bindkey -v '^?' backward-delete-char
-#
+
+bindkey -a '^[[3~' delete-char
+bindkey "^[[3~" delete-char
+bindkey "^H" backward-delete-char
+bindkey "^?" backward-delete-char
+
 # # Keybindings
 bindkey "^a" beginning-of-line
 bindkey "^e" end-of-line
@@ -214,7 +218,6 @@ export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^v' edit-command-line
 
-
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
@@ -276,6 +279,8 @@ rp () {
 rpg () {
     git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
 }
+# PROMPT=' %(?.%F{blue}√.%F{red}?%?)%f %F{black}% • % '
+PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f %F{black}% • %F% '
+RPROMPT='%B%F{blue}%~%f%b '
 
-eval "$(starship init zsh)"
 
