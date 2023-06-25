@@ -2,7 +2,7 @@
 
 ;; Common fast pdf viewer inside emacs
 (use-package pdf-tools
-  :after (latex-mode markdown-mode org-mode)
+  :after (LaTeX-mode markdown-mode org-mode)
   :config
   (setq-default pdf-view-display-size 'fit-page) ; Fit page width
   (setq pdf-annot-activate-created-annotations t) ; Enable annotations
@@ -12,10 +12,7 @@
   (define-key pdf-view-mode-map (kbd "l") 'image-forward-hscroll)
   (define-key pdf-view-mode-map (kbd "g") 'pdf-view-first-page)
   (define-key pdf-view-mode-map (kbd "G") 'pdf-view-last-page)
-  (define-key pdf-view-mode-map (kbd "C-j") 'pdf-view-next-page)
-  (define-key pdf-view-mode-map (kbd "C-k") 'pdf-view-previous-page)
-  (define-key pdf-view-mode-map (kbd "C-d") 'pdf-view-scroll-up-or-next-page)
-  (define-key pdf-view-mode-map (kbd "C-u") 'pdf-view-scroll-down-or-previous-page)
+  (pdf-tools-install)
   )
 
 ;; Org mode configuration
@@ -41,23 +38,20 @@
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   )
 
-(defun efs/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
-	    visual-fill-column-center-text t)
-  (visual-fill-column-mode 1)
+
+(use-package org
+  :after dashboard
+  :straight t
+  :ensure nil
+  :config
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
   )
 
-(use-package visual-fill-column
-  :hook (org-mode . efs/org-mode-visual-fill)
-  )
 (use-package org-fragtog
   :commands (org-mode)
   :hook
   (org-mode . org-fragtog-mode)
   :after org-mode
-  :config
-  ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.6))
-  (plist-put org-format-latex-options :justify 'center)
   )
 
 (use-package org-modern
@@ -217,20 +211,20 @@
   (LaTeX-mode . aas-activate-for-major-mode)
   :config
   (aas-set-snippets 'latex-mode
-                    "jf" (lambda () (interactive)
-	                       (yas-expand-snippet "\\\\($1\\\\) $0"))
-                    "kd" (lambda () (interactive)
-	                       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+    "jf" (lambda () (interactive)
+	       (yas-expand-snippet "\\\\($1\\\\) $0"))
+    "kd" (lambda () (interactive)
+	       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'org-mode
-                    "jf" (lambda () (interactive)
-	                       (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-                    "kd" (lambda () (interactive)
-	                       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+    "jf" (lambda () (interactive)
+	       (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+    "kd" (lambda () (interactive)
+	       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'markdown-mode
-                    "jf" (lambda () (interactive)
-	                       (yas-expand-snippet "$$1$ $0"))
-                    "kd" (lambda () (interactive)
-	                       (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+    "jf" (lambda () (interactive)
+	       (yas-expand-snippet "$$1$ $0"))
+    "kd" (lambda () (interactive)
+	       (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
   :straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -240,29 +234,29 @@
   (org-mode . laas-mode)
   :config ; do whatever here
   (aas-set-snippets 'laas-mode
-                    ;; set condition!
-                    :cond #'texmathp ; expand only while in math
-                    "supp" "\\supp"
-                    "On" "O(n)"
-                    "O1" "O(1)"
-                    "Olog" "O(\\log n)"
-                    "Olon" "O(n \\log n)"
-                    ;; bind to functions!
-                    "sum" (lambda () (interactive)
-	                        (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-                    "Span" (lambda () (interactive)
-	                         (yas-expand-snippet "\\Span($1)$0"))
-                    "inti" (lambda () (interactive)
-	                         (yas-expand-snippet "\\int"))
-                    "intd" (lambda () (interactive)
-	                         (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-                    "df" (lambda () (interactive)
-	                       (yas-expand-snippet "_{$1}$0"))
-                    "rt" (lambda () (interactive)
-	                       (yas-expand-snippet "^{$1}$0"))
-                    ;; add accent snippets
-                    :cond #'laas-object-on-left-condition
-                    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+    ;; set condition!
+    :cond #'texmathp ; expand only while in math
+    "supp" "\\supp"
+    "On" "O(n)"
+    "O1" "O(1)"
+    "Olog" "O(\\log n)"
+    "Olon" "O(n \\log n)"
+    ;; bind to functions!
+    "sum" (lambda () (interactive)
+	        (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+    "Span" (lambda () (interactive)
+	         (yas-expand-snippet "\\Span($1)$0"))
+    "inti" (lambda () (interactive)
+	         (yas-expand-snippet "\\int"))
+    "intd" (lambda () (interactive)
+	         (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+    "df" (lambda () (interactive)
+	       (yas-expand-snippet "_{$1}$0"))
+    "rt" (lambda () (interactive)
+	       (yas-expand-snippet "^{$1}$0"))
+    ;; add accent snippets
+    :cond #'laas-object-on-left-condition
+    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package cdlatex
   :commands latex-mode
