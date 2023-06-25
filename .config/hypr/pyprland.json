@@ -20,6 +20,11 @@
             "command": "kitty --class explorer -e ncspot",
             "animation": "fromRight",
             "unfocus": "hide"
+        },
+        "git": {
+            "command": "kitty --class git -e lazygit",
+            "animation": "fromLeft",
+            "unfocus": "hide"
         }
     }
 }
