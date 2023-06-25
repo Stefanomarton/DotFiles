@@ -196,6 +196,7 @@ targets."
   :config
   (evil-define-key 'normal dirvish-mode-map (kbd "q") 'dirvish-quit)
   (evil-define-key 'normal dirvish-mode-map (kbd "<escape>") 'dirvish-layout-toggle)
+  (setq dirvish-default-layout '(0.8 0.2 0.5))
   :init
   (dirvish-override-dired-mode)
   )
