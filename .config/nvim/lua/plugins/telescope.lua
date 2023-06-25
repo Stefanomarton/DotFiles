@@ -81,10 +81,12 @@ return {
 				},
 				pickers = {
 					-- Default configuration for builtin pickers goes here:
-					-- picker_name = {
-					--   picker_config_key = value,
-					--   ...
-					-- }
+					find_files = {
+						hidden = true,
+					},
+					file_browser = {
+						hidden = true,
+					},
 					-- Now the picker_config_key will be applied every time you call this
 					-- builtin picker
 				},
@@ -96,6 +98,7 @@ return {
 						theme = "dropdown",
 						-- disables netrw and use telescope-file-browser in its place
 						hijack_netrw = true,
+						hidden = true,
 						mappings = {
 							["i"] = {
 								["<C-h>"] = actions.which_key,

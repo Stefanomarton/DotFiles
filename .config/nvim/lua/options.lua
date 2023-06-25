@@ -45,6 +45,7 @@ vim.opt.iskeyword:append("-")
 vim.opt.shell = "/bin/bash"
 vim.opt.lazyredraw = false
 vim.opt.shadafile = "NONE"
+vim.opt.fillchars = { eob = " " } -- Remove useless tilde at the end of the file
 
 -- TreeSitter context background color
 --vim.api.nvim_set_hl(0, "TreesitterContext", { fg = "#ffffff", bg = "#414868" })
