@@ -279,8 +279,5 @@ rp () {
 rpg () {
     git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
 }
-# PROMPT=' %(?.%F{blue}√.%F{red}?%?)%f %F{black}% • % '
-PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f %F{black}% • %F% '
-RPROMPT='%B%F{blue}%~%f%b '
-
-
+PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f%F{black} • %F% '
+RPROMPT='%B%F{blue}%~%f%b'
