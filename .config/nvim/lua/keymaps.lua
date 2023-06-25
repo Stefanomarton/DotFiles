@@ -14,6 +14,7 @@ vim.g.mapleader = " "
 -- Normal --
 -- Faster movements
 keymap("n", "q", "b", opts)
+keymap("n", "b", "q", opts)
 keymap("x", "q", "b", opts)
 keymap("n", "Q", "B", opts)
 keymap("x", "Q", "B", opts)
