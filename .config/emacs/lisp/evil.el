@@ -251,6 +251,21 @@
   (general-vmap "c" 'my-evil-change-visual-selection)
   )
 
+(use-package evil-owl
+  :diminish ""
+  :config
+  (setq evil-owl-idle-delay 0.8)
+  (setq evil-owl-display-method 'posframe
+        evil-owl-extra-posframe-args '(:width 50 :height 20)
+        evil-owl-max-string-length 50)
+  ;; (add-to-list 'display-buffer-alist
+  ;;              '("*evil-owl*"
+  ;;                (display-buffer-in-side-window)
+  ;;                (side . bottom)
+  ;;                (window-height . 20)))
+  (evil-owl-mode)
+  )
+
 (provide 'evil)
 
 ;;; evil.el ends here
