@@ -1,0 +1,5 @@
+virsh --connect qemu:///system start "win11"
+wait
+caffeine & disown
+looking-glass-client -F -s
+killall caffeine
