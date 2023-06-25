@@ -208,3 +208,6 @@ targets."
   (add-hook 'prog-mode-hook 'format-all-mode)
   (add-hook 'LaTeX-mode-hook 'format-all-mode)
   )
+
+(use-package posframe
+  :after dashboard)
