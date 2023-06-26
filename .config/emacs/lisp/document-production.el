@@ -72,7 +72,7 @@
            (template-file (concat default-directory "template.latex"))
            (metadata-flag (if (file-exists-p config-file) (format "--metadata-file=%s" config-file) ""))
            (template-flag (if (file-exists-p template-file) (format "--template=%s" template-file) ""))
-           (pandoc-command (format "pandoc -s %s %s %s -o %s"
+           (pandoc-command (format "pandoc -s %s %s %s -o %s --pdf-engine=xelatex"
                                    md-file metadata-flag template-flag output-file)))
 
       (message "Exporting Markdown file to PDF")
