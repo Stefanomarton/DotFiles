@@ -13,6 +13,19 @@ vim.g.mapleader = " "
 
 -- Normal --
 -- Faster movements
+
+keymap("n", "h", "/", opts)
+
+keymap("n", "/", "<right>", opts)
+keymap("n", "l", "<up>", opts)
+keymap("n", "k", "<down>", opts)
+keymap("n", "j", "<left>", opts)
+
+keymap("v", "/", "<right>", opts)
+keymap("v", "l", "<up>", opts)
+keymap("v", "k", "<down>", opts)
+keymap("v", "j", "<left>", opts)
+
 keymap("n", "q", "b", opts)
 keymap("n", "b", "q", opts)
 keymap("x", "q", "b", opts)
@@ -33,6 +46,9 @@ keymap("n", "N", "Nzzzv")
 keymap("n", "dq", "db", opts)
 keymap("n", "dQ", "dB", opts)
 keymap("x", "<leader>d", '"_d', opts)
+
+-- Save
+keymap("n", "<leader>w", ":w<cr>", opts)
 
 -- Paste
 keymap("x", "<leader>p", '"_dP', opts)
