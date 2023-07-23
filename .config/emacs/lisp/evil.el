@@ -30,6 +30,12 @@
   (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
   (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
   (evil-define-key 'normal 'global (kbd "H") 'evil-window-left)
+  (evil-define-key '(normal visual replace operator motion emacs) 'global
+    (kbd "j") 'evil-backward-char
+    (kbd "k") 'evil-next-visual-line
+    (kbd "l") 'evil-previous-visual-line
+    (kbd "/") 'evil-forward-char
+    )
   (evil-define-key 'normal 'global (kbd "L") 'evil-window-right)
   (evil-define-key 'normal 'global (kbd "m") 'point-to-register)
   (evil-define-key 'normal 'global (kbd "gm") 'jump-to-register)
