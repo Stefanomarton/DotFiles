@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: eps-figure
+# key: eps
+# --
+$$ 
+\includegraphics[width=6cm,height=3cm,keepaspectratio]{$1.eps}
+$$ 

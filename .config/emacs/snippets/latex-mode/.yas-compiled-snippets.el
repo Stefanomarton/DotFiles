@@ -2,8 +2,7 @@
 ;;; Snippet definitions:
 ;;;
 (yas-define-snippets 'latex-mode
-										 '(("setset" "setttt" "set" nil nil nil "/home/stefanom/.config/emacs/snippets/latex-mode/section.yasnippet" nil nil)
-											 ("Sum" "\\\\sum^{$0}_{$1}" "Cristallisation_Table" nil nil nil "/home/stefanom/.config/emacs/snippets/latex-mode/prova" nil nil)))
+                     '(("eps" "$$ \n\\includegraphics[width=6cm,height=3cm,keepaspectratio]{../Strutture/$1.eps}\n$$ " "eps-figure" nil nil nil "/home/stefanom/.config/emacs/snippets/latex-mode/eps-figure" nil nil)))
 
 
-;;; Do not edit! File generated at Mon May 29 00:22:44 2023
+;;; Do not edit! File generated at Thu Jul  6 13:40:12 2023
