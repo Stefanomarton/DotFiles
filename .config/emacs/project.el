@@ -1,1 +1,1 @@
-("~/Projects/MySmallProgrammingJourney/" "~/.config/emacs/" "~/Projects/thesis/" "~/Projects/MyQMK/")
+("~/Projects/MyQMK/" "~/GoogleDrive/Università/Internship/Label/" "~/.config/emacs/" "~/Projects/thesis/" "~/Projects/website/" "~/Projects/MySmallProgrammingJourney/")
