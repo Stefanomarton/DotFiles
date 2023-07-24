@@ -178,6 +178,13 @@
   :config
   (evil-collection-init))
 
+(use-package evil-terminal-cursor-changer
+  :after evil
+  :config
+  (unless (display-graphic-p)
+          (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+          ))
+
 (use-package evil-surround
   :defer .5
   :after dashboard
