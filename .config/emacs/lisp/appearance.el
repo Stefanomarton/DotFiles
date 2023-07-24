@@ -91,6 +91,7 @@
 ;; 	  (enable-256color-term)))
 
 (use-package dashboard
+  :if (< (length command-line-args) 2)
   :custom
   (initial-buffer-choice #'(lambda () (get-buffer-create "*dashboard*")))
   (dashboard-banner-logo-title "Welcome Back Goblin")
