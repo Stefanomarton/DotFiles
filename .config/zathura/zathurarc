@@ -3,17 +3,17 @@ set scroll-step 40
 set selection-clipboard clipboard
 set recolor false
 
-unmap j
-map j navigate next 
-
 unmap k
-map k navigate previous
+map k navigate next 
+
+unmap l
+map l navigate previous
+
+unmap L
+map L scroll up
 
 unmap K
-map K scroll up
-
-unmap J
-map J scroll down
+map K scroll down
 
 set adjust-open "width"
 
