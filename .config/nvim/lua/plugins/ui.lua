@@ -23,159 +23,28 @@ return {
 		"kyazdani42/nvim-web-devicons",
 	},
 	{
-		-- 	"lukas-reineke/indent-blankline.nvim",
-		-- 	config = function()
-		-- 		require("indent_blankline").setup({
-		-- 			char = "▏",
-		-- 			show_trailing_blankline_indent = false,
-		-- 			show_end_of_line = false,
-		-- 			show_first_indent_level = true,
-		-- 			use_treesitter = true,
-		-- 			show_current_context = true,
-		-- 			show_current_context_start = true,
-		-- 			buftype_exclude = { "terminal", "nofile" },
-		-- 			filetype_exclude = {
-		-- 				"help",
-		-- 				"packer",
-		-- 				"NvimTree",
-		-- 			},
-		-- 		})
-		--
-				-- vim.opt.list = true
-				-- vim.opt.listchars:append("eol:↴")
-				-- vim.opt.listchars:append("space:⋅")
-			-- end,
-	},
-	{
-		--
-		-- 	"petertriho/nvim-scrollbar",
-		-- 	config = function()
-		-- 		require("scrollbar").setup({
-		-- 			show = true,
-		-- 			show_in_active_only = true,
-		-- 			set_highlights = true,
-		-- 			folds = 1000, -- handle folds, set to number to disable folds if no. of lines in buffer exceeds this
-		-- 			max_lines = false, -- disables if no. of lines in buffer exceeds this
-		-- 			hide_if_all_visible = true, -- Hides everything if all lines are visible
-		-- 			throttle_ms = 100,
-		-- 			handle = {
-		-- 				text = " ",
-		-- 				color = nil,
-		-- 				cterm = nil,
-		-- 				highlight = "CursorColumn",
-		-- 				hide_if_all_visible = true, -- Hides handle if all lines are visible
-		-- 			},
-		-- 			marks = {
-		-- 				Cursor = {
-		-- 					text = "•",
-		-- 					priority = 0,
-		-- 					color = nil,
-		-- 					cterm = nil,
-		-- 					highlight = "Normal",
-		-- 				},
-		-- 				Search = {
-		-- 					text = { "-", "=" },
-		-- 					priority = 1,
-		-- 					color = nil,
-		-- 					cterm = nil,
-		-- 					highlight = "Search",
-		-- 				},
-		-- 				Error = {
-		-- 					text = { "-", "=" },
-		-- 					priority = 2,
-		-- 					color = nil,
-		-- 					cterm = nil,
-		-- 					highlight = "DiagnosticVirtualTextError",
-		-- 				},
-		-- 				Warn = {
-		-- 					text = { "-", "=" },
-		-- 					priority = 3,
-		-- 					color = nil,
-		-- 					cterm = nil,
-		-- 					highlight = "DiagnosticVirtualTextWarn",
-		-- 				},
-		-- 				Info = {
-		-- 					text = { "-", "=" },
-		-- 					priority = 4,
-		-- 					color = nil,
-		-- 					cterm = nil,
-		-- 					highlight = "DiagnosticVirtualTextInfo",
-		-- 				},
-		-- 				Hint = {
-		-- 					text = { "-", "=" },
-		-- 					priority = 5,
-		-- 					color = nil,
-		-- 					cterm = nil,
-		-- 					highlight = "DiagnosticVirtualTextHint",
-		-- 				},
-		-- 				Misc = {
-		-- 					text = { "-", "=" },
-		-- 					priority = 6,
-		-- 					color = nil,
-		-- 					cterm = nil,
-		-- 					highlight = "Normal",
-		-- 				},
-		-- 				-- GitAdd = {
-		-- 				-- 	text = "┆",
-		-- 				-- 	priority = 7,
-		-- 				-- 	color = nil,
-		-- 				-- 	cterm = nil,
-		-- 				-- 	highlight = "GitSignsAdd",
-		-- 				-- },
-		-- 				-- GitChange = {
-		-- 				-- 	text = "┆",
-		-- 				-- 	priority = 7,
-		-- 				-- 	color = nil,
-		-- 				-- 	cterm = nil,
-		-- 				-- 	highlight = "GitSignsChange",
-		-- 				-- },
-		-- 				-- GitDelete = {
-		-- 				-- 	text = "▁",
-		-- 				-- 	priority = 7,
-		-- 				-- 	color = nil,
-		-- 				-- 	cterm = nil,
-		-- 				-- 	highlight = "GitSignsDelete",
-		-- 				-- },
-		-- 			},
-		-- 			excluded_buftypes = {
-		-- 				"terminal",
-		-- 				"mason",
-		-- 			},
-		-- 			excluded_filetypes = {
-		-- 				"prompt",
-		-- 				"TelescopePrompt",
-		-- 				"noice",
-		-- 				"mason",
-		-- 				"packer",
-		-- 			},
-		-- 			autocmd = {
-		-- 				render = {
-		-- 					"BufWinEnter",
-		-- 					"TabEnter",
-		-- 					"TermEnter",
-		-- 					"WinEnter",
-		-- 					"CmdwinLeave",
-		-- 					"TextChanged",
-		-- 					"VimResized",
-		-- 					"WinScrolled",
-		-- 				},
-		-- 				clear = {
-		-- 					"BufWinLeave",
-		-- 					"TabLeave",
-		-- 					"TermLeave",
-		-- 					"WinLeave",
-		-- 				},
-		-- 			},
-		-- 			handlers = {
-		-- 				cursor = true,
-		-- 				diagnostic = true,
-		-- 				gitsigns = false, -- Requires gitsigns
-		-- 				handle = true,
-		-- 				search = false, -- Requires hlslens
-		-- 				ale = false, -- Requires ALE
-		-- 			},
-		-- 		})
-		-- 	end,
+		"lukas-reineke/indent-blankline.nvim",
+		config = function()
+			require("indent_blankline").setup({
+				char = "▏",
+				show_trailing_blankline_indent = false,
+				show_end_of_line = false,
+				show_first_indent_level = true,
+				use_treesitter = true,
+				show_current_context = true,
+				show_current_context_start = true,
+				buftype_exclude = { "terminal", "nofile" },
+				filetype_exclude = {
+					"help",
+					"packer",
+					"NvimTree",
+				},
+			})
+
+			vim.opt.list = true
+			vim.opt.listchars:append("eol:↴")
+			vim.opt.listchars:append("space:⋅")
+		end,
 	},
 	{
 		"declancm/cinnamon.nvim",
@@ -199,9 +68,38 @@ return {
 		end,
 	},
 	{
-		-- 	"glepnir/dashboard-nvim",
-		-- 	config = function()
-		-- 		require("dashboard").setup()
-		-- 	end,
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- add any options here
+		},
+		dependencies = {
+			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+			"MunifTanjim/nui.nvim",
+			-- OPTIONAL:
+			--   `nvim-notify` is only needed, if you want to use the notification view.
+			--   If not available, we use `mini` as the fallback
+			-- "rcarriga/nvim-notify",
+		},
+		config = function()
+			require("noice").setup({
+				lsp = {
+					-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+					override = {
+						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+						["vim.lsp.util.stylize_markdown"] = true,
+						["cmp.entry.get_documentation"] = true,
+					},
+				},
+				-- you can enable a preset for easier configuration
+				presets = {
+					bottom_search = false, -- use a classic bottom cmdline for search
+					command_palette = true, -- position the cmdline and popupmenu together
+					long_message_to_split = true, -- long messages will be sent to a split
+					inc_rename = true, -- enables an input dialog for inc-rename.nvim
+					lsp_doc_border = false, -- add a border to hover docs and signature help
+				},
+			})
+		end,
 	},
 }

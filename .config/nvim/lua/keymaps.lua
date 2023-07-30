@@ -54,7 +54,6 @@ keymap("n", "<leader>w", ":w<cr>", opts)
 keymap("x", "<leader>p", '"_dP', opts)
 
 --Save and close
-keymap("n", "<C-x><C-s>", ":w<cr>", opts)
 keymap("n", "<leader>q", "<cmd>BufferClose<CR>", opts)
 
 -- Better window navigation
