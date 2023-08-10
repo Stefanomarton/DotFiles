@@ -26,6 +26,7 @@ PERL_MM_OPT="INSTALL_BASE=/home/stefanomarton/perl5"; export PERL_MM_OPT;
 
 export BW_SESSION="B6o+4VlAgK/+ne9t+IItf5viLHkYhlsCoS/dAtNu35wUwgcillYuCMkr075RtNQ9vaQRj2dFhU0iHhwrA/McUg=="
 export FZF_MARKS_FILE="$XDG_CONFIG_HOME"/fzf-marks/bookmarks
+export FZF_DEFAULT_COMMAND='rg --files --hidden --glob '"'"'!.git/'"'"
 
 
 export VI_MODE_SET_CURSOR=true
@@ -212,7 +213,11 @@ bindkey -M viins '^R' fzf-history-widget
 source /usr/share/fzf/completion.zsh
 
 ##FZF config
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+export FZF_DEFAULT_OPTS='
+--height 40% --layout=reverse --border
+--color fg:#D8DEE9,bg:#2E3440,hl:#A3BE8C,fg+:#D8DEE9,bg+:#434C5E,hl+:#A3BE8C
+--color pointer:#BF616A,info:#4C566A,spinner:#4C566A,header:#4C566A,prompt:#81A1C1,marker:#EBCB8B
+'
 
 ## Edit in the command in vim 
 autoload edit-command-line; zle -N edit-command-line
@@ -281,3 +286,4 @@ rpg () {
 }
 PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f%F{black} • %F% '
 RPROMPT='%B%F{blue}%~%f%b'
+
