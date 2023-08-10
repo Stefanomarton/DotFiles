@@ -3,6 +3,9 @@
 ;; (use-package lua-mode
 ;;   :defer t
 ;;   )
+(use-package highlight-indent-guides
+  :hook (prog-mode . highlight-indent-guides-mode)
+  :custom (highlight-indent-guides-method 'character))
 
 ;; Python mode setup
 (use-package python-mode
@@ -297,7 +300,6 @@
 ;; 						(TypeParameter . ,(all-the-icons-faicon "arrows" :height 1.0 :v-adjust -0.02))
 ;; 						(Template . ,(all-the-icons-material "format_align_left" :height 1.0 :v-adjust -0.2)))
 ;; 					company-box-icons-alist 'company-box-icons-all-the-icons)))
-
 
 (provide 'programming)
 
