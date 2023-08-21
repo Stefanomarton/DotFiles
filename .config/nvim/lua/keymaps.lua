@@ -31,7 +31,6 @@ keymap("n", "b", "q", opts)
 keymap("x", "q", "b", opts)
 keymap("n", "Q", "B", opts)
 keymap("x", "Q", "B", opts)
-keymap("n", "1", "$", opts)
 
 keymap("v", "J", ":m '>+1<CR>gv=gv")
 keymap("v", "K", ":m '<-2<CR>gv=gv")

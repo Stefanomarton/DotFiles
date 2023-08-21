@@ -280,12 +280,12 @@ return {
 			require("gitsigns").setup()
 		end,
 	},
-	{
-		"kevinhwang91/nvim-hlslens",
-		config = function()
-			require("hlslens").setup()
-		end,
-	},
+	-- {
+	-- 	"kevinhwang91/nvim-hlslens",
+	-- 	config = function()
+	-- 		require("hlslens").setup()
+	-- 	end,
+	-- },
 	{ "L3MON4D3/LuaSnip" },
 	{
 		"tamago324/lir.nvim",
