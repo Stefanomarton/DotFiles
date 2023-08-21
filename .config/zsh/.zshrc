@@ -44,22 +44,23 @@ bindkey "^?" backward-delete-char
 bindkey "^a" beginning-of-line
 bindkey "^e" end-of-line
 bindkey '^I' expand-or-complete-prefix
+
+# Fix home and end binding
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line
+
 #
 # # Alias
 alias cp= "cp -r"
-alias -g mkd= "mkdir -p -v"
 alias ka= "killall"
 alias v="nvim"
 alias music="ncmpcpp"
 alias i3config="nvim ~/.config/i3/config"
 alias lsa="ls -a"
-alias mkd="mkdir"
-alias V="chezmoi edit"
 alias L="ptls -a"
 alias gp="git push"
 alias ga="git add"
 alias gc="git commit"
-# alias -g pwd="ptpwd"
 alias -g ls="ptls"
 alias -g ptcp="cp"
 alias pmi="~/.local/bin/scripts/pmi"
@@ -284,6 +285,7 @@ rp () {
 rpg () {
     git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
 }
-PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f%F{black} • %F% '
+PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f%F{white} • %F%f%'
 RPROMPT='%B%F{blue}%~%f%b'
 
+source ~/.cache/wal/colors.sh
