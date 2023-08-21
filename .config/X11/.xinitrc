@@ -2,7 +2,7 @@ case $HOSTNAME in
 
 laptop)
 # xrdb -merge ~/.config/X11/.Xresources &
-feh --no-fehbg --bg-fill /home/stefanom/.local/share/Wallpapers/NordicWallpapers/earth-in-space.png 
+feh --no-fehbg --bg-fill /home/stefanom/.local/share/Wallpapers/NordicWallpapers/ign_evening.png
 picom &
 xmodmap ~/.config/X11/.XmodmapDesktop &
 flameshot &
@@ -22,19 +22,19 @@ exec dwm
 ;;
 
 desktop)
-xrdb -merge ~/.config/X11/.Xresources &
+[[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.config/X11/.Xresources
 xrandr --output DP-1 --primary -r 144 --mode 3440x1440 --pos 1920x0 --rotate normal --output DP-2 --off --output HDMI-1 --mode 1920x1080 --pos 0x114 --rotate normal --output HDMI-2 --off --output DVI-D-1 --off
+feh --no-fehbg --bg-fill /home/stefanom/.local/share/Wallpapers/NordicWallpapers/ign_evening.png
 picom & 
-sleep 10 &
-xrdb -merge ~/.config/X11/.Xresources &
-xmodmap ~/.config/X11/.XmodmapDesktop &
+# sleep 10 &
+xrdb -merge ~/.Xresources &
 flameshot &
 redshift -l 45.69651:9.1818 &
 insync start &
 xbanish -s -t 2 &
-# dbus-update-activation-environment --all &
-# gnome-keyring-daemon --start --components=secrets &
-# gnome-keyring-daemon --login &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+dbus-update-activation-environment XDG_CURRENT_DESKTOP &
+dbus-update-activation-environment --all &
 xset r rate 150 50 &
 exec awesome
 ;;
