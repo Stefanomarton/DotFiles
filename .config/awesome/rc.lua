@@ -23,7 +23,7 @@ end)
 -- }}}
 
 -- Themes define colours, icons, font and wallpapers.
-local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), "nord")
+local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), "wal")
 beautiful.init(theme_path)
 
 --Set wallpaper
@@ -289,7 +289,7 @@ awful.screen.connect_for_each_screen(function(s)
 				layout = wibox.layout.align.horizontal,
 				{ -- Left widgets
 					layout = wibox.layout.fixed.horizontal,
-					mylauncher,
+					-- mylauncher,
 					s.mytaglist,
 					s.mypromptbox,
 				},
@@ -416,15 +416,15 @@ end)
 -- }}}
 
 -- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-	c:activate({ context = "mouse_enter", raise = false })
-end)
+ client.connect_signal("mouse::enter", function(c)
+ 	c:activate({ context = "mouse_enter", raise = false })
+ end)
 
--- client.connect_signal("request::manage", function(c)
--- 	c.shape = function(cr, w, h)
--- 		gears.shape.rounded_rect(cr, w, h, 5)
--- 	end
--- end)
+ -- client.connect_signal("request::manage", function(c)
+ -- 	c.shape = function(cr, w, h)
+ -- 		gears.shape.rounded_rect(cr, w, h, 5)
+ -- 	end
+ -- end)
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
