@@ -1,3 +1,4 @@
 //@theme "/usr/share/rofi/themes/dmenu.rasi"
 //@theme "/usr/share/rofi/themes/sidebar.rasi"
-@theme "/usr/share/rofi/themes/solarized.rasi"
+//@theme "/usr/share/rofi/themes/solarized.rasi"
+@import "~/.cache/wal/colors-rofi-dark"
