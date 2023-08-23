@@ -131,6 +131,12 @@ awful.keyboard.append_global_keybindings({
 	awful.key({ modkey }, "s", function()
 		awful.spawn.with_shell("dmenu_run -l 5")
 	end, { description = "dmenu", group = "launcher" }),
+	awful.key({ modkey, "Shift" }, "s", function()
+		awful.spawn("rofi -show windowcd")
+	end, { description = "dmenu", group = "launcher" }),
+	awful.key({ modkey,  }, "b", function()
+		awful.spawn("rofi -show filebrowser")
+	end, { description = "dmenu", group = "launcher" }),
 	awful.key({ modkey, "Control" }, "f", function()
 				awful.spawn.with_shell("bash -c ~/.local/bin/scripts/searchOnFirefox.sh")
 	end, { description = "Search on Firefox", group = "launcher" }),
