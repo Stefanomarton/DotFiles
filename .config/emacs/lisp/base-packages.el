@@ -208,6 +208,8 @@ targets."
   (add-hook 'format-all-mode-hook 'format-all-ensure-formatter)
   (add-hook 'prog-mode-hook 'format-all-mode)
   (add-hook 'LaTeX-mode-hook 'format-all-mode)
+  :custom
+  (format-all-show-errors 'error)
   )
 
 (use-package posframe
