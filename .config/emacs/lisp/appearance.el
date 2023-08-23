@@ -73,12 +73,23 @@
 ;; Suppose all custom themes are safe
 (setq custom-safe-themes t)
 
-(use-package doom-themes
-  ;; :defer .5
-  ;; :config
-  ;; (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
-  :config
-  (load-theme 'doom-nord t))
+;; (use-package doom-themes
+;;   ;; :defer .5
+;;   ;; :config
+;;   ;; (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
+;;   :config
+;;   (load-theme 'doom-nord t))
+
+(use-package ewal
+  :init (setq ewal-use-built-in-always-p nil
+              ewal-use-built-in-on-failure-p t
+              ewal-built-in-palette "sexy-material"))
+
+(use-package ewal-spacemacs-themes
+  :init (progn
+          :config (progn
+                    (load-theme 'ewal-spacemacs-modern t)
+                    (enable-theme 'ewal-spacemacs-modern))))
 
 ;; fix color display when loading emacs in terminal
 ;; (defun enable-256color-term ()
