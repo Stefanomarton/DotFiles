@@ -1,10 +1,15 @@
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-case "$(tty)" in
+HOSTNAME=$(hostnamectl hostname)
 
-"/dev/tty1")
-pgrep Hyprland || Hyprland ;;
 
-"/dev/tty2")
-pgrep dwm || startx "$XDG_CONFIG_HOME/X11/.xinitrc" ;;
-
-esac
+if [ "$(tty)" = "/dev/tty1" ]; then
+    case "$HOSTNAME" in
+    "desktop")
+        # Start awesome if not running
+        pgrep awesome || startx "$XDG_CONFIG_HOME/X11/.xinitrc"
+        ;;
+    "laptop")
+        pgrep Hyprland || Hyprland
+        ;;
+    esac
+fi
