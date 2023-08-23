@@ -20,6 +20,12 @@
   (evil-define-key 'visual python-mode-map (kbd "<backtab>") 'evil-shift-left)
   )
 
+;; Lua setup
+
+(use-package lua-mode
+  :after dashboard)
+
+
 ;; Completions
 
 (use-package company
