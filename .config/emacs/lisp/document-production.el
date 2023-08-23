@@ -211,20 +211,20 @@
   (LaTeX-mode . aas-activate-for-major-mode)
   :config
   (aas-set-snippets 'latex-mode
-    "jf" (lambda () (interactive)
-	       (yas-expand-snippet "\\\\($1\\\\) $0"))
-    "kd" (lambda () (interactive)
-	       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+                    "jf" (lambda () (interactive)
+	                       (yas-expand-snippet "\\\\($1\\\\) $0"))
+                    "kd" (lambda () (interactive)
+	                       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'org-mode
-    "jf" (lambda () (interactive)
-	       (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-    "kd" (lambda () (interactive)
-	       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+                    "jf" (lambda () (interactive)
+	                       (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+                    "kd" (lambda () (interactive)
+	                       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'markdown-mode
-    "jf" (lambda () (interactive)
-	       (yas-expand-snippet "$$1$ $0"))
-    "kd" (lambda () (interactive)
-	       (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+                    "jf" (lambda () (interactive)
+	                       (yas-expand-snippet "$$1$ $0"))
+                    "kd" (lambda () (interactive)
+	                       (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
   :straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -234,29 +234,29 @@
   (org-mode . laas-mode)
   :config ; do whatever here
   (aas-set-snippets 'laas-mode
-    ;; set condition!
-    :cond #'texmathp ; expand only while in math
-    "supp" "\\supp"
-    "On" "O(n)"
-    "O1" "O(1)"
-    "Olog" "O(\\log n)"
-    "Olon" "O(n \\log n)"
-    ;; bind to functions!
-    "sum" (lambda () (interactive)
-	        (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-    "Span" (lambda () (interactive)
-	         (yas-expand-snippet "\\Span($1)$0"))
-    "inti" (lambda () (interactive)
-	         (yas-expand-snippet "\\int"))
-    "intd" (lambda () (interactive)
-	         (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-    "df" (lambda () (interactive)
-	       (yas-expand-snippet "_{$1}$0"))
-    "rt" (lambda () (interactive)
-	       (yas-expand-snippet "^{$1}$0"))
-    ;; add accent snippets
-    :cond #'laas-object-on-left-condition
-    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+                    ;; set condition!
+                    :cond #'texmathp ; expand only while in math
+                    "supp" "\\supp"
+                    "On" "O(n)"
+                    "O1" "O(1)"
+                    "Olog" "O(\\log n)"
+                    "Olon" "O(n \\log n)"
+                    ;; bind to functions!
+                    "sum" (lambda () (interactive)
+	                        (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+                    "Span" (lambda () (interactive)
+	                         (yas-expand-snippet "\\Span($1)$0"))
+                    "inti" (lambda () (interactive)
+	                         (yas-expand-snippet "\\int"))
+                    "intd" (lambda () (interactive)
+	                         (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+                    "df" (lambda () (interactive)
+	                       (yas-expand-snippet "_{$1}$0"))
+                    "rt" (lambda () (interactive)
+	                       (yas-expand-snippet "^{$1}$0"))
+                    ;; add accent snippets
+                    :cond #'laas-object-on-left-condition
+                    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
 
 (use-package cdlatex
   :commands latex-mode
@@ -294,6 +294,41 @@
 		              (delete-column . "Dc"	)
 		              (delete-row . "Dr"	)
 		              )))
+
+(use-package languagetool
+  :after dashboard
+  :defer t
+  :commands (languagetool-check
+             languagetool-clear-suggestions
+             languagetool-correct-at-point
+             languagetool-correct-buffer
+             languagetool-set-language
+             languagetool-server-mode
+             languagetool-server-start
+             languagetool-server-stop)
+  :config
+  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8"
+                                      "-cp" "/usr/share/languagetool:/usr/share/java/languagetool/*")
+        languagetool-console-command "org.languagetool.commandline.Main"
+        languagetool-server-command "org.languagetool.server.HTTPServer")
+  )
+
+(use-package obsidian
+  :after dashboard
+  :config
+  (obsidian-specify-path "~/GoogleDrive/Obsidian")
+  (global-obsidian-mode t)
+  :custom
+  ;; This directory will be used for `obsidian-capture' if set.
+  (obsidian-inbox-directory "Inbox")
+  :bind (:map obsidian-mode-map
+              ;; Replace C-c C-o with Obsidian.el's implementation. It's ok to use another key binding.
+              ("C-c C-o" . obsidian-follow-link-at-point)
+              ;; Jump to backlinks
+              ("C-c C-b" . obsidian-backlink-jump)
+              ;; If you prefer you can use `obsidian-insert-link'
+              ("C-c C-l" . obsidian-insert-wikilink)))
+
 
 (provide 'document-production)
 
