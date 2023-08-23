@@ -35,7 +35,7 @@ xbanish -s -t 2 &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 dbus-update-activation-environment XDG_CURRENT_DESKTOP &
 dbus-update-activation-environment --all &
-xset r rate 150 50 &
+# xset r rate 150 50 &
 exec awesome
 ;;
 
