@@ -1,3 +1,5 @@
+@import "colors.css";
+
 * {
     border: none;
     font-family: Font Awesome, Roboto, Arial, sans-serif;
@@ -11,27 +13,27 @@ window {
 	/*font-weight: bold;*/
 }
 window#waybar {
-	background: #2e3440;
+	background: @background;
 }
 /*-----module groups----*/
 .modules-right {
-	background: #2e3440;
+	background: @background;
     margin: 0px 0px 0 0;
 }
 .modules-center {
-	background: #2e3440;
+	background: @background;
     margin: 2px 0 0 0;
     padding: 0 8px 0 8px;
 }
 .modules-left {
     margin: 0 0 0 5px;
-	background: #2e3440;
+	background: @background;
 }
 /*-----modules indv----*/
 #workspaces {
     padding: 0px 0px;
     /* background-color: transparent; */
-	background: #2e3440;
+	background: @background;
     border-radius: 8px;
 }
 #workspaces button {
@@ -51,7 +53,7 @@ window#waybar {
 }
 #workspaces button.active{
     /* background-color: transparent; */
-    background-color: #4c566a;
+    background-color: @color2;
     border-radius: 0px;
 }
 
