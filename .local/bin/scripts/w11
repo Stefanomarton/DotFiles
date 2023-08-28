@@ -1,5 +1,6 @@
+#!/bin/sh
 virsh --connect qemu:///system start "win11"
-wait
-caffeine & disown
-looking-glass-client -F -s
-killall caffeine
+wait 
+sleep 1; xset s off -dpms &
+looking-glass-client input:grabKeyboardOnFocus -F &
+sleep 1; xset s default &
