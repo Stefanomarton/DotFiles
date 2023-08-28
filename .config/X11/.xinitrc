@@ -31,6 +31,7 @@ xrdb -merge ~/.Xresources &
 flameshot &
 redshift -l 45.69651:9.1818 &
 insync start &
+syncthing &
 xbanish -s -t 2 &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 dbus-update-activation-environment XDG_CURRENT_DESKTOP &
