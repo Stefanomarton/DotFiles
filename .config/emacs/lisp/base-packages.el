@@ -89,6 +89,30 @@
 (use-package consult-dir
   :after consult)
 
+(use-package consult-todo
+  :straight (:host github :repo "liuyinz/consult-todo")
+  :after consult
+  :config
+  (defconst consult-todo--narrow
+    '((?t . "TODO")
+      (?f . "FIXME")
+      (?b . "BUG")
+      (?h . "ASK"))
+    "Default mapping of narrow and keywords.")
+  )
+
+(use-package hl-todo
+  :after dashboard
+  :config
+  (global-hl-todo-mode)
+  :custom
+  (hl-todo-keyword-faces
+   '(("TODO"   . "#FF0000")
+     ("FIXME"  . "#FF0000")
+     ("ASK"  . "#A020F0")
+     ("GOTCHA" . "#FF4500")
+     ("STUB"   . "#1E90FF"))))
+
 (use-package flycheck
   :defer t
   )
