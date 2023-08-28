@@ -215,7 +215,7 @@ source /usr/share/fzf/completion.zsh
 
 ##FZF config
 export FZF_DEFAULT_OPTS='
---height 40% --layout=reverse --border
+--height 40% --layout=reverse --select-1 --border
 --color fg:#D8DEE9,bg:#2E3440,hl:#A3BE8C,fg+:#D8DEE9,bg+:#434C5E,hl+:#A3BE8C
 --color pointer:#BF616A,info:#4C566A,spinner:#4C566A,header:#4C566A,prompt:#81A1C1,marker:#EBCB8B
 '
@@ -237,8 +237,8 @@ zpico add zsh-users/zsh-autosuggestions
 zpico add zsh-users/zsh-completions
 zpico add hlissner/zsh-autopair
 zpico add urbainvaes/fzf-marks
-#
 zpico add IngoMeyer441/zsh-easy-motion
+zpico add Aloxaf/fzf-tab
 EASY_MOTION_TARGET_KEYS="asdghklqwertyuiopzxcvbnmfj;"
 EASY_MOTION_DIM="fg=242"
 EASY_MOTION_HIGHLIGHT="fg=196,bold"
@@ -287,5 +287,6 @@ rpg () {
 }
 PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f%F{white} • %F%f%'
 RPROMPT='%B%F{blue}%~%f%b'
+eval "$(zoxide init zsh)"
 
 source ~/.cache/wal/colors.sh
