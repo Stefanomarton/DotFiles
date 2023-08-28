@@ -1,1 +1,1 @@
-("~/GoogleDrive/Projects/NotesManager/" "~/.config/emacs/" "~/GoogleDrive/Projects/thesis/" "~/GoogleDrive/Projects/MyQMK/" "~/GoogleDrive/Projects/MySmallProgrammingJourney/" "~/GoogleDrive/Università/Internship/Label/")
+("~/.config/emacs/" "~/GoogleDrive/Projects/website/" "~/GoogleDrive/University/Internship/Label/" "~/.config/awesome/module/rubato/" "~/GoogleDrive/Projects/thesis/" "~/Downloads/qmk_firmware/")
