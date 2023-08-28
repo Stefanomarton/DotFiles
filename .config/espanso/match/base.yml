@@ -7,6 +7,9 @@ matches:
         params:
           format: '%m/%d/%Y'
 
+  - trigger: ':mail'
+    replace: 'sstefanomarton@gmail.com'
+
   - trigger: ':identity:'
     replace: '𝟙'
 
@@ -118,8 +121,8 @@ matches:
   - triggers: [':Delta:', ':D:']
     replace: 'Δ'
 
-  - triggers: [':delta:', ':d:']
-    replace: 'δ'
+  # - triggers: [':delta:', ':d:']
+  #   replace: 'δ'
 
   - triggers: [':Epsilon:', ':E:']
     replace: 'Ε'
