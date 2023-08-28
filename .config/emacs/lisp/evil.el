@@ -136,6 +136,8 @@
     (kbd "<leader>T") 'smart-for-terminal
     (kbd "<leader>gg") 'magit-status-with-removed-dotfiles-args
     (kbd "<leader>gd") 'dotfiles-magit-status
+    (kbd "<leader>h") 'consult-todo
+    (kbd "<leader>H") 'consult-todo-all
     )
 
   (evil-define-key 'normal emacs-lisp-mode-map
@@ -182,8 +184,8 @@
   :after evil
   :config
   (unless (display-graphic-p)
-          (evil-terminal-cursor-changer-activate) ; or (etcc-on)
-          ))
+    (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+    ))
 
 (use-package evil-surround
   :defer .5
