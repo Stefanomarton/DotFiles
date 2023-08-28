@@ -22,3 +22,9 @@
 [submodule "/home/stefanom/.config/ranger/plugins/archives"]
 	path = /home/stefanom/.config/ranger/plugins/archives
 	url = https://github.com/MuXiu1997/ranger-fzf-filter.git
+[submodule "/home/stefanom/.config/ranger/plugins/fzf-marks"]
+	path = /home/stefanom/.config/ranger/plugins/fzf-marks
+	url = https://github.com/laggardkernel/ranger-fzf-marks.git
+[submodule "/home/stefanom/.config/ranger/plugins/devicons"]
+	path = /home/stefanom/.config/ranger/plugins/devicons
+	url = https://github.com/cdump/ranger-devicons2.git
