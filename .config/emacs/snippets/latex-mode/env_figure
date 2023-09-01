@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Figure Environment
+# key: figure
+# --
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=${1:width}cm,keepaspectratio]{${2:image path}}
+    \caption{${3:caption}}
+    ${4:\label{fig:${5:label}}
+\end{figure}

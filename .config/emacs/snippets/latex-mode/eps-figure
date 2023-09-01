@@ -1,6 +1,10 @@
 # -*- mode: snippet -*-
-# name: eps-figure
+# name: .esp figure
 # key: eps
 # --
-
-\includegraphics[width=6cm,height=3cm,keepaspectratio]{$1.eps}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=${1:width}cm,keepaspectratio]{${2:image path}.eps}
+\caption{${3:caption}}
+${4:\label{fig:${5:label}}
+\end{figure}

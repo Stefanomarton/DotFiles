@@ -36,7 +36,7 @@
   (setq company-tooltip-offset-display 'lines	;; Show number before and after current candidates
 	    company-tooltip-flip-when-above t	;; Avoid screen breaking when at the bottom of the buffer
 	    company-tooltip-minimum 2
-	    company-minimum-prefix-length 1
+	    company-minimum-prefix-length 0
 	    company-tooltip-align-annotations t
 	    company-require-match 'never
 	    company-tooltip-limit 5
@@ -44,7 +44,7 @@
 	    company-idle-delay 0)
   (company-global-modes '(not shell-mode eaf-mode))
   :init
-  (setq company-backends '((company-capf :with company-yasnippet company-files)))
+  (setq company-backends '((company-capf :with (company-yasnippet company-files))))
   (global-company-mode)
   :config
   (define-key company-active-map (kbd "C-d") 'company-show-doc-buffer)
@@ -58,6 +58,11 @@
   (add-hook 'emacs-lisp-mode-hook
 	        (lambda ()
 	          (set (make-local-variable 'company-backends) '(company-elisp :with ( company-yasnippet company-files )))))
+
+  ;; Add company backend when eglot is active
+  (add-hook 'eglot-managed-mode-hook (lambda ()
+                                       (add-to-list 'company-backends
+                                                    '(company-capf :with company-yasnippet))))
   (global-company-mode 1)
 
   (defun smarter-tab-to-complete ()

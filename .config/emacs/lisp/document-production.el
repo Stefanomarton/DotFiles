@@ -204,6 +204,10 @@
   (progn
     (yas-reload-all)))
 
+(use-package warnings
+  :config
+  (add-to-list 'warning-suppress-types '(yasnippet backquote-change)))
+
 (use-package aas
   :hook
   (org-mode . aas-activate-for-major-mode)

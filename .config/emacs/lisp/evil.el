@@ -106,6 +106,13 @@
 			                ((eq response ?d) (diff-buffer-with-file) nil))))))
 	      (kill-buffer (current-buffer))))))
 
+  ;; Recompile and reload yasnippet files.
+  (defun yas-reload ()
+    (interactive)
+    (yas-recompile-all)
+    (yas-reload-all)
+    )
+
   (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
   (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
   (evil-define-key 'normal 'global
@@ -138,6 +145,7 @@
     (kbd "<leader>gd") 'dotfiles-magit-status
     (kbd "<leader>h") 'consult-todo
     (kbd "<leader>H") 'consult-todo-all
+    (kbd "<leader>y") 'yas-reload
     )
 
   (evil-define-key 'normal emacs-lisp-mode-map
@@ -212,12 +220,8 @@
   :defer .5
   :after dashboard
   :config
-  (defun comment_end_of_line ()
-    (interactive)
-    (call-interactively 'comment-dwim)
-    (call-interactively 'evil-append))
   (evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
-  (evil-define-key 'normal 'global (kbd "gcA") 'comment_end_of_line)
+  (evil-define-key 'normal 'global (kbd "gcA") 'indent-for-comment)
   (evil-define-key 'visual 'global (kbd "gb") 'comment-box)
   (evil-define-key 'normal 'global (kbd "gcc") 'evil-commentary-line))
 

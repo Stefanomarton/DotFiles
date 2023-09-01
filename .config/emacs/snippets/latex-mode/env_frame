@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Frame Environment
+# key: frame
+# --
+\begin{frame}{${1:title}}
+$2
+\end{frame}

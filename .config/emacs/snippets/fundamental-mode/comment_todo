@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: TODO Comment
+# key: todo
+# --
+`(insert (concat comment-start))` TODO:
