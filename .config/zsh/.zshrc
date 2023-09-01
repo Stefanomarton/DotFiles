@@ -5,8 +5,8 @@
  export XDG_STATE_HOME=$HOME/.local/state
  export GTK_THEME="Nordic"
 
-# #>>> XDG - ENV
- source "$XDG_CONFIG_HOME"/zsh/xdg-env
+##>>> XDG - ENV
+source "$XDG_CONFIG_HOME"/zsh/xdg-env
 export ANDROID_HOME="$XDG_DATA_HOME"/android export HISTFILE="$XDG_STATE_HOME"/bash/history export HISTFILE="$XDG_STATE_HOME"/zsh/history export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
@@ -22,8 +22,6 @@ PERL5LIB="/home/stefanomarton/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export 
 PERL_LOCAL_LIB_ROOT="/home/stefanomarton/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
 PERL_MB_OPT="--install_base \"/home/stefanomarton/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/home/stefanomarton/perl5"; export PERL_MM_OPT;
-
-
 export BW_SESSION="B6o+4VlAgK/+ne9t+IItf5viLHkYhlsCoS/dAtNu35wUwgcillYuCMkr075RtNQ9vaQRj2dFhU0iHhwrA/McUg=="
 export FZF_MARKS_FILE="$XDG_CONFIG_HOME"/fzf-marks/bookmarks
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob '"'"'!.git/'"'"
@@ -52,10 +50,9 @@ bindkey "^[[F" end-of-line
 #
 # # Alias
 alias cp= "cp -r"
-alias ka= "killall"
 alias v="nvim"
+alias e="emacs -nw"
 alias music="ncmpcpp"
-alias i3config="nvim ~/.config/i3/config"
 alias lsa="ls -a"
 alias L="ptls -a"
 alias gp="git push"
@@ -72,29 +69,32 @@ alias -s {yml,yaml,lua,c,tex}=nvim #Auto open file with nvim based on extension
 alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings"
 alias -g lg="lazygit"
 
+# Better use alias for convience and completion
+alias -g rp="lazygit --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@""
+alias -g rpg="git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@""
+
 # Variables
 export EDITOR='nvim'
 export PAGER='moar -colors "auto" -no-statusbar'
 HISTFILE=~/.zsh_history
 HISTSIZE=100000000
 SAVEHIST=100000000
-#
-# # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-#
+
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-#
+
 path+=('~/bin')
 path+=('/home/stefanom/go/bin')
+path+=('/opt/')
 path+=('/home/stefanom/.cargo/bin')
 path+=('/home/stefanom/.local/bin')
 path+=('/home/stefanom/.local/bin/scripts/')
 path+=('/home/stefanom/.local/share/gem/ruby/3.0.0/bin')
 export PATH
-#
+
 setopt autocd autopushd 
-#
-# ## Use ranger to switch diurectories and bind it to ctrl-o
+
+# Use ranger to switch diurectories and bind it to ctrl-o
 rng () {
     tmp="$(mktemp)"
     ranger --choosedir="$tmp" "$@"
@@ -104,8 +104,10 @@ rng () {
         [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
     fi
     }
+
 bindkey -s '^u' 'rng\n'
 bindkey -s '^f' 'rng --cmd=fzm \n'
+
 ### FZF Shortcuts
 # The code at the top and the bottom of this file is the same as in completion.zsh.
 if 'zmodload' 'zsh/parameter' 2>'/dev/null' && (( ${+options} )); then
@@ -252,7 +254,6 @@ setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
 setopt APPEND_HISTORY            # append to history file
 
-
 # vi mode
 bindkey -v
 export KEYTIMEOUT=1
@@ -278,15 +279,9 @@ zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
-rp () {
-    lazygit --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
-}
-
-rpg () {
-    git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
-}
 PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f%F{white} • %F%f%'
 RPROMPT='%B%F{blue}%~%f%b'
+
 eval "$(zoxide init zsh)"
 
 source ~/.cache/wal/colors.sh
