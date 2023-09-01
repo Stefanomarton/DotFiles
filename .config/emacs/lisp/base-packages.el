@@ -238,3 +238,6 @@ targets."
 
 (use-package posframe
   :after dashboard)
+
+(use-package hydra
+  :after dashboard)
