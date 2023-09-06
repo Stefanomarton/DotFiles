@@ -43,6 +43,9 @@
 
 (setq create-lockfiles nil)
 
+;; Disable creation of backup files
+(setq make-backup-files nil)
+
 ;; I don't use 'custom.el' to set variables, but a few of the packages I use do.
 ;; This snippet ensures that a massacre is not made of my init.el.
 
