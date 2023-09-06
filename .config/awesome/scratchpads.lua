@@ -82,11 +82,11 @@ repo = bling.module.scratchpad({
 })
 
 emacs = bling.module.scratchpad({
-	command = 'emacs',
-	rule = { instance = "emacs" },
+	command = 'gmail-desktop',
+	rule = { class = "Gmail Desktop" },
 	sticky = false,
 	autoclose = false,
-	floating = false,
+	floating = true,
 	geometry = centered_gemotery(),
 	dont_focus_before_close = true,
 	-- rubato = { x = anim_x, y = anim_y },
