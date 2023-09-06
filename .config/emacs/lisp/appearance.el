@@ -49,7 +49,7 @@
   (window-divider-mode t)
   )
 
-(add-to-list 'default-frame-alist '(alpha-background . 95))
+;; (add-to-list 'default-frame-alist '(alpha-background . 95))
 
 ;; A more complex, more lazy-loaded config
 ;; (use-package solaire-mode
@@ -85,11 +85,17 @@
               ewal-use-built-in-on-failure-p t
               ewal-built-in-palette "sexy-material"))
 
-(use-package ewal-spacemacs-themes
+;; (use-package ewal-spacemacs-themes
+;;   :init (progn
+;;           :config (progn
+;;                     (load-theme 'ewal-spacemacs-modern t)
+;;                     (enable-theme 'ewal-spacemacs-modern))))
+
+(use-package ewal-doom-themes
   :init (progn
           :config (progn
-                    (load-theme 'ewal-spacemacs-modern t)
-                    (enable-theme 'ewal-spacemacs-modern))))
+                    (load-theme 'ewal-doom-one t)
+                    (enable-theme 'ewal-doom-one))))
 
 ;; fix color display when loading emacs in terminal
 ;; (defun enable-256color-term ()
