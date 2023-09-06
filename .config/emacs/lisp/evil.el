@@ -220,10 +220,40 @@
   :defer .5
   :after dashboard
   :config
-  (evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
-  (evil-define-key 'normal 'global (kbd "gcA") 'indent-for-comment)
+
+  ;; Comment at the end of the line
+  (defun comment-end-of-line ()
+    (interactive)
+    (indent-for-comment)
+    (evil-insert 1)
+    )
+  (evil-define-key 'normal 'global (kbd "gcA") 'comment-end-of-line)
+
+  ;; Comment box
   (evil-define-key 'visual 'global (kbd "gb") 'comment-box)
-  (evil-define-key 'normal 'global (kbd "gcc") 'evil-commentary-line))
+
+  ;; Comment regione
+  (evil-define-key 'visual 'global (kbd "gc") 'evil-commentary)
+
+  ;; Comment current line
+  (evil-define-key 'normal 'global (kbd "gcc") 'evil-commentary-line)
+
+  ;; Open a command above
+  (defun comment-line-above ()
+    (interactive)
+    (evil-open-above 1)
+    (insert (concat comment-start))
+    )
+  (evil-define-key 'normal 'global (kbd "gco") 'comment-line-above)
+
+  ;; Open a command below
+  (defun comment-line-above ()
+    (interactive)
+    (evil-open-below 1)
+    (insert (concat comment-start))
+    )
+  (evil-define-key 'normal 'global (kbd "gcO") 'comment-line-above)
+  )
 
 (use-package evil-tex
   :defer t
@@ -232,15 +262,6 @@
   ;; :config
   ;; (setq evil-tex-toggle-override-m t)
   )
-
-;; (use-package evil-goggles
-;;   :defer .5
-;;   :after dashboard
-;;   :config
-;;   (evil-goggles-mode)
-;;   (setq evil-goggle-duration 0.0)
-;;   ;; (evil-goggles-use-diff-faces))
-;;   )
 
 (use-package more-evil-avy
   :after avy
