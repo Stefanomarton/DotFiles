@@ -23,21 +23,23 @@
   (setq evil-move-beyond-eol t)
   (setq evil-want-Y-yank-to-eol t)
   ;; (setq evil-cross-lines t)
-
+  (global-unset-key (kbd "s-a"))
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-set-leader 'visual (kbd "SPC"))
   ;; Use escape to remove hightlight in normal mode
   (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
   (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
-  (evil-define-key 'normal 'global (kbd "H") 'evil-window-left)
+  (evil-define-key 'normal 'global (kbd "J") 'evil-window-left)
+  (evil-define-key 'normal 'global (kbd "?") 'evil-window-right)
+  (evil-define-key 'normal 'global (kbd "h") 'evil-search-forward)
+  (evil-define-key 'normal 'global (kbd "H") 'evil-search-backward)
   (evil-define-key '(normal visual replace operator motion emacs) 'global
     (kbd "j") 'evil-backward-char
     (kbd "k") 'evil-next-visual-line
     (kbd "l") 'evil-previous-visual-line
     (kbd "/") 'evil-forward-char
     )
-  (evil-define-key 'normal 'global (kbd "L") 'evil-window-right)
-  (evil-define-key 'normal 'global (kbd "m") 'point-to-register)
+  (evil-define-key 'normal 'global (kbd "C-m") 'point-to-register)
   (evil-define-key 'normal 'global (kbd "gm") 'jump-to-register)
   (evil-define-key 'normal 'global (kbd "L") 'evil-window-right)
   (evil-set-leader 'normal (kbd "SPC"))
