@@ -51,12 +51,32 @@
   :commands magit-delta-mode
   :hook (magit-mode . magit-delta-mode))
 
+(use-package git-gutter+
+  :after dashboard)
+
 (use-package git-gutter
+  :after dashboard
   :hook ((prog-mode markdown-mode LaTeX-mode) . git-gutter-mode)
   :config
+  (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1)
+                                        :hint nil)
+    ("n" git-gutter:next-hunk "next hunk")
+    ("p" git-gutter:previous-hunk "previous hunk")
+    ("h" (progn (goto-char (point-min)) (git-gutter:next-hunk 1)) "first hunk")
+    ("l" (progn (goto-char (point-min)) (git-gutter:previous-hunk 1)) "last hunk")
+    ("<SPC>" git-gutter:popup-hunk "popup hunk")
+    ("s" git-gutter:stage-hunk "stage hunk")
+    ("r" git-gutter:revert-hunk "revert hunk")
+    ("c" git-gutter+-commit "commit hunk")
+    ("C" git-gutter+-stage-and-commit "stange and commit hunk")
+    ("q" nil "quit"))
+  :bind
+  (("<leader>gn" . hydra-git-gutter/body))
+  :custom
   (setq git-gutter:update-interval 0.02))
 
 (use-package git-gutter-fringe
+  :after dashboard
   :config
   (fringe-mode nil)
   (setq-default left-margin-width 1)
