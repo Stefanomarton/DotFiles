@@ -1,11 +1,13 @@
 ;;; programming.el --- Programming languages configuration
 
-;; (use-package lua-mode
-;;   :defer t
+;; (use-package highlight-indent-guides
+;;   :hook (prog-mode . highlight-indent-guides-mode)
+;;   :custom (highlight-indent-guides-method 'character)
+;;   :init
+;;   ;; (set-face-background 'highlight-indent-guides-odd-face "#e3e3d3")
+;;   ;; (set-face-background 'highlight-indent-guides-even-face "dimgray")
+;;   (set-face-foreground 'highlight-indent-guides-character-face "#e3e3d3")
 ;;   )
-(use-package highlight-indent-guides
-  :hook (prog-mode . highlight-indent-guides-mode)
-  :custom (highlight-indent-guides-method 'character))
 
 ;; Python mode setup
 (use-package python-mode
