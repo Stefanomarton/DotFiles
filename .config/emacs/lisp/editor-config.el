@@ -137,13 +137,8 @@
     (dotimes (_ 2)
       (call-interactively 'er/expand-region)))
   (setq expand-region-subword-enabled t)
-  (evil-define-key 'normal 'global (kbd "gj") 'expand-region)
+  (evil-define-key 'normal 'global (kbd "M-k") 'expand-region)
   )
-
-(use-package aggressive-indent
-  :after dashboard
-  :config
-  (add-hook 'prog-mode-hook 'aggressive-indent-mode))
 
 (provide 'editor-config)
 
