@@ -37,6 +37,7 @@ xbanish -s -t 2 &
 dbus-update-activation-environment XDG_CURRENT_DESKTOP &
 dbus-update-activation-environment --all &
 # xset r rate 150 50 &
+xmodpap ~/.config/X11/.XmodmapDesktop
 exec awesome
 ;;
 

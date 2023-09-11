@@ -28,3 +28,6 @@
 [submodule "/home/stefanom/.config/ranger/plugins/devicons"]
 	path = /home/stefanom/.config/ranger/plugins/devicons
 	url = https://github.com/cdump/ranger-devicons2.git
+[submodule ".config/ranger/plugins/fzf-archives"]
+	path = .config/ranger/plugins/fzf-archives
+	url = https://github.com/maximtrp/ranger-archives.git
