@@ -308,6 +308,24 @@
   (evil-owl-mode)
   )
 
+
+;; go to last edit with g;
+(use-package goto-chg
+  :after evil
+  )
+
+;; better object with h
+(use-package evil-textobj-syntax
+  :after evil
+  )
+
+;; matching tag with %
+(use-package evil-matchit
+  :after evil
+  :config
+  (global-evil-matchit-mode 1)
+  )
+
 (provide 'evil)
 
 ;;; evil.el ends here
