@@ -128,10 +128,10 @@
   :config
 
   ;; Base keybindings
-  ;; (evil-define-key 'normal 'global (kbd "m") 'embark-minimal-act)
-  ;; (evil-define-key 'normal 'global (kbd "M") 'embark-dwim)
-  ;; (evil-define-key 'insert 'global (kbd "C-e") 'embark-minimal-act)
-  ;; (evil-define-key 'visual 'global (kbd "M") 'embark-dwim)
+  (evil-define-key 'normal 'global (kbd "<leader>SPC") 'embark-minimal-act)
+  (evil-define-key 'normal 'global (kbd "C-.") 'embark-dwim)
+  (evil-define-key 'insert 'global (kbd "C-.") 'embark-minimal-act)
+  (evil-define-key 'visual 'global (kbd "<leader>SPC") 'embark-dwim)
 
   ;; Which-key style indicator
   (defun embark-minimal-act (&optional arg)
