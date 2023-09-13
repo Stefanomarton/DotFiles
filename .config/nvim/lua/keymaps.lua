@@ -27,7 +27,7 @@ keymap("v", "k", "<down>", opts)
 keymap("v", "j", "<left>", opts)
 
 keymap("n", "q", "b", opts)
-keymap("n", "b", "q", opts)
+keymap("n", "b", "q", {noremap= true})
 keymap("x", "q", "b", opts)
 keymap("n", "Q", "B", opts)
 keymap("x", "Q", "B", opts)
