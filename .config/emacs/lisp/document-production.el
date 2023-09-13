@@ -345,6 +345,7 @@
   (markdown-mode . yas-minor-mode)
   (laas-mode . yas-minor-mode)
   :config ; stuff to do after requiring the package
+  (setq yas-triggers-in-field t)
   (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
   (progn
     (yas-reload-all)))
