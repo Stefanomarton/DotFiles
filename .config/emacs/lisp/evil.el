@@ -202,9 +202,9 @@
   :after dashboard
   :config
   (evil-surround-mode)
-  (evil-define-key '(normal visual) 'global (kbd ", ,") 'evil-surround-edit)
-  (evil-define-key '(normal visual) 'global (kbd ", c") 'evil-surround-change)
-  (evil-define-key '(normal visual) 'global (kbd ", d") 'evil-surround-delete)
+  ;; (evil-define-key '(normal visual) 'global (kbd ", ,") 'evil-surround-edit)
+  ;; (evil-define-key '(normal visual) 'global (kbd ", c") 'evil-surround-change)
+  ;; (evil-define-key '(normal visual) 'global (kbd ", d") 'evil-surround-delete)
   (add-hook 'prog-mode-hook (lambda ()
  			                  (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
   (add-hook 'org-mode-hook (lambda ()
