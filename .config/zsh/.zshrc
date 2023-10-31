@@ -28,6 +28,7 @@
  export BW_SESSION="B6o+4VlAgK/+ne9t+IItf5viLHkYhlsCoS/dAtNu35wUwgcillYuCMkr075RtNQ9vaQRj2dFhU0iHhwrA/McUg=="
  export FZF_MARKS_FILE="$XDG_CONFIG_HOME"/fzf-marks/bookmarks
  export FZF_DEFAULT_COMMAND='rg --files --hidden --glob '"'"'!.git/'"'"
+export MOZ_ENABLE_WAYLAND=1
 
  export VI_MODE_SET_CURSOR=true
  autoload -U colors && colors
