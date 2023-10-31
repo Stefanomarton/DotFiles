@@ -121,7 +121,7 @@
     (kbd ";") 'evil-ex
     ;; (kbd ":") 'execute-extended-command
     (kbd ":") 'execute-extended-command
-    (kbd "<leader>ff") 'smart-for-files
+    (kbd "<leader>ff") 'find-file
     (kbd "<leader>fw") 'find-file-other-window
     (kbd "<leader>fr") 'consult-recent-file
     (kbd "<leader>fg") 'consult-ripgrep
@@ -140,6 +140,7 @@
     (kbd "<leader>pp") 'consult-projectile
     (kbd "<leader>ps") 'consult-projectile-switch-project
     (kbd "<leader>cc") 'calc
+    (kbd "<leader>co") 'consult-outline
     (kbd "<leader>qc") 'quick-calc
     (kbd "<leader>t") 'smart-for-terminal-otherw
     (kbd "<leader>T") 'smart-for-terminal
