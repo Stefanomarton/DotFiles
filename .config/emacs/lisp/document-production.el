@@ -46,7 +46,19 @@
   :ensure nil
   :config
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+  (add-to-list 'org-file-apps '("\\.pdf" . "zathura %s"))
+  (advice-add 'org-latex-compile :after #'delete-file)
   )
+
+(use-package org-download
+  :custom
+  (org-download-method 'directory)
+  (org-download-image-dir "attachments")
+  (org-download-heading-lvl nil)
+  (org-download-screenshot-method "grim -g '$(slurp)'"))
+
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
 
 (use-package org-fragtog
   :commands (org-mode)
@@ -55,11 +67,143 @@
   :after org-mode
   )
 
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "~/GoogleDrive/org"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
+
+(use-package org-roam-ui
+  :straight
+  (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+  :after org-roam
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  ;;  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
+
 (use-package org-modern
   :commands (org-mode)
   :after org-mode
   :hook
   (org-mode-hook . org-modern-mode))
+
+(setq org-latex-pdf-process
+      '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -pdf -bibtex -f %f"))
+
+(unless (boundp 'org-latex-classes)
+  (setq org-latex-classes nil))
+
+(add-to-list 'org-latex-classes
+             '("report"
+               "\\documentclass[a4paper,11pt,titlepage]{report}
+\\usepackage[utf8]{inputenc}
+\\usepackage[margin=3cm]{geometry}
+\\usepackage[T1]{fontenc}
+\\usepackage{fixltx2e}
+\\usepackage{graphicx}
+\\usepackage{longtable}
+\\usepackage{float}
+\\usepackage{wrapfig}
+\\usepackage{rotating}
+\\setlength{\\parindent}{0pt}
+\\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\\usepackage{mhchem}
+\\usepackage[normalem]{ulem}
+\\usepackage{amsmath}
+\\usepackage{textcomp}
+\\usepackage{marvosym}
+\\usepackage{wasysym}
+\\usepackage{amssymb}
+\\usepackage{hyperref}
+\\usepackage{mathpazo}
+\\usepackage{color}
+\\usepackage{enumerate}
+\\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\\tolerance=1000
+      [NO-DEFAULT-PACKAGES]
+      [PACKAGES]
+      [EXTRA]
+\\linespread{1.1}
+\\hypersetup{pdfborder=0 0 0}"
+               ("\\chapter{%s}" . "\\chapter*{%s}")
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+
+(add-to-list 'org-latex-classes
+             '("article"
+               "\\documentclass[11pt,a4paper]{article}
+\\setlength{\\parindent}{0pt}
+\\usepackage{mhchem}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\\hypersetup{
+	colorlinks=true,       % false: boxed links; true: colored links
+}
+\\usepackage{fixltx2e}
+\\usepackage{graphicx}
+\\usepackage{longtable}
+\\usepackage{float}
+\\usepackage[margin=2.5cm]{geometry}
+\\usepackage{wrapfig}
+\\usepackage{rotating}
+\\usepackage[normalem]{ulem}
+\\usepackage{amsmath}
+\\usepackage{textcomp}
+\\usepackage{marvosym}
+\\usepackage{wasysym}
+\\usepackage{amssymb}
+\\usepackage{hyperref}
+\\usepackage{mathpazo}
+\\usepackage{color}
+\\usepackage{enumerate}
+\\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\\tolerance=1000
+      [NO-DEFAULT-PACKAGES]
+      [PACKAGES]
+      [EXTRA]
+\\linespread{1.1}
+\\hypersetup{pdfborder=0 0 0}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")))
+
+
+(add-to-list 'org-latex-classes '("ebook"
+                                  "\\documentclass[11pt, oneside]{memoir}
+\\setstocksize{9in}{6in}
+\\settrimmedsize{\\stockheight}{\\stockwidth}{*}
+\\setlrmarginsandblock{2cm}{2cm}{*} % Left and right margin
+\\setulmarginsandblock{2cm}{2cm}{*} % Upper and lower margin
+\\checkandfixthelayout
+% Much more laTeX code omitted
+"
+                                  ("\\chapter{%s}" . "\\chapter*{%s}")
+                                  ("\\section{%s}" . "\\section*{%s}")
+                                  ("\\subsection{%s}" . "\\subsection*{%s}")))
 
 (use-package markdown-mode
   :config
@@ -324,12 +468,12 @@
   :config
   (defhydra my-obsidian-hydra (:hint nil :exit t)
     "
-Obsidian
-_f_ollow at point   insert _w_ikilink          _q_uit
-_j_ump to note      insert _l_ink
-_t_ag find          _c_apture new note
-_s_earch by expr.   _u_pdate tags/alises etc.
-                         "
+        Obsidian
+        _f_ollow at point   insert _w_ikilink          _q_uit
+        _j_ump to note      insert _l_ink
+        _t_ag find          _c_apture new note
+        _s_earch by expr.   _u_pdate tags/alises etc.
+        "
     ("c" obsidian-capture)
     ("f" obsidian-follow-link-at-point)
     ("j" obsidian-jump)
