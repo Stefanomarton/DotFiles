@@ -314,6 +314,10 @@
 ;; 						(Template . ,(all-the-icons-material "format_align_left" :height 1.0 :v-adjust -0.2)))
 ;; 					company-box-icons-alist 'company-box-icons-all-the-icons)))
 
+;; (use-package demap
+;;   :config
+;;   :after dahsboard)
+
 (provide 'programming)
 
 ;;; programming.el ends here
