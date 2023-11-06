@@ -6,7 +6,8 @@ if [ "$(tty)" = "/dev/tty1" ]; then
     case "$HOSTNAME" in
     "desktop")
         # Start awesome if not running
-        pgrep awesome || startx "$XDG_CONFIG_HOME/X11/.xinitrc"
+        # pgrep awesome || startx "$XDG_CONFIG_HOME/X11/.xinitrc"
+        pgrep qtile || qtile start -b wayland -c ~/.config/qtileDesktop/config.py
         ;;
     "laptop")
         pgrep qtile || qtile start -b wayland ;;
