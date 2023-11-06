@@ -17,103 +17,50 @@
   )
 
 ;; Org mode configuration
-(use-package org-bullets
-  :defer t
-  :config
-  ;; use org-bullets-mode for utf8 symbols as org bullets
-  ;; make available "org-bullet-face" such that I can control the font size individually
-  (setq org-bullets-face-name (quote org-bullet-face))
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  (setq org-bullets-bullet-list '("✡" "⎈" "✽" "✲" "✱" "✻" "✼" "✽" "✾" "✿" "❀" "❁" "❂" "❃" "❄" "❅" "❆" "❇"))
-  (setq org-hide-emphasis-markers t)
-  (custom-set-faces
-   '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
-   '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
-   '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
-   '(org-level-4 ((t (:inherit outline-4 :height 1.1))))
-   '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
-  (setq org-agenda-files '("~/org"))
-  :init
-  ;; (add-hook 'org-mode-hook 'visual-line-mode)
-  (add-hook 'org-mode-hook 'org-indent-mode)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  )
+;; (use-package org-bullets
+;;   :after (org-mode org-roam)
+;;   :config
 
+;;   (setq org-bullets-face-name (quote org-bullet-face))
+;;   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;;   (setq org-bullets-bullet-list '("✡" "⎈" "✽" "✲" "✱" "✻" "✼" "✽" "✾" "✿" "❀" "❁" "❂" "❃" "❄" "❅" "❆" "❇"))
+;;   (setq org-hide-emphasis-markers t)
+;;   (custom-set-faces
+;;    '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+;;    '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
+;;    '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
+;;    '(org-level-4 ((t (:inherit outline-4 :height 1.1))))
+;;    '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
+;;   (setq org-agenda-files '("~/org"))
+;;   :init
+;;   (org-bullets-mode 1))
 
 (use-package org
   :after dashboard
   :straight t
   :ensure nil
   :config
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (setq org-export-headline-levels 4)
+  (setq org-export-preserve-breaks t)
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
   (add-to-list 'org-file-apps '("\\.pdf" . "zathura %s"))
   (advice-add 'org-latex-compile :after #'delete-file)
-  )
+  ;; (setq org-latex-pdf-process
+  ;;       '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -pdf -bibtex -f %f"))
+  ;; (setq org-latex-to-pdf-process
+  ;;       '("xelatex -interaction nonstopmode %f"
+  ;;         "xelatex -interaction nonstopmode %f")) ;; for multiple passes
+  (setq org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
-(use-package org-download
-  :custom
-  (org-download-method 'directory)
-  (org-download-image-dir "attachments")
-  (org-download-heading-lvl nil)
-  (org-download-screenshot-method "grim -g '$(slurp)'"))
+  (unless (boundp 'org-latex-classes)
+    (setq org-latex-classes nil))
 
-;; Drag-and-drop to `dired`
-(add-hook 'dired-mode-hook 'org-download-enable)
-
-(use-package org-fragtog
-  :commands (org-mode)
-  :hook
-  (org-mode . org-fragtog-mode)
-  :after org-mode
-  )
-
-(use-package org-roam
-  :ensure t
-  :custom
-  (org-roam-directory (file-truename "~/GoogleDrive/org"))
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today))
-  :config
-  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-db-autosync-mode)
-  ;; If using org-roam-protocol
-  (require 'org-roam-protocol))
-
-(use-package org-roam-ui
-  :straight
-  (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
-  :after org-roam
-  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-  ;;         a hookable mode anymore, you're advised to pick something yourself
-  ;;         if you don't care about startup time, use
-  ;;  :hook (after-init . org-roam-ui-mode)
-  :config
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
-
-(use-package org-modern
-  :commands (org-mode)
-  :after org-mode
-  :hook
-  (org-mode-hook . org-modern-mode))
-
-(setq org-latex-pdf-process
-      '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -pdf -bibtex -f %f"))
-
-(unless (boundp 'org-latex-classes)
-  (setq org-latex-classes nil))
-
-(add-to-list 'org-latex-classes
-             '("report"
-               "\\documentclass[a4paper,11pt,titlepage]{report}
+  (add-to-list 'org-latex-classes
+               '("report"
+                 "\\documentclass[a4paper,11pt,titlepage]{report}
 \\usepackage[utf8]{inputenc}
 \\usepackage[margin=3cm]{geometry}
 \\usepackage[T1]{fontenc}
@@ -143,17 +90,17 @@
       [EXTRA]
 \\linespread{1.1}
 \\hypersetup{pdfborder=0 0 0}"
-               ("\\chapter{%s}" . "\\chapter*{%s}")
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 
-(add-to-list 'org-latex-classes
-             '("article"
-               "\\documentclass[11pt,a4paper]{article}
+  (add-to-list 'org-latex-classes
+               '("article"
+                 "\\documentclass[11pt,a4paper]{article}
 \\setlength{\\parindent}{0pt}
 \\usepackage{mhchem}
 \\usepackage[utf8]{inputenc}
@@ -186,14 +133,14 @@
       [EXTRA]
 \\linespread{1.1}
 \\hypersetup{pdfborder=0 0 0}"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")))
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")))
 
 
-(add-to-list 'org-latex-classes '("ebook"
-                                  "\\documentclass[11pt, oneside]{memoir}
+  (add-to-list 'org-latex-classes '("ebook"
+                                    "\\documentclass[11pt, oneside]{memoir}
 \\setstocksize{9in}{6in}
 \\settrimmedsize{\\stockheight}{\\stockwidth}{*}
 \\setlrmarginsandblock{2cm}{2cm}{*} % Left and right margin
@@ -201,11 +148,69 @@
 \\checkandfixthelayout
 % Much more laTeX code omitted
 "
-                                  ("\\chapter{%s}" . "\\chapter*{%s}")
-                                  ("\\section{%s}" . "\\section*{%s}")
-                                  ("\\subsection{%s}" . "\\subsection*{%s}")))
+                                    ("\\chapter{%s}" . "\\chapter*{%s}")
+                                    ("\\section{%s}" . "\\section*{%s}")
+                                    ("\\subsection{%s}" . "\\subsection*{%s}")))
+
+  :init
+  (setq org-startup-folded t)
+  (setq org-pretty-entities t)
+  )
+
+(use-package org-download
+  :after dashboard
+  :custom
+  (org-download-method 'directory)
+  (org-download-image-dir "attachments")
+  (org-download-heading-lvl nil))
+
+;; (use-package org-fragtog
+;;   :hook
+;;   (org-mode . org-fragtog-mode)
+;;   :after org-mode
+;;   )
+
+(use-package org-roam
+  :after dashboard
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . consult-org-roam-file-find)
+         ("C-c n s" . consult-org-roam-search)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :custom
+  (org-pretty-entities t)
+  :config
+  (setq org-pretty-entities t)
+  (setq org-roam-directory "~/GoogleDrive/org")
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol)
+  :init
+  (setq org-startup-folded t)
+  (setq org-pretty-entities t)
+  )
+
+(use-package org-roam-ui
+  :after org-roam
+  :straight
+  (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
+
+(use-package org-modern
+  :config
+  (add-hook 'org-mode-hook #'org-modern-mode)
+  (add-hook 'org-roam-mode-hook #'org-modern-mode))
 
 (use-package markdown-mode
+  :after dashboard
   :config
   (defun export-buffer-to-pdf ()
     "Export the current Markdown buffer to PDF using Pandoc with conditional flags."
@@ -462,42 +467,6 @@
         languagetool-console-command "org.languagetool.commandline.Main"
         languagetool-server-command "org.languagetool.server.HTTPServer")
   )
-
-(use-package obsidian
-  :after dashboard
-  :requires hydra
-  :config
-  (defhydra my-obsidian-hydra (:hint nil :exit t)
-    "
-        Obsidian
-        _f_ollow at point   insert _w_ikilink          _q_uit
-        _j_ump to note      insert _l_ink
-        _t_ag find          _c_apture new note
-        _s_earch by expr.   _u_pdate tags/alises etc.
-        "
-    ("c" obsidian-capture)
-    ("f" obsidian-follow-link-at-point)
-    ("j" obsidian-jump)
-    ("l" obsidian-insert-link :color blue)
-    ("q" nil :color blue)
-    ("s" obsidian-search)
-    ("t" obsidian-tag-find)
-    ("u" obsidian-update)
-    ("w" obsidian-insert-wikilink :color blue))
-
-  (obsidian-specify-path "~/GoogleDrive/Obsidian")
-  (global-obsidian-mode t)
-  :custom
-  (obsidian-inbox-directory "Inbox") ;; This directory will be used for `obsidian-capture' if set.
-  :bind
-  :bind ("<leader>o" . my-obsidian-hydra/body)
-  (:map obsidian-mode-map
-        ;; Replace C-c C-o with Obsidian.el's implementation. It's ok to use another key binding.
-        ("C-c C-o" . obsidian-follow-link-at-point)
-        ;; Jump to backlinks
-        ("C-c C-b" . obsidian-backlink-jump)
-        ;; If you prefer you can use `obsidian-insert-link'
-        ("C-c C-l" . obsidian-insert-wikilink)))
 
 (provide 'document-production)
 

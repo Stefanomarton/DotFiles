@@ -201,11 +201,12 @@
 (use-package evil-surround
   :defer .5
   :after dashboard
-  :config
+  :init
   (evil-surround-mode)
-  ;; (evil-define-key '(normal visual) 'global (kbd ", ,") 'evil-surround-edit)
-  ;; (evil-define-key '(normal visual) 'global (kbd ", c") 'evil-surround-change)
-  ;; (evil-define-key '(normal visual) 'global (kbd ", d") 'evil-surround-delete)
+  :config
+  (evil-define-key '(normal visual) 'global (kbd ", ,") 'evil-surround-edit)
+  (evil-define-key '(normal visual) 'global (kbd ", c") 'evil-surround-change)
+  (evil-define-key '(normal visual) 'global (kbd ", d") 'evil-surround-delete)
   (add-hook 'prog-mode-hook (lambda ()
  			                  (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
   (add-hook 'org-mode-hook (lambda ()
@@ -262,6 +263,7 @@
   :defer t
   :hook
   (LaTeX-mode . evil-tex-mode)
+  (org-mode . evil-tex-mode)
   ;; :config
   ;; (setq evil-tex-toggle-override-m t)
   )

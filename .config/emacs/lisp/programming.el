@@ -33,7 +33,7 @@
 (use-package company
   :after evil
   :diminish company-mode
-  :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
+  :hook ((org-mode prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
   :custom
   (setq company-tooltip-offset-display 'lines	;; Show number before and after current candidates
 	    company-tooltip-flip-when-above t	;; Avoid screen breaking when at the bottom of the buffer
@@ -55,6 +55,9 @@
 	        (lambda ()
 	          (set (make-local-variable 'company-backends) '(company-capf :with company-files))))
   (add-hook 'markdown-mode-hook
+	        (lambda ()
+	          (set (make-local-variable 'company-backends) '(company-yasnippet company-files))))
+  (add-hook 'org-mode-hook
 	        (lambda ()
 	          (set (make-local-variable 'company-backends) '(company-yasnippet company-files))))
   (add-hook 'emacs-lisp-mode-hook
