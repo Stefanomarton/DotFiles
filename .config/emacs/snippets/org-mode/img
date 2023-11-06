@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Center Environment
+# key: im
+# --
+#+ATTR_LATEX: :width 7cm
+`(org-download-clipboard)(evil-normal-state)(evil-previous-visual-line)(evil-previous-visual-line)(evil-previous-visual-line)(evil-whole-line)`
