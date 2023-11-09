@@ -1,5 +1,6 @@
-from libqtile import bar, layout, widget, hook
+from libqtile import bar, layout, widget, hook, extension
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
+# from libqtile.extension import WindowList
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from libqtile.backend.wayland import InputConfig
@@ -25,7 +26,7 @@ ColorI=(colordict['colors']['color9'])
 
 @hook.subscribe.startup_once
 def autostart():
-    home = os.path.expanduser('~/.config/qtile/autostart.sh')
+    home = os.path.expanduser('~/.config/qtileDesktop/autostart.sh')
     subprocess.Popen([home])
 
 mod = "mod4"
@@ -91,9 +92,11 @@ keys = [
 
     # App launching
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
-    Key([mod], "s", lazy.spawn("tofi-drun | zsh", shell=True), desc="Tofi launcher"),
+    # Key([mod], "s", lazy.spawn("tofi-drun | zsh", shell=True), desc="Tofi launcher"),
+    Key([mod], "s", lazy.spawn("dmenu_run", shell=True), desc="Tofi launcher"),
     Key([mod, "shift"], "s", lazy.spawn('grim -g "$(slurp)" - | wl-copy', shell=True), desc="Tofi launcher"),
     Key([mod], "f", lazy.spawn("zsh -c 'export MOZ_ENABLE_WAYLAND=1 && firefox'"), desc="Firefox Browser"),
+    # Key([mod, "control"], "s", lazy.run_extension(extension.WindowList()), desc="windows list"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
@@ -140,11 +143,38 @@ for i in groups:
         ]
     )
 
+
 groups.append(ScratchPad('filemanager',[DropDown('filemanager','zsh -c "kitty -e ranger"', y=0.05, height=0.8, opacity=1),]))
 
 keys.extend([
     Key([mod],'a',lazy.group['filemanager'].dropdown_toggle('filemanager')),
 ])
+
+groups.append(Group('w11', matches=[Match(wm_class=["looking-glass-client"])], screen_affinity=1))
+
+keys.extend(
+    [
+        # mod1 + letter of group = switch to group
+        Key(
+            [mod],
+            "w",
+            lazy.group["w11"].toscreen(),
+            desc="Switch to group w11",
+        ),
+        # # mod1 + shift + letter of group = switch to & move focused window to group
+        # Key(
+        #     [mod, "shift"],
+        #     i.name,
+        #     lazy.window.togroup(i.name, switch_group=True),
+        #     desc="Switch to & move focused window to group {}".format(i.name),
+        # ),
+        # # Or, use below if you prefer not to switch to that group.
+        # # # mod1 + shift + letter of group = move focused window to group
+        # Key(["mod1"], i.name, lazy.window.togroup(i.name),
+        #     desc="move focused window to group {}".format(i.name)),
+    ]
+)
+
 
 
 layouts = [
@@ -173,36 +203,37 @@ screens = [
     Screen(
         wallpaper="~/.local/share/Wallpapers/NordicWallpapers/ign_unsplash46.png",
         wallpaper_mode="fill",
-    ),
-    Screen(
-        wallpaper="~/.local/share/Wallpapers/NordicWallpapers/ign_unsplash46.png",
-        wallpaper_mode="fill",
         top=bar.Bar(
             [
                 widget.Spacer(length=5),
-                widget.CurrentLayoutIcon(),
+                widget.CurrentLayout(),
                 widget.Spacer(length=5),
                 widget.GroupBox(
                     highlight_method='block',
                     background=ColorZ,
                 ),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
+                widget.Spacer(length=bar.STRETCH),
+                # widget.Prompt(),
+                # widget.WindowName(),
+                widget.TaskList(),
+                # widget.Chord(
+                #     chords_colors={
+                #         "launch": ("#ff0000", "#ffffff"),
+                #     },
+                #     name_transform=lambda name: name.upper(),
+                # ),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.Systray(),
+                widget.Spacer(length=bar.STRETCH),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
                 widget.Spacer(length=5),
                 widget.Wlan(format='{essid} {percent:2.0%}'),
                 widget.Spacer(length=5),
                 # widget.Battery(format='{char} {percent:2.0%}'),
                 widget.Spacer(length=5),
+                widget.ThermalSensor(format='CPU: {temp:.0f}{unit}'),
                 # widget.StatusNotifier(),
+                # widget.Systray(),
                 widget.Spacer(length=5),
                 # widget.QuickExit(),
             ],
@@ -210,11 +241,16 @@ screens = [
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
             background=ColorZ,
+            lenght=bar.STRETCH,
         ),
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
         # By default we handle these events delayed to already improve performance, however your system might still be struggling
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
         # x11_drag_polling_rate = 60,
+    ),
+    Screen(
+        wallpaper="~/.local/share/Wallpapers/NordicWallpapers/ign_unsplash46.png",
+        wallpaper_mode="fill",
     ),
 ]
 
@@ -260,5 +296,6 @@ wl_input_rules = {
         "type:keyboard": InputConfig(dwt=True, kb_repeat_delay=150, kb_repeat_rate=50, kb_variant="altgr-intl", kb_layout="us"),
         "*": InputConfig(tap=True, natural_scroll=False),
     }
+
 
 wmname = "LG3D"
