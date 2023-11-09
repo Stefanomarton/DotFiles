@@ -1,14 +1,11 @@
-;;; tools.el --- Useful Tools
+;;; tools.el --- Useful Tools -*- lexical-binding: t; -*-
 
+;; emacs tools
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-command helpful-key)
   :bind
   ([remap describe-command] . helpful-command)
   ([remap describe-key] . helpful-key))
-
-(use-package google-this
-  :defer t
-  )
 
 ;; Startup time evaluation
 (use-package esup
@@ -28,24 +25,13 @@
 	    vterm-shell "zsh"
 	    ))
 
-(use-package gptel
-  :commands gptel)
+(use-package google-this
+  :defer t
+  )
 
 (use-package csv-mode
   :commands csv-mode
   )
-
-;; (use-package langtool
-;;   :commands langtoolcheck
-;;   :config
-;;   (setq langtool-java-classpath
-;; 	    "/usr/share/languagetool:/usr/share/java/languagetool/*"))
-
-;; (use-package flycheck-languagetool
-;;   :after flycheck
-;;   :requires flyckeck langtool
-;;   :init
-;;   (setq flycheck-languagetool-server-jar "~/Downloads/LanguageTool-6.1/languagetool-server.jar"))
 
 (provide 'tools)
 

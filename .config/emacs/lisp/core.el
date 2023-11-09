@@ -24,7 +24,6 @@
 (setq frame-resize-pixelwise t)
 
 ;; Save backup files to one directory instead of making a mess of the filesystem.
-
 (setq backup-directory-alist `(("." . "~/.cache/emacs")))
 
 ;; Revome useless files and keep folders clean
@@ -32,7 +31,6 @@
 
 ;; `auto-save', in addition to the actual files it saves, maintains another file
 ;; listing the files it's currently taking care of.
-
 (setq auto-save-list-file-prefix "~/.cache/emacs/auto-save-list/.saves-"
       backup-by-copying t
 	  delete-old-versions t
@@ -49,9 +47,9 @@
 ;; I don't use 'custom.el' to set variables, but a few of the packages I use do.
 ;; This snippet ensures that a massacre is not made of my init.el.
 
-;; (setq custom-file "~/.config/emacs/custom.el")
-;; (when (file-exists-p custom-file)
-;;   (load custom-file))
+(setq custom-file "~/.config/emacs/custom.el")
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 ;; Set default directory to home and abbreviate it
 (setq default-directory "~/")
@@ -66,7 +64,6 @@
 (setq use-short-answers t)
 
 ;; Automatically revert buffers and dired listings when something on disk
-;; changes.
 
 (use-package autorevert
   :after dashboard

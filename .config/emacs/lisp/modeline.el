@@ -1,4 +1,4 @@
-;;; modeline.el --- Minimal Modeline
+;;; modeline.el --- Minimal Modeline -*- lexical-binding: t; -*-
 
 (defface evil-visual-face
   '((t (:foreground "#b48ead")))

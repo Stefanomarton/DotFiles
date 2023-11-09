@@ -1,4 +1,4 @@
-;;; lsp.el --- LSP configuration
+;;; lsp.el --- LSP configuration -*- lexical-binding: t; -*-
 
 ;; (use-package lsp-mode
 ;;   :commands (lsp lsp-deferred)

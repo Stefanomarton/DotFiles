@@ -2,23 +2,15 @@
 ;;;
 ;;; Configuration for making Emacs look pretty.
 
-;; Use soft wrapping instead of "scrolling" when overflowing the width of a frame.
 
+;; Prefere visual line
 (global-visual-line-mode t)
 
-;; Hacking is a lot more serene when visual stimulus is kept to a minimum.
-
-(blink-cursor-mode 0)
+;; I keep losing the curson
+(blink-cursor-mode 1)
 
 ;; Enable `prettify-symbols' globally.
-
 (global-prettify-symbols-mode t)
-
-;; The menu bar can be accessed with <M-`> if I really need it, so I don't see
-;; the point in having it take up the space at the top. The rest of these rarely
-;; see use from me, and I'd prefer to disable them and have access to the extra
-;; screen real estate.
-
 
 ;; Display line number relative and absolute
 (setq display-line-numbers-grow-only t)
@@ -27,15 +19,18 @@
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'find-file-hook 'display-line-numbers-mode)
 
-(add-hook 'prog-mode-hook 'hl-line-mode) ;; Highlight the current line
-(setq hl-line-sticky-flag nil)
+;; Highlight the current line
+(add-hook 'prog-mode-hook 'hl-line-mode)
+(setq hl-line-sticky-flag nil)          ; Avoid seeing the bar in all windows
 
 ;; Line spacing
 (setq line-spacing 1)
 
+;; I like icons
 (use-package nerd-icons
   :after dashboard)
 
+;; Customize the divider beetween windows
 (use-package frame
   :after dashboard
   :straight (:type built-in)
@@ -49,27 +44,7 @@
   (window-divider-mode t)
   )
 
-;; (add-to-list 'default-frame-alist '(alpha-background . 95))
-
-;; A more complex, more lazy-loaded config
-;; (use-package solaire-mode
-;;   :if window-system ;; This is not optimal but display-graphic-p does not work
-;;   :defer 1
-;;   :hook
-;;   ;; Ensure solaire-mode is running in all solaire-mode buffers
-;;   (change-major-mode . turn-on-solaire-mode)
-;;   ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
-;;   ;; itself off every time Emacs reverts the file
-;;   (after-revert . turn-on-solaire-mode)
-;;   ;; To enable solaire-mode unconditionally for certain modes:
-;;   (ediff-prepare-buffer . solaire-mode)
-;;   :custom
-;;   (solaire-mode-auto-swap-bg t)
-;;   :config
-;;   (solaire-global-mode +1))
-
 ;; Theming
-
 ;; Suppose all custom themes are safe
 (setq custom-safe-themes t)
 
@@ -97,22 +72,13 @@
                     (load-theme 'ewal-doom-one t)
                     (enable-theme 'ewal-doom-one))))
 
-;; fix color display when loading emacs in terminal
-;; (defun enable-256color-term ()
-;;   (interactive)
-;;   (load-library "term/xterm")
-;;   (terminal-init-xterm))
 
-;; (unless (display-graphic-p)
-;;   (if (string-suffix-p "256color" (getenv "TERM"))
-;; 	  (enable-256color-term)))
-
+;; Cool dashboard setting with minimal loading times
 (use-package dashboard
   :if (< (length command-line-args) 2)
   :custom
   (initial-buffer-choice #'(lambda () (get-buffer-create "*dashboard*")))
   (dashboard-banner-logo-title "Welcome Back Goblin")
-  ;; Content is not centered by default. To center, set
   (dashboard-startup-banner "~/.config/emacs/themes/logo.txt")
   (dashboard-center-content t)
   (dashboard-set-footer nil)
@@ -127,6 +93,7 @@
   ;; (agenda . 5)
   ;; (registers . 5)))
   :config
+  ;; define custom mode map avoiding problems with lazyloading
   (evil-define-key 'normal dashboard-mode-map
     (kbd "<leader>ff") 'find-file
     (kbd "<leader>fr") 'consult-recent-file

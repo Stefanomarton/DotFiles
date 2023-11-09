@@ -1,4 +1,4 @@
-;;; editor-config.el --- Editor Configurations
+;;; editor-config.el -*- lexical-binding: t; -*-
 
 ;; Editorconfig, auto set indenting
 (use-package editorconfig
@@ -40,6 +40,8 @@
 ;; Autopair parenthesis
 (use-package electric
   :straight (:type built-in)
+  :hook
+  (prog-mode . electric-layout-mode)
   :init
   (electric-pair-mode +1) ;; automatically insert closing parens
   (setq electric-pair-preserve-balance nil) ;; more annoying than useful

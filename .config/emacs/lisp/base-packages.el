@@ -1,4 +1,6 @@
 ;;; base-packages.el -*- lexical-binding: t; -*-
+
+;; necessary to bind keys
 (use-package bind-key)
 
 ;; Recent file list
@@ -14,6 +16,7 @@
   (setq recentf-auto-cleanup 'never)
   (setq recentf-max-saved-items 25))
 
+;; Show cool key suggestions
 (use-package which-key
   :defer 1
   :diminish which-key-mode
@@ -32,8 +35,8 @@
   :bind
   (:map vertico-map
 	    ("C-e" . embark-minimal-act)
-	    ("C-j" . vertico-next)
-	    ("C-k" . vertico-previous)
+	    ("C-k" . vertico-next)
+	    ("C-l" . vertico-previous)
 	    ("<escape>" . keyboard-escape-quit))
   :init
   ;; Do not allow the cursor in the minibuffer prompt
@@ -44,6 +47,7 @@
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t)
   :config
+
   ;; Indicated in the documentation
   (setq fast-but-imprecise-scrolling t
 	    jit-lock-defer-time 0)
@@ -62,22 +66,21 @@
   :init
   (vertico-mode))
 
-;; Optionally use the `orderless' completion style.
+;; orderless completion method
 (use-package orderless
   :config
-  ;; Configure a custom style dispatcher (see the Consult wiki)
-  ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
-  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
   (setq completion-styles '(orderless basic)
 	    completion-category-defaults nil
 	    completion-category-overrides '((file (styles partial-completion)))))
 
+;; i like some help while searching
 (use-package marginalia
   :defer .1
   :after vertico
   :init
   (marginalia-mode))
 
+;; musthave
 (use-package consult
   :init
   (setq consult-preview-allowed-hooks '(global-font-lock-mode-check-buffers save-place-find-file-hook display-line-numbers-mode))
@@ -103,18 +106,6 @@
       (?h . "ASK"))
     "Default mapping of narrow and keywords.")
   )
-
-(use-package hl-todo
-  :after dashboard
-  :config
-  (global-hl-todo-mode)
-  :custom
-  (hl-todo-keyword-faces
-   '(("TODO"   . "#FF0000")
-     ("FIXME"  . "#FF0000")
-     ("ASK"  . "#A020F0")
-     ("GOTCHA" . "#FF4500")
-     ("STUB"   . "#1E90FF"))))
 
 (use-package flycheck
   :defer t
@@ -189,44 +180,6 @@ targets."
 	          ("m" . consult-bookmark)
 	          ("b" . consult-buffer)
 	          ("j" . consult-find)))
-
-(use-package dired
-  :commands dired
-  :straight nil
-  :ensure nil
-  :config
-  (put 'dired-find-alternate-file 'disabled nil)
-
-  (setq dired-kill-when-opening-new-dired-buffer t)
-
-  (evil-define-key 'normal dired-mode-map
-    (kbd "f") 'dired-narrow-fuzzy
-    (kbd "T") 'dired-create-empty-file
-    (kbd "<RET>") 'dired-find-alternate-file
-    (kbd "<escape>") 'keyboard-escape-quit
-    (kbd "h") 'dired-up-directory))
-
-(use-package dired-narrow
-  :after dired
-  :config
-  (defun dired-narrow-ex-ac ()
-    ;; Revert buffer and enter the directory after narrowing
-    (revert-buffer)
-    (dired-find-alternate-file))
-  (setq dired-narrow-exit-when-1-left t)
-  (setq dired-narrow-exit-action 'dired-narrow-ex-ac)
-  )
-
-;; Better dired
-(use-package dirvish
-  :commands (dired-jump dirvish-dwim)
-  :config
-  (evil-define-key 'normal dirvish-mode-map (kbd "q") 'dirvish-quit)
-  (evil-define-key 'normal dirvish-mode-map (kbd "<escape>") 'dirvish-layout-toggle)
-  (setq dirvish-default-layout '(0.8 0.2 0.5))
-  :init
-  (dirvish-override-dired-mode)
-  )
 
 ;; Nice auto formatting
 (use-package format-all

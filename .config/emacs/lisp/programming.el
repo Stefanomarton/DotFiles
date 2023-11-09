@@ -1,4 +1,4 @@
-;;; programming.el --- Programming languages configuration
+;;; programming.el --- Programming languages configuration  -*- lexical-binding: t; -*-
 
 ;; (use-package highlight-indent-guides
 ;;   :hook (prog-mode . highlight-indent-guides-mode)

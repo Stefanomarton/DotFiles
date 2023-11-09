@@ -1,4 +1,4 @@
-;;; project-management.el --- Project management packages
+;;; project-management.el --- Project management packages -*- lexical-binding: t; -*-
 
 (provide 'project-management)
 
@@ -16,6 +16,19 @@
   (setq projectile-indexing-method 'native)
   (setq projectile-known-projects-file "~/.config/emacs/project.el")
   )
+
+(use-package hl-todo
+  :after dashboard
+  :init
+  (global-hl-todo-mode)
+  :custom
+  (hl-todo-keyword-faces
+   '(("TODO"   . "#FF0000")
+     ("FIXME"  . "#FF0000")
+     ("ASK"  . "#A020F0")
+     ("GOTCHA" . "#FF4500")
+     ("STUB"   . "#1E90FF"))))
+
 
 (use-package magit
   :commands (magit-status magit-file-dispatch magit-dispatch dotfiles-magit-status magit-status-with-removed-dotfiles-args)
