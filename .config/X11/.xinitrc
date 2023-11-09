@@ -24,7 +24,7 @@ exec dwm
 desktop)
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.config/X11/.Xresources
 xrandr --output DP-1 --primary -r 144 --mode 3440x1440 --pos 1920x0 --rotate normal --output DP-2 --off --output HDMI-1 --mode 1920x1080 --pos 0x114 --rotate left --output HDMI-2 --off --output DVI-D-1 --off
-feh --no-fehbg --bg-fill /home/stefanom/.local/share/Wallpapers/NordicWallpapers/ign_evening.png
+# feh --no-fehbg --bg-fill /home/stefanom/.local/share/Wallpapers/NordicWallpapers/ign_evening.png
 picom & 
 # sleep 10 &
 xrdb -merge ~/.Xresources &
@@ -38,7 +38,7 @@ dbus-update-activation-environment XDG_CURRENT_DESKTOP &
 dbus-update-activation-environment --all &
 # xset r rate 150 50 &
 xmodpap ~/.config/X11/.XmodmapDesktop
-exec awesome
+exec qtile start -c ~/.config/qtileDesktop/config.py
 ;;
 
 esac
