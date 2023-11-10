@@ -114,7 +114,7 @@ keys.extend([
 
 
 layouts = [
-    layout.Columns(margin=4, border_focus=ColorB, border_normal=ColorZ, border_focus_stack=ColorB, border_normal_stack=ColorZ, border_width=2, split=False),
+    layout.Columns(margin=0, border_focus=ColorB, border_normal=ColorZ, border_focus_stack=ColorB, border_normal_stack=ColorZ, border_width=2, split=False),
     layout.Stack(num_stacks=2, border_focus=ColorB, border_normal=ColorZ, border_width=2,),
     # layout.Max(),
     # layout.Tile(),
