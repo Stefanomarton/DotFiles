@@ -167,6 +167,11 @@
     (kbd "<leader> np") 'narrow-to-page
     (kbd "<leader> nf") 'narrow-to-defun
     (kbd "<leader> ng") 'goto-line-relative
+    (kbd "<leader> df") 'evil-goto-definition
+    (kbd "gu") 'evil-next-close-paren
+    (kbd "gd") 'evil-previous-open-paren
+    (kbd "gD") 'evil-previous-open-brace
+    (kbd "gU") 'evil-next-close-brace
     )
 
   (evil-define-key 'insert 'global (kbd "C-<backspace>") 'evil-delete-backward-word)
@@ -318,7 +323,7 @@
   :after evil
   :config
   (evil-define-key 'normal 'global
-    (kbd "gl") 'evil-goto-last-change
+    (kbd "gk") 'evil-goto-last-change
     (kbd "gl") 'evil-goto-last-change-reverse))
 
 ;; better object with h
