@@ -56,6 +56,10 @@ keys = [
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
+    Key([mod], "comma",
+        lazy.next_screen(),
+        desc='Keyboard focus to next monitor'
+        ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "s", lazy.spawn("tofi-drun | zsh", shell=True), desc="Tofi launcher"),
     Key([mod, "shift"], "s", lazy.spawn('grim -g "$(slurp)" - | wl-copy', shell=True), desc="Tofi launcher"),
