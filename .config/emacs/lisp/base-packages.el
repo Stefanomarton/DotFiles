@@ -64,7 +64,28 @@
   (setq vertico-resize nil)
   (setq vertico-cycle t)
   :init
+  (vertico-multiform-mode)
   (vertico-mode))
+
+(use-package posframe
+  :after vertico)
+
+(use-package vertico-posframe
+  :after posframe
+  ;; :init
+  ;; (custom-set-faces
+  ;;  '(vertico-posframe ((t (:background "#090a0c"))))
+  ;;  '(vertico-posframe-border ((t (:background "#B9788C")))))
+  ;; :custom-face
+  ;; (vertico-posframe ((t (:background "#090a0c"))))
+  ;; (vertico-posframe-border ((t (:background "#B9788C"))))
+  :custom
+  (vertico-posframe-width 150)
+  (vertico-posframe-border-width 2)
+  (vertico-multiform-commands
+   '((execute-extended-command posframe)
+     (consult-outline buffer ,(lambda (_) (text-scale-set -1)))
+     (:not posframe))))
 
 ;; orderless completion method
 (use-package orderless
@@ -125,7 +146,7 @@
   (evil-define-key 'normal 'global (kbd "<leader>SPC") 'embark-minimal-act)
   (evil-define-key 'normal 'global (kbd "C-.") 'embark-dwim)
   (evil-define-key 'insert 'global (kbd "C-.") 'embark-minimal-act)
-  (evil-define-key 'visual 'global (kbd "<leader>SPC") 'embark-dwim)
+  (evil-define-key 'visual 'global (kbd "<leader>SPC") 'embark-minimal-act)
 
   ;; Which-key style indicator
   (defun embark-minimal-act (&optional arg)
@@ -191,9 +212,6 @@ targets."
   :custom
   (format-all-show-errors 'error)
   )
-
-(use-package posframe
-  :after dashboard)
 
 (use-package hydra
   :after dashboard)
