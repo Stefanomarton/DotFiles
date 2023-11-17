@@ -23,9 +23,11 @@
   (unless (boundp 'org-latex-classes)
     (setq org-latex-classes nil))
 
+  (setq org-latex-default-class "report")
   (add-to-list 'org-latex-classes
                '("report"
                  "\\documentclass[a4paper,11pt,titlepage]{report}
+                 \\hbadness 99999
                  \\usepackage[utf8]{inputenc}
                  \\usepackage[margin=3cm]{geometry}
                  \\usepackage[T1]{fontenc}
@@ -45,6 +47,13 @@
                  \\usepackage{wasysym}
                  \\usepackage{amssymb}
                  \\usepackage{hyperref}
+                 \\hypersetup{
+                     colorlinks=true,       % false: boxed links; true: colored links
+                     linkcolor=blue,        % color of internal links
+                     citecolor=blue,        % color of links to bibliography
+                     filecolor=blue,     % color of file links
+                     urlcolor=blue
+                 }
                  \\usepackage{mathpazo}
                  \\usepackage{color}
                  \\definecolor{bg}{rgb}{0.95,0.95,0.95}
@@ -117,28 +126,36 @@
                                     ("\\chapter{%s}" . "\\chapter*{%s}")
                                     ("\\section{%s}" . "\\section*{%s}")
                                     ("\\subsection{%s}" . "\\subsection*{%s}")))
-
   :init
   (setq org-startup-folded t)
   (setq org-pretty-entities t)
   )
 
 (use-package org-download
-  :after (org-roam org-)
-  :config
+  :after (org-roam org)
+  :init
   (setq org-download-display-inline-images nil)
-  (setq org-download-timestamp "")
+  ;; (setq org-download-timestamp "")
   (setq org-download-method 'directory)
   (setq org-download-image-dir "attachments")
-  (setq org-download-image-org-width "7")
-  (setq org-download-image-latex-width "7")
+  ;; (setq org-download-image-org-width 7)
+  (setq org-download-image-latex-width 7)
   (setq org-download-heading-lvl nil))
 
-;; (use-package org-fragtog
-;;   :hook
-;;   (org-mode . org-fragtog-mode)
-;;   :after org-mode
-;;   )
+
+;; TODO: da sistemare
+(setq org-publish-project-alist
+      '(
+        (
+         "roam"
+         :base-directory "~/GoogleDrive/org/uni"
+         :publishing-directory "~/GoogleDrive/org/pdf/uni"
+         :publishing-function org-latex-publish-to-pdf
+         :base-extension "org$"
+         :recursive t
+         )
+        )
+      )
 
 (use-package org-roam
   :after dashboard
@@ -149,8 +166,6 @@
          ("C-c n c" . org-roam-capture)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
-  :custom
-  (org-pretty-entities t)
   :config
   (setq org-pretty-entities t)
   (setq org-roam-directory "~/GoogleDrive/org")
@@ -207,6 +222,18 @@
   (add-hook 'org-mode-hook #'org-modern-mode)
   (add-hook 'org-roam-mode-hook #'org-modern-mode))
 
+(use-package citar
+  :after dashboard
+  :init
+  (setq citar-bibliography '("~/GoogleDrive/org/uni/lib.bib"))
+  :custom
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography)
+  :hook
+  (LaTeX-mode . citar-capf-setup)
+  (org-mode . citar-capf-setup))
 
 (provide 'orgconfig)
 
