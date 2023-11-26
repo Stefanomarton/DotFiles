@@ -215,8 +215,8 @@
     ))
 
 (use-package evil-surround
-  :defer .5
-  :after dashboard
+  :defer t
+  :commands (evil-surround-edit evil-surround-change evil-surround-delete)
   :init
   (evil-surround-mode)
   :config
@@ -237,10 +237,10 @@
 
 (use-package evil-commentary
   ;; Better Comment Action
-  :defer .5
+  :defer t
+  :commands (evil-commentary evil-commentary-line)
   :after dashboard
   :config
-
   ;; Comment at the end of the line
   (defun comment-end-of-line ()
     (interactive)
@@ -313,6 +313,7 @@
   )
 
 (use-package evil-owl
+  :after evil
   :diminish ""
   :config
   (setq evil-owl-idle-delay 0.8)
