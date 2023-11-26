@@ -23,6 +23,8 @@ ColorF=(colordict['colors']['color6'])
 ColorG=(colordict['colors']['color7'])
 ColorH=(colordict['colors']['color8'])
 ColorI=(colordict['colors']['color9'])
+ColorFG=(colordict['special']['foreground'])
+ColorBG=(colordict['special']['background'])
 
 @hook.subscribe.startup_once
 def autostart():
@@ -53,6 +55,7 @@ def focus_previous_window(qtile):
         qtile.current_screen.set_group(group)
         # logger.info(f"FOCUS PREVIOUS {previous_focused[0]}")
         group.focus(previous_focused[0])
+
 
 keys = [
     # Switch between windows
@@ -88,13 +91,13 @@ keys = [
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
-    # Threecol layout
 
     # App launching
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Key([mod], "s", lazy.spawn("tofi-drun | zsh", shell=True), desc="Tofi launcher"),
-    Key([mod], "s", lazy.spawn("dmenu_run", shell=True), desc="Tofi launcher"),
-    Key([mod, "shift"], "s", lazy.spawn('grim -g "$(slurp)" - | wl-copy', shell=True), desc="Tofi launcher"),
+    Key([mod], "s", lazy.spawn("dmenu_run -l 4", shell=True), desc="Tofi launcher"),
+    Key([mod], "n", lazy.spawn("emacsclient -c", shell=True), desc="Emacs"),
+    Key([mod, "shift"], "s", lazy.spawn('flameshot gui', shell=True), desc="Screenshot"),
     Key([mod], "f", lazy.spawn("zsh -c 'export MOZ_ENABLE_WAYLAND=1 && firefox'"), desc="Firefox Browser"),
     # Key([mod, "control"], "s", lazy.run_extension(extension.WindowList()), desc="windows list"),
 
@@ -150,7 +153,21 @@ keys.extend([
     Key([mod],'a',lazy.group['filemanager'].dropdown_toggle('filemanager')),
 ])
 
-groups.append(Group('w11', matches=[Match(wm_class=["looking-glass-client"])], screen_affinity=1))
+groups.append(Group('w11', matches=[Match(wm_class=["looking-glass-client"])], layout="max"))
+
+# def _bar():
+#     # Get the bar 
+#     bar = current_screen.top
+#     qtile.current_group()
+#     # Check the layout and hide bar accordingly
+#     if current_group == 'w11':
+#         bar.show(False)
+#     else:
+#         bar.show(True)
+
+# @hook.subscribe.changegroup
+# def group_change():
+#     _bar()
 
 keys.extend(
     [
@@ -161,6 +178,11 @@ keys.extend(
             lazy.group["w11"].toscreen(),
             desc="Switch to group w11",
         ),
+        # Key(
+        #     [], "Scroll_Lock",
+        #     lazy.group["1"].toscreen(),
+        #     desc="Switch to group 1 while on w11",
+        # )
         # # mod1 + shift + letter of group = switch to & move focused window to group
         # Key(
         #     [mod, "shift"],
@@ -183,7 +205,7 @@ layouts = [
     # focuslayout.DistractionFree(),
     # layout.Tile(),
     # layout.Bsp(),
-    layout.MonadThreeCol(border_focus=ColorB, border_normal=ColorH, main_centered=True, single_margin=[20,300,20,300], new_client_position="bottom"),
+    layout.MonadThreeCol(margin=[15,10,15,10], border_focus=ColorB, border_width=3, border_normal=ColorH, main_centered=True, single_margin=[20,300,20,300], new_client_position="bottom"),
     # layout.MonadTall(),
     layout.MonadWide(),
     # layout.RatioTile(),
@@ -199,23 +221,43 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+screen_wallpaper = "~/Downloads/wp9302457-3440x1440-summer-wallpapers.jpg"
+
 screens = [
     Screen(
-        wallpaper="~/.local/share/Wallpapers/NordicWallpapers/ign_unsplash46.png",
+        wallpaper= screen_wallpaper,
         wallpaper_mode="fill",
         top=bar.Bar(
             [
                 widget.Spacer(length=5),
-                widget.CurrentLayout(),
+                widget.CurrentLayout(
+                    foreground=ColorFG,
+                ),
                 widget.Spacer(length=5),
                 widget.GroupBox(
                     highlight_method='block',
+                    center_aligned= True,
                     background=ColorZ,
+                    foreground="#FFFFFF",
+                    inactive=ColorG,
+                    other_current_screen_border=ColorD,
+                    this_current_screen_border=ColorA,
+                    other_screen_border=ColorH,
+                    urgent_border=ColorFG,
+                    urgent_text=ColorBG,
+                    hide_unused= True,
+
                 ),
                 widget.Spacer(length=bar.STRETCH),
                 # widget.Prompt(),
                 # widget.WindowName(),
-                widget.TaskList(),
+                widget.TaskList(
+                    highlight_method="block",
+                    foreground=ColorFG,
+                    border=ColorA,
+                    title_width_method="uniform",
+                    margin=0,
+                ),
                 # widget.Chord(
                 #     chords_colors={
                 #         "launch": ("#ff0000", "#ffffff"),
@@ -225,16 +267,33 @@ screens = [
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.Systray(),
                 widget.Spacer(length=bar.STRETCH),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-                widget.Spacer(length=5),
-                widget.Wlan(format='{essid} {percent:2.0%}'),
+                widget.Clock(
+                    format="%a %d-%m-%Y  %I:%M:%S",
+                    foreground=ColorFG,
+                    foreground_alert=ColorB
+                ),
+                widget.Spacer(length=10),
+                widget.Volume(
+                    fmt='Vol:{}',
+                    foreground=ColorFG,
+                    check_mute_string="[off]",
+                    volume_app="pavu",
+                ),
+                widget.Spacer(length=10),
+                widget.Wlan(
+                    format='{essid}:{percent:2.0%}',
+                    foreground=ColorFG,
+                ),
                 widget.Spacer(length=5),
                 # widget.Battery(format='{char} {percent:2.0%}'),
                 widget.Spacer(length=5),
-                widget.ThermalSensor(format='CPU: {temp:.0f}{unit}'),
-                # widget.StatusNotifier(),
-                # widget.Systray(),
-                widget.Spacer(length=5),
+                widget.ThermalSensor(
+                    format='CPU:{temp:.0f}{unit}',
+                    foreground=ColorFG,
+                ),
+                widget.Spacer(length=10),
+                widget.Systray(),
+                widget.Spacer(length=10),
                 # widget.QuickExit(),
             ],
             24,
@@ -249,7 +308,7 @@ screens = [
         # x11_drag_polling_rate = 60,
     ),
     Screen(
-        wallpaper="~/.local/share/Wallpapers/NordicWallpapers/ign_unsplash46.png",
+        wallpaper= screen_wallpaper,
         wallpaper_mode="fill",
     ),
 ]
@@ -263,7 +322,7 @@ mouse = [
 
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
-follow_mouse_focus = True
+follow_mouse_focus = False
 bring_front_click = False
 floats_kept_above = True
 cursor_warp = True
@@ -283,7 +342,7 @@ floating_layout = layout.Floating(
         Match(title="pinentry"),  # GPG key password entry
     ]
 )
-auto_fullscreen = False
+auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
 
