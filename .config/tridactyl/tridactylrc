@@ -15,6 +15,7 @@ unbind <C-f>
 bind o fillcmdline bmarks  
 bind O fillcmdline bmarks -t
 bind a fillcmdline tabopen
+bind d tabdetach
 
 "" Handy multiwindow/multitasking binds
  bind gd tabdetach
@@ -34,6 +35,11 @@ set hintdelay 100
 "" Quickmark 
 quickmark y https://www.youtube.com/
 quickmark g https://github.com/
+quickmark d https://drive.google.com/drive/my-drive
+quickmark m https://mail.google.com/mail/u/0/#inbox
+
+"" Blacklist
+blacklistadd https://mail.google.com/mail/u/0/#inbox
 
 "" Inject Google Translate
 command translate js let googleTranslateCallback = document.createElement('script'); googleTranslateCallback.innerHTML = "function googleTranslateElementInit(){ new google.translate.TranslateElement(); }"; document.body.insertBefore(googleTranslateCallback, document.body.firstChild); let googleTranslateScript = document.createElement('script'); googleTranslateScript.charset="UTF-8"; googleTranslateScript.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=&sl=&hl="; document.body.insertBefore(googleTranslateScript, document.body.firstChild);
