@@ -1,6 +1,7 @@
 ;;; orgconfig.el --- org-mode configuration -*- lexical-binding: t; -*-
 
 (use-package org
+  :defer t
   :after dashboard
   :straight t
   :ensure nil
@@ -9,11 +10,19 @@
   :config
   (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
   (add-hook 'org-mode-hook 'org-indent-mode)
-  (setq org-export-headline-levels 5)
-  (setq org-export-preserve-breaks t)
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
-  (add-to-list 'org-file-apps '("\\.pdf" . "zathura %s"))
-  (advice-add 'org-latex-compile :after #'delete-file)
+  (setq org-export-headline-levels 6)
+  (setq org-export-preserve-breaks t) ;; preserve newline in exports
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)) ;; fix dimension of latex fragments
+  (add-to-list 'org-file-apps '("\\.pdf" . "zathura %s")) ;; open pdf files with zathura
+  (advice-add 'org-latex-compile :after #'delete-file) ;; delete compilation files after .tex export
+
+  ;; (defun my-latex-filter-nobreaks (text backend info)
+  ;;   "Ensure \" \" are properly handled in LaTeX export."
+  ;;   (when (org-export-derived-backend-p backend 'latex)
+  ;;     (replace-regexp-in-string "^s-*$" "\\bigskip" text)))
+
+  ;; (add-to-list 'org-export-filter-body-functions
+  ;;              'my-latex-filter-nobreaks)
 
   ;; Double compilation for TOC
   (setq org-latex-pdf-process
@@ -28,6 +37,7 @@
                '("report"
                  "\\documentclass[a4paper,11pt,titlepage]{report}
                  \\hbadness 99999
+                 \\usepackage[marginal]{footmisc} % cleaner footnotes
                  \\usepackage[utf8]{inputenc}
                  \\usepackage[margin=3cm]{geometry}
                  \\usepackage[T1]{fontenc}
@@ -38,6 +48,7 @@
                  \\usepackage{wrapfig}
                  \\usepackage{rotating}
                  \\setlength{\\parindent}{0pt}
+                 \\usepackage{parskip}
                  \\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
                  \\usepackage{mhchem}
                  \\usepackage[normalem]{ulem}
@@ -127,21 +138,47 @@
                                     ("\\section{%s}" . "\\section*{%s}")
                                     ("\\subsection{%s}" . "\\subsection*{%s}")))
   :init
+  (setq org-latex-default-class "report")
   (setq org-startup-folded t)
   (setq org-pretty-entities t)
   )
 
 (use-package org-download
-  :after (org-roam org)
+  :defer t
+  :commands (org-download-clipboard)
+  ;; :after (org-roam org)
   :init
-  (setq org-download-display-inline-images nil)
+  (setq org-download-display-inline-images 'posframe)
   ;; (setq org-download-timestamp "")
   (setq org-download-method 'directory)
-  (setq org-download-image-dir "attachments")
   ;; (setq org-download-image-org-width 7)
   (setq org-download-image-latex-width 7)
-  (setq org-download-heading-lvl nil))
+  (setq org-download-heading-lvl nil)
+  ;; (setq org-download-abbreviate-filename-function #'file-relative-name)
+  ;; (setq org-download-link-format-function #'org-download-link-format-function-default)
+  ;; (setq org-download-image-dir (concat "./attachments/" (file-name-sans-extension (buffer-file-name))))
+  (defun custom/org-download-dir ()
+    "Download files in ./attachments/$filename/"
+    (setq-local org-download-image-dir (concat
+    			                        "./attachments/"
+    			                        (file-name-sans-extension (buffer-name))
+    			                        "/")
+                )                                                                    ; Store downloads in ./resources/%filename/
+    )                                                                                ; relative to the .org file
+  (add-hook 'org-mode-hook 'custom/org-download-dir)
+  (add-hook 'org-roam-mode-hook 'custom/org-download-dir)
 
+  :config
+  ;; Modify function to avoid writing useless comment
+  (defun my-org-download-annotate-default (link)
+    "Annotate LINK with the time of download."
+    (format ""
+            (if (equal link org-download-screenshot-file)
+                "screenshot"
+              link)
+            (format-time-string "%Y-%m-%d %H:%M:%S")))
+  (setq org-download-annotate-function 'my-org-download-annotate-default)
+  )
 
 ;; TODO: da sistemare
 (setq org-publish-project-alist
@@ -158,15 +195,24 @@
       )
 
 (use-package org-roam
-  :after dashboard
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . consult-org-roam-file-find)
-         ("C-c n s" . consult-org-roam-search)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today))
+  :defer t
+  :commands (org-roam-node-find org-roam-capture consult-notes)
+  ;; :after dashboard
+  :bind (("<leader>ob" . org-roam-buffer-toggle)
+         ("<leader>of" . consult-notes-org-roam-find-node)
+         ("<leader>og" . consult-notes-search-in-all-notes)
+         ("<leader>oi" . org-roam-node-insert)
+         ("<leader>oo" . consult-notes)
+         ("<leader>oc" . org-roam-capture))
   :config
+  ;; configuration for link buffer
+  (add-to-list 'display-buffer-alist
+               '("\\*org-roam\\*"
+                 (display-buffer-in-direction)
+                 (direction . right)
+                 (window-width . 0.33)
+                 (window-height . fit-window-to-buffer)))
+
   (setq org-pretty-entities t)
   (setq org-roam-directory "~/GoogleDrive/org")
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
@@ -184,30 +230,42 @@
   (org-roam-db-autosync-mode)
   ;; If using org-roam-protocol
   (require 'org-roam-protocol)
+
   :init
   (setq org-roam-capture-templates
         '(("u" "uni" plain
            "%?"
            :if-new (file+head "uni/${slug}.org"
-                              "#+title: ${title}\n")
+                              "#+title: ${title}\n#+filetags:\n#+date: %U")
+           :immediate-finish t
+           :unnarrowed t)
+          ("c" "course" plain
+           "%?"
+           :if-new (file+head "uni/courses/${slug}.org"
+                              "#+title: ${title}\n#+filetags: %^G\n#+date: %U")
            :immediate-finish t
            :unnarrowed t)
           ("r" "reference" plain "%?"
            :if-new
-           (file+head "reference/${title}.org" "#+title: ${title}\n")
+           (file+head "uni/reference/${title}.org" "#+title: ${title}\n")
            :immediate-finish t
            :unnarrowed t)
-          ("a" "article" plain "%?"
+          ("n" "new" plain "%?"
            :if-new
-           (file+head "articles/${title}.org" "#+title: ${title}\n#+filetags: :article:\n")
+           (file+head "new/${title}.org" "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("w" "work" plain "%?"
+           :if-new
+           (file+head "work/${title}.org" "#+title: ${title}\n#+filetags: %^g :article:\n")
            :immediate-finish t
            :unnarrowed t)))
-
   (setq org-startup-folded t)
   (setq org-pretty-entities t)
   )
 
 (use-package org-roam-ui
+  :defer t
   :after org-roam
   :straight
   (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
@@ -218,12 +276,13 @@
         org-roam-ui-open-on-start t))
 
 (use-package org-modern
-  :config
-  (add-hook 'org-mode-hook #'org-modern-mode)
-  (add-hook 'org-roam-mode-hook #'org-modern-mode))
+  :hook
+  (org-mode . org-modern-mode)
+  (org-roam-mode . org-modern-mode))
 
 (use-package citar
-  :after dashboard
+  :defer t
+  :after (org org-roam)
   :init
   (setq citar-bibliography '("~/GoogleDrive/org/uni/lib.bib"))
   :custom
@@ -234,6 +293,61 @@
   :hook
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup))
+
+(use-package consult-notes
+  :after (org org-roam)
+  :straight (:type git :host github :repo "mclear-tools/consult-notes")
+  :commands (consult-notes
+             consult-notes-search-in-all-notes
+             ;; I'm using org-roam so:
+             consult-notes-org-roam-find-node
+             consult-notes-org-roam-find-node-relation)
+  :config
+  (consult-notes-org-roam-mode)
+
+  ;; Search org-roam notes for citations (depends on citar)
+  (defun consult-notes-org-roam-cited (reference)
+    "Return a list of notes that cite the REFERENCE."
+    (interactive (list (citar-select-ref
+                        :rebuild-cache current-prefix-arg
+                        :filter (citar-has-note))))
+    (let* ((ids
+            (org-roam-db-query [:select * :from citations
+                                        :where (= cite-key $s1)]
+                               (car reference)))
+           (anodes
+            (mapcar (lambda (id)
+                      (org-roam-node-from-id (car id)))
+                    ids))
+           (template
+            (org-roam-node--process-display-format org-roam-node-display-template))
+           (bnodes
+            (mapcar (lambda (node)
+                      (org-roam-node-read--to-candidate node template)) anodes))
+           (node (completing-read
+                  "Node: "
+                  (lambda (string pred action)
+                    (if (eq action 'metadata)
+                        `(metadata
+                          ;; get title using annotation function
+                          (annotation-function
+                           . ,(lambda (title)
+                                (funcall org-roam-node-annotation-function
+                                         (get-text-property 0 'node title))))
+                          (category . org-roam-node))
+                      (complete-with-action action bnodes string pred)))))
+           (fnode
+            (cdr (assoc node bnodes))))
+      (if ids
+          ;; Open node in other window
+          (org-roam-node-open fnode)
+        (message "No notes cite this reference."))))
+  :init
+  (setq consult-notes-file-dir-sources
+        '(("course"             ?c "~/GoogleDrive/org/uni/courses/")))
+
+  )
+
 
 (provide 'orgconfig)
 
