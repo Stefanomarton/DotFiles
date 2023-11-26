@@ -1,4 +1,4 @@
-include nord
+include wal
 set scroll-step 40
 set selection-clipboard clipboard
 set recolor false
