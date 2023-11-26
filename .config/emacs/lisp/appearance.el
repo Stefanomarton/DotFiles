@@ -45,8 +45,6 @@
   )
 
 ;; Theming
-;; Suppose all custom themes are safe
-(setq custom-safe-themes t)
 
 ;; (use-package doom-themes
 ;;   ;; :defer .5
@@ -56,9 +54,17 @@
 ;;   (load-theme 'doom-nord t))
 
 (use-package ewal
-  :init (setq ewal-use-built-in-always-p nil
-              ewal-use-built-in-on-failure-p t
-              ewal-built-in-palette "sexy-material"))
+  :init
+  (setq ewal-use-built-in-always-p nil
+        ewal-use-built-in-on-failure-p t
+        ewal-built-in-palette "sexy-material")
+  :config
+  ;; Suppose all custom themes are safe
+  (setq ewal-shade-percent-difference 10)
+  (setq custom-safe-themes t)
+  (add-to-list 'custom-theme-load-path "~/.config/emacs/")
+  (load-theme 'pywal)
+  )
 
 ;; (use-package ewal-spacemacs-themes
 ;;   :init (progn
@@ -66,11 +72,11 @@
 ;;                     (load-theme 'ewal-spacemacs-modern t)
 ;;                     (enable-theme 'ewal-spacemacs-modern))))
 
-(use-package ewal-doom-themes
-  :init (progn
-          :config (progn
-                    (load-theme 'ewal-doom-one t)
-                    (enable-theme 'ewal-doom-one))))
+;; (use-package ewal-doom-themes
+;;   :init (progn
+;;           :config (progn
+;;                     (load-theme 'ewal-doom-one t)
+;;                     (enable-theme 'ewal-doom-one))))
 
 
 ;; Cool dashboard setting with minimal loading times
