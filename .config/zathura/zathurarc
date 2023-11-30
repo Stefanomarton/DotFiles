@@ -1,4 +1,6 @@
-include wal
+# include colorscheme
+include wallust
+
 set scroll-step 40
 set selection-clipboard clipboard
 set recolor false
@@ -34,3 +36,4 @@ set scroll-full-overlap 0.01
 set dbus-service true
 set synctex true
 set synctex-editor-command "emacs +%{line}:%{input}"
+
