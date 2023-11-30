@@ -1,10 +1,10 @@
 from libqtile import bar, layout, widget, hook, extension
+#from qtile_extras import widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
 # from libqtile.extension import WindowList
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from libqtile.backend.wayland import InputConfig
-import focuslayout
 
 import os
 import subprocess
@@ -205,9 +205,9 @@ layouts = [
     # focuslayout.DistractionFree(),
     # layout.Tile(),
     # layout.Bsp(),
-    layout.MonadThreeCol(margin=[15,10,15,10], border_focus=ColorB, border_width=3, border_normal=ColorH, main_centered=True, single_margin=[20,300,20,300], new_client_position="bottom"),
+    layout.MonadThreeCol(margin=[15,10,15,10], border_focus=ColorI, border_width=4, border_normal=ColorBG, main_centered=True, single_margin=[20,300,20,300], new_client_position="bottom"),
     # layout.MonadTall(),
-    layout.MonadWide(),
+    layout.MonadWide(border_focus=ColorB, border_width=3, border_normal=ColorFG),
     # layout.RatioTile(),
     # layout.TreeTab(),
     # layout.VerticalTile(),
@@ -237,7 +237,7 @@ screens = [
                 widget.GroupBox(
                     highlight_method='block',
                     center_aligned= True,
-                    background=ColorZ,
+                    background=ColorBG,
                     foreground="#FFFFFF",
                     inactive=ColorG,
                     other_current_screen_border=ColorD,
@@ -267,6 +267,14 @@ screens = [
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.Systray(),
                 widget.Spacer(length=bar.STRETCH),
+                # widget.Visualizer(
+                #     bar_colour=ColorB,
+                #     width=200,
+                #     bars=16,
+                #     channels="stereo",
+                #     bar_height=30,
+                # ),
+                # widget.Spacer(length=10),
                 widget.Clock(
                     format="%a %d-%m-%Y  %I:%M:%S",
                     foreground=ColorFG,
@@ -285,27 +293,31 @@ screens = [
                     foreground=ColorFG,
                 ),
                 widget.Spacer(length=5),
-                # widget.Battery(format='{char} {percent:2.0%}'),
-                widget.Spacer(length=5),
                 widget.ThermalSensor(
                     format='CPU:{temp:.0f}{unit}',
                     foreground=ColorFG,
                 ),
                 widget.Spacer(length=10),
-                widget.Systray(),
+                widget.Systray(
+                    width=200
+                ),
                 widget.Spacer(length=10),
                 # widget.QuickExit(),
             ],
             24,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-            background=ColorZ,
+            background=ColorBG,
             lenght=bar.STRETCH,
         ),
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
         # By default we handle these events delayed to already improve performance, however your system might still be struggling
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
         # x11_drag_polling_rate = 60,
+    ),
+    Screen(
+        wallpaper= screen_wallpaper,
+        wallpaper_mode="fill",
     ),
     Screen(
         wallpaper= screen_wallpaper,
