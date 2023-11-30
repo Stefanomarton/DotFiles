@@ -7,12 +7,20 @@
   :ensure nil
   :hook
   (org-mode . org-cdlatex-mode)
+  :custom
+  (org-use-speed-commands t)
+  (org-src-fontify-natively t)
+  (org-adapt-indentation t)
+  ;; (org-cite-global-bibliography )
+  (org-highlight-latex-and-relatex 'native)
   :config
   (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
   (add-hook 'org-mode-hook 'org-indent-mode)
   (setq org-export-headline-levels 6)
   (setq org-export-preserve-breaks t) ;; preserve newline in exports
+
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)) ;; fix dimension of latex fragments
+
   (add-to-list 'org-file-apps '("\\.pdf" . "zathura %s")) ;; open pdf files with zathura
   (advice-add 'org-latex-compile :after #'delete-file) ;; delete compilation files after .tex export
 
@@ -25,6 +33,17 @@
   ;;              'my-latex-filter-nobreaks)
 
   ;; Double compilation for TOC
+  :init
+  (setq org-latex-default-class "report")
+  (setq org-startup-folded t)
+  (setq org-pretty-entities t)
+  )
+
+(use-package ox-latex
+  :straight nil
+  :ensure nil
+  :after (org org-roam)
+  :config
   (setq org-latex-pdf-process
         '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
@@ -137,10 +156,6 @@
                                     ("\\chapter{%s}" . "\\chapter*{%s}")
                                     ("\\section{%s}" . "\\section*{%s}")
                                     ("\\subsection{%s}" . "\\subsection*{%s}")))
-  :init
-  (setq org-latex-default-class "report")
-  (setq org-startup-folded t)
-  (setq org-pretty-entities t)
   )
 
 (use-package org-download
@@ -154,9 +169,6 @@
   ;; (setq org-download-image-org-width 7)
   (setq org-download-image-latex-width 7)
   (setq org-download-heading-lvl nil)
-  ;; (setq org-download-abbreviate-filename-function #'file-relative-name)
-  ;; (setq org-download-link-format-function #'org-download-link-format-function-default)
-  ;; (setq org-download-image-dir (concat "./attachments/" (file-name-sans-extension (buffer-file-name))))
   (defun custom/org-download-dir ()
     "Download files in ./attachments/$filename/"
     (setq-local org-download-image-dir (concat
@@ -180,19 +192,19 @@
   (setq org-download-annotate-function 'my-org-download-annotate-default)
   )
 
-;; TODO: da sistemare
-(setq org-publish-project-alist
-      '(
-        (
-         "roam"
-         :base-directory "~/GoogleDrive/org/uni"
-         :publishing-directory "~/GoogleDrive/org/pdf/uni"
-         :publishing-function org-latex-publish-to-pdf
-         :base-extension "org$"
-         :recursive t
-         )
-        )
-      )
+;; ;; TODO: da sistemare
+;; (setq org-publish-project-alist
+;;       '(
+;;         (
+;;          "roam"
+;;          :base-directory "~/GoogleDrive/org/uni"
+;;          :publishing-directory "~/GoogleDrive/org/pdf/uni"
+;;          :publishing-function org-latex-publish-to-pdf
+;;          :base-extension "org$"
+;;          :recursive t
+;;          )
+;;         )
+;;       )
 
 (use-package org-roam
   :defer t
@@ -348,7 +360,6 @@
 
   )
 
-
 (provide 'orgconfig)
 
-;;; document-production.el ends here
+;;; org-config ends here
