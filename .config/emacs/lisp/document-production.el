@@ -2,7 +2,7 @@
 
 ;; Common fast pdf viewer inside emacs
 (use-package pdf-tools
-  :after (LaTeX-mode markdown-mode org-mode)
+  :after (LaTeX-mode markdown-mode org)
   :config
   (setq-default pdf-view-display-size 'fit-page) ; Fit page width
   (setq pdf-annot-activate-created-annotations t) ; Enable annotations
@@ -18,6 +18,9 @@
 
 (use-package markdown-mode
   :after dashboard
+  :custom
+  (setq markdown-fontify-code-blocks-natively t)
+  (setq markdown-enable-math t)
   :config
   (defun export-buffer-to-pdf ()
     "Export the current Markdown buffer to PDF using Pandoc with conditional flags."
