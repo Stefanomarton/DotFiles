@@ -1,0 +1,28 @@
+{
+    "wallpaper": "/home/stefanom/Downloads/wp9302457-3440x1440-summer-wallpapers.jpg",
+    "alpha": "100",
+
+    "special": {
+        "background": "#000306",
+        "foreground": "#E8F0F8",
+        "cursor": "#E8F0F8"
+    },
+    "colors": {
+        "color0": "#000306",
+        "color1": "#435C75",
+        "color2": "#625D17",
+        "color3": "#536A6C",
+        "color4": "#6C7862",
+        "color5": "#688199",
+        "color6": "#90A0B1",
+        "color7": "#D7E2ED",
+        "color8": "#969EA5",
+        "color9": "#5A7B9C",
+        "color10": "#837D1F",
+        "color11": "#6F8E91",
+        "color12": "#91A083",
+        "color13": "#8BACCD",
+        "color14": "#C0D6ED",
+        "color15": "#ACB4BD"
+    }
+}
