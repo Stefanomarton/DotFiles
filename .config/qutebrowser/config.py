@@ -1038,7 +1038,7 @@ c.content.desktop_capture = True
 ## Automatically enter insert mode if an editable element is focused
 ## after loading the page.
 ## Type: Bool
-# c.input.insert_mode.auto_load = False
+c.input.insert_mode.auto_load = True
 
 ## Leave insert mode when starting a new page load. Patterns may be
 ## unreliable on this setting, and they may match the url you are
@@ -1399,7 +1399,7 @@ c.content.desktop_capture = True
 
 ## Padding (in pixels) for the statusbar.
 ## Type: Padding
-# c.statusbar.padding = {'top': 1, 'bottom': 1, 'left': 0, 'right': 0}
+c.statusbar.padding = {'top': 2, 'bottom': 2, 'left': 50, 'right': 50}
 
 ## Position of the status bar.
 ## Type: VerticalPosition
@@ -1429,7 +1429,8 @@ c.content.desktop_capture = True
 ##   - progress: Progress bar for the current page loading.
 ##   - text:foo: Display the static text after the colon, `foo` in the example.
 ##   - clock: Display current time. The format can be changed by adding a format string via `clock:...`. For supported format strings, see https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes[the Python datetime documentation].
-# c.statusbar.widgets = ['keypress', 'search_match', 'url', 'scroll', 'history', 'tabs', 'progress']
+# c.statusbar.widgets = ['keypress','url', 'search_match', 'text:   ',  'text:   ' ,'clock','text:   '  ,  ]
+c.statusbar.widgets = ['url',  'text:     ', 'clock']
 
 ## Open new tabs (middleclick/ctrl+click) in the background.
 ## Type: Bool
