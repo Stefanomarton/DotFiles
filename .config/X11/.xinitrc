@@ -28,7 +28,6 @@ xrandr --output DP-1 --primary -r 144 --mode 3440x1440 --pos 1920x0 --rotate nor
 gammastep &
 picom & 
 # sleep 10 &
-xrdb -merge ~/.Xresources &
 flameshot &
 # redshift -l 45.69651:9.1818 &
 insync start &
