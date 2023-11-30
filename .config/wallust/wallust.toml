@@ -1,0 +1,48 @@
+####################
+# General settings #
+####################
+
+# "full"" backend to use all image colors, slower but better
+backend = "full"
+
+# color space "lab" for more even colors
+color_space = "lab"
+
+# good balance for not too similiar nor different colors
+threshold = 19
+
+# dark mode forever
+filter = "dark16"
+
+#############
+# Templates #
+#############
+
+# Replicate pywal colors.json for compatibility
+[[entry]]
+template = "templates/pywal"
+target = "~/.cache/wal/colors.json"
+
+[[entry]]
+template = "templates/walcolors"
+target = "~/.cache/wal/colors"
+
+# Zathura template
+[[entry]]
+template = "templates/zathura"
+target = "~/.config/zathura/wallust"
+
+# Kitty template
+[[entry]]
+template = "templates/kitty"
+target = "~/.config/kitty/wallust.conf"
+
+# Qutebrowser template
+[[entry]]
+template = "templates/colors.json"
+target = "~/.config/qutebrowser/colors.json"
+
+# Xresources template with dmenu
+[[entry]]
+template = "templates/xresources"
+target = "~/.Xresources"

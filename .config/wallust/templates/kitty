@@ -1,0 +1,60 @@
+##################
+# General Colors #
+##################
+
+foreground            {foreground}
+background            {background}
+selection_foreground  {foreground}
+selection_background  {color8}
+url_color {color6}
+
+# Cursor colors
+cursor            {cursor}
+cursor_text_color {background}
+
+# Tab bar colors
+# active_tab_foreground   #282a36
+# active_tab_background   #f8f8f2
+# inactive_tab_foreground #282a36
+# inactive_tab_background #6272a4
+
+# # Marks
+# mark1_foreground #282a36
+# mark1_background #ff5555
+
+###################
+# Specific Colors #
+###################
+
+# black
+color0  {color0}
+color8  {color8}
+
+# red
+color1  {color1}
+color9  {color9}
+
+# green
+color2  {color2}
+color10 {color10}
+
+# yellow
+color3  {color3}
+color11 {color11}
+
+# blue
+color4  {color4}
+color12 {color12}
+
+# magenta
+color5  {color5}
+color13 {color13}
+
+# cyan
+color6  {color6}
+color14 {color14}
+
+# white
+color7  {color7}
+color15 {color15}
+
