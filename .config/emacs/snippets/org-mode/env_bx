@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: box
+# key: bo
+# --
+\begin{bx}
+$1
+\end{bx}
