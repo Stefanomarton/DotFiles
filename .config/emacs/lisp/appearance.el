@@ -38,9 +38,9 @@
   ;; Make sure new frames use window-divider
   (add-hook 'before-make-frame-hook 'window-divider-mode)
   :custom
-  (window-divider-default-right-width 12)
-  (window-divider-default-bottom-width 1)
-  (window-divider-default-places 'right-only)
+  (window-divider-default-right-width 3)
+  (window-divider-default-bottom-width 3)
+  (window-divider-default-places 't)
   (window-divider-mode t)
   )
 
