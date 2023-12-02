@@ -14,35 +14,44 @@
   ;; (org-cite-global-bibliography )
   (org-highlight-latex-and-relatex 'native)
   :config
+
+  (defun my/org-time-stamp ()
+    (interactive)
+    (org-timestamp '(16) nil)
+    )
+
+  (evil-define-key 'normal org-mode-map (kbd "gt") 'my/org-time-stamp)
+
+  (defun my/org-mode/load-prettify-symbols ()
+    (interactive)
+    (setq prettify-symbols-alist
+          '(("\\\\" . ?↩)
+            )))
+  (add-hook 'org-mode-hook 'my/org-mode/load-prettify-symbols)
+
   (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
   (add-hook 'org-mode-hook 'org-indent-mode)
   (setq org-export-headline-levels 6)
-  (setq org-export-preserve-breaks t) ;; preserve newline in exports
+  (setq org-export-preserve-breaks nil) ;; preserve newline in exports
 
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)) ;; fix dimension of latex fragments
 
   (add-to-list 'org-file-apps '("\\.pdf" . "zathura %s")) ;; open pdf files with zathura
   (advice-add 'org-latex-compile :after #'delete-file) ;; delete compilation files after .tex export
 
-  ;; (defun my-latex-filter-nobreaks (text backend info)
-  ;;   "Ensure \" \" are properly handled in LaTeX export."
-  ;;   (when (org-export-derived-backend-p backend 'latex)
-  ;;     (replace-regexp-in-string "^s-*$" "\\bigskip" text)))
-
-  ;; (add-to-list 'org-export-filter-body-functions
-  ;;              'my-latex-filter-nobreaks)
 
   ;; Double compilation for TOC
   :init
   (setq org-latex-default-class "report")
   (setq org-startup-folded t)
   (setq org-pretty-entities t)
+  (setq org-pretty-entities-include-sub-superscripts nil)
   )
 
 (use-package ox-latex
   :straight nil
   :ensure nil
-  :after (org org-roam)
+  :after ox
   :config
   (setq org-latex-pdf-process
         '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
@@ -66,7 +75,7 @@
                  \\usepackage{float}
                  \\usepackage{wrapfig}
                  \\usepackage{rotating}
-                 \\setlength{\\parindent}{0pt}
+                 \\setlength{\\parskip}{1pt}
                  \\usepackage{parskip}
                  \\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
                  \\usepackage{mhchem}
@@ -87,6 +96,15 @@
                  \\usepackage{mathpazo}
                  \\usepackage{color}
                  \\definecolor{bg}{rgb}{0.95,0.95,0.95}
+                 % Define cool colorboxes
+                 \\usepackage[most]{tcolorbox}
+                 \\newtcolorbox{bx}{
+                    enhanced,
+                    boxrule=0pt,frame hidden,
+                    borderline west={4pt}{0pt}{black},
+                    colback=black!5!white,
+                    sharp corners,
+                 }
                  \\usepackage{enumitem}
                  \\setlist{noitemsep}
                  \\tolerance=1000
@@ -158,6 +176,9 @@
                                     ("\\subsection{%s}" . "\\subsection*{%s}")))
   )
 
+(use-package ox-hugo
+  :after ox)
+
 (use-package org-download
   :defer t
   :commands (org-download-clipboard)
@@ -211,11 +232,13 @@
   :commands (org-roam-node-find org-roam-capture consult-notes)
   ;; :after dashboard
   :bind (("<leader>ob" . org-roam-buffer-toggle)
-         ("<leader>of" . consult-notes-org-roam-find-node)
+         ("<leader>of" . consult-org-roam-file-find)
          ("<leader>og" . consult-notes-search-in-all-notes)
          ("<leader>oi" . org-roam-node-insert)
          ("<leader>oo" . consult-notes)
-         ("<leader>oc" . org-roam-capture))
+         ("<leader>ok" . org-roam-capture)
+         ("<leader>oc" . my/org-roam-node-find-courses)
+         )
   :config
   ;; configuration for link buffer
   (add-to-list 'display-buffer-alist
@@ -223,10 +246,12 @@
                  (display-buffer-in-direction)
                  (direction . right)
                  (window-width . 0.33)
-                 (window-height . fit-window-to-buffer)))
+                 (window-height . fit-window-to-buffer))
+               '("\w+\.org" (display-buffer-full-frame)))
 
   (setq org-pretty-entities t)
   (setq org-roam-directory "~/GoogleDrive/org")
+
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (cl-defmethod org-roam-node-type ((node org-roam-node))
     "Return the TYPE of NODE."
@@ -267,13 +292,25 @@
            (file+head "new/${title}.org" "#+title: ${title}\n")
            :immediate-finish t
            :unnarrowed t)
+          ("b" "blog" plain "%?"
+           :if-new
+           (file+head "blog/${title}.org" "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)
           ("w" "work" plain "%?"
            :if-new
            (file+head "work/${title}.org" "#+title: ${title}\n#+filetags: %^g :article:\n")
            :immediate-finish t
            :unnarrowed t)))
-  (setq org-startup-folded t)
-  (setq org-pretty-entities t)
+
+  (defun my/org-roam-node-find-courses ()
+    "Show list of `org-roam-node-find' only under dirA."
+    (interactive)
+    (org-roam-node-find nil nil
+                        (lambda (node)
+                          (file-in-directory-p
+                           (org-roam-node-file node)
+                           (expand-file-name "uni/courses" org-roam-directory)))))
   )
 
 (use-package org-roam-ui
