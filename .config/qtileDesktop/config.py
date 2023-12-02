@@ -221,7 +221,7 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-screen_wallpaper = "~/Downloads/wp9302457-3440x1440-summer-wallpapers.jpg"
+screen_wallpaper = "~/.local/share/Wallpapers/Misc/wp9302457-3440x1440-summer-wallpapers.jpg"
 
 screens = [
     Screen(
