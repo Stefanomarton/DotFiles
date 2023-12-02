@@ -14,6 +14,9 @@ config.bind('<up>', 'tab-next')
 config.bind('<down>', 'tab-prev')
 config.bind('<right>', 'forward')
 
+config.unbind('b')
+config.bind('b', 'spawn --userscript qute-bitwarden')
+
 # config.bind("'", 'mode-enter jump_mark')
 # config.bind('+', 'zoom-in')
 # config.bind('-', 'zoom-out')
