@@ -116,16 +116,36 @@
     (yas-reload-all)
     )
 
+  (defun my/find-file-home ()
+    (interactive)
+    (let ((default-directory "~/"))
+      (ido-find-file)))
+
+  (defun my/find-file-config ()
+    (interactive)
+    (let ((default-directory "~/.config"))
+      (ido-find-file)))
+
+  (defun my/find-file-google ()
+    (interactive)
+    (let ((default-directory "~/GoogleDrive"))
+      (ido-find-file)))
+
   (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
   (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
   (evil-define-key 'normal 'global
     (kbd ";") 'evil-ex
     ;; (kbd ":") 'execute-extended-command
     (kbd ":") 'execute-extended-command
+
     (kbd "<leader>ff") 'find-file
+    (kbd "<leader>fd") 'my/find-file-google
+    (kbd "<leader>fh") 'my/find-file-home
+    (kbd "<leader>fc") 'my/find-file-config
     (kbd "<leader>fw") 'find-file-other-window
     (kbd "<leader>fr") 'consult-recent-file
     (kbd "<leader>fg") 'consult-grep
+
     (kbd "<leader>r") 'consult-register
     (kbd "<leader>dj") 'dirvish
     (kbd "<leader>dD") 'dired
