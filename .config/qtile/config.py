@@ -146,7 +146,7 @@ screens = [
         top=bar.Bar(
             [
                 widget.Spacer(length=5),
-                widget.CurrentLayoutIcon(),
+                widget.CurrentLayout(),
                 widget.Spacer(length=5),
                 widget.GroupBox(
                     highlight_method='block',
@@ -162,8 +162,8 @@ screens = [
                 ),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-                widget.Spacer(length=5),
+                widget.Clock(format="%a %d-%m-%Y  %I:%M"),
+                widget.Spacer(length=10),
                 widget.Wlan(format='{essid} {percent:2.0%}'),
                 widget.Spacer(length=5),
                 widget.Battery(format='{char} {percent:2.0%}'),
@@ -182,6 +182,7 @@ screens = [
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
         # x11_drag_polling_rate = 60,
     ),
+    Screen(),
 ]
 
 # Drag floating layouts.
