@@ -1,1 +1,1 @@
-("~/.config/emacs/" "~/GoogleDrive/Projects/thesis/")
+("~/.config/emacs/" "~/GoogleDrive/Projects/SMABS/" "~/GoogleDrive/Projects/website/" "~/GoogleDrive/Projects/thesis/")
