@@ -11,9 +11,13 @@
   (org-use-speed-commands t)
   (org-src-fontify-natively t)
   (org-adapt-indentation t)
+  (org-list-allow-alphabetical t)
   ;; (org-cite-global-bibliography )
   (org-highlight-latex-and-relatex 'native)
   :config
+
+  (setq org-latex-to-mathml-convert-command
+        "latexmlmath \"%i\" --presentationmathml=%o")
 
   (defun my/org-time-stamp ()
     (interactive)
@@ -38,6 +42,31 @@
 
   (add-to-list 'org-file-apps '("\\.pdf" . "zathura %s")) ;; open pdf files with zathura
   (advice-add 'org-latex-compile :after #'delete-file) ;; delete compilation files after .tex export
+
+  ;; TODO: da sistemare
+  ;; (setq org-publish-project-alist
+  ;;       '(
+  ;;         (
+  ;;          "roam"
+  ;;          :base-directory "~/GoogleDrive/org/uni"
+  ;;          :publishing-directory "~/GoogleDrive/org/pdf/uni"
+  ;;          :publishing-function org-latex-publish-to-pdf
+  ;;          :base-extension "org$"
+  ;;          :recursive t
+  ;;          )
+  ;;         )
+  ;;       )
+
+  ;; modify export folder for org export
+  ;; taken from https://stackoverflow.com/questions/9559753/emacs-org-mode-export-to-another-directory
+
+  (defun org-export-output-file-name-modified (orig-fun extension &optional subtreep pub-dir)
+    (unless pub-dir
+      (setq pub-dir "~/GoogleDrive/org/pdf")
+      (unless (file-directory-p pub-dir)
+        (make-directory pub-dir)))
+    (apply orig-fun extension subtreep pub-dir nil))
+  (advice-add 'org-export-output-file-name :around #'org-export-output-file-name-modified)
 
 
   ;; Double compilation for TOC
@@ -75,12 +104,19 @@
                  \\usepackage{float}
                  \\usepackage{wrapfig}
                  \\usepackage{rotating}
+                 \\usepackage{cancel}
                  \\setlength{\\parskip}{1pt}
                  \\usepackage{parskip}
                  \\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
                  \\usepackage{mhchem}
                  \\usepackage[normalem]{ulem}
                  \\usepackage{amsmath}
+
+                 \\usepackage{mathtools}
+                 \\DeclarePairedDelimiter\\bra{\\langle}{\\rvert}
+                 \\DeclarePairedDelimiter\\ket{\\lvert}{\\rangle}
+                 \\DeclarePairedDelimiterX\\braket[2]{\\langle}{\\rangle}{#1\\,\\delimsize\\vert\\,\\mathopen{}#2}
+
                  \\usepackage{textcomp}
                  \\usepackage{marvosym}
                  \\usepackage{wasysym}
@@ -213,19 +249,6 @@
   (setq org-download-annotate-function 'my-org-download-annotate-default)
   )
 
-;; ;; TODO: da sistemare
-;; (setq org-publish-project-alist
-;;       '(
-;;         (
-;;          "roam"
-;;          :base-directory "~/GoogleDrive/org/uni"
-;;          :publishing-directory "~/GoogleDrive/org/pdf/uni"
-;;          :publishing-function org-latex-publish-to-pdf
-;;          :base-extension "org$"
-;;          :recursive t
-;;          )
-;;         )
-;;       )
 
 (use-package org-roam
   :defer t
