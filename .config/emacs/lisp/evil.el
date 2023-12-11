@@ -257,9 +257,7 @@
 
 (use-package evil-commentary
   ;; Better Comment Action
-  :defer t
-  :commands (evil-commentary evil-commentary-line)
-  :after dashboard
+  :after evil
   :config
   ;; Comment at the end of the line
   (defun comment-end-of-line ()
@@ -334,20 +332,13 @@
 
 (use-package evil-owl
   :after evil
-  :diminish ""
   :config
   (setq evil-owl-idle-delay 0.8)
   (setq evil-owl-display-method 'posframe
         evil-owl-extra-posframe-args '(:width 50 :height 20)
         evil-owl-max-string-length 50)
-  ;; (add-to-list 'display-buffer-alist
-  ;;              '("*evil-owl*"
-  ;;                (display-buffer-in-side-window)
-  ;;                (side . bottom)
-  ;;                (window-height . 20)))
   (evil-owl-mode)
   )
-
 
 ;; go to last edit with g;
 (use-package goto-chg
