@@ -141,7 +141,7 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper="~/.local/share/Wallpapers/NordicWallpapers/ign_unsplash46.png",
+        wallpaper="~/.local/share/Wallpapers/Nordic/ign_mountains.png",
         wallpaper_mode="fill",
         top=bar.Bar(
             [
@@ -182,7 +182,9 @@ screens = [
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
         # x11_drag_polling_rate = 60,
     ),
-    Screen(),
+    Screen(
+        wallpaper="~/.local/share/Wallpapers/Nordic/ign_mountains.png",
+    ),
 ]
 
 # Drag floating layouts.
