@@ -2,6 +2,7 @@
 
 ;; Better dired
 (use-package dirvish
+  :after dashboard
   :commands (dired-jump dirvish-dwim)
   :config
   (evil-define-key 'normal dirvish-mode-map
@@ -18,7 +19,6 @@
     (kbd "SPC") 'dired-mark
     (kbd "Q") 'dired-create-directory
     )
-
   (setq dirvish-default-layout '(0.8 0.2 0.5))
   :init
   (dirvish-override-dired-mode)
