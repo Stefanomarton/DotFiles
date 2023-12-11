@@ -1,1 +1,5 @@
 Xcursor.size: 20
+dmenu.background    : #000404
+dmenu.foreground    : #E8F5FF
+dmenu.selbackground : #45514D
+dmenu.selforeground : #E8F5FF
