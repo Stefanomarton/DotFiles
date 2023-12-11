@@ -1,7 +1,7 @@
 -- various audio visualization
 
 local opts = {
-    mode = "force",
+    mode = "novideo",
     -- off              disable visualization
     -- noalbumart       enable visualization when no albumart and no video
     -- novideo          enable visualization when no video
