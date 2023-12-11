@@ -780,7 +780,7 @@ c.content.desktop_capture = True
 ## Filename of the file to be written to. If not contained in any
 ## argument, the   standard output of the command is read instead.
 ## Type: ShellCommand
-# c.fileselect.folder.command = ['xterm', '-e', 'ranger', '--choosedir={}']
+c.fileselect.folder.command = ['kitty', '-e', 'ranger', '--choosedir', '{}']
 
 ## Handler for selecting file(s) in forms. If `external`, then the
 ## commands specified by `fileselect.single_file.command`,
@@ -791,7 +791,7 @@ c.content.desktop_capture = True
 ## Valid values:
 ##   - default: Use the default file selector.
 ##   - external: Use an external command.
-# c.fileselect.handler = 'default'
+c.fileselect.handler = 'external'
 
 ## Command (and arguments) to use for selecting multiple files in forms.
 ## The command should write the selected file paths to the specified file
@@ -800,7 +800,7 @@ c.content.desktop_capture = True
 ## contained in any argument, the   standard output of the command is
 ## read instead.
 ## Type: ShellCommand
-# c.fileselect.multiple_files.command = ['xterm', '-e', 'ranger', '--choosefiles={}']
+c.fileselect.multiple_files.command = ['kitty', '-e', 'ranger', '--choosefiles', '{}']
 
 ## Command (and arguments) to use for selecting a single file in forms.
 ## The command should write the selected file path to the specified file
@@ -808,7 +808,7 @@ c.content.desktop_capture = True
 ## the file to be written to. If not contained in any argument, the
 ## standard output of the command is read instead.
 ## Type: ShellCommand
-# c.fileselect.single_file.command = ['xterm', '-e', 'ranger', '--choosefile={}']
+c.fileselect.single_file.command = ['kitty', '-e', 'ranger', '--choosefile', '{}']
 
 ## Font used in the completion categories.
 ## Type: Font
@@ -1033,7 +1033,7 @@ c.content.desktop_capture = True
 
 ## Leave insert mode if a non-editable element is clicked.
 ## Type: Bool
-# c.input.insert_mode.auto_leave = True
+c.input.insert_mode.auto_leave = False
 
 ## Automatically enter insert mode if an editable element is focused
 ## after loading the page.
@@ -1097,7 +1097,7 @@ c.input.insert_mode.auto_load = True
 ## determine whether there is an element they might be trying to reach
 ## towards the right and which element they probably want.
 ## Type: Bool
-# c.input.spatial_navigation = False
+c.input.spatial_navigation = True
 
 ## Keychains that shouldn't be shown in the keyhint dialog. Globs are
 ## supported, so `;*` will blacklist all keychains starting with `;`. Use
@@ -1108,11 +1108,11 @@ c.input.insert_mode.auto_load = True
 ## Time (in milliseconds) from pressing a key to seeing the keyhint
 ## dialog.
 ## Type: Int
-# c.keyhint.delay = 500
+c.keyhint.delay = 200
 
 ## Rounding radius (in pixels) for the edges of the keyhint dialog.
 ## Type: Int
-# c.keyhint.radius = 6
+c.keyhint.radius = 20
 
 ## Level for console (stdout/stderr) logs. Ignored if the `--loglevel` or
 ## `--debug` CLI flags are used.
