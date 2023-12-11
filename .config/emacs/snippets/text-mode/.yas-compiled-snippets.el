@@ -5,4 +5,4 @@
                      '(("title" "${1:$(make-string (string-width yas-text) ?\\=)}\n${1:Title}\n${1:$(make-string (string-width yas-text) ?\\=)}\n\n$0\n" "Title" nil nil nil "/home/stefanom/.config/emacs/snippets/text-mode/title" nil nil)))
 
 
-;;; Do not edit! File generated at Sat Dec  2 01:18:16 2023
+;;; Do not edit! File generated at Mon Dec  4 14:51:48 2023

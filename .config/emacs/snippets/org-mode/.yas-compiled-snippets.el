@@ -2,7 +2,7 @@
 ;;; Snippet definitions:
 ;;;
 (yas-define-snippets 'org-mode
-                     '(("im" "(org-download-clipboard)\n" "image clipping" nil nil nil "/home/stefanom/.config/emacs/snippets/org-mode/img" nil nil)
+                     '(("im" "`(org-download-clipboard)`\n" "image clipboard" nil nil nil "/home/stefanom/.config/emacs/snippets/org-mode/img" nil nil)
                        ("eqs" "\\begin{equation*}\n$1\n\\end{equation*}" "\\begin{equation*}" nil nil nil "/home/stefanom/.config/emacs/snippets/org-mode/env_equationstar" nil nil)
                        ("eq" "\\begin{equation}\n$1\n\\end{equation}" "\\begin{equation}" nil nil nil "/home/stefanom/.config/emacs/snippets/org-mode/env_equation" nil nil)
                        ("bo" "\\begin{bx}\n$1\n\\end{bx}" "box" nil nil nil "/home/stefanom/.config/emacs/snippets/org-mode/env_bx" nil nil)
@@ -10,4 +10,4 @@
                        ("src" "#+begin_src ${1:lang}\n$2\n#+begin_src\n" "begin_src" nil nil nil "/home/stefanom/.config/emacs/snippets/org-mode/begin_src" nil nil)))
 
 
-;;; Do not edit! File generated at Sat Dec  2 01:18:16 2023
+;;; Do not edit! File generated at Mon Dec  4 14:51:48 2023
