@@ -11,7 +11,7 @@
       (fg (ewal-load-color 'foreground 0))
       (comment (ewal-load-color 'comment 0))
       (hl (ewal-load-color 'blue -15 5))
-      (hl-alt (ewal-load-color 'green -15 5))
+      (hl-alt (ewal-load-color 'green -9 5))
       (red        (ewal-load-color 'red      -1))
       (orange     (ewal-load-color 'red       0))
       (coolred     (ewal-load-color 'cyan     0 -10))
@@ -97,9 +97,9 @@
    '(vertico-posframe-border ((t (:inherit hl-line))))
    '(vertico-posframe ((t (:inherit mode-line))))
 
-   `(window-divider ((t (:foreground ,bg2))))
-   `(window-divider-first-pixel ((t (:foreground ,bg2))))
-   `(window-divider-last-pixel ((t (:foreground ,bg2))))
+   `(window-divider ((t (:foreground ,red))))
+   `(window-divider-first-pixel ((t (:foreground ,red))))
+   `(window-divider-last-pixel ((t (:foreground ,red))))
 
    `(show-paren-match-face ((t (:foreground ,red :background ,cyan))))
    `(show-paren-mismatch-face ((t (:background ,red))))
@@ -118,14 +118,15 @@
    `(rainbow-delimiters-mismatched-face ((t (:foreground ,violet-alt ))))
    `(rainbow-delimiters-unmatched-face ((t (:foreground ,cyan-alt ))))
 
-   `(org-level-1 ((t (:foreground ,coolred :weigth bold))))
-   `(org-level-2 ((t (:foreground ,coolred :weigth bold))))
-   `(org-level-3 ((t (:foreground ,coolred :weigth bold))))
-   `(org-level-4 ((t (:foreground ,coolred :weigth bold))))
-   `(org-level-5 ((t (:foreground ,coolred :weigth bold))))
-   `(org-level-6 ((t (:foreground ,coolred :weigth bold))))
-   `(org-level-7 ((t (:foreground ,coolred :weigth bold))))
-   `(org-level-8 ((t (:foreground ,coolred :weigth bold))))
+   `(org-document-title ((t (:foreground ,yellow :weight ultra-bold))))
+   `(org-level-1 ((t (:foreground ,blue :weight ultra-bold :height 160))))
+   `(org-level-2 ((t (:foreground ,green :weight ultra-bold :height 160))))
+   `(org-level-3 ((t (:foreground ,green :weight ultra-bold :height 150))))
+   `(org-level-4 ((t (:foreground ,green :weight ultra-bold :height 140))))
+   `(org-level-5 ((t (:foreground ,green :weight ultra-bold :height 130))))
+   `(org-level-6 ((t (:foreground ,green :weight ultra-bold :height 120))))
+   `(org-level-7 ((t (:foreground ,green :weight ultra-bold :height 110))))
+   `(org-level-8 ((t (:foreground ,green :weight ultra-bold))))
 
    (custom-theme-set-variables
     'pywal
