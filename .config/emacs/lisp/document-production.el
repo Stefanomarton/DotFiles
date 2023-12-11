@@ -217,6 +217,12 @@
 	         (yas-expand-snippet "\\int_{$1}^{$2} $0"))
     "df" (lambda () (interactive)
 	       (yas-expand-snippet "_{$1}$0"))
+    "ds" (lambda () (interactive)
+	       (yas-expand-snippet "\\Delta_{$0}S"))
+    "dh" (lambda () (interactive)
+	       (yas-expand-snippet "\\Delta_{$0}H"))
+    "dg" (lambda () (interactive)
+	       (yas-expand-snippet "\\Delta_{$0}G"))
     "rt" (lambda () (interactive)
 	       (yas-expand-snippet "^{$1}$0"))
     ;; add accent snippets
