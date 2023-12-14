@@ -6,6 +6,7 @@
   :straight t
   :ensure nil
   :hook
+  (org-mode . cdlatex-mode)
   (org-mode . org-cdlatex-mode)
   :custom
   (org-use-speed-commands t)
@@ -288,31 +289,50 @@
   (setq org-roam-node-display-template
         (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode)
+
   ;; If using org-roam-protocol
   (require 'org-roam-protocol)
 
-  :init
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; update modified time stamp ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  (add-hook 'org-mode-hook (lambda ()
+                             (setq-local time-stamp-active t
+                                         time-stamp-line-limit 18
+                                         time-stamp-start "^#\\+LAST_MODIFIED: [ \t]*"
+                                         time-stamp-end "$"
+                                         time-stamp-format "\[%Y-%m-%d %a %H:%M:%S\]")
+                             (add-hook 'before-save-hook 'time-stamp nil 'local)))
+
+  ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; customise the slug function
+  (defun hiddyn/select-tag ()
+    (setq hiddyn/tag-list (sort (completing-read-multiple "Select a tag: " (org-roam-tag-completions)) #'string<))
+    (mapconcat 'identity hiddyn/tag-list "_"))
+
+  (defun hiddyn/filetags ()
+    (concat ":" (mapconcat 'identity hiddyn/tag-list ":") ":"))
+
   (setq org-roam-capture-templates
         '(("u" "uni" plain
            "%?"
-           :if-new (file+head "uni/${slug}.org"
-                              "#+title: ${title}\n#+filetags:\n#+date: %U")
+           :if-new
+           (file+head "uni/%<%Y%m%d>__${slug}--%(hiddyn/select-tag).org"
+                      "#+title: ${title}\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
            :immediate-finish t
            :unnarrowed t)
           ("c" "course" plain
            "%?"
-           :if-new (file+head "uni/courses/${slug}.org"
-                              "#+title: ${title}\n#+filetags: %^G\n#+date: %U")
+           :if-new (file+head "uni/courses/%<%Y%m%d>__${slug}--%(hiddyn/select-tag).org"
+                              "#+title: ${title}\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
            :immediate-finish t
            :unnarrowed t)
-          ("r" "reference" plain "%?"
+          ("n" "inbox" plain "%?"
            :if-new
-           (file+head "uni/reference/${title}.org" "#+title: ${title}\n")
-           :immediate-finish t
-           :unnarrowed t)
-          ("n" "new" plain "%?"
-           :if-new
-           (file+head "new/${title}.org" "#+title: ${title}\n")
+           (file+head "inbox/%<%Y%m%d>__${slug}--%(hiddyn/select-tag).org" "#+title: ${title}\n"
+                      "#+title: ${title}\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
            :immediate-finish t
            :unnarrowed t)
           ("b" "blog" plain "%?"
@@ -320,9 +340,16 @@
            (file+head "blog/${title}.org" "#+title: ${title}\n")
            :immediate-finish t
            :unnarrowed t)
+          ("l" "literature note" plain
+           "%?"
+           :target
+           (file+head
+            "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/%<%Y%m%d>__${citar-citekey}--%(hiddyn/select-tag).org"
+            "#+title: ${citar-citekey}\n#+CREATED: %U\n#+LAST_MODIFIED: %U\n\n")
+           :unnarrowed t)
           ("w" "work" plain "%?"
            :if-new
-           (file+head "work/${title}.org" "#+title: ${title}\n#+filetags: %^g :article:\n")
+           (file+head "work/${title}.org" "#+TITLE: ${title}\n#+FILETAGS: %^g :article:\n")
            :immediate-finish t
            :unnarrowed t)))
 
@@ -355,16 +382,29 @@
 (use-package citar
   :defer t
   :after (org org-roam)
-  :init
-  (setq citar-bibliography '("~/GoogleDrive/org/uni/lib.bib"))
   :custom
+  (citar-bibliography '("~/GoogleDrive/org/.resources/bibliography.bib"))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
   (citar-bibliography org-cite-global-bibliography)
+  (citar-org-roam-note-title-template "${author} - ${title}")
   :hook
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup))
+
+(use-package citar-org-roam
+  :custom
+  (citar-org-roam-note-title-template "${author} - ${title}")
+  (citar-org-roam-capture-template-key "l")
+  (citar-org-roam-subdir "uni/papers")
+  :after (citar org-roam)
+  :config (citar-org-roam-mode))
+
+(use-package citar-embark
+  :after citar embark
+  :no-require
+  :config (citar-embark-mode))
 
 (use-package consult-notes
   :after (org org-roam)
