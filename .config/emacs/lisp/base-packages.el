@@ -16,7 +16,12 @@
   (setq recentf-auto-cleanup 'never)
   (setq recentf-max-saved-items 25))
 
-;; Show cool key suggestions
+(use-package zoxide
+  :bind (:map evil-normal-state-map
+              ("gz" . zoxide-find-file)
+              )
+  )
+
 (use-package which-key
   :defer 1
   :diminish which-key-mode
