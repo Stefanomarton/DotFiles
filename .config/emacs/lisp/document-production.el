@@ -197,18 +197,15 @@
   (LaTeX-mode . laas-mode)
   (markdown-mode . laas-mode)
   (org-mode . laas-mode)
-  :config ; do whatever here
+  :config
   (aas-set-snippets 'laas-mode
     ;; set condition!
     :cond #'texmathp ; expand only while in math
-    "supp" "\\supp"
-    "On" "O(n)"
-    "O1" "O(1)"
-    "Olog" "O(\\log n)"
-    "Olon" "O(n \\log n)"
     ;; bind to functions!
     "sum" (lambda () (interactive)
 	        (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+    "kd" (lambda () (interactive)
+	       (yas-expand-snippet ""))
     "Span" (lambda () (interactive)
 	         (yas-expand-snippet "\\Span($1)$0"))
     "inti" (lambda () (interactive)
@@ -227,14 +224,19 @@
 	       (yas-expand-snippet "^{$1}$0"))
     ;; add accent snippets
     :cond #'laas-object-on-left-condition
-    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))))
+    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))
+    ":v" (lambda () (interactive) (laas-wrap-previous-object "vec"))
+    ":b" (lambda () (interactive) (laas-wrap-previous-object "mathbb"))))
 
 (use-package cdlatex
   :commands latex-mode
   :hook (LaTeX-mode . cdlatex-mode)
   :custom
   (cdlatex-takeover-dollar nil)
-  (cdlatex-math-modify-prefix 58))
+  (cdlatex-math-modify-prefix 58)
+  (cdlatex-math-symbol-prefix 59)
+  )
+                                        ;
 
 (use-package latex-table-wizard
   :commands latex-mode
