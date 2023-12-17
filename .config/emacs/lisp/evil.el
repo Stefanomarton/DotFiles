@@ -26,11 +26,12 @@
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-set-leader 'visual (kbd "SPC"))
   ;; Use escape to remove hightlight in normal mode
-  (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
   (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
 
   (evil-define-key 'normal 'global (kbd "J") 'evil-window-left)
   (evil-define-key 'normal 'global (kbd "?") 'evil-window-right)
+
+  (evil-define-key 'normal 'global (kbd "<return>") 'evil-avy-goto-char-timer)
 
   (evil-define-key 'normal 'global (kbd "h") 'evil-search-forward)
   (evil-define-key 'normal 'global (kbd "H") 'evil-search-backward)
@@ -48,8 +49,8 @@
   (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
 
   ;; Undoing each character entered in insert mode one by one.
-  (advice-add 'undo-auto--last-boundary-amalgamating-number
-              :override #'ignore)
+  ;; (advice-add 'undo-auto--last-boundary-amalgamating-number
+  ;;             :override #'ignore)
 
   (evil-define-key 'normal 'global (kbd "C-d") 'evil-scroll-down)
 
@@ -235,25 +236,52 @@
     ))
 
 (use-package evil-surround
-  :defer t
+  ;;:straight (:host github :repo "emacs-evil/evil-surround/")
+  :after evil
   :commands (evil-surround-edit evil-surround-change evil-surround-delete)
   :init
   (evil-surround-mode)
   :config
-  (evil-define-key '(normal visual) 'global (kbd ", ,") 'evil-surround-edit)
+  (evil-define-key '(normal visual) 'global (kbd "q") 'evil-surround-edit)
   (evil-define-key '(normal visual) 'global (kbd ", c") 'evil-surround-change)
   (evil-define-key '(normal visual) 'global (kbd ", d") 'evil-surround-delete)
-  (add-hook 'prog-mode-hook (lambda ()
- 			                  (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+  (setq-default evil-surround-pairs-alist
+                '((?j . ("(" . ")"))
+                  (?k . ("[" . "]"))
+                  (?l . ("{" . "}"))
+                  (?> . ("<" . ">"))
+                  (?t . evil-surround-read-tag)
+                  (?< . evil-surround-read-tag)
+                  (?\C-f . evil-surround-prefix-function)
+                  (?f . evil-surround-function)))
   (add-hook 'org-mode-hook (lambda ()
- 			                 (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+    		                 (push '(?h . ("\$" . "\$")) evil-surround-pairs-alist)
+    		                 (push '(?H . ("\$$" . "\$$")) evil-surround-pairs-alist)
+    		                 (push '(?f . ("\\frac{" . "}{}")) evil-surround-pairs-alist)
+    		                 (push '(?v . ("_{" . "}")) evil-surround-pairs-alist)
+    		                 (push '(?, . ("^{" . "}")) evil-surround-pairs-alist)))
   (add-hook 'LaTeX-mode-hook (lambda ()
- 			                   (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
+ 			                   (push '(?p . ("\(" . "\)")) evil-surround-pairs-alist)
+ 			                   (push '(?s . ("\[" . "\]")) evil-surround-pairs-alist)
+ 			                   (push '(?c . ("{" . "}")) evil-surround-pairs-alist)))
   (add-hook 'markdown-mode-hook (lambda ()
- 				                  (push '(?\( . ("\(" . "\)")) evil-surround-pairs-alist)))
-
-  (add-hook 'markdown-mode-hook (lambda ()
+ 			                      (push '(?p . ("\(" . "\)")) evil-surround-pairs-alist)
+ 			                      (push '(?s . ("\[" . "\]")) evil-surround-pairs-alist)
+ 			                      (push '(?c . ("{" . "}")) evil-surround-pairs-alist)
                                   (push '(?* . ("**" . "**")) evil-surround-pairs-alist))))
+
+;; (use-package embrace
+;;   :after evil)
+
+;; (use-package evil-embrace
+;;   :after embrace
+;;   :config
+;;   (evil-embrace-enable-evil-surround-integration)
+;;   (add-hook 'org-mode-hook
+;;             (lambda ()
+;;               (embrace-add-pair ?c "{" "}")
+;;               (embrace-add-pair ?p "\(" "\)")
+;;               (embrace-add-pair ?s "\[" "\]"))))
 
 (use-package evil-commentary
   ;; Better Comment Action
@@ -333,8 +361,8 @@
 (use-package evil-owl
   :after evil
   :config
-  (setq evil-owl-idle-delay 0.8)
-  (setq evil-owl-display-method 'posframe
+  (setq evil-owl-idle-delay 0.1)
+  (setq evil-owl-display-method 'window
         evil-owl-extra-posframe-args '(:width 50 :height 20)
         evil-owl-max-string-length 50)
   (evil-owl-mode)
@@ -342,11 +370,10 @@
 
 ;; go to last edit with g;
 (use-package goto-chg
-  :after evil
-  :config
-  (evil-define-key 'normal 'global
-    (kbd "gk") 'evil-goto-last-change
-    (kbd "gl") 'evil-goto-last-change-reverse))
+  :after bind-key
+  :bind (:map evil-normal-state-map
+              ("<escape>" . evil-goto-last-change)
+              ("S-<escape>" . evil-goto-last-change-reverse)))
 
 ;; better object with h
 (use-package evil-textobj-syntax
