@@ -10,4 +10,4 @@
                        ("src" "#+begin_src ${1:lang}\n$2\n#+begin_src\n" "begin_src" nil nil nil "/home/stefanom/.config/emacs/snippets/org-mode/begin_src" nil nil)))
 
 
-;;; Do not edit! File generated at Mon Dec  4 14:51:48 2023
+;;; Do not edit! File generated at Fri Dec 15 14:46:08 2023
