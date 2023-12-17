@@ -202,8 +202,8 @@ matches:
   - trigger: ':omicron:'
     replace: 'ο'
   
-  - triggers: ['perche']
-    replace: 'perché'
-      
-  - triggers: ['piu']
-    replace: 'più'
+  # - triggers: ['perche']
+  #   replace: 'perché'
+  #     
+  # - triggers: ['piu']
+  #   replace: 'più'
