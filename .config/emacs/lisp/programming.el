@@ -55,7 +55,7 @@ file corresponding to the current buffer file, then recompile the file."
   (setq company-tooltip-offset-display 'lines	;; Show number before and after current candidates
 	    company-tooltip-flip-when-above t	;; Avoid screen breaking when at the bottom of the buffer
 	    company-tooltip-minimum 2
-	    company-minimum-prefix-length 0
+	    company-minimum-prefix-length 1
 	    company-tooltip-align-annotations t
 	    company-require-match 'never
 	    company-tooltip-limit 5
@@ -74,9 +74,15 @@ file corresponding to the current buffer file, then recompile the file."
   (add-hook 'markdown-mode-hook
 	        (lambda ()
 	          (set (make-local-variable 'company-backends) '(company-yasnippet company-files))))
+
   (add-hook 'org-mode-hook
 	        (lambda ()
 	          (set (make-local-variable 'company-backends) '(company-yasnippet company-files))))
+
+  (add-hook 'org-roam-mode-hook
+	        (lambda ()
+	          (set (make-local-variable 'company-backends) '(company-yasnippet company-files))))
+
   (add-hook 'emacs-lisp-mode-hook
 	        (lambda ()
 	          (set (make-local-variable 'company-backends) '(company-elisp :with ( company-yasnippet company-files )))))
