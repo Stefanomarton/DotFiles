@@ -42,6 +42,7 @@
   :straight (:type built-in)
   :hook
   (prog-mode . electric-layout-mode)
+  (org-mode . electric-layout-mode)
   :init
   (electric-pair-mode +1) ;; automatically insert closing parens
   (setq electric-pair-preserve-balance nil) ;; more annoying than useful
