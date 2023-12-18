@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: \begin{equation*}
 # key: eqs
+# condition: (and (not (texmathp)))
 # --
 \begin{equation*}
 $1

@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: \begin{align}
 # key: ali
+# condition: (and (not (texmathp)))
 # --
 \begin{align}
 $1

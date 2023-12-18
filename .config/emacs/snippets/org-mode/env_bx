@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: box
 # key: bo
+# condition: (and (not (texmathp)))
 # --
 \begin{bx}
 $1

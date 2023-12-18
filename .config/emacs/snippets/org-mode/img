@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: image clipboard
 # key: im
+# condition: (and (not (texmathp)))
 # --
 `(org-download-clipboard)`
