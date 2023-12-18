@@ -2,29 +2,31 @@
 ;;;
 ;;; Configuration for making Emacs look pretty.
 
+(use-package emacs
+  :config
+  ;; Prefere visual line
+  (global-visual-line-mode t)
 
-;; Prefere visual line
-(global-visual-line-mode t)
+  ;; I keep losing the curson
+  (blink-cursor-mode 1)
 
-;; I keep losing the curson
-(blink-cursor-mode 1)
+  ;; Enable `prettify-symbols' globally.
+  (global-prettify-symbols-mode t)
 
-;; Enable `prettify-symbols' globally.
-(global-prettify-symbols-mode t)
+  ;; Display line number relative and absolute
+  (setq display-line-numbers-grow-only t)
+  (setq display-line-numbers-width-start 70)
+  (setq display-line-numbers-type 'relative)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+  (add-hook 'find-file-hook 'display-line-numbers-mode)
 
-;; Display line number relative and absolute
-(setq display-line-numbers-grow-only t)
-(setq display-line-numbers-width-start 70)
-(setq display-line-numbers-type 'relative)
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'find-file-hook 'display-line-numbers-mode)
+  ;; Highlight the current line
+  (add-hook 'prog-mode-hook 'hl-line-mode)
+  (setq hl-line-sticky-flag nil)          ; Avoid seeing the bar in all windows
 
-;; Highlight the current line
-(add-hook 'prog-mode-hook 'hl-line-mode)
-(setq hl-line-sticky-flag nil)          ; Avoid seeing the bar in all windows
-
-;; Line spacing
-(setq line-spacing 1)
+  ;; Line spacing
+  (setq line-spacing 1)
+  )
 
 ;; I like icons
 (use-package nerd-icons
@@ -65,19 +67,6 @@
   (add-to-list 'custom-theme-load-path "~/.config/emacs/")
   (load-theme 'pywal)
   )
-
-;; (use-package ewal-spacemacs-themes
-;;   :init (progn
-;;           :config (progn
-;;                     (load-theme 'ewal-spacemacs-modern t)
-;;                     (enable-theme 'ewal-spacemacs-modern))))
-
-;; (use-package ewal-doom-themes
-;;   :init (progn
-;;           :config (progn
-;;                     (load-theme 'ewal-doom-one t)
-;;                     (enable-theme 'ewal-doom-one))))
-
 
 ;; Cool dashboard setting with minimal loading times
 (use-package dashboard
