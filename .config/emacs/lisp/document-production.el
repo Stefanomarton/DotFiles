@@ -178,8 +178,8 @@
   (aas-set-snippets 'latex-mode
     "jf" (lambda () (interactive)
 	       (yas-expand-snippet "\\\\($1\\\\) $0"))
-    "kd" (lambda () (interactive)
-	       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+    "kd  " (lambda () (interactive)
+	         (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'org-mode
     "jf" (lambda () (interactive)
 	       (yas-expand-snippet "\\\\( $1 \\\\) $0"))
@@ -204,8 +204,6 @@
     ;; bind to functions!
     "sum" (lambda () (interactive)
 	        (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-    "kd" (lambda () (interactive)
-	       (yas-expand-snippet ""))
     "Span" (lambda () (interactive)
 	         (yas-expand-snippet "\\Span($1)$0"))
     "inti" (lambda () (interactive)
@@ -215,13 +213,15 @@
     "df" (lambda () (interactive)
 	       (yas-expand-snippet "_{$1}$0"))
     "ds" (lambda () (interactive)
-	       (yas-expand-snippet "\\Delta_{$0}S"))
+	       (yas-expand-snippet "\\Delta_{$1}S $0"))
     "dh" (lambda () (interactive)
-	       (yas-expand-snippet "\\Delta_{$0}H"))
+	       (yas-expand-snippet "\\Delta_{$1}H $0"))
     "dg" (lambda () (interactive)
-	       (yas-expand-snippet "\\Delta_{$0}G"))
+	       (yas-expand-snippet "\\Delta_{$1}G $0"))
     "rt" (lambda () (interactive)
-	       (yas-expand-snippet "^{$1}$0"))
+	       (yas-expand-snippet "^{$1} $0"))
+    "r-" (lambda () (interactive)
+	       (yas-expand-snippet "^{-1} $0"))
     ;; add accent snippets
     :cond #'laas-object-on-left-condition
     "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))
@@ -236,7 +236,6 @@
   (cdlatex-math-modify-prefix 58)
   (cdlatex-math-symbol-prefix 59)
   )
-                                        ;
 
 (use-package latex-table-wizard
   :commands latex-mode
