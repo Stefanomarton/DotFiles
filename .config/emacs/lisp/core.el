@@ -1,5 +1,5 @@
-;;; core.el -*- lexical-binding: t; -*-
-;;;
+;;; core.el -*- lexical-binding: t; -*-;;;
+
 ;;; Configuration for the "core" behavior of GNU Emacs. Generally, anything
 ;;; which does not involve a third-party package.
 
@@ -47,7 +47,7 @@
 ;; I don't use 'custom.el' to set variables, but a few of the packages I use do.
 ;; This snippet ensures that a massacre is not made of my init.el.
 
-(setq custom-file "~/.config/emacs/custom.el")
+(setq custom-file (make-temp-file "emacs-custom-"))
 (when (file-exists-p custom-file)
   (load custom-file))
 
@@ -133,3 +133,5 @@
 ;; Enable functions
 (put 'narrow-to-region 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
+
+(provide 'core)
