@@ -54,49 +54,66 @@
 ;; The rest of my configuration is broken into "modules", which I include into
 ;; the init.el at macro expansion time.
 
-;;"Directory containing configuration 'modules'.")
-(defvar module-directory "~/.config/emacs/lisp")
+;; ;;"Directory containing configuration 'modules'.")
+;; (defvar module-directory "~/.config/emacs/lisp")
 
-;; Multiples macros to properly load submodules
+;; ;; Multiples macros to properly load submodules
 
-(defmacro insert-code-from-file (path)
-  "Read the forms in the file at PATH into a progn."
-  (with-temp-buffer
-    (insert-file-contents path)
-    (goto-char (point-min))
-    (let (forms (eof nil))
-      (while (not eof)
-        (condition-case nil
-            (push (read (current-buffer)) forms)
-          (end-of-file (setq eof t))))
-      `(progn ,@(reverse forms)))))
+;; (defmacro insert-code-from-file (path)
+;;   "Read the forms in the file at PATH into a progn."
+;;   (with-temp-buffer
+;;     (insert-file-contents path)
+;;     (goto-char (point-min))
+;;     (let (forms (eof nil))
+;;       (while (not eof)
+;;         (condition-case nil
+;;             (push (read (current-buffer)) forms)
+;;           (end-of-file (setq eof t))))
+;;       `(progn ,@(reverse forms)))))
 
-(defmacro load-module (name &optional condition)
-  "Locate the module NAME and insert its contents as a progn."
-  (let* ((file-name (concat name ".el"))
-         (path (expand-file-name file-name module-directory)))
-    (if condition
-        `(expand-when ,condition (insert-code-from-file ,path))
-      `(insert-code-from-file ,path))))
+;; (defmacro load-module (name &optional condition)
+;;   "Locate the module NAME and insert its contents as a progn."
+;;   (let* ((file-name (concat name ".el"))
+;;          (path (expand-file-name file-name module-directory)))
+;;     (if condition
+;;         `(expand-when ,condition (insert-code-from-file ,path))
+;;       `(insert-code-from-file ,path))))
 
-(defmacro expand-when (conditional &rest form)
-  "Expand if and only if `CONDITIONAL' is truthy at compile-time."
-  (if (eval conditional)
-      `(progn ,@form)
-    '(progn)))
+;; (defmacro expand-when (conditional &rest form)
+;;   "Expand if and only if `CONDITIONAL' is truthy at compile-time."
+;;   (if (eval conditional)
+;;       `(progn ,@form)
+;;     '(progn)))
 
-(load-module "core")
-(load-module "evil")
-(load-module "file-management")
-(load-module "appearance")
-(load-module "modeline")
-(load-module "base-packages")
-(load-module "editor-config")
-(load-module "tools")
-(load-module "project-management")
-(load-module "programming")
-(load-module "lsp")
-(load-module "document-production")
-(load-module "orgconfig")
+;; (load-module "core")
+;; (load-module "evil")
+;; (load-module "file-management")
+;; (load-module "appearance")
+;; (load-module "modeline")
+;; (load-module "base-packages")
+;; (load-module "editor-config")
+;; (load-module "tools")
+;; (load-module "project-management")
+;; (load-module "programming")
+;; (load-module "lsp")
+;; (load-module "document-production")
+;; (load-module "orgconfig")
+
+(add-to-list 'load-path "~/.config/emacs/lisp")
+
+(require 'core)
+(require 'evil)
+(require 'file-management)
+(require 'appearance)
+(require 'modeline)
+(require 'base-packages)
+(require 'editor-config)
+(require 'tools)
+(require 'project-management)
+(require 'programming)
+(require 'lsp)
+(require 'document-production)
+(require 'orgconfig)
 
 ;;; init.el ends here
+(put 'dired-find-alternate-file 'disabled nil)
