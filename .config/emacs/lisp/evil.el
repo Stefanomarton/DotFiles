@@ -5,9 +5,9 @@
   (setq evil-respect-visual-line-mode t)
   (setq evil-want-keybinding nil)
   (setq evil-undo-system 'undo-fu)
-  :config
+  (setq evil-want-integration t)
+  :custom
   (setq completion-in-region-function 'consult-completion-in-region)
-  (setq evil-want-integration nil)
   (setq evil-operator-state-cursor nil)
   (setq evil-echo-state nil)
   (setq evil-jumps-cross-buffers t)
@@ -17,13 +17,13 @@
   (setq evil-split-window-below t)
   (setq evil-vsplit-window-right t)
   (setq evil-search-module 'evil-search)
-  (setq evil-want-fine-undo t)
   (setq evil-kill-on-visual-paste nil)
   (setq evil-esc-delay 0.0001)
   (setq evil-move-beyond-eol t)
   (setq evil-want-Y-yank-to-eol t)
   ;; (setq evil-cross-lines t)
 
+  :config
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-set-leader 'visual (kbd "SPC"))
 
