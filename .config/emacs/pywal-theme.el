@@ -91,8 +91,13 @@
    ;; `(consult-preview-line ((t (:foreground ,blue :background ,blue))))
    ;; `(consult-preview-match ((t (:foreground ,blue :background ,blue))))
 
-   `(consult-highlight-mark((t (:foreground ,blue :background ,blue))))
-   `(consult-highlight-match((t (:foreground ,blue :background ,blue))))
+   ;; `(consult-highlight-mark((t (:foreground ,blue :background ,blue))))
+   ;; `(consult-highlight-match((t (:foreground ,blue :background ,blue))))
+   `(orderless-match-face-0 ((t (:foreground ,blue ))))
+   `(orderless-match-face-1 ((t (:foreground ,red ))))
+   `(orderless-match-face-2 ((t (:foreground ,green ))))
+   `(orderless-match-face-3 ((t (:foreground ,yellow))))
+   `(orderless-match-face-4 ((t (:foreground ,blue))))
 
    '(vertico-posframe-border ((t (:inherit hl-line))))
    '(vertico-posframe ((t (:inherit mode-line))))
