@@ -1,10 +1,9 @@
 from libqtile import bar, layout, widget, hook, extension
-#from qtile_extras import widget
-from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
+from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen, ScratchPad, DropDown
+# from libqtile.layout.xmonad import MonadThreeCol
 # from libqtile.extension import WindowList
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-from libqtile.backend.wayland import InputConfig
 
 import os
 import subprocess
@@ -56,6 +55,15 @@ def focus_previous_window(qtile):
         # logger.info(f"FOCUS PREVIOUS {previous_focused[0]}")
         group.focus(previous_focused[0])
 
+@lazy.group.function
+def toggle_max_monadtall(group):
+    layout = group.layout.name
+    if layout == "max":
+        group.setlayout("monadthreecol")
+    elif layout == "monadthreecol":
+        group.setlayout("max")
+
+
 
 keys = [
     # Switch between windows
@@ -64,20 +72,43 @@ keys = [
     Key([mod], "k", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "l", lazy.layout.up(), desc="Move focus up"),
     Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
+
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
     Key([mod, "shift"], "j", lazy.layout.shuffle_left(), desc="Move window to the left"),
     Key([mod, "shift"], "Slash", lazy.layout.shuffle_right(), desc="Move window to the right"),
     Key([mod, "shift"], "k", lazy.layout.shuffle_down(), desc="Move window down"),
     Key([mod, "shift"], "l", lazy.layout.shuffle_up(), desc="Move window up"),
+
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    Key([mod, "control"], "j", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "control"], "j", lazy.layout.grow(), desc="Grow window"),
-    Key([mod, "control"], "Slash", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([mod, "control"], "Slash", lazy.layout.shrink(), desc="Grow window down"),
-    Key([mod, "control"], "k", lazy.layout.grow_down(), desc="Grow window down"),
-    Key([mod, "control"], "l", lazy.layout.grow_up(), desc="Grow window up"),
+    KeyChord([mod], "BackSpace", [
+
+        # for i in "qwertyuiopasdfghzxcvbnm,."
+        # [Key([], i, lazy.ungrab_chord()) for i in "abcdef"],
+         
+        Key([], "j", lazy.layout.grow(),
+            lazy.layout.grow_left()),
+
+        Key([], "Slash", lazy.layout.shrink(),
+            lazy.layout.grow_right()),
+
+        Key([], "n", lazy.layout.normalize(),
+                lazy.layout.reset().when(layout="monadthreecol")),
+
+        Key([], "l", lazy.layout.grow_up()),
+
+        Key([], "k", lazy.layout.grow_down()),
+
+        Key([], "m", lazy.layout.maximize()),
+        
+
+    ],
+             mode=True,
+             name="resizing",
+             swallow= True
+             ),
+
     Key([mod], "v", lazy.layout.swap_main(), desc="Swap main"),
     Key([mod], "comma",
         lazy.next_screen(),
@@ -96,55 +127,95 @@ keys = [
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Key([mod], "s", lazy.spawn("tofi-drun | zsh", shell=True), desc="Tofi launcher"),
     Key([mod], "s", lazy.spawn("dmenu_run -l 4", shell=True), desc="Tofi launcher"),
-    Key([mod], "n", lazy.spawn("emacsclient -c", shell=True), desc="Emacs"),
+    # Key([mod], "n", lazy.spawn("emacsclient -c", shell=True), desc="Emacs"),
     Key([mod, "shift"], "s", lazy.spawn('flameshot gui', shell=True), desc="Screenshot"),
-    Key([mod], "f", lazy.spawn("zsh -c 'export MOZ_ENABLE_WAYLAND=1 && firefox'"), desc="Firefox Browser"),
-    # Key([mod, "control"], "s", lazy.run_extension(extension.WindowList()), desc="windows list"),
+    Key([mod], "f", lazy.spawn("firefox"), desc="Firefox Browser"),
+    Key([mod, "shift"], "Return", lazy.spawn("emacsclient -c", shell=True), desc="Firefox Browser"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
-    Key(
-        [mod],
-        "m",
-        lazy.window.toggle_fullscreen(),
-        desc="Toggle fullscreen on the focused window",
-    ),
-    Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
+
+    Key([mod], "m", toggle_max_monadtall),
+
+    Key([mod], "t", lazy.window.toggle_floating().when(), desc="Toggle floating on the focused window"),
+
     Key([mod], "b", lazy.hide_show_bar(), desc="Hides the bar"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     # Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 ]
 
+keys.extend(
+    [
+        Key(
+            [mod],
+            "w",
+            lazy.group["w11"].toscreen(),
+            desc="Switch to group w11 for windows wm",
+        ),
+    ]
+)
+
+
 groups = [
-    Group(i) for i in "123456789"
+    # Screen affinity here is used to make
+    # sure the groups startup on the right screens
+    Group("1", screen_affinity=1),
+    Group("w", screen_affinity=0, matches=[Match(wm_class=["looking-glass-client"])]),
+    Group("2", screen_affinity=0),
+    Group("3", screen_affinity=0),
+    Group("4", screen_affinity=0),
+    Group("5", screen_affinity=0),
+    Group("6", matches=[Match(wm_class=["discord", "spotify"])], screen_affinity=1),
+    Group("7", screen_affinity=1),
+    Group("9", screen_affinity=1),
 ]
 
+def go_to_group(name: str):
+    def _inner(qtile):
+        if len(qtile.screens) == 1:
+            qtile.groups_map[name].toscreen()
+            return
+
+        if name in '1234w': # remember to update for correct groups switching
+            qtile.focus_screen(0)
+            qtile.groups_map[name].toscreen()
+        else:
+            qtile.focus_screen(1)
+            qtile.groups_map[name].toscreen()
+
+    return _inner
+
+def go_to_group_and_move_window(name: str):
+    def _inner(qtile):
+        if len(qtile.screens) == 1:
+            qtile.current_window.togroup(name, switch_group=True)
+            return
+
+        if name in "1234w":
+            qtile.current_window.togroup(name, switch_group=False)
+            qtile.focus_screen(0)
+            qtile.groups_map[name].toscreen()
+        else:
+            qtile.current_window.togroup(name, switch_group=False)
+            qtile.focus_screen(1)
+            qtile.groups_map[name].toscreen()
+
+    return _inner
 
 for i in groups:
-    keys.extend(
-        [
-            # mod1 + letter of group = switch to group
-            Key(
-                [mod],
-                i.name,
-                lazy.group[i.name].toscreen(),
-                desc="Switch to group {}".format(i.name),
-            ),
-            # mod1 + shift + letter of group = switch to & move focused window to group
-            Key(
-                [mod, "shift"],
-                i.name,
-                lazy.window.togroup(i.name, switch_group=True),
-                desc="Switch to & move focused window to group {}".format(i.name),
-            ),
-            # Or, use below if you prefer not to switch to that group.
-            # # mod1 + shift + letter of group = move focused window to group
-            Key(["mod1"], i.name, lazy.window.togroup(i.name),
-                desc="move focused window to group {}".format(i.name)),
-        ]
-    )
+    keys.extend([
+        Key([mod],
+            i.name, lazy.function(go_to_group(i.name)),
+                desc="focus grou {}".format(i.name)),
+        Key([mod, "control"],
+            i.name, lazy.function(go_to_group_and_move_window(i.name)),
+                desc="move windows to group {}".format(i.name)),
+        Key(["mod1"],
+            i.name, lazy.window.togroup(i.name),
+                desc="move focused window to group {}".format(i.name))
+                ])
 
 
 groups.append(ScratchPad('filemanager',[DropDown('filemanager','zsh -c "kitty -e ranger"', y=0.05, height=0.8, opacity=1),]))
@@ -152,51 +223,6 @@ groups.append(ScratchPad('filemanager',[DropDown('filemanager','zsh -c "kitty -e
 keys.extend([
     Key([mod],'a',lazy.group['filemanager'].dropdown_toggle('filemanager')),
 ])
-
-groups.append(Group('w11', matches=[Match(wm_class=["looking-glass-client"])], layout="max"))
-
-# def _bar():
-#     # Get the bar 
-#     bar = current_screen.top
-#     qtile.current_group()
-#     # Check the layout and hide bar accordingly
-#     if current_group == 'w11':
-#         bar.show(False)
-#     else:
-#         bar.show(True)
-
-# @hook.subscribe.changegroup
-# def group_change():
-#     _bar()
-
-keys.extend(
-    [
-        # mod1 + letter of group = switch to group
-        Key(
-            [mod],
-            "w",
-            lazy.group["w11"].toscreen(),
-            desc="Switch to group w11",
-        ),
-        # Key(
-        #     [], "Scroll_Lock",
-        #     lazy.group["1"].toscreen(),
-        #     desc="Switch to group 1 while on w11",
-        # )
-        # # mod1 + shift + letter of group = switch to & move focused window to group
-        # Key(
-        #     [mod, "shift"],
-        #     i.name,
-        #     lazy.window.togroup(i.name, switch_group=True),
-        #     desc="Switch to & move focused window to group {}".format(i.name),
-        # ),
-        # # Or, use below if you prefer not to switch to that group.
-        # # # mod1 + shift + letter of group = move focused window to group
-        # Key(["mod1"], i.name, lazy.window.togroup(i.name),
-        #     desc="move focused window to group {}".format(i.name)),
-    ]
-)
-
 
 
 layouts = [
@@ -208,6 +234,7 @@ layouts = [
     layout.MonadThreeCol(margin=[15,10,15,10], border_focus=ColorI, border_width=4, border_normal=ColorBG, main_centered=True, single_margin=[20,300,20,300], new_client_position="bottom"),
     # layout.MonadTall(),
     layout.MonadWide(border_focus=ColorB, border_width=3, border_normal=ColorFG),
+    layout.Max(),
     # layout.RatioTile(),
     # layout.TreeTab(),
     # layout.VerticalTile(),
@@ -363,10 +390,10 @@ reconfigure_screens = True
 auto_minimize = True
 
 # When using the Wayland backend, this can be used to configure input devices.
-wl_input_rules = {
-        "type:keyboard": InputConfig(dwt=True, kb_repeat_delay=150, kb_repeat_rate=50, kb_variant="altgr-intl", kb_layout="us"),
-        "*": InputConfig(tap=True, natural_scroll=False),
-    }
+# wl_input_rules = {
+#         "type:keyboard": InputConfig(dwt=True, kb_repeat_delay=150, kb_repeat_rate=50, kb_variant="altgr-intl", kb_layout="us"),
+#         "*": InputConfig(tap=True, natural_scroll=False),
+#     }
 
 
 wmname = "LG3D"
