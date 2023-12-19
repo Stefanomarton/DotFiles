@@ -253,14 +253,17 @@
 (use-package org-roam
   :commands (org-roam-node-find org-roam-capture consult-notes)
 
-  :bind (("<leader>ob" . org-roam-buffer-toggle)
-         ("<leader>of" . consult-org-roam-file-find)
-         ("<leader>og" . consult-notes-search-in-all-notes)
-         ("<leader>oi" . org-roam-node-insert)
-         ("<leader>oo" . consult-notes)
-         ("<leader>ok" . org-roam-capture)
-         ("<leader>oc" . my/org-roam-node-find-courses)
-         )
+  :bind
+  (:map evil-normal-state-map
+        ("<leader>of" . consult-org-roam-file-find)
+        ("<leader>og" . consult-notes-search-in-all-notes)
+        ("C-c o i" . org-roam-node-insert)
+        ("<leader>oo" . consult-notes)
+        ("<leader>ok" . org-roam-capture)
+        ("<leader>oc" . my/org-roam-node-find-courses))
+  (:map org-mode-map
+        ("<leader>ob" . org-roam-buffer-toggle)
+        )
 
   :config
   ;; configuration for link buffer
@@ -331,7 +334,7 @@
            :unnarrowed t)
           ("n" "inbox" plain "%?"
            :if-new
-           (file+head "inbox/%<%Y%m%d>--${slug}__%(hiddyn/select-tag).org" "#+title: ${title}\n"
+           (file+head "inbox/%<%Y%m%d>--${slug}__%(hiddyn/select-tag).org"
                       "#+title: ${title}\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
            :immediate-finish t
            :unnarrowed t)
@@ -346,6 +349,12 @@
            (file+head
             "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/%<%Y%m%d>--${citar-citekey}__%(hiddyn/select-tag).org"
             "#+title: ${citar-citekey}\n#+CREATED: %U\n#+LAST_MODIFIED: %U\n\n")
+           :unnarrowed t)
+          ("m" "meta" plain "%?"
+           :if-new
+           (file+head "meta/%<%Y%m%d>--${slug}__%(hiddyn/select-tag).org"
+                      "#+title: ${title}\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
+           :immediate-finish t
            :unnarrowed t)
           ("w" "work" plain "%?"
            :if-new
@@ -406,6 +415,14 @@
                            (expand-file-name "uni/courses" org-roam-directory)))))
   )
 
+(use-package consult-org-roam
+  :commands (consult-org-roam-file-find)
+  :custom
+  (consult-org-roam-buffer-narrow-key ?r)
+  :config
+  (consult-org-roam-mode))
+
+
 (use-package org-roam-ui
   :defer t
   :after org-roam
@@ -418,6 +435,7 @@
         org-roam-ui-open-on-start t))
 
 (use-package org-modern
+  :defer t
   :hook
   (org-mode . org-modern-mode)
   (org-roam-mode . org-modern-mode))
@@ -426,35 +444,44 @@
   :defer t
   :after (org org-roam)
   :custom
-  (citar-bibliography '("~/GoogleDrive/org/.resources/bibliography.bib"))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
   (citar-bibliography org-cite-global-bibliography)
   (citar-org-roam-note-title-template "${author} - ${title}")
+  :config
+  (setq citar-bibliography "~/GoogleDrive/org/.resources/bibliography.bib")
   :hook
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup))
 
 (use-package citar-org-roam
+  :after citar
   :custom
   (citar-org-roam-note-title-template "${author} - ${title}")
   (citar-org-roam-capture-template-key "l")
   (citar-org-roam-subdir "uni/papers")
-  :after (citar org-roam)
-  :config (citar-org-roam-mode))
+  :config
+  (citar-org-roam-mode))
 
 (use-package citar-embark
-  :after citar embark
-  :no-require
-  :config (citar-embark-mode))
+  :after citar
+  :config
+  (citar-embark-mode))
 
 (use-package consult-notes
-  :after (org org-roam)
+  :after dashboard
   :straight (:type git :host github :repo "mclear-tools/consult-notes")
+  :custom
+
+  (consult-notes-file-dir-sources
+   '(("course"             ?c "~/GoogleDrive/org/uni/courses/")))
+
+  (consult-notes-org-roam-template
+   (concat "${type:20} ${title:70}" (propertize "${fmtime:20}" 'face 'font-lock-comment-face)(propertize "${tags:20}" 'face 'org-tag) "${blinks:3}"))
+
   :commands (consult-notes
              consult-notes-search-in-all-notes
-             ;; I'm using org-roam so:
              consult-notes-org-roam-find-node
              consult-notes-org-roam-find-node-relation)
   :config
@@ -497,10 +524,6 @@
           ;; Open node in other window
           (org-roam-node-open fnode)
         (message "No notes cite this reference."))))
-  :init
-  (setq consult-notes-file-dir-sources
-        '(("course"             ?c "~/GoogleDrive/org/uni/courses/")))
-
   )
 
 (provide 'orgconfig)
