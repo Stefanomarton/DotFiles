@@ -226,3 +226,5 @@ targets."
   (global-set-key (kbd "<leader>l") 'move-dup-duplicate-up)
   (global-set-key (kbd "<leader>k") 'move-dup-duplicate-down)
   )
+
+(provide 'base-packages)

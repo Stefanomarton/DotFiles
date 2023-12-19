@@ -101,3 +101,5 @@
 		          (find-file folder-path))))
   (dashboard-setup-startup-hook)
   )
+
+(provide 'appearance)

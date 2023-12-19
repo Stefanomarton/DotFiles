@@ -20,80 +20,16 @@
   '((t (:foreground "#8fbcbb")))
   "Face for Evil insert state")
 
-(setq-default
- mode-line-format
- '(
-   ;; point position
-   (:propertize "    " 'face 'font-lock-keyword-face)
-   (8
-    ;; (:propertize "  " 'face 'font-lock-keyword-face)
-    (:propertize " %l" face font-lock-string-face)
-    ;; (:eval (propertize ":%c" 'face (if (>= (current-column) 80)
-    ;;                                   'font-lock-warning-face
-    ;;                                 'font-lock-string-face)))
-    )
-   (8
-    (:propertize " " 'face 'font-lock-keyword-face)
-    (:eval (cond
-            ((eq evil-state 'visual) (propertize "\uf111" 'face 'evil-visual-face))
-            ((eq evil-state 'normal) (propertize "\uf111" 'face 'evil-normal-face))
-            ((eq evil-state 'insert) (propertize "\uf111" 'face 'evil-insert-face))
-            ((eq evil-state 'operator) (propertize "\uf111" 'face 'evil-operator-face))
-            ((eq evil-state 'emacs) (propertize "\uf111" 'face 'evil-emacs-face))
-            (t (propertize "*" 'face 'font-lock-variable-name-face)))))
-   ;; (4
-   ;;  (:propertize "%m " face font-lock-variable-name-face
-   ;; 		 help-echo buffer-file-coding-system))
+(defun my-mode-line--file-name ()
+  "Return propertize name of ´my-mode-line-file-name´"
+  (capitalize (shorten-directory default-directory 35)))
 
-   ;; (2 (:propertize face font-lock-comment-face))
+(defvar-local my-mode-line-file-name
+    '(:eval (propertize my-mode-line--file-name 'face 'font-lock-comment-face))
+  "Mode-line file name ")
 
-   ;; shortened directory (if buffer have a corresponding file)
-   (
-    :eval
-    (when (buffer-file-name)
-      (propertize (shorten-directory default-directory 35)
-		          'face 'font-lock-comment-face)))
+(put 'my-mode-line-file-name 'risky-local-variable t)
 
-
-   ;; buffer name
-   (:propertize "%b" face font-lock-doc-face)
-
-   ;; right aligned stuff
-   (:eval
-    (let* ((status-offset 10))
-      (concat
-       ;; nyan-cat
-       (concat
-	    (propertize " " 'display `(space :align-to (- right ,status-offset)))
-	    )
-       (propertize (format-time-string " %H:%M") 'face 'font-lock-keyword-face)))))
-
- ;; for nyan cat
- ;; (:eval
- ;;  (let* ((status-offset 2)
- ;;         (time-offset (- right 6)) ; Adjust the number (6) for desired spacing
- ;;         (nyan-offset
- ;;          (+ status-offset (if nyan-mode (+ 2 nyan-bar-length) 0))))
-
- ;;    (concat
-
- ;; nyan-cat
- ;; (when nyan-mode
- ;;   (concat
- ;;    (propertize " " 'display `(space :align-to (- right ,nyan-offset)))
- ;;    (nyan-create)
- ;;    ))
-
-
- ;; ;; read-only / changed
- ;; (propertize " " 'display `(space :align-to (- right ,status-offset)))
- ;; (cond (buffer-read-only
- ;;        (propertize "RO" 'face 'eshell-prompt))
- ;;       ((buffer-modified-p)
- ;;        (propertize "* " 'face 'eshell-prompt))
- ;;       (t "  "))))
-
- )
 
 (defun special-buffer-p (buffer-name)
   "Check if buffer-name is the name of a special buffer."
@@ -122,6 +58,59 @@
          `((space :align-to (- (+ right right-fringe right-margin)
 			                   ,(+ 3 (string-width mode-name)))))))
 
+(setq-default
+ mode-line-format
+ '(
+   ("%e") ;; print memory error
+   ;; point position
+   (:propertize "   " 'face 'font-lock-keyword-face)
+   (8
+    ;; (:propertize "  " 'face 'font-lock-keyword-face)
+    (:propertize " %l" face font-lock-string-face)
+    ;; (:eval (propertize ":%c" 'face (if (>= (current-column) 80)
+    ;;                                   'font-lock-warning-face
+    ;;                                 'font-lock-string-face)))
+    )
+   (8
+    (:propertize "   " 'face 'font-lock-keyword-face)
+    (:eval (cond
+            ((eq evil-state 'visual) (propertize "\uf111" 'face 'evil-visual-face))
+            ((eq evil-state 'normal) (propertize "\uf111" 'face 'evil-normal-face))
+            ((eq evil-state 'insert) (propertize "\uf111" 'face 'evil-insert-face))
+            ((eq evil-state 'operator) (propertize "\uf111" 'face 'evil-operator-face))
+            ((eq evil-state 'emacs) (propertize "\uf111" 'face 'evil-emacs-face))
+            (t (propertize "*" 'face 'font-lock-variable-name-face)))))
+   ;; (4
+   ;;  (:propertize "%m " face font-lock-variable-name-face
+   ;; 		 help-echo buffer-file-coding-system))
+
+   ;; (2 (:propertize face font-lock-comment-face))
+
+   ;; shortened directory (if buffer have a corresponding file)
+   my-mode-line-file-name
+
+   ;; buffer name
+   (:propertize "%b" face font-lock-doc-face)
+
+   ;; right aligned stuff
+   (:eval
+    (let* ((status-offset 10))
+      (concat
+       ;; nyan-cat
+       (concat
+	    (propertize " " 'display `(space :align-to (- right ,status-offset)))
+	    )
+       (propertize (format-time-string " %H:%M") 'face 'font-lock-keyword-face)))))
+
+
+ ;; ;; read-only / changed
+ ;; (propertize " " 'display `(space :align-to (- right ,status-offset)))
+ ;; (cond (buffer-read-only
+ ;;        (propertize "RO" 'face 'eshell-prompt))
+ ;;       ((buffer-modified-p)
+ ;;        (propertize "* " 'face 'eshell-prompt))
+ ;;       (t "  "))))
+ )
 
 (provide 'modeline)
 

@@ -23,39 +23,32 @@
   (setq evil-move-beyond-eol t)
   (setq evil-want-Y-yank-to-eol t)
   ;; (setq evil-cross-lines t)
+
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-set-leader 'visual (kbd "SPC"))
-  ;; Use escape to remove hightlight in normal mode
-  (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
 
-  (evil-define-key 'normal 'global (kbd "J") 'evil-window-left)
-  (evil-define-key 'normal 'global (kbd "?") 'evil-window-right)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-d") 'evil-scroll-down)
 
-  (evil-define-key 'normal 'global (kbd "<return>") 'evil-avy-goto-char-timer)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-w j") 'evil-window-left)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-w /") 'evil-window-right)
 
-  (evil-define-key 'normal 'global (kbd "h") 'evil-search-forward)
-  (evil-define-key 'normal 'global (kbd "H") 'evil-search-backward)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "<return>") 'evil-avy-goto-char-timer)
+
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "h") 'evil-search-forward)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "H") 'evil-search-backward)
+
   (evil-define-key '(normal visual replace operator motion emacs) 'global
     (kbd "j") 'evil-backward-char
     (kbd "k") 'evil-next-visual-line
     (kbd "l") 'evil-previous-visual-line
     (kbd "/") 'evil-forward-char
     )
+
   (evil-define-key 'normal 'global (kbd "C-m") 'point-to-register)
   (evil-define-key 'normal 'global (kbd "gm") 'jump-to-register)
-  (evil-define-key 'normal 'global (kbd "L") 'evil-window-right)
-  (evil-set-leader 'normal (kbd "SPC"))
-  (evil-set-leader 'visual (kbd "SPC"))
+
   (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
-
-  ;; Undoing each character entered in insert mode one by one.
-  ;; (advice-add 'undo-auto--last-boundary-amalgamating-number
-  ;;             :override #'ignore)
-
-  (evil-define-key 'normal 'global (kbd "C-d") 'evil-scroll-down)
-
-  ;; Use escape to remove hightlight in normal mode
-  (evil-define-key 'normal 'global (kbd "<escape>") 'evil-ex-nohighlight)
 
   (defun smart-for-files ()
     (interactive)
@@ -133,11 +126,12 @@
       (ido-find-file)))
 
   (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
-  (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+
   (evil-define-key 'normal 'global
-    (kbd ";") 'evil-ex
+    (kbd ":") 'evil-ex
     ;; (kbd ":") 'execute-extended-command
-    (kbd ":") 'execute-extended-command
+    (kbd ";") 'execute-extended-command
 
     (kbd "<leader>ff") 'find-file
     (kbd "<leader>fd") 'my/find-file-google
@@ -154,9 +148,8 @@
     (kbd "<leader>bb") 'smart-for-buffer
     (kbd "<leader>w") 'save-buffer
     (kbd "<leader> q b") 'kill-buffer
+
     (kbd "Q") 'my-kill-this-buffer
-    (kbd "C-s v") 'split-and-follow-vertically
-    (kbd "C-s h") 'split-and-follow-horizontally
     (kbd "<leader>gt") 'google-this
     (kbd "<leader>gh") 'dashboard-open
     (kbd "<leader>pp") 'consult-projectile
@@ -179,7 +172,7 @@
     (kbd "<leader>gg") 'magit-status-with-removed-dotfiles-args
     (kbd "<leader>gd") 'dotfiles-magit-status
     (kbd "<leader>h") 'consult-todo
-    (kbd "<leader>H") 'consult-todo-all
+    (kbd "<leader>H") 'consult-todo-dir
     (kbd "<leader>y") 'yas-reload
     )
 
@@ -188,8 +181,6 @@
     (kbd "<leader>es") 'eval-expression
     (kbd "<leader>er") 'eval-region
     (kbd "<leader>ef") 'eval-defun
-    (kbd "<leader>eb") 'byte-compile-file
-    (kbd "<leader>eB") 'byte-recompile-directory
     )
 
   (evil-define-key '(normal visual) 'global
@@ -201,8 +192,6 @@
     (kbd "<leader> df") 'evil-goto-definition
     (kbd "gu") 'evil-next-close-paren
     (kbd "gd") 'evil-previous-open-paren
-    (kbd "gD") 'evil-previous-open-brace
-    (kbd "gU") 'evil-next-close-brace
     )
 
   (evil-define-key 'insert 'global (kbd "C-<backspace>") 'evil-delete-backward-word)

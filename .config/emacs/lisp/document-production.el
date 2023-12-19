@@ -150,20 +150,21 @@
   (add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
 
 (use-package yasnippet
-  :commands (yas-minor-mode) ; autoload `yasnippet' when `yas-minor-mode' is called
-                                        ; using any means: via a hook or by user
-                                        ; Feel free to add more commands to this
-                                        ; list to suit your needs.
+  :defer t
+  :commands (yas-minor-mode)
   :hook
-  (prog-mode . yas-minor-mode)
-  (LaTeX-mode . yas-minor-mode)
-  (markdown-mode . yas-minor-mode)
-  (laas-mode . yas-minor-mode)
-  :config ; stuff to do after requiring the package
+  (prog-mode . my/yas-activate)
+  (LaTeX-mode . my/yas-activate)
+  (markdown-mode . my/yas-activate)
+  (org-mode . my/yas-activate)
+  (laas-mode . my/yas-activate)
+  :config
+  (defun my/yas-activate ()
+    (yas-minor-mode)
+    (yas-reload-all)
+    )
   (setq yas-triggers-in-field t)
-  (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
-  (progn
-    (yas-reload-all)))
+  (setq yas-snippet-dirs '("~/.config/emacs/snippets")))
 
 (use-package warnings
   :config
@@ -176,20 +177,20 @@
   (LaTeX-mode . aas-activate-for-major-mode)
   :config
   (aas-set-snippets 'latex-mode
-    "jf" (lambda () (interactive)
-	       (yas-expand-snippet "\\\\($1\\\\) $0"))
-    "kd  " (lambda () (interactive)
-	         (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+                    "jf" (lambda () (interactive)
+	                       (yas-expand-snippet "\\\\($1\\\\) $0"))
+                    "kd  " (lambda () (interactive)
+	                         (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'org-mode
-    "jf" (lambda () (interactive)
-	       (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-    "kd" (lambda () (interactive)
-	       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+                    "jfyas-minor-mode" (lambda () (interactive)
+	                                     (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+                    "kd" (lambda () (interactive)
+	                       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'markdown-mode
-    "jf" (lambda () (interactive)
-	       (yas-expand-snippet "$$1$ $0"))
-    "kd" (lambda () (interactive)
-	       (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+                    "jf" (lambda () (interactive)
+	                       (yas-expand-snippet "$$1$ $0"))
+                    "kd" (lambda () (interactive)
+	                       (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
   :straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -199,34 +200,34 @@
   (org-mode . laas-mode)
   :config
   (aas-set-snippets 'laas-mode
-    ;; set condition!
-    :cond #'texmathp ; expand only while in math
-    ;; bind to functions!
-    "sum" (lambda () (interactive)
-	        (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-    "Span" (lambda () (interactive)
-	         (yas-expand-snippet "\\Span($1)$0"))
-    "inti" (lambda () (interactive)
-	         (yas-expand-snippet "\\int"))
-    "intd" (lambda () (interactive)
-	         (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-    "df" (lambda () (interactive)
-	       (yas-expand-snippet "_{$1}$0"))
-    "ds" (lambda () (interactive)
-	       (yas-expand-snippet "\\Delta_{$1}S $0"))
-    "dh" (lambda () (interactive)
-	       (yas-expand-snippet "\\Delta_{$1}H $0"))
-    "dg" (lambda () (interactive)
-	       (yas-expand-snippet "\\Delta_{$1}G $0"))
-    "rt" (lambda () (interactive)
-	       (yas-expand-snippet "^{$1} $0"))
-    "r-" (lambda () (interactive)
-	       (yas-expand-snippet "^{-1} $0"))
-    ;; add accent snippets
-    :cond #'laas-object-on-left-condition
-    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))
-    ":v" (lambda () (interactive) (laas-wrap-previous-object "vec"))
-    ":b" (lambda () (interactive) (laas-wrap-previous-object "mathbb"))))
+                    ;; set condition!
+                    :cond #'texmathp ; expand only while in math
+                    ;; bind to functions!
+                    "sum" (lambda () (interactive)
+	                        (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+                    "Span" (lambda () (interactive)
+	                         (yas-expand-snippet "\\Span($1)$0"))
+                    "inti" (lambda () (interactive)
+	                         (yas-expand-snippet "\\int"))
+                    "intd" (lambda () (interactive)
+	                         (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+                    "_" (lambda () (interactive)
+	                      (yas-expand-snippet "_{$1}$0"))
+                    "ds" (lambda () (interactive)
+	                       (yas-expand-snippet "\\Delta_{$1}S $0"))
+                    "dh" (lambda () (interactive)
+	                       (yas-expand-snippet "\\Delta_{$1}H $0"))
+                    "dg" (lambda () (interactive)
+	                       (yas-expand-snippet "\\Delta_{$1}G $0"))
+                    "rt" (lambda () (interactive)
+	                       (yas-expand-snippet "^{$1} $0"))
+                    "r-" (lambda () (interactive)
+	                       (yas-expand-snippet "^{-1} $0"))
+                    ;; add accent snippets
+                    :cond #'laas-object-on-left-condition
+                    "qq" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))
+                    ":v" (lambda () (interactive) (laas-wrap-previous-object "vec"))
+                    ":b" (lambda () (interactive) (laas-wrap-previous-object "mathbb"))))
 
 (use-package cdlatex
   :commands latex-mode
