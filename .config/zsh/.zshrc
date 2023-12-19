@@ -84,7 +84,7 @@ alias -g rp="lazygit --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@""
 alias -g rpg="git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@""
 
 # Variables
-export EDITOR='nvim'
+export EDITOR='emacsclient -c'
 export PAGER='moar -colors "auto" -no-statusbar'
 HISTFILE=~/.zsh_history
 HISTSIZE=100000000
