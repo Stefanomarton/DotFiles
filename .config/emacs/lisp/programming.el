@@ -74,6 +74,8 @@
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package corfu
+  :bind
+  (:map corfu-map ("C-c" . corfu-insert-separator))
   :after dashboard
   ;; Optional customizations
   :bind (:map corfu-popupinfo-map
@@ -83,6 +85,11 @@
   (corfu-auto t)                 ;; Enable auto completion
   (corfu-auto-prefix 1)
   (corfu-auto-delay 0)
+  (corfu-bar-width 0)
+  (corfu-right-margin-width 0)
+  (corfu-left-margin-width 100)
+  (corfu-min-width 10)
+  (corfu-max-width 30)
   (corfu-separator ?\s)          ;; Orderless field separator
   ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
