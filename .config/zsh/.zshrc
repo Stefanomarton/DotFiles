@@ -115,7 +115,7 @@ rng () {
     fi
 }
 
-bindkey -s '^u' 'rng\n'
+bindkey -s '^a' 'rng\n'
 bindkey -s '^f' 'rng --cmd=fzm \n'
 
 ### FZF Shortcuts
