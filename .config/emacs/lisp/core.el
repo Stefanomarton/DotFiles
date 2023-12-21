@@ -131,7 +131,26 @@
 (setq ring-bell-function 'ignore)
 
 ;; Enable functions
-(put 'narrow-to-region 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
+
+
+(use-package emacs
+  :hook
+  (after-make-frame-functions . my/new-frame-settings)
+  :config
+  (setq server-client-instructions nil)
+  (mapc
+   (lambda (command)
+     (put command 'disabled nil))
+   '(list-timers dire-find-alternate-file narrow-to-region narrow-to-page upcase-region downcase-region))
+
+  ;; And disable these
+  (mapc
+   (lambda (command)
+     (put command 'disabled t))
+   '(eshell project-eshell overwrite-mode iconify-frame diary))
+
+  (defun my/new-frame-settings (frame)
+    (if (daemonp)
+        (setq evil-echo-state nil))))
 
 (provide 'core)
