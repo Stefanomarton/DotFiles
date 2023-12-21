@@ -9,7 +9,6 @@
   :custom
   (setq completion-in-region-function 'consult-completion-in-region)
   (setq evil-operator-state-cursor nil)
-  (setq evil-echo-state nil)
   (setq evil-jumps-cross-buffers t)
   (setq evil-want-empty-ex-last-command t)
   (setq evil-want-C-u-scroll t) ;; allow scroll up with 'C-u'
@@ -24,6 +23,29 @@
   ;; (setq evil-cross-lines t)
 
   :config
+
+  (mapc #'evil-declare-abort-repeat
+        '(balance-windows
+          eval-expression
+          execute-extended-command
+          exit-minibuffer
+          compile
+          delete-window
+          delete-other-windows
+          find-file-at-point
+          ffap-other-window
+          recompile
+          redo
+          save-buffer
+          split-window
+          split-window-horizontally
+          split-window-vertically
+          undo
+          undo-tree-redo
+          undo-tree-undo))
+
+  (setq evil-want-fine-undo t)
+  (setq evil-echo-state nil)
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-set-leader 'visual (kbd "SPC"))
 
