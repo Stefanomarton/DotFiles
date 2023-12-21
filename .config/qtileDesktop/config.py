@@ -64,6 +64,7 @@ def toggle_max_monadtall(group):
         group.setlayout("max")
 
 
+excluded_keychords_keys = {"j", "n", "l", "k", "m"}
 
 keys = [
     # Switch between windows
@@ -83,9 +84,6 @@ keys = [
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
     KeyChord([mod], "BackSpace", [
-
-        # for i in "qwertyuiopasdfghzxcvbnm,."
-        # [Key([], i, lazy.ungrab_chord()) for i in "abcdef"],
          
         Key([], "j", lazy.layout.grow(),
             lazy.layout.grow_left()),
@@ -101,9 +99,9 @@ keys = [
         Key([], "k", lazy.layout.grow_down()),
 
         Key([], "m", lazy.layout.maximize()),
-        
-
-    ],
+        ]
+        +
+        [Key([], i, lazy.ungrab_chord()) for i in "abcdefghijklmnopqrstuvwxyz" if i not in excluded_keychords_keys],
              mode=True,
              name="resizing",
              swallow= True
@@ -351,6 +349,8 @@ screens = [
         wallpaper_mode="fill",
     ),
 ]
+
+
 
 # Drag floating layouts.
 mouse = [
