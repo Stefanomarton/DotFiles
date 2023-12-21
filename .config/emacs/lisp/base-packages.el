@@ -118,9 +118,6 @@
 (use-package consult-dir
   :after consult)
 
-(use-package consult-org-roam
-  :after consult)
-
 (use-package consult-todo
   :straight (:host github :repo "liuyinz/consult-todo")
   :after consult
@@ -221,10 +218,10 @@ targets."
 (use-package hydra
   :after dashboard)
 
-(use-package move-dup
-  :config
-  (global-set-key (kbd "<leader>l") 'move-dup-duplicate-up)
-  (global-set-key (kbd "<leader>k") 'move-dup-duplicate-down)
-  )
+;; (use-package move-dup
+;;   :config
+;;   (global-set-key (kbd "<leader>l") 'move-dup-duplicate-up)
+;;   (global-set-key (kbd "<leader>k") 'move-dup-duplicate-down)
+;;   )
 
 (provide 'base-packages)
