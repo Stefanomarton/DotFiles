@@ -13,9 +13,8 @@
   (org-adapt-indentation t)
   (org-list-allow-alphabetical t)
   ;; (org-cite-global-bibliography )
-  (org-highlight-latex-and-relatex 'native)
   :config
-
+  (setq org-highlight-latex-and-related '(latex script entities))
   (setq org-latex-to-mathml-convert-command
         "latexmlmath \"%i\" --presentationmathml=%o")
 
@@ -59,7 +58,6 @@
 
   ;; modify export folder for org export
   ;; taken from https://stackoverflow.com/questions/9559753/emacs-org-mode-export-to-another-directory
-
   (defun org-export-output-file-name-modified (orig-fun extension &optional subtreep pub-dir)
     (unless pub-dir
       (setq pub-dir "~/GoogleDrive/org/pdf")
@@ -251,21 +249,26 @@
 
 
 (use-package org-roam
-  :commands (org-roam-node-find org-roam-capture consult-notes)
-
+  :straight (:host github :repo "org-roam/org-roam"
+                   :files (:defaults "extensions/*"))
+  :demand t
+  ;; :commands (org-roam-node-find org-roam-capture consult-notes)
   :bind
   (:map evil-normal-state-map
         ("<leader>of" . consult-org-roam-file-find)
         ("<leader>og" . consult-notes-search-in-all-notes)
-        ("C-c o i" . org-roam-node-insert)
         ("<leader>oo" . consult-notes)
+        ("<leader>on" . consult-notes-org-roam-find-node)
         ("<leader>ok" . org-roam-capture)
         ("<leader>oc" . my/org-roam-node-find-courses))
   (:map org-mode-map
         ("<leader>ob" . org-roam-buffer-toggle)
+        ("C-c o i" . org-roam-node-insert)
         )
-
   :config
+  (setq org-roam-mode-sections
+        '((org-roam-backlinks-section :unique t)
+          org-roam-reflinks-section))
   ;; configuration for link buffer
   (add-to-list 'display-buffer-alist
                '("\\*org-roam\\*"
@@ -276,7 +279,7 @@
                '("\w+\.org" (display-buffer-full-frame)))
 
   (setq org-pretty-entities t)
-  (setq org-roam-directory "~/GoogleDrive/org")
+  (setq org-roam-directory (file-truename "~/GoogleDrive/org"))
 
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (cl-defmethod org-roam-node-type ((node org-roam-node))
@@ -434,11 +437,11 @@
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
-(use-package org-modern
-  :defer t
-  :hook
-  (org-mode . org-modern-mode)
-  (org-roam-mode . org-modern-mode))
+;; (use-package org-modern
+;;   :defer t
+;;   :hook
+;;   (org-mode . org-modern-mode)
+;;   (org-roam-mode . org-modern-mode))
 
 (use-package citar
   :defer t
@@ -450,7 +453,15 @@
   (citar-bibliography org-cite-global-bibliography)
   (citar-org-roam-note-title-template "${author} - ${title}")
   :config
+
   (setq citar-bibliography "~/GoogleDrive/org/.resources/bibliography.bib")
+
+  (defun citar-file-open (file)
+	"Open FILE. Overwritten by hgi, to open pdf files from citar in external PDF viewer and not in internal one."
+	(if (or (equal (file-name-extension file) "pdf") (equal (file-name-extension file) "html"))
+		(citar-file-open-external (expand-file-name file))
+	  (funcall citar-file-open-function (expand-file-name file))))
+
   :hook
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup))
