@@ -118,6 +118,19 @@
                             cape-dict
                             cape-dabbrev))))
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+
+  (defun corfu-enable-always-in-minibuffer ()
+    "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+    (unless (or (bound-and-true-p mct--active)
+                (bound-and-true-p vertico--input)
+                (eq (current-local-map) read-passwd-map))
+      (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
+                  corfu-popupinfo-delay nil
+                  corfu-min-width 10
+                  corfu-max-width 5
+                  )
+      (corfu-mode 1)))
+  (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
   :init
   (global-corfu-mode))
 
