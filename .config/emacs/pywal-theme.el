@@ -48,7 +48,7 @@
    `(region ((t (:foreground ,violet :background ,hl-alt))))
 
    `(mode-line ((t (:foreground ,fg :background ,bg2))))
-   `(mode-line-inactive ((t (:foreground ,fg :background ,bg))))
+   `(mode-line-inactive ((t (:foreground ,comment :background ,bg))))
 
    `(font-lock-comment-face ((t (:foreground ,comment :slant oblique))))
    `(font-lock-builtin-face ((t (:foreground ,violet))))
@@ -81,10 +81,10 @@
 
    `(completions-annotations ((t (:foreground ,comment ))))
    `(completions-common-part ((t (:foreground ,yellow))))
-   `(completions-first-difference ((t (:foreground ,yellow :background ,yellow ))))
-   `(completions-group-separator ((t (:foreground ,green :background ,green))))
-   `(completions-group-title ((t (:foreground ,red :background ,red ))))
-   `(completions-highlight ((t (:foreground ,blue :background ,blue ))))
+   `(completions-first-difference ((t (:foreground ,yellow))))
+   `(completions-group-separator ((t (:foreground ,green))))
+   `(completions-group-title ((t (:foreground ,red))))
+   `(completions-highlight ((t (:foreground ,blue))))
    ;; `(completions-first-difference ((t (:foreground ,blue))))
 
    ;; `(consult-preview-insertion ((t (:foreground ,green :background ,green))))
