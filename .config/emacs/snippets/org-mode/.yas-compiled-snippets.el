@@ -12,6 +12,11 @@
                          (not
                           (texmathp)))
                         nil nil "/home/stefanom/.config/emacs/snippets/org-mode/img" nil nil)
+                       ("Bra" "\\\\bracket{$1} | $2 | \\\\bracket{$3} $0" "\\bracket{} | | \\bracket{}"
+                        (and
+                         (texmathp)
+                         'auto)
+                        nil nil "/home/stefanom/.config/emacs/snippets/org-mode/fullbracket" nil nil)
                        ("eqs" "\\begin{equation*}\n$1\n\\end{equation*}" "\\begin{equation*}"
                         (and
                          (not
@@ -32,7 +37,12 @@
                          (not
                           (texmathp)))
                         nil nil "/home/stefanom/.config/emacs/snippets/org-mode/env_align" nil nil)
+                       ("bra" "\\\\bracket{$1}$0" "\\bracket{}"
+                        (and
+                         (texmathp)
+                         'auto)
+                        nil nil "/home/stefanom/.config/emacs/snippets/org-mode/bracket" nil nil)
                        ("src" "#+begin_src ${1:lang}\n$2\n#+begin_src\n" "begin_src" nil nil nil "/home/stefanom/.config/emacs/snippets/org-mode/begin_src" nil nil)))
 
 
-;;; Do not edit! File generated at Mon Dec 18 22:28:41 2023
+;;; Do not edit! File generated at Tue Dec 19 22:25:13 2023

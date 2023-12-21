@@ -9,4 +9,4 @@
                        ("center" "\\begin{center}\n$1\n\\end{center}" "Center Environment" nil nil nil "/home/stefanom/.config/emacs/snippets/latex-mode/env_center" nil nil)))
 
 
-;;; Do not edit! File generated at Mon Dec 18 22:28:41 2023
+;;; Do not edit! File generated at Tue Dec 19 22:25:13 2023

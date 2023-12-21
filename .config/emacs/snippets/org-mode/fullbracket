@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: \bracket{} | | \bracket{}
+# key: Bra
+# condition: (and (texmathp) 'auto)
+# --
+\\bracket{$1} | $2 | \\bracket{$3} $0
