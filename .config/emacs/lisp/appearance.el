@@ -9,7 +9,6 @@
 
   ;; I keep losing the curson
   (blink-cursor-mode 1)
-
   ;; Enable `prettify-symbols' globally.
   (global-prettify-symbols-mode t)
 
@@ -33,18 +32,31 @@
   :after dashboard)
 
 ;; Customize the divider beetween windows
-(use-package frame
+;; (use-package frame
+;;   :after dashboard
+;;   :straight (:type built-in)
+;;   :config
+;;   ;; Make sure new frames use window-divider
+;;   (add-hook 'before-make-frame-hook 'window-divider-mode)
+;;   :custom
+;;   (window-divider-default-right-width 3)
+;;   (window-divider-default-bottom-width 3)
+;;   (window-divider-default-places t)
+;;   )
+
+(use-package spacious-padding
   :after dashboard
-  :straight (:type built-in)
   :config
-  ;; Make sure new frames use window-divider
-  (add-hook 'before-make-frame-hook 'window-divider-mode)
-  :custom
-  (window-divider-default-right-width 3)
-  (window-divider-default-bottom-width 3)
-  (window-divider-default-places 't)
-  (window-divider-mode t)
-  )
+  ;; These are the defaults, but I keep it here for visiibility.
+  (setq spacious-padding-subtle-mode-line t)
+  (setq spacious-padding-widths
+        '( :internal-border-width 0
+           :header-line-width 4
+           :mode-line-width 1
+           :tab-width 5
+           :right-divider-width 0
+           :scroll-bar-width 0))
+  (spacious-padding-mode 1))
 
 ;; Theming
 
