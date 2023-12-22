@@ -18,10 +18,15 @@
 		shp (tap-hold-next-release 150 p rsft)
 		stab (tap-hold-next-release 150 tab ralt)
 		sq (tap-hold-next-release 150 q rsft)
-    sls (sticky-key 40 lsft)
-    sym  (tap-hold-next-release 200 spc (layer-toggle movement))
+        ralts (tap-hold-next-release 150 bspc ralt)
+        sls (sticky-key 40 lsft)
+        sym  (tap-hold-next-release 200 spc (layer-toggle movement))
 		mov (layer-toggle movement)	
 		num (tap-hold-next-release 150 spc (layer-toggle numbers))
+
+
+	    d (tap-hold-next-release 100 d rctl)
+		k (tap-hold-next-release 100 k rctl)
 
 		;; Some shortname
 		plus S-=
@@ -55,9 +60,9 @@
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12       
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc 
   @stab  @sq    w    e    r    t    y    u    @i    @o    @shp    @=+    @?    \    
-	@pr  @a    s    d    f    @g    h    j    k    l    /     ;  @ret        
+  @pr  @a    s   @d    f    @g    h    j    @k    l    /     ;  @ret        
   lsft z    x    @c    @v    b    @n   m    ,    .   '    rsft
-  @sym lmet lalt       @num            ralt rmet  cmp    rctl    
+  @sym lmet lalt       @num            @ralts rmet  cmp    rctl    
 )
 
 (deflayer symbol
