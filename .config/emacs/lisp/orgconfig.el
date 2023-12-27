@@ -28,6 +28,7 @@
     )
 
   (evil-define-key 'normal org-mode-map (kbd "gt") 'my/org-time-stamp)
+  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-x C-l") nil)
 
   (defun my/org-mode/load-prettify-symbols ()
     (interactive)
@@ -76,7 +77,8 @@
   (setq org-latex-default-class "report")
   (setq org-startup-folded t)
   (setq org-pretty-entities t)
-  (setq org-pretty-entities-include-sub-superscripts nil)
+  (setq org-pretty-entities-include-sub-superscripts t)
+  (setq org-use-sub-superscripts '{})
   )
 
 (use-package ox-latex
