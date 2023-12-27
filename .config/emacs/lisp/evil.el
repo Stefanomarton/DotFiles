@@ -52,8 +52,12 @@
   (evil-define-key 'normal 'evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   (evil-define-key 'normal 'evil-normal-state-map (kbd "C-d") 'evil-scroll-down)
 
-  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-w j") 'evil-window-left)
-  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-w /") 'evil-window-right)
+  ;; Window focus
+  (evil-define-key 'normal 'evil-normal-state-map
+    (kbd "C-w j") 'evil-window-left
+    (kbd "C-w /") 'evil-window-right
+    (kbd "C-w k") 'evil-window-down
+    (kbd "C-w l") 'evil-window-up)
 
   (evil-define-key 'normal 'evil-normal-state-map (kbd "<return>") 'evil-avy-goto-char-timer)
 
