@@ -212,7 +212,7 @@
     "intd" (lambda () (interactive)
 	         (yas-expand-snippet "\\int_{$1}^{$2} $0"))
     "_" (lambda () (interactive)
-	      (yas-expand-snippet "_{$1}$0"))
+	      (yas-expand-snippet "_{$0}"))
     "ds" (lambda () (interactive)
 	       (yas-expand-snippet "\\Delta_{$1}S $0"))
     "dh" (lambda () (interactive)
