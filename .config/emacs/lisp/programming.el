@@ -86,10 +86,10 @@
   (corfu-auto-prefix 1)
   (corfu-auto-delay 0)
   (corfu-bar-width 0)
-  (corfu-right-margin-width 0)
-  (corfu-left-margin-width 100)
+  (corfu-right-margin-width 1)
+  (corfu-left-margin-width 1)
   (corfu-min-width 10)
-  (corfu-max-width 30)
+  (corfu-max-width 50)
   (corfu-separator ?\s)          ;; Orderless field separator
   ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
@@ -97,23 +97,31 @@
   (corfu-preselect 'first)      ;; Preselect the prompt
   (corfu-popupinfo-delay (cons nil 1.0)) ;; Autoupdate only after toggling
   :config
+
   (corfu-popupinfo-mode)
   (add-hook 'org-mode-hook
             (lambda ()
-              (setq-local corfu-auto-prefix 2)
+              ;; (setq-local corfu-auto-prefix 1)
               (setq-local completion-at-point-functions
                           '(cape-file
                             yasnippet-capf
                             cape-elisp-block
                             cape-dict
-                            cape-dabbrev))))
+                            citar-capf
+                            cape-dabbrev
+                            ))
+              (setq-local completion-at-point-functions
+                          (list
+                           (cape-capf-prefix-length #'cape-dict 3)
+                           (cape-capf-prefix-length #'yasnippet-capf 0)
+                           (cape-capf-prefix-length #'cape-dabbrev 3)))))
   (add-hook 'emacs-lisp-mode-hook
             (lambda ()
               (setq-local corfu-auto-prefix 1)
               (setq-local completion-at-point-functions
                           '(cape-file
                             yasnippet-capf
-                            cape-elisp-block
+                            cape-keyword
                             cape-elisp-symbol
                             cape-dict
                             cape-dabbrev))))
