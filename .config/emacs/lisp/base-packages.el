@@ -110,6 +110,11 @@
 (use-package consult
   :init
   (setq consult-preview-allowed-hooks '(global-font-lock-mode-check-buffers save-place-find-file-hook display-line-numbers-mode))
+  :general
+  (:states 'normal
+           "<leader>cp" '(consult-yank-from-kill-ring :no-autoload t))
+  (:states 'insert
+           "C-c p" '(consult-yank-from-kill-ring :no-autoload t))
   :defer 1)
 
 (use-package consult-projectile
