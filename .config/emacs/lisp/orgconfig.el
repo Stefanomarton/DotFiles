@@ -14,6 +14,10 @@
   (org-list-allow-alphabetical t)
   ;; (org-cite-global-bibliography )
   :config
+
+  ;; Remove org-columns keybinding to preserve mental health
+  (define-key org-mode-map (kbd "C-c C-x C-c") nil)
+
   (setq org-highlight-latex-and-related '(latex script entities))
   (setq org-latex-to-mathml-convert-command
         "latexmlmath \"%i\" --presentationmathml=%o")
@@ -253,6 +257,8 @@
                    :files (:defaults "extensions/*"))
   :demand t
   ;; :commands (org-roam-node-find org-roam-capture consult-notes)
+  :custom
+  (org-roam-complete-everywhere t)
   :bind
   (:map evil-normal-state-map
         ("<leader>of" . consult-org-roam-file-find)
