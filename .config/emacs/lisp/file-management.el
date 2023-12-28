@@ -25,7 +25,7 @@
   )
 
 (use-package dired-narrow
-  :after dired
+  :after dirvish
   :config
   (defun dired-narrow-ex-ac ()
     ;; Revert buffer and enter the directory after narrowing
