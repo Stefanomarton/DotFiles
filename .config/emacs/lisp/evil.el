@@ -6,13 +6,14 @@
   (setq evil-want-keybinding nil)
   (setq evil-undo-system 'undo-fu)
   (setq evil-want-integration t)
+
   :custom
   (setq completion-in-region-function 'consult-completion-in-region)
   (setq evil-operator-state-cursor nil)
   (setq evil-jumps-cross-buffers t)
   (setq evil-want-empty-ex-last-command t)
-  (setq evil-want-C-u-scroll t) ;; allow scroll up with 'C-u'
-  (setq evil-want-C-d-scroll nil) ;; avoid scroll down with 'C-d'
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-d-scroll nil)
   (setq evil-split-window-below t)
   (setq evil-vsplit-window-right t)
   (setq evil-search-module 'evil-search)
@@ -20,7 +21,6 @@
   (setq evil-esc-delay 0.0001)
   (setq evil-move-beyond-eol t)
   (setq evil-want-Y-yank-to-eol t)
-  ;; (setq evil-cross-lines t)
 
   :config
 
@@ -46,8 +46,10 @@
 
   (setq evil-want-fine-undo t)
   (setq evil-echo-state nil)
+
   (evil-set-leader 'normal (kbd "SPC"))
   (evil-set-leader 'visual (kbd "SPC"))
+  (evil-set-leader 'insert (kbd "M-SPC"))
 
   (evil-define-key 'normal 'evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   (evil-define-key 'normal 'evil-normal-state-map (kbd "C-d") 'evil-scroll-down)
@@ -59,7 +61,10 @@
     (kbd "C-w k") 'evil-window-down
     (kbd "C-w l") 'evil-window-up)
 
-  (evil-define-key 'normal 'evil-normal-state-map (kbd "<return>") 'evil-avy-goto-char-timer)
+  (evil-define-key 'normal prog-mode-map (kbd "<return>") 'evil-avy-goto-char-timer)
+  (evil-define-key 'normal org-mode-map (kbd "<return>") 'evil-avy-goto-char-timer)
+  (evil-define-key 'normal LaTeX-mode-map (kbd "<return>") 'evil-avy-goto-char-timer)
+  (evil-define-key 'normal markdown-mode-map (kbd "<return>") 'evil-avy-goto-char-timer)
 
   (evil-define-key 'normal 'evil-normal-state-map (kbd "h") 'evil-search-forward)
   (evil-define-key 'normal 'evil-normal-state-map (kbd "H") 'evil-search-backward)
@@ -264,6 +269,9 @@
                 '((?j . ("(" . ")"))
                   (?k . ("[" . "]"))
                   (?l . ("{" . "}"))
+                  (?\( . ("(" . ")"))
+                  (?\[ . ("[" . "]"))
+                  (?\{ . ("{" . "}"))
                   (?> . ("<" . ">"))
                   (?t . evil-surround-read-tag)
                   (?< . evil-surround-read-tag)
@@ -349,30 +357,6 @@
   :after avy
   :straight (:host github :repo "Stefanomarton/more-evil-avy"))
 
-(use-package general
-  :after consult
-  :config
-  (defun my-evil-change-whole-line ()
-    (interactive)
-    (beginning-of-line)
-    (evil-change-line (point) (line-end-position)))
-
-  (defun my-evil-change-visual-selection ()
-    "Replace the region with an empty line and enter insert mode."
-    (interactive)
-    (let ((start (region-beginning))
-          (end (region-end)))
-      (delete-region start end)
-      (goto-char start)
-      (open-line 1)
-      (evil-insert 1)))
-  (general-evil-setup t)
-
-  (general-nmap "c" (general-key-dispatch 'evil-change
-                      "c" 'my-evil-change-whole-line))
-  (general-vmap "c" 'my-evil-change-visual-selection)
-  )
-
 (use-package evil-owl
   :after evil
   :config
@@ -401,6 +385,12 @@
   :config
   (global-evil-matchit-mode 1)
   )
+
+(use-package evil-lion
+  ;; Align string and caracther based of a char of choice using gl (align left) and GL (align right)
+  :after evil
+  :config
+  (evil-lion-mode))
 
 (provide 'evil)
 
