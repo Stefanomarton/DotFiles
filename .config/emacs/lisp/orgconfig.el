@@ -6,19 +6,48 @@
   :straight t
   :ensure nil
   :hook
-  (org-mode . org-cdlatex-mode)
+  ;; (org-mode . org-cdlatex-mode)
+  (org-mode . er/add-latex-in-org-mode-expansions)
   :custom
   (org-use-speed-commands t)
   (org-src-fontify-natively t)
   (org-adapt-indentation t)
   (org-list-allow-alphabetical t)
-  ;; (org-cite-global-bibliography )
   :config
 
-  ;; Remove org-columns keybinding to preserve mental health
-  (define-key org-mode-map (kbd "C-c C-x C-c") nil)
+  (setq org-emphasis-alist '(("*" bold)
+                             ("/" italic)
+                             ("_" underline)
+                             ("=" org-verbatim verbatim)
+                             ("~" org-code verbatim))
+        )
+
+  (defun er/add-latex-in-org-mode-expansions ()
+    ;; Make Emacs recognize \ as an escape character in org
+    (modify-syntax-entry ?\\ "\\" org-mode-syntax-table)
+    ;; Paragraph end at end of math environment
+    (setq paragraph-start (concat paragraph-start "\\|\\\\end{\\([A-Za-z0-9*]+\\)}"))
+    ;; (setq paragraph-separate (concat paragraph-separate "\\|\\\\end{\\([A-Za-z0-9*]+\\)}"))
+    ;; Latex mode expansions
+    (with-eval-after-load 'expand-region
+      (set (make-local-variable 'er/try-expand-list)
+           (append (cl-set-difference er/try-expand-list
+                                      '(er/mark-method-call
+                                        er/mark-inside-pairs
+                                        er/mark-outside-pairs))
+                   '(LaTeX-mark-environment
+                     er/mark-LaTeX-inside-math
+                     er/mark-latex-inside-pairs
+                     er/mark-latex-outside-pairs
+                     er/mark-LaTeX-math)))))
+
+
+  (add-hook 'org-mode-hook (lambda ()
+                             (setq-local fill-column 120)))
+
 
   (setq org-highlight-latex-and-related '(latex script entities))
+
   (setq org-latex-to-mathml-convert-command
         "latexmlmath \"%i\" --presentationmathml=%o")
 
@@ -28,6 +57,8 @@
     )
 
   (evil-define-key 'normal org-mode-map (kbd "gt") 'my/org-time-stamp)
+
+  ;; Remove org-columns keybinding to preserve mental health
   (evil-define-key '(normal insert visual) org-mode-map (kbd "C-x C-l") nil)
 
   (defun my/org-mode/load-prettify-symbols ()
@@ -35,7 +66,23 @@
     (setq prettify-symbols-alist
           '(("\\\\" . ?↩)
             )))
+
   (add-hook 'org-mode-hook 'my/org-mode/load-prettify-symbols)
+
+  ;; Make org use `display-buffer' like every other Emacs citizen.
+  (advice-add #'org-switch-to-buffer-other-window :override #'switch-to-buffer-other-window)
+
+  ;; Modify org-pretty entity superscript
+  (defun my/org-raise-scripts-no-braces (_)
+    (when (and (eq (char-after (match-beginning 3)) ?{)
+	           (eq (char-before (match-end 3)) ?}))
+      (remove-text-properties (match-beginning 3) (1+ (match-beginning 3))
+		                      (list 'invisible nil))
+      (remove-text-properties (1- (match-end 3)) (match-end 3)
+		                      (list 'invisible nil))))
+
+  (advice-add 'org-raise-scripts :after #'my/org-raise-scripts-no-braces)
+
 
   (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
   (add-hook 'org-mode-hook 'org-indent-mode)
@@ -433,7 +480,6 @@
   :config
   (consult-org-roam-mode))
 
-
 (use-package org-roam-ui
   :defer t
   :after org-roam
@@ -444,12 +490,6 @@
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
-
-;; (use-package org-modern
-;;   :defer t
-;;   :hook
-;;   (org-mode . org-modern-mode)
-;;   (org-roam-mode . org-modern-mode))
 
 (use-package citar
   :defer t
@@ -544,6 +584,20 @@
           (org-roam-node-open fnode)
         (message "No notes cite this reference."))))
   )
+
+(use-package org-image-preview
+  :straight (:host github :repo "karthink/org-image-preview")
+  :after org
+  :bind (:map org-mode-map
+              ([remap org-toggle-inline-images] . org-image-preview)))
+
+(use-package org-appear
+  :hook (org-mode . org-appear-mode)
+  :config
+  (setq-default org-hide-emphasis-markers t)
+  (setq org-appear-elements '(bold italic underline verbatim code subscript superscript))
+  (setq org-appear-autoemphasis t))
+;; org-appear-autosubmarkers t))
 
 (provide 'orgconfig)
 
