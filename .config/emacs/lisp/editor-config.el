@@ -133,14 +133,16 @@
   )
 
 (use-package expand-region
+  :custom
+  (expand-region-subword-enabled t)
+  (expand-region-smart-cursor t)
   :config
-  (defun expand-region ()
-    "Repeat the `er/expand-region' command."
-    (interactive)
-    (dotimes (_ 2)
-      (call-interactively 'er/expand-region)))
-  (setq expand-region-subword-enabled t)
-  (evil-define-key 'normal 'global (kbd "M-k") 'expand-region)
+  ;; (defun expand-region ()
+  ;;   "Repeat the `er/expand-region' command."
+  ;;   (interactive)
+  ;;   (dotimes (_ 2)
+  ;;     (call-interactively 'er/expand-region)))
+  (evil-define-key 'normal 'global (kbd "<backspace>") 'er/expand-region)
   )
 
 (provide 'editor-config)
