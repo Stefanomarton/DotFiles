@@ -33,7 +33,7 @@
 
 ;; Uncommented this sometimes for debugging
 ;; (setq use-package-verbose t)
-;;(setq debug-on-message t)
+;; (setq debug-on-message t)
 
 ;; But we do want to reset the garbage collector settings eventually. When we
 ;; do, we'll use the GCMH [1] package to schedule the garbage collector to run
@@ -85,9 +85,12 @@
       `(progn ,@form)
     '(progn)))
 
+(require 'bind-key)
 (load-module "core")
 (load-module "evil")
+(load-module "keybindings")
 (load-module "file-management")
+(load-module "completion")
 (load-module "appearance")
 (load-module "modeline")
 (load-module "base-packages")
