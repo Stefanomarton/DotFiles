@@ -8,4 +8,4 @@
                        ("bdit" "***$1***$0" "***$1*** $0" nil nil nil "/home/stefanom/.config/emacs/snippets/markdown-mode/bdi" nil nil)))
 
 
-;;; Do not edit! File generated at Tue Dec 19 22:25:13 2023
+;;; Do not edit! File generated at Thu Dec 28 16:46:19 2023

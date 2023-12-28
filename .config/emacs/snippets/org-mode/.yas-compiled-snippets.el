@@ -2,7 +2,12 @@
 ;;; Snippet definitions:
 ;;;
 (yas-define-snippets 'org-mode
-                     '(("sum" "\\sum${1:_{${2:i=1}\\}}${3:^{${4:N}\\}} $0" "\\sum_{}^{}"
+                     '((";;" "^{$1} $0" "^{}"
+                        (and
+                         (texmathp)
+                         'auto)
+                        nil nil "/home/stefanom/.config/emacs/snippets/org-mode/tothepower" nil nil)
+                       ("sum" "\\sum${1:_{${2:i=1}\\}}${3:^{${4:N}\\}} $0" "\\sum_{}^{}"
                         (and
                          (texmathp)
                          'auto)
@@ -45,4 +50,4 @@
                        ("src" "#+begin_src ${1:lang}\n$2\n#+begin_src\n" "begin_src" nil nil nil "/home/stefanom/.config/emacs/snippets/org-mode/begin_src" nil nil)))
 
 
-;;; Do not edit! File generated at Tue Dec 19 22:25:13 2023
+;;; Do not edit! File generated at Thu Dec 28 16:46:19 2023
