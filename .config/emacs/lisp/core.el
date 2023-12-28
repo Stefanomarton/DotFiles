@@ -100,7 +100,7 @@
 
 ;; Modern conventions state that 80 characters is the standard width.
 
-(setq-default fill-column 80)
+(setq fill-column 80)
 
 ;; Enable useful visual queues.
 
@@ -130,13 +130,17 @@
 ;;Useless
 (setq ring-bell-function 'ignore)
 
-;; Enable functions
-
+;; Disable bidirectional text rendering for a modest performance boost. Just
+;; need to remember to turn it on when displaying a right-to-left language!
+(setq-default bidi-display-reordering 'left-to-right)
 
 (use-package emacs
   :hook
   (after-make-frame-functions . my/new-frame-settings)
   :config
+  ;; Autobyte recompile init.elc when exiting emacs
+  (add-hook 'kill-emacs-hook (lambda () (byte-recompile-file user-init-file)))
+
   (setq server-client-instructions nil)
   (mapc
    (lambda (command)
