@@ -76,7 +76,7 @@
   ;; Suppose all custom themes are safe
   (setq ewal-shade-percent-difference 10)
   (setq custom-safe-themes t)
-  (add-to-list 'custom-theme-load-path "~/.config/emacs/")
+  (add-to-list 'custom-theme-load-path "~/.config/emacs")
   (load-theme 'pywal)
   )
 
