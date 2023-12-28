@@ -41,7 +41,7 @@
   (custom-theme-set-faces
    'pywal
    ;; Set basic faces
-   `(default ((t (:family "JetBrainsMono Nerd Font" :background ,bg :foreground ,fg))))
+   `(default ((t (:family "JuliaMono" :background ,bg :foreground ,fg))))
    `(fringe ((t (:foreground ,fg :background ,bg))))
 
    `(hl-line ((t (:background ,hl))))
@@ -50,7 +50,7 @@
    `(mode-line ((t (:foreground ,fg :background ,bg2))))
    `(mode-line-inactive ((t (:foreground ,comment :background ,bg))))
 
-   `(font-lock-comment-face ((t (:foreground ,comment :slant oblique))))
+   `(font-lock-comment-face ((t (:family "JuliaMono Light" :foreground ,comment :slant oblique))))
    `(font-lock-builtin-face ((t (:foreground ,violet))))
    `(font-lock-comment-delimiter-face ((t (:foreground ,red))))
    `(font-lock-constant-face ((t (:foreground ,green))))
