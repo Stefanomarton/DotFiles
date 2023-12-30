@@ -1,4 +1,4 @@
-;;; orgconfig.el --- org-mode configuration -*- lexical-binding: t; -*-
+:;;; orgconfig.el --- org-mode configuration -*- lexical-binding: t; -*-
 
 (use-package org
   :defer t
@@ -6,14 +6,21 @@
   :straight t
   :ensure nil
   :hook
-  ;; (org-mode . org-cdlatex-mode)
+  (org-mode . org-cdlatex-mode)
   (org-mode . er/add-latex-in-org-mode-expansions)
   :custom
   (org-use-speed-commands t)
-  (org-src-fontify-natively t)
   (org-adapt-indentation t)
   (org-list-allow-alphabetical t)
+  (org-image-actual-width nil)
   :config
+
+  (setq-default
+   org-ellipsis " "
+   org-fontify-quote-and-verse-blocks t
+   org-fontify-whole-heading-line t)
+
+  (setq org-cdlatex-math-modify nil)
 
   (setq org-emphasis-alist '(("*" bold)
                              ("/" italic)
@@ -46,7 +53,8 @@
                              (setq-local fill-column 120)))
 
 
-  (setq org-highlight-latex-and-related '(latex script entities))
+  ;; (setq org-highlight-latex-and-related '(latex script entities))
+  ;; (setq org-highlight-latex-and-related 'native)
 
   (setq org-latex-to-mathml-convert-command
         "latexmlmath \"%i\" --presentationmathml=%o")
@@ -128,22 +136,34 @@
   (setq org-use-sub-superscripts '{})
   )
 
-(use-package ox-latex
-  :straight nil
+(use-package ox
+  :straight (:type built-in)
   :ensure nil
-  :after ox
+  :after org
+  :commands org-export-dispatch
   :config
-  (setq org-latex-pdf-process
-        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  (use-package ox-latex
+    :straight nil
+    :ensure nil
+    :after ox
+    :config
+    (setq org-latex-pdf-process
+          '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+            "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
-  (unless (boundp 'org-latex-classes)
-    (setq org-latex-classes nil))
+    (setq org-latex-tables-centered t
+          org-latex-tables-booktabs t
+          org-export-with-smart-quotes t
+          )
 
-  (setq org-latex-default-class "report")
-  (add-to-list 'org-latex-classes
-               '("report"
-                 "\\documentclass[a4paper,11pt,titlepage]{report}
+
+    (unless (boundp 'org-latex-classes)
+      (setq org-latex-classes nil))
+
+    (setq org-latex-default-class "report")
+    (add-to-list 'org-latex-classes
+                 '("report"
+                   "\\documentclass[a4paper,11pt,titlepage]{report}
                  \\hbadness 99999
                  \\usepackage[marginal]{footmisc} % cleaner footnotes
                  \\usepackage[utf8]{inputenc}
@@ -200,17 +220,17 @@
                  [EXTRA]
                  \\linespread{1.1}
                  \\hypersetup{pdfborder=0 0 0}"
-                 ("\\chapter{%s}" . "\\chapter*{%s}")
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                   ("\\chapter{%s}" . "\\chapter*{%s}")
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 
-  (add-to-list 'org-latex-classes
-               '("article"
-                 "\\documentclass[11pt,a4paper]{article}
+    (add-to-list 'org-latex-classes
+                 '("article"
+                   "\\documentclass[11pt,a4paper]{article}
                  \\setlength{\\parindent}{0pt}
                  \\usepackage{mhchem}
                  \\usepackage[utf8]{inputenc}
@@ -243,14 +263,14 @@
                  [EXTRA]
                  \\linespread{1.1}
                  \\hypersetup{pdfborder=0 0 0}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")))
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")))
 
 
-  (add-to-list 'org-latex-classes '("ebook"
-                                    "\\documentclass[11pt, oneside]{memoir}
+    (add-to-list 'org-latex-classes '("ebook"
+                                      "\\documentclass[11pt, oneside]{memoir}
                  \\setstocksize{9in}{6in}
                  \\settrimmedsize{\\stockheight}{\\stockwidth}{*}
                  \\setlrmarginsandblock{2cm}{2cm}{*} % Left and right margin
@@ -258,13 +278,15 @@
                  \\checkandfixthelayout
                  % Much more laTeX code omitted
                  "
-                                    ("\\chapter{%s}" . "\\chapter*{%s}")
-                                    ("\\section{%s}" . "\\section*{%s}")
-                                    ("\\subsection{%s}" . "\\subsection*{%s}")))
-  )
+                                      ("\\chapter{%s}" . "\\chapter*{%s}")
+                                      ("\\section{%s}" . "\\section*{%s}")
+                                      ("\\subsection{%s}" . "\\subsection*{%s}")))
+    )
 
-(use-package ox-hugo
-  :after ox)
+  (use-package ox-hugo
+    :after ox)
+
+  )
 
 (use-package org-download
   :defer t
@@ -305,7 +327,7 @@
   :straight (:host github :repo "org-roam/org-roam"
                    :files (:defaults "extensions/*"))
   :demand t
-  ;; :commands (org-roam-node-find org-roam-capture consult-notes)
+  :commands (org-roam-node-find org-roam-capture consult-notes)
   :custom
   (org-roam-complete-everywhere t)
   :bind
@@ -482,7 +504,7 @@
 
 (use-package org-roam-ui
   :defer t
-  :after org-roam
+  :commands org-roam-ui-mode
   :straight
   (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
   :config
@@ -529,7 +551,6 @@
   (citar-embark-mode))
 
 (use-package consult-notes
-  :after dashboard
   :straight (:type git :host github :repo "mclear-tools/consult-notes")
   :custom
 
@@ -587,7 +608,7 @@
 
 (use-package org-image-preview
   :straight (:host github :repo "karthink/org-image-preview")
-  :after org
+  :commands org-image-preview
   :bind (:map org-mode-map
               ([remap org-toggle-inline-images] . org-image-preview)))
 
@@ -597,7 +618,33 @@
   (setq-default org-hide-emphasis-markers t)
   (setq org-appear-elements '(bold italic underline verbatim code subscript superscript))
   (setq org-appear-autoemphasis t))
-;; org-appear-autosubmarkers t))
+
+(use-package org-modern
+  :hook
+  (org-mode . org-modern-mode)
+  (org-modern-mode . my/org-modern-spacing)
+  :config
+  (defun my/org-modern-spacing ()
+    (setq-local line-spacing
+                (if org-modern-mode
+                    0.1 0.0)))
+  (setq org-modern-todo nil
+        org-modern-hide-stars nil
+        org-modern-horizontal-rule nil
+        org-modern-keyword "‣ "
+        org-modern-star '("1" "2" "3" "4" "6" "7")
+        ;; org-modern-block-fringe 0
+        org-modern-table nil))
+
+;; *** ORG-SRC
+(use-package org-src
+  :straight (:type built-in)
+  :after org
+  :config
+  (setq org-src-fontify-natively t)
+  (setq-default
+   org-src-tab-acts-natively t
+   org-src-preserve-indentation t))
 
 (provide 'orgconfig)
 
