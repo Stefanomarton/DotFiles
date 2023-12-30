@@ -12,7 +12,6 @@
   (define-key pdf-view-mode-map (kbd "l") 'image-forward-hscroll)
   (define-key pdf-view-mode-map (kbd "g") 'pdf-view-first-page)
   (define-key pdf-view-mode-map (kbd "G") 'pdf-view-last-page)
-  :init
   (pdf-tools-install)
   )
 
