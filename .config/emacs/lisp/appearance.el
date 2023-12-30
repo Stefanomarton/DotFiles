@@ -9,13 +9,15 @@
 
   ;; I keep losing the curson
   (blink-cursor-mode 1)
+
   ;; Enable `prettify-symbols' globally.
   (global-prettify-symbols-mode t)
 
   ;; Display line number relative and absolute
   (setq display-line-numbers-grow-only t)
-  (setq display-line-numbers-width-start 70)
+  (setq display-line-numbers-width-start t)
   (setq display-line-numbers-type 'relative)
+
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
   (add-hook 'find-file-hook 'display-line-numbers-mode)
 
@@ -113,5 +115,22 @@
 		          (find-file folder-path))))
   (dashboard-setup-startup-hook)
   )
+
+;; Cool aspect
+(use-package mixed-pitch
+  :straight t
+  :hook (mixed-pitch-mode . my/mixed-pitch-spacing)
+  :config
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'line-number)
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'corfu-default)
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'corfu-current)
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'org-cite)
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'error)
+  (setq mixed-pitch-set-height nil)
+  (defun my/mixed-pitch-spacing ()
+    (if mixed-pitch-mode
+        (setq line-spacing 0.12)
+      (setq line-spacing 0.0))))
+
 
 (provide 'appearance)
