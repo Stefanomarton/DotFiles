@@ -109,6 +109,17 @@ targets."
   (format-all-show-errors 'error)
   )
 
+(use-package scratch
+  :straight t
+  :config
+  (defun my/scratch-buffer-setup ()
+    "Add contents to `scratch' buffer and name it accordingly.
+If region is active, add its contents to the new buffer."
+    (let* ((mode major-mode))
+      (rename-buffer (format "*Scratch for %s*" mode) t)))
+  :hook (scratch-create-buffer . my/scratch-buffer-setup)
+  :bind ("C-c s" . scratch))
+
 (use-package hydra
   :after dashboard)
 
