@@ -43,9 +43,19 @@
   :hook
   (prog-mode . electric-layout-mode)
   (org-mode . electric-layout-mode)
-  :init
+  :config
   (electric-pair-mode +1) ;; automatically insert closing parens
   (setq electric-pair-preserve-balance nil) ;; more annoying than useful
+  (setq electric-pair-delete-adjacent-pairs nil) ;; more annoying than useful
+  )
+
+(use-package paren
+  :defer 2
+  :config
+  (show-paren-mode)
+  (setq show-paren-delay 0.1)
+  (setq show-paren-highlight-openparen t)
+  (setq show-paren-when-point-inside-paren t)
   )
 
 (use-package tab-jump-out)
@@ -137,13 +147,87 @@
   (expand-region-subword-enabled t)
   (expand-region-smart-cursor t)
   :config
-  ;; (defun expand-region ()
-  ;;   "Repeat the `er/expand-region' command."
-  ;;   (interactive)
-  ;;   (dotimes (_ 2)
-  ;;     (call-interactively 'er/expand-region)))
+  (add-hook 'LaTeX-mode-hook 'er/set-latex-mode-expansions 90)
+  (set-default 'er--show-expansion-message nil)
+  (setq expand-region-show-usage-message nil
+        expand-region-fast-keys-enabled t
+        expand-region-contract-fast-key "c"
+        expand-region-reset-fast-key "q")
+
   (evil-define-key 'normal 'global (kbd "<backspace>") 'er/expand-region)
-  )
+
+  (defun er/mark-latex-text-sentence ()
+    (unless (texmathp) (er/mark-text-sentence)))
+  (defun er/mark-latex-text-paragraph ()
+    (unless (texmathp) (er/mark-text-paragraph)))
+  (defun er/mark-LaTeX-inside-math ()
+    "Mark text inside LaTeX math delimiters. See `er/mark-LaTeX-math'
+for details."
+    (when (texmathp)
+      (let* ((string (car texmathp-why))
+             (pos (cdr texmathp-why))
+             (reason (assoc string texmathp-tex-commands1))
+             (type (cadr reason)))
+        (cond
+         ((eq type 'sw-toggle) ;; $ and $$
+          (goto-char pos)
+          (set-mark (1+ (point)))
+          (forward-sexp 1)
+          (backward-char 1)
+          (exchange-point-and-mark))
+         ((or (eq type 'sw-on)
+              (equal string "Org mode embedded math")) ;; \( and \[
+          (re-search-forward texmathp-onoff-regexp)
+          (backward-char 2)
+          (set-mark (+ pos 2))
+          (exchange-point-and-mark))
+         (t (error (format "Unknown reason to be in math mode: %s" type)))))))
+
+  (defun er/mark-latex-inside-pairs ()
+    (if (texmathp)
+        (cl-destructuring-bind (beg . end)
+            (my/find-bounds-of-regexps " *[{([|<]"
+                                       " *[]})|>]")
+          (when-let ((n (length (match-string-no-properties 0))))
+            (set-mark (save-excursion
+                        (goto-char beg)
+                        (forward-char n)
+                        (skip-chars-forward er--space-str)
+                        (point)))
+            (goto-char end)
+            (backward-char n)
+            (if (looking-back "\\\\right\\\\*\\|\\\\" (- (point) 7))
+                (backward-char (length (match-string-no-properties 0)))))
+          (skip-chars-backward er--space-str)
+          (exchange-point-and-mark))
+      (er/mark-inside-pairs)))
+  (defun er/mark-latex-outside-pairs ()
+    (if (texmathp)
+        (cl-destructuring-bind (beg . end)
+            (my/find-bounds-of-regexps " *[{([|<]"
+                                       " *[]})|>]")
+          (set-mark (save-excursion
+                      (goto-char beg)
+                      ;; (forward-char 1)
+                      (if (looking-back "\\\\left\\\\*\\|\\\\" (- (point) 6))
+                          (backward-char (length (match-string-no-properties 0))))
+                      (skip-chars-forward er--space-str)
+                      (point)))
+          (goto-char end)
+          (skip-chars-backward er--space-str)
+          ;; (backward-char 1)
+          (exchange-point-and-mark))
+      (er/mark-outside-pairs)))
+  (defun er/set-latex-mode-expansions ()
+    (make-variable-buffer-local 'er/try-expand-list)
+    (setq er/try-expand-list
+          '(er/mark-word er/mark-symbol er/mark-symbol-with-prefix
+                         er/mark-next-accessor  er/mark-inside-quotes er/mark-outside-quotes
+                         er/mark-LaTeX-inside-math
+                         er/mark-latex-inside-pairs er/mark-latex-outside-pairs
+                         er/mark-comment er/mark-url er/mark-email ;er/mark-defun
+                         er/mark-latex-text-sentence er/mark-latex-text-paragraph))
+    (er/add-latex-mode-expansions)))
 
 (provide 'editor-config)
 
