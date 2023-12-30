@@ -7,6 +7,10 @@
 (setq native-comp-async-report-warnings-errors nil)
 ;;(setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
 
+;; use proper .cache folder for eln-cache
+(setq package-user-dir (string-replace ".config" ".cache" package-user-dir))
+(setcar native-comp-eln-load-path
+        (string-replace ".config" ".cache" (car native-comp-eln-load-path)))
 
 ;; The traditional dance of calming down the garbage collector during init,
 ;; as that improves startup times. Taken from Doom Emacs [1].
@@ -74,8 +78,8 @@
 
 ;; Set default font
 (set-face-attribute 'default nil
-		            :family "JetBrains Mono Nerd Font"
-		            :height 120
+		            :family "JuliaMono"
+		            :height 135
 		            :weight 'normal
 		            :width 'normal)
 ;; ;; Set default font
