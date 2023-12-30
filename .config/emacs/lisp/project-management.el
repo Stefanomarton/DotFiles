@@ -18,9 +18,10 @@
   )
 
 (use-package hl-todo
-  :after dashboard
-  :init
-  (global-hl-todo-mode)
+  :hook
+  (prog-mode . hl-todo-mode)
+  (org-mode . hl-todo-mode)
+  (LaTeX-mode . hl-todo-mode)
   :custom
   (hl-todo-keyword-faces
    '(("TODO"   . "#FF0000")
