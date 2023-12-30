@@ -110,7 +110,7 @@
   :init
   ;; Add completion to list
   ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
+  ;; (add-to-list 'completion-at-point-functions #'cape-file)
   ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
   ;;(add-to-list 'completion-at-point-functions #'cape-history)
   ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
@@ -122,11 +122,6 @@
   ;; (add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
   ;;(add-to-list 'completion-at-point-functions #'cape-line)
   )
-
-(use-package nerd-icons-corfu
-  :after corfu
-  :config
-  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package corfu
   :bind
@@ -144,7 +139,7 @@
   (corfu-right-margin-width 1)
   (corfu-left-margin-width 1)
   (corfu-min-width 10)
-  (corfu-max-width 50)
+  (corfu-max-width 80)
   (corfu-separator nil)          ;; Orderless field separator
   ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
@@ -158,18 +153,22 @@
             (lambda ()
               ;; (setq-local corfu-auto-prefix 1)
               (setq-local completion-at-point-functions
-                          '(cape-file
+                          '(
+                            cape-file
                             yasnippet-capf
-                            cape-elisp-block
-                            cape-dict
-                            citar-capf
-                            cape-dabbrev
+                            ;; cape-elisp-block
+                            ;; cape-dict
+                            ;; citar-capf
+                            ;; cape-dabbrev
                             ))
               (setq-local completion-at-point-functions
                           (list
-                           (cape-capf-prefix-length #'cape-dict 3)
-                           (cape-capf-prefix-length #'yasnippet-capf 0)
-                           (cape-capf-prefix-length #'cape-dabbrev 3)))))
+                           ;; (cape-capf-prefix-length #'cape-dict 3)
+                           (cape-capf-prefix-length #'cape-file 1)
+                           (cape-capf-prefix-length #'yasnippet-capf 1)
+                           ;; (cape-capf-prefix-length #'cape-dabbrev 3)
+                           ))))
+
   (add-hook 'emacs-lisp-mode-hook
             (lambda ()
               (setq-local corfu-auto-prefix 1)
@@ -190,7 +189,7 @@
       (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
                   corfu-popupinfo-delay nil
                   corfu-min-width 10
-                  corfu-max-width 5
+                  corfu-max-width 80
                   )
       (corfu-mode 1)))
   (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
@@ -210,7 +209,10 @@
   :init
   (global-corfu-mode))
 
-
+(use-package nerd-icons-corfu
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (provide 'completion)
 
