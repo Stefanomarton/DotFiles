@@ -132,6 +132,7 @@
    `(org-level-6 ((t (:foreground ,green :weight ultra-bold :height 120))))
    `(org-level-7 ((t (:foreground ,green :weight ultra-bold :height 110))))
    `(org-level-8 ((t (:foreground ,green :weight ultra-bold))))
+   `(org-ellipsis ((t (:foreground ,green :weight ultra-bold))))
 
    (custom-theme-set-variables
     'pywal
