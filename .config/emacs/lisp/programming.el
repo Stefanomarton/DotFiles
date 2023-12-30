@@ -46,6 +46,13 @@
 ;;                  (window-width . 0.1)
 ;;                  (window-height . 0.1))))
 
+;; Highlight kmonad files
+(use-package kbd-mode
+  :straight (:host github
+                   :repo "kmonad/kbd-mode")
+  :mode ("\\.kbd\\'" . kbd-mode))
+
+
 (use-package yasnippet-capf
   :after cape
   :config
