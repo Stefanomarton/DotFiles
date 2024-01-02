@@ -5,6 +5,8 @@ set scroll-step 40
 set selection-clipboard clipboard
 set recolor false
 
+set guioptions none
+
 unmap k
 map k navigate next 
 
