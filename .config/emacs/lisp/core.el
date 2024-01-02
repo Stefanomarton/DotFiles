@@ -130,6 +130,9 @@
 ;;Useless
 (setq ring-bell-function 'ignore)
 
+;; (setq pop-up-frames t)
+;; (setq pop-up-windows nil)
+
 ;; Disable bidirectional text rendering for a modest performance boost. Just
 ;; need to remember to turn it on when displaying a right-to-left language!
 (setq-default bidi-display-reordering 'left-to-right)
