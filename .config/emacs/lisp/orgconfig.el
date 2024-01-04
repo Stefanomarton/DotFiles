@@ -12,7 +12,7 @@
   (org-use-speed-commands t)
   (org-adapt-indentation t)
   (org-list-allow-alphabetical t)
-  (org-image-actual-width nil)
+  (org-image-actual-width 500)
   :config
 
   (setq-default
@@ -632,7 +632,7 @@
         org-modern-hide-stars nil
         org-modern-horizontal-rule nil
         org-modern-keyword "‣ "
-        org-modern-star '("1" "2" "3" "4" "6" "7")
+        org-modern-star '("1." "2." "3." "4." "5." "6.")
         ;; org-modern-block-fringe 0
         org-modern-table nil))
 
@@ -645,6 +645,15 @@
   (setq-default
    org-src-tab-acts-natively t
    org-src-preserve-indentation t))
+
+;; Show org header path
+(use-package org-sticky-header
+  :hook
+  (org-mode . org-sticky-header-mode)
+  :config
+  (setq org-sticky-header-full-path 'full)
+  (setq org-sticky-header-heading-star "")
+  )
 
 (provide 'orgconfig)
 

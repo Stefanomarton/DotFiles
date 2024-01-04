@@ -1,1 +1,1 @@
-("~/.config/emacs/" "~/GoogleDrive/Projects/keeb/QMK/" "~/GoogleDrive/Projects/SMABS/" "~/GoogleDrive/Projects/thesis/" "~/Downloads/dotfiles/" "~/GoogleDrive/Projects/keeb/QMK/qmk_firmware/" "~/GoogleDrive/Projects/website/")
+("~/.config/emacs/" "~/Downloads/emacs/" "~/GoogleDrive/Projects/keeb/QMK/" "~/GoogleDrive/Projects/keeb/QMK/qmk_firmware/" "~/GoogleDrive/Projects/SMABS/" "~/GoogleDrive/Projects/thesis/" "~/Downloads/dotfiles/" "~/GoogleDrive/Projects/website/")
