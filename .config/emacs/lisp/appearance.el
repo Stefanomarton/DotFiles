@@ -19,7 +19,7 @@
   (setq display-line-numbers-type 'relative)
 
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-  (add-hook 'find-file-hook 'display-line-numbers-mode)
+  ;; (add-hook 'find-file-hook 'display-line-numbers-mode)
 
   ;; Highlight the current line
   (add-hook 'prog-mode-hook 'hl-line-mode)
@@ -49,10 +49,10 @@
 (use-package spacious-padding
   :config
   ;; These are the defaults, but I keep it here for visiibility.
-  (setq spacious-padding-subtle-mode-line t)
+  (setq spacious-padding-subtle-mode-line nil)
   (setq spacious-padding-widths
         '( :internal-border-width 25
-           :header-line-width 4
+           :header-line-width 10
            :mode-line-width 5
            :tab-width 5
            :right-divider-width 20
@@ -136,6 +136,7 @@
 
 (use-package breadcrumb
   :hook
-  (prog-mode . breadcrumb-local-mode))
+  (prog-mode . breadcrumb-local-mode)
+  )
 
 (provide 'appearance)
