@@ -47,16 +47,15 @@
 ;;   )
 
 (use-package spacious-padding
-  :after dashboard
   :config
   ;; These are the defaults, but I keep it here for visiibility.
   (setq spacious-padding-subtle-mode-line t)
   (setq spacious-padding-widths
-        '( :internal-border-width 0
+        '( :internal-border-width 25
            :header-line-width 4
-           :mode-line-width 1
+           :mode-line-width 5
            :tab-width 5
-           :right-divider-width 0
+           :right-divider-width 20
            :scroll-bar-width 0))
   (spacious-padding-mode 1))
 
@@ -132,5 +131,11 @@
         (setq line-spacing 0.12)
       (setq line-spacing 0.0))))
 
+;; (straight-use-package
+;;  '(nano :type git :host github :repo "rougier/nano-emacs"))
+
+(use-package breadcrumb
+  :hook
+  (prog-mode . breadcrumb-local-mode))
 
 (provide 'appearance)
