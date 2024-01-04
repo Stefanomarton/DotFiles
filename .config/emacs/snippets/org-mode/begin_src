@@ -4,4 +4,4 @@
 # --
 #+begin_src ${1:lang}
 $2
-#+begin_src
+#+end_src
