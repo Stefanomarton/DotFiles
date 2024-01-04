@@ -93,6 +93,7 @@
 (load-module "completion")
 (load-module "appearance")
 (load-module "modeline")
+(load-module "headerline")
 (load-module "base-packages")
 (load-module "editor-config")
 (load-module "tools")

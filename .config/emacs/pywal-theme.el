@@ -47,8 +47,11 @@
    `(hl-line ((t (:background ,hl))))
    `(region ((t (:foreground ,violet :background ,hl-alt))))
 
-   `(mode-line ((t (:foreground ,fg :background ,bg2))))
+   `(mode-line ((t (:foreground ,fg :background ,bg :box (:line-width 10 :color ,bg)))))
+   ;; '(mode-line-buffer-id ((t (:box (:line-width 1 :color ,fg) :weight bold))))
    `(mode-line-inactive ((t (:foreground ,comment :background ,bg))))
+
+   `(header-line ((t (:foreground ,fg :background ,bg :box (:line-width 50 :color ,bg)))))
 
    `(font-lock-comment-face ((t (:family "JuliaMono Light" :foreground ,comment :slant oblique))))
    `(font-lock-builtin-face ((t (:foreground ,violet))))
@@ -133,11 +136,16 @@
    `(org-level-7 ((t (:foreground ,green :weight ultra-bold :height 110))))
    `(org-level-8 ((t (:foreground ,green :weight ultra-bold))))
    `(org-ellipsis ((t (:foreground ,green :weight ultra-bold))))
+   `(org-outline-path-headerline-face ((t (:foreground ,red :height 160 :weight ultra-bold :background ,bg2))))
+   `(org-drawer ((t (:foreground ,blue))))
+   `(org-date ((t (:foreground ,blue))))
+
 
    (custom-theme-set-variables
     'pywal
     ;; Set variables as needed
     )
+
    ))
 
 (provide-theme 'pywal)
