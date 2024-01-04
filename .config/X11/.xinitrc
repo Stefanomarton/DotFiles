@@ -23,7 +23,7 @@ exec dwm
 
 desktop)
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.config/X11/.Xresources
-xrandr --output DP-1 --primary --mode 3440x1440 --pos 0x1080 --rotate normal --output DP-2 --off --output HDMI-1 --mode 1920x1080 --pos 721x0 --rotate inverted --output HDMI-2 --off --output DVI-D-1 --off
+xrandr --output DP-1 --primary --mode 3440x1440 -r 144 --pos 1386x1144 --rotate normal --output DP-2 --off --output HDMI-1 --mode 1920x1080 --pos 2146x64 --rotate inverted --output HDMI-2 --mode 1920x1080 --pos 306x904 --rotate left --output DVI-D-1 --off
 # feh --no-fehbg --bg-fill /home/stefanom/.local/share/Wallpapers/NordicWallpapers/ign_evening.png
 gammastep &
 picom & 
