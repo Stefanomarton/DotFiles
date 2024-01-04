@@ -64,12 +64,10 @@ alias v="nvim"
 alias e="emacs -nw"
 alias music="ncmpcpp"
 alias lsa="ls -a"
-alias L="ptls -a"
 alias gp="git push"
 alias ga="git add"
 alias gc="git commit"
-alias -g ls="ptls"
-alias -g ptcp="cp"
+alias -g ls="ls --color"
 alias pmi="~/.local/bin/scripts/pmi"
 alias -g pmr="~/.local/bin/scripts/pmr"
 alias -g c="clear"
@@ -85,6 +83,7 @@ alias -g rpg="git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@""
 
 # Variables
 export EDITOR='emacsclient -c'
+export BROWSER='/usr/bin/floorp'
 export PAGER='moar -colors "auto" -no-statusbar'
 HISTFILE=~/.zsh_history
 HISTSIZE=100000000
