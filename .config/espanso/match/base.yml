@@ -10,200 +10,23 @@ matches:
   - trigger: ':mail'
     replace: 'sstefanomarton@gmail.com'
 
-  - trigger: ':identity:'
-    replace: '𝟙'
+  - regex: "perche\\s"
+    replace: 'perché '
 
-  - trigger: ':sqrt:'
-    replace: '√'
+  - regex: "poiche\\s"
+    replace: 'poiché '
 
-  - trigger: ':int:'
-    replace: '∫'
+  - regex: "piu\\s"
+    replace: 'più '
 
-  - trigger: ':iint:'
-    replace: '∬'
+  - regex: "\\see\\s"
+    replace: ' è '
 
-  - trigger: ':iiint:'
-    replace: '∭'
+  - regex: "^ee\\s"
+    replace: 'è '
 
-  - trigger: ':oint:'
-    replace: '∮'
+  - regex: "\\sE\\s"
+    replace: ' È '
 
-  - trigger: ':oint:'
-    replace: '∯'
-
-  - trigger: ':oint:'
-    replace: '∰'
-
-  - trigger: ':sum:'
-    replace: '∑'
-
-  - trigger: ':prod:'
-    replace: '∏'
-
-  - trigger: ':Box:'
-    replace: '□'
-
-  - trigger: ':cdot:'
-    replace: '⋅'
-
-  - trigger: ':pm:'
-    replace: '±'
-
-  - trigger: ':mp:'
-    replace: '∓'
-
-  - trigger: ':equiv:'
-    replace: '≡'
-
-  - trigger: ':nequiv:'
-    replace: '≢'
-
-  - trigger: ':neq:'
-    replace: '≠'
-
-  - trigger: ':approx:'
-    replace: '≈'
-
-  - trigger: ':leq:'
-    replace: '≤'
-
-  - trigger: ':geq:'
-    replace: '≥'
-
-  - trigger: ':gg:'
-    replace: '≫'
-
-  - trigger: ':ll:'
-    replace: '≪'
-
-  - trigger: ':leftarrow:'
-    replace: '←'
-
-  - trigger: ':rightarrow:'
-    replace: '→'
-
-  - trigger: ':implies:'
-    replace: '⇒'
-
-  - trigger: ':iff:'
-    replace: '⇔'
-
-  - trigger: ':infty:'
-    replace: '∞'
-
-  - trigger: ':nabla:'
-    replace: '∇'
-
-  - trigger: ':partial:'
-    replace: '𝜕'
-
-  - trigger: ':forall:'
-    replace: '∀'
-
-  - trigger: ':exists:'
-    replace: '∃'
-
-  - triggers: [':Alpha:', ':A:']
-    replace: 'Α'
-
-  - triggers: [':alpha:', ':a:']
-    replace: 'α'
-
-  - triggers: [':Beta:', ':B:']
-    replace: 'Β'
-
-  - triggers: [':beta:', ':b:']
-    replace: 'β'
-
-  - triggers: [':varbeta:', ':vb:']
-    replace: 'ϐ'
-
-  - triggers: [':Delta:', ':D:']
-    replace: 'Δ'
-
-  # - triggers: [':delta:', ':d:']
-  #   replace: 'δ'
-
-  - triggers: [':Epsilon:', ':E:']
-    replace: 'Ε'
-
-  - triggers: [':epsilon:', ':e:']
-    replace: 'ϵ'
-
-  - triggers: [':varepsilon', ':ve:']
-    replace: 'ε'
-
-  - triggers: [':Phi:', ':P:']
-    replace: 'Φ'
-
-  - triggers: [':phi:', ':p:']
-    replace: '𝜙'
-
-  - triggers: [':varphi:', ':vp:']
-    replace: 'φ'
-
-  - triggers: [':Gamma:', ':G:']
-    replace: 'Γ'
-
-  - triggers: [':gamma:', ':g:']
-    replace: 'γ'
-
-  - triggers: [':Eta:', ':E:']
-    replace: 'Η'
-
-  - triggers: [':eta:', ':e:']
-    replace: 'η'
-
-  - triggers: [':Iota:', ':I:']
-    replace: 'Ι'
-
-  - triggers: [':iota:', ':i:']
-    replace: 'ι'
-
-  - triggers: [':Theta:', ':T:']
-    replace: 'Θ'
-
-  - triggers: [':theta:', ':t:']
-    replace: 'θ'
-
-  - triggers: [':vartheta:', ':vt:']
-    replace: 'ϑ'
-
-  - triggers: [':Kappa:', ':K:']
-    replace: 'Κ'
-
-  - triggers: [':kappa:', ':k:']
-    replace: 'κ'
-
-  - triggers: [':varkappa', ':vk:']
-    replace: 'ϰ'
-
-  - triggers: [':Lambda:', ':L:']
-    replace: 'Λ'
-
-  - triggers: [':lambda:', ':l:']
-    replace: 'λ'
-
-  - triggers: [':Mu:', ':M:']
-    replace: 'Μ'
-
-  - triggers: [':mu:', ':m:']
-    replace: 'μ'
-
-  - triggers: [':Nu:', ':N:']
-    replace: 'Ν'
-
-  - triggers: [':nu:', ':n:']
-    replace: 'ν'
-
-  - trigger: ':Omicron:'
-    replace: 'Ο'
-
-  - trigger: ':omicron:'
-    replace: 'ο'
-  
-  # - triggers: ['perche']
-  #   replace: 'perché'
-  #     
-  # - triggers: ['piu']
-  #   replace: 'più'
+  - regex: "^E\\s"
+    replace: 'È '

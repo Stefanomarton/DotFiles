@@ -25,11 +25,13 @@
 # By default, espanso uses the "Auto" backend which should work well in most cases,
 # but you may want to try the "Clipboard" or "Inject" backend in case of issues.
 # backend: Clipboard
+backend: Inject
 
 # --- Auto-restart
 
 # Enable/disable the config auto-reload after a file change is detected.
 auto_restart: true
+
 # --- Clipboard threshold
 
 # Because injecting long texts char-by-char is a slow operation, espanso automatically
@@ -37,3 +39,5 @@ auto_restart: true
 # clipboard_threshold: 100
 
 # For a list of all the available options, visit the official docs at: https://espanso.org/docs/
+
+keyboard_layout: {layout: us, variant: intl}
