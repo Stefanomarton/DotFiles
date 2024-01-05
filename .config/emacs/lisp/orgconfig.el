@@ -13,6 +13,7 @@
   (org-adapt-indentation t)
   (org-list-allow-alphabetical t)
   (org-image-actual-width 500)
+  (org-hide-leading-stars t)
   :config
 
   (setq-default
@@ -93,7 +94,7 @@
 
 
   (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
-  (add-hook 'org-mode-hook 'org-indent-mode)
+  ;; (add-hook 'org-mode-hook 'org-indent-mode)
   (setq org-export-headline-levels 6)
   (setq org-export-preserve-breaks nil) ;; preserve newline in exports
 
@@ -628,6 +629,7 @@
     (setq-local line-spacing
                 (if org-modern-mode
                     0.1 0.0)))
+
   (setq org-modern-todo nil
         org-modern-hide-stars nil
         org-modern-horizontal-rule nil
@@ -646,14 +648,25 @@
    org-src-tab-acts-natively t
    org-src-preserve-indentation t))
 
-;; Show org header path
-(use-package org-sticky-header
+;; ;; Show org header path
+;; (use-package org-sticky-header
+;;   :hook
+;;   (org-mode . org-sticky-header-mode)
+;;   :config
+;;   (setq org-sticky-header-full-path 'full)
+;;   (setq org-sticky-header-heading-star "*")
+;;   (setq org-sticky-header-always-show-header t)
+;;   )
+
+(use-package org-margin
+  :straight (:host github :repo "rougier/org-margin")
+  :requires svg-lib
   :hook
-  (org-mode . org-sticky-header-mode)
-  :config
-  (setq org-sticky-header-full-path 'full)
-  (setq org-sticky-header-heading-star "")
+  (org-mode . org-margin-mode)
   )
+
+(use-package svg-lib
+  :defer t)
 
 (provide 'orgconfig)
 
