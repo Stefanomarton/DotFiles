@@ -34,30 +34,30 @@
   :after dashboard)
 
 ;; Customize the divider beetween windows
-;; (use-package frame
-;;   :after dashboard
-;;   :straight (:type built-in)
-;;   :config
-;;   ;; Make sure new frames use window-divider
-;;   (add-hook 'before-make-frame-hook 'window-divider-mode)
-;;   :custom
-;;   (window-divider-default-right-width 3)
-;;   (window-divider-default-bottom-width 3)
-;;   (window-divider-default-places t)
-;;   )
-
-(use-package spacious-padding
+(use-package frame
+  :straight (:type built-in)
   :config
-  ;; These are the defaults, but I keep it here for visiibility.
-  (setq spacious-padding-subtle-mode-line nil)
-  (setq spacious-padding-widths
-        '( :internal-border-width 25
-           :header-line-width 10
-           :mode-line-width 5
-           :tab-width 5
-           :right-divider-width 20
-           :scroll-bar-width 0))
-  (spacious-padding-mode 1))
+  ;; Make sure new frames use window-divider
+  ;; (add-hook 'before-make-frame-hook 'window-divider-mode)
+  (set-frame-parameter nil 'internal-border-width 20)
+  :custom
+  ;; (window-divider-default-right-width 3)
+  ;; (window-divider-default-bottom-width 3)
+  (window-divider-default-places nil)
+  )
+
+;; (use-package spacious-padding
+;;   :config
+;;   ;; These are the defaults, but I keep it here for visiibility.
+;;   (setq spacious-padding-subtle-mode-line nil)
+;;   (setq spacious-padding-widths
+;;         '( :internal-border-width 25
+;;            :header-line-width 10
+;;            :mode-line-width 5
+;;            :tab-width 5
+;;            :right-divider-width 20
+;;            :scroll-bar-width 0))
+;;   (spacious-padding-mode 1))
 
 ;; Theming
 
