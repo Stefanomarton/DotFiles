@@ -111,6 +111,9 @@
 (global-unset-key (kbd "C-z"))
 (global-unset-key (kbd "C-x C-z"))
 
+;; Unbind downcase region
+(global-unset-key (kbd "C-x C-l"))
+
 ;; Don't do jerky jumps when the cursor reaches the end of the window. Instead,
 ;; just scroll by one line.
 
