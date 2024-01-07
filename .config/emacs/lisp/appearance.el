@@ -40,6 +40,8 @@
   ;; Make sure new frames use window-divider
   ;; (add-hook 'before-make-frame-hook 'window-divider-mode)
   (set-frame-parameter nil 'internal-border-width 20)
+  (set-frame-parameter nil 'external-border-width 5)
+  (set-window-margins nil 2 2)
   :custom
   ;; (window-divider-default-right-width 3)
   ;; (window-divider-default-bottom-width 3)
