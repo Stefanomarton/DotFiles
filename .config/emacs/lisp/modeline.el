@@ -28,7 +28,7 @@
     '(:eval (propertize my-mode-line--file-name 'face 'font-lock-comment-face))
   "Mode-line file name ")
 
-(put 'my-mode-line-file-name 'risky-local-variable t)
+(put 'my-mode-line--file-name 'risky-local-variable t)
 
 
 (defun special-buffer-p (buffer-name)
@@ -80,11 +80,6 @@
             ((eq evil-state 'operator) (propertize "\uf111" 'face 'evil-operator-face))
             ((eq evil-state 'emacs) (propertize "\uf111" 'face 'evil-emacs-face))
             (t (propertize "*" 'face 'font-lock-variable-name-face)))))
-   ;; (4
-   ;;  (:propertize "%m " face font-lock-variable-name-face
-   ;; 		 help-echo buffer-file-coding-system))
-
-   ;; (2 (:propertize face font-lock-comment-face))
 
    ;; shortened directory (if buffer have a corresponding file)
    my-mode-line-file-name
