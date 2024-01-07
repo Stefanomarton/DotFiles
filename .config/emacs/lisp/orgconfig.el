@@ -6,17 +6,19 @@
   :straight t
   :ensure nil
   :hook
+  (org-mode . org-indent-mode)
   (org-mode . org-cdlatex-mode)
   (org-mode . er/add-latex-in-org-mode-expansions)
+
   :custom
   (org-use-speed-commands t)
   (org-adapt-indentation t)
   (org-list-allow-alphabetical t)
   (org-image-actual-width 500)
   (org-hide-leading-stars t)
-  :config
 
-  (setq-default
+  :config
+  (setq
    org-ellipsis " "
    org-fontify-quote-and-verse-blocks t
    org-fontify-whole-heading-line t)
@@ -54,11 +56,8 @@
                              (setq-local fill-column 120)))
 
 
-  ;; (setq org-highlight-latex-and-related '(latex script entities))
-  ;; (setq org-highlight-latex-and-related 'native)
-
-  (setq org-latex-to-mathml-convert-command
-        "latexmlmath \"%i\" --presentationmathml=%o")
+  ;; all possible latex highlight
+  (setq org-highlight-latex-and-related '(latex script entities native))
 
   (defun my/org-time-stamp ()
     (interactive)
@@ -66,9 +65,6 @@
     )
 
   (evil-define-key 'normal org-mode-map (kbd "gt") 'my/org-time-stamp)
-
-  ;; Remove org-columns keybinding to preserve mental health
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-x C-l") nil)
 
   (defun my/org-mode/load-prettify-symbols ()
     (interactive)
@@ -94,28 +90,17 @@
 
 
   (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
-  ;; (add-hook 'org-mode-hook 'org-indent-mode)
+
+
   (setq org-export-headline-levels 6)
+
   (setq org-export-preserve-breaks nil) ;; preserve newline in exports
 
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)) ;; fix dimension of latex fragments
 
   (add-to-list 'org-file-apps '("\\.pdf" . "zathura %s")) ;; open pdf files with zathura
-  (advice-add 'org-latex-compile :after #'delete-file) ;; delete compilation files after .tex export
 
-  ;; TODO: da sistemare
-  ;; (setq org-publish-project-alist
-  ;;       '(
-  ;;         (
-  ;;          "roam"
-  ;;          :base-directory "~/GoogleDrive/org/uni"
-  ;;          :publishing-directory "~/GoogleDrive/org/pdf/uni"
-  ;;          :publishing-function org-latex-publish-to-pdf
-  ;;          :base-extension "org$"
-  ;;          :recursive t
-  ;;          )
-  ;;         )
-  ;;       )
+  (advice-add 'org-latex-compile :after #'delete-file) ;; delete compilation files after .tex export
 
   ;; modify export folder for org export
   ;; taken from https://stackoverflow.com/questions/9559753/emacs-org-mode-export-to-another-directory
@@ -127,9 +112,6 @@
     (apply orig-fun extension subtreep pub-dir nil))
   (advice-add 'org-export-output-file-name :around #'org-export-output-file-name-modified)
 
-
-  ;; Double compilation for TOC
-  :init
   (setq org-latex-default-class "report")
   (setq org-startup-folded t)
   (setq org-pretty-entities t)
@@ -156,7 +138,6 @@
           org-latex-tables-booktabs t
           org-export-with-smart-quotes t
           )
-
 
     (unless (boundp 'org-latex-classes)
       (setq org-latex-classes nil))
@@ -286,7 +267,6 @@
 
   (use-package ox-hugo
     :after ox)
-
   )
 
 (use-package org-download
@@ -607,17 +587,21 @@
         (message "No notes cite this reference."))))
   )
 
-(use-package org-image-preview
-  :straight (:host github :repo "karthink/org-image-preview")
-  :commands org-image-preview
-  :bind (:map org-mode-map
-              ([remap org-toggle-inline-images] . org-image-preview)))
+;; (use-package org-image-preview
+;;   :straight (:host github :repo "karthink/org-image-preview")
+;;   :commands org-image-preview
+;;   :bind (:map org-mode-map
+;;               ([remap org-toggle-inline-images] . org-image-preview)))
 
 (use-package org-appear
   :hook (org-mode . org-appear-mode)
   :config
-  (setq-default org-hide-emphasis-markers t)
+  (setq org-hide-emphasis-markers t)
   (setq org-appear-elements '(bold italic underline verbatim code subscript superscript))
+  (setq org-appear-autolinks t)
+  (setq org-appear-autokeywords t)
+  (setq org-appear-autoentities t)
+  (setq org-appear-inside-latex t)
   (setq org-appear-autoemphasis t))
 
 (use-package org-modern
@@ -636,7 +620,11 @@
         org-modern-keyword "‣ "
         org-modern-star '("1." "2." "3." "4." "5." "6.")
         ;; org-modern-block-fringe 0
-        org-modern-table nil))
+        org-modern-table nil)
+
+  ;; customize bullet list symbols
+  ;; (setq org-modern-list '((42 . "◦") (45 . "–") (43 . "•")))
+  )
 
 ;; *** ORG-SRC
 (use-package org-src
@@ -658,15 +646,24 @@
 ;;   (setq org-sticky-header-always-show-header t)
 ;;   )
 
-(use-package org-margin
-  :straight (:host github :repo "rougier/org-margin")
-  :requires svg-lib
-  :hook
-  (org-mode . org-margin-mode)
-  )
+;; (use-package org-margin
+;;   :straight (:host github :repo "rougier/org-margin")
+;;   :requires svg-lib
+;;   :hook
+;;   (org-mode . org-margin-mode)
+;;   (org-mode . org-margin-mode-on)
+;;   )
 
-(use-package svg-lib
-  :defer t)
+;; (use-package svg-lib
+;;   :defer t)
+
+(use-package anki-editor
+  :commands (anki-editor-push-notes anki-editor-insert-note)
+  :bind (:map org-mode-map
+              ("<leader>op" . anki-editor-push-notes)
+              ("<leader>oa" . anki-editor-insert-note))
+  :config
+  (setq anki-editor-create-decks t))
 
 (provide 'orgconfig)
 
