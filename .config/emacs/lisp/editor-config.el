@@ -82,7 +82,7 @@
 (use-package avy
   :after evil
   :config
-  (setq avy-timeout-seconds 0.2)
+  (setq avy-timeout-seconds 0.5)
   (setq avy-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)) ;; Home row only (the default).
   (setq avy-words
 	    '("am" "by" "if" "is" "it" "my" "ox" "up"
