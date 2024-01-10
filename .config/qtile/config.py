@@ -32,17 +32,34 @@ terminal = "kitty"
 
 keys = [
     # Switch between windows
-    Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
-    Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
-    Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
-    Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
+    Key([mod], "Slash",
+        lazy.layout.right(),
+        # lazy.layout.next().when(layout="columns"),
+        desc="Move focus to left"),
+
+    Key([mod], "j",
+        lazy.layout.left(),
+        desc="Move focus to right"),
+
+    Key([mod], "k",
+        lazy.layout.down(),
+        desc="Move focus down"),
+
+    Key([mod], "l",
+        lazy.layout.up(),
+        desc="Move focus up"),
+
+    Key([mod], "v",
+        lazy.layout.next(),
+        desc="Move window focus to other window"),
+
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
     Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
     Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
     Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
@@ -50,9 +67,10 @@ keys = [
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+
     Key(
-        [mod, "shift"],
-        "Return",
+        [mod],
+        "d",
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
@@ -64,6 +82,7 @@ keys = [
     Key([mod], "s", lazy.spawn("tofi-drun | zsh", shell=True), desc="Tofi launcher"),
     Key([mod, "shift"], "s", lazy.spawn('grim -g "$(slurp)" - | wl-copy', shell=True), desc="Tofi launcher"),
     Key([mod], "f", lazy.spawn("zsh -c 'export MOZ_ENABLE_WAYLAND=1 && firefox'"), desc="Firefox Browser"),
+    Key([mod, "shift"], "Return", lazy.spawn("emacsclient -c"), desc="emacs"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
@@ -118,8 +137,30 @@ keys.extend([
 
 
 layouts = [
-    layout.Columns(margin=0, border_focus=ColorB, border_normal=ColorZ, border_focus_stack=ColorB, border_normal_stack=ColorZ, border_width=2, split=False),
-    layout.Stack(num_stacks=2, border_focus=ColorB, border_normal=ColorZ, border_width=2,),
+    layout.Columns(
+        # margin=0,
+        align=3,
+        split=True, 
+        # fair=False,
+        num_columns=3,
+        # wrap_focus_stacks=True,
+        # wrap_focus_columns=True,
+        # border_on_single=False,
+        # insert_postion=0,
+
+        border_focus=ColorB,
+        border_normal=ColorZ,
+        border_focus_stack=ColorB,
+        border_normal_stack=ColorZ,
+        border_width=2,
+    ),
+    layout.Stack(
+        num_stacks=2,
+        autosplit=False,
+        border_focus=ColorB,
+        border_normal=ColorZ,
+        border_width=2,
+    ),
     # layout.Max(),
     # layout.Tile(),
     # layout.Bsp(),
@@ -137,9 +178,13 @@ widget_defaults = dict(
     fontsize=12,
     padding=3,
 )
+
 extension_defaults = widget_defaults.copy()
 
 screens = [
+    Screen(
+        wallpaper="~/.local/share/Wallpapers/Nordic/ign_mountains.png",
+    ),
     Screen(
         wallpaper="~/.local/share/Wallpapers/Nordic/ign_mountains.png",
         wallpaper_mode="fill",
@@ -182,9 +227,6 @@ screens = [
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
         # x11_drag_polling_rate = 60,
     ),
-    Screen(
-        wallpaper="~/.local/share/Wallpapers/Nordic/ign_mountains.png",
-    ),
 ]
 
 # Drag floating layouts.
@@ -226,7 +268,7 @@ auto_minimize = True
 
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = {
-        "type:keyboard": InputConfig(dwt=True, kb_repeat_delay=150, kb_repeat_rate=50, kb_variant="altgr-intl", kb_layout="us"),
+        "type:keyboard": InputConfig(dwt=True, kb_repeat_delay=150, kb_repeat_rate=50, kb_variant="intl", kb_layout="us"),
         "*": InputConfig(tap=True, natural_scroll=True),
     }
 
