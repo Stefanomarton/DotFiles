@@ -18,6 +18,9 @@
   (org-hide-leading-stars t)
 
   :config
+  (setq org-blank-before-new-entry
+        '((heading . nil)
+          (plain-list-item . auto)))
   (setq
    org-ellipsis " "
    org-fontify-quote-and-verse-blocks t
@@ -393,6 +396,12 @@
                               "#+title: ${title}\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
            :immediate-finish t
            :unnarrowed t)
+          ("a" "anki" plain
+           "%?"
+           :if-new (file+head "anki/%<%Y%m%d>--${slug}__%(hiddyn/select-tag).org"
+                              "#+title: ${title}\n#+filetags: %(hiddyn/filetags)")
+           :immediate-finish t
+           :unnarrowed t)
           ("n" "inbox" plain "%?"
            :if-new
            (file+head "inbox/%<%Y%m%d>--${slug}__%(hiddyn/select-tag).org"
@@ -664,6 +673,8 @@
               ("<leader>oa" . anki-editor-insert-note))
   :config
   (setq anki-editor-create-decks t))
+
+(use-package org-anki)
 
 (provide 'orgconfig)
 
