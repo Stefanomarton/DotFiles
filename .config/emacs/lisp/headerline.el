@@ -5,10 +5,12 @@
   "face for headerline outline in org-mode")
 
 (defun org-outline-path-headerline ()
-  (propertize
-   (substring-no-properties (org-display-outline-path nil t " / " t))
-   'face 'org-outline-path-headerline-face
-   )
+  ;; (propertize
+  ;; (substring-no-properties
+  (org-display-outline-path nil t " > " t)
+  ;; )
+  ;; 'face 'org-outline-path-headerline-face
+  ;; )
   )
 
 (define-minor-mode my/org-header-outline-path-mode
