@@ -268,10 +268,13 @@ groups.append(
     ScratchPad('filemanager',
                [
                DropDown(
-                   'ranger','zsh -c "kitty -e ranger"', y=0.05, height=0.8, opacity=1
+                   'ranger','zsh -c "kitty -e ranger"', y=0.05, height=0.8, opacity=1, warp_pointer=True
                        ),
                DropDown(
                    'nemo', 'zsh -c "nemo"', y=0.05, height=0.8, opacity=1
+                       ),
+               DropDown(
+                   'pulse', 'zsh -c "kitty -e pulsemixer"', y=0.25, x=0.25, height=0.5, width=0.5, opacity=1
                        ),
                DropDown(
                    'qute', 'qutebrowser', x=0.70, height=1, width=0.3, opacity=1, on_focus_lost_hide=False
@@ -283,6 +286,7 @@ groups.append(
 keys.extend([
     Key([mod],'a',lazy.group['filemanager'].dropdown_toggle('ranger')),
     Key([mod],'n',lazy.group['filemanager'].dropdown_toggle('nemo')),
+    Key([mod],'p',lazy.group['filemanager'].dropdown_toggle('pulse')),
     Key([mod],'g',lazy.group['filemanager'].dropdown_toggle('qute')),
 ])
 
@@ -470,7 +474,7 @@ floating_layout = layout.Floating(
     ]
 )
 auto_fullscreen = True
-focus_on_window_activation = "urgent"
+focus_on_window_activation = "focus"
 reconfigure_screens = True
 
 # If things like steam games want to auto-minimize themselves when losing
