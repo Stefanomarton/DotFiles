@@ -674,7 +674,11 @@
   :config
   (setq anki-editor-create-decks t))
 
-(use-package org-anki)
+(use-package org-anki
+  :config
+  (setq org-anki-default-match "EXCLUDE=\"\"")
+  (setq org-anki-default-note-type "Basic")
+  )
 
 (provide 'orgconfig)
 
