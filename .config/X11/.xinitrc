@@ -38,9 +38,10 @@ dbus-update-activation-environment XDG_CURRENT_DESKTOP &
 dbus-update-activation-environment --all &
 # xset r rate 150 50 &
 # xmodpap ~/.config/X11/.XmodmapDesktop
-xsetxkbmap -layout us -variant intl
-xinput set-prop "Hazel Bad Wings Mouse" 296 -0.5
+# xsetxkbmap -layout us -variant intl
+# xinput set-prop "Hazel Bad Wings Mouse" 296 -0.5
 exec qtile start -c ~/.config/qtileDesktop/config.py
+# exec awesome
 ;;
 
 esac
