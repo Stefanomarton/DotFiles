@@ -16,6 +16,27 @@ matches:
   - regex: "poiche\\s"
     replace: 'poiché '
 
+  - regex: "cosee\\s"
+    replace: "cos'è "
+
+  - regex: "Cosee\\s"
+    replace: "Cos'è "
+
+  - regex: "comee\\s"
+    replace: "com'è "
+
+  - regex: "Comee\\s"
+    replace: "Com'è "
+
+  - regex: "(?P<word>\\w)aa\\s"
+    replace: "{{word}}à "
+
+  - regex: "(?P<word>\\w)oo\\s"
+    replace: "{{word}}ò "
+
+  - regex: "(?P<word>\\w)ee\\s"
+    replace: "{{word}}é "
+
   - regex: "piu\\s"
     replace: 'più '
 
