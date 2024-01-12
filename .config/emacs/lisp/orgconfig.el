@@ -18,6 +18,56 @@
   (org-hide-leading-stars t)
 
   :config
+
+  (defun sbr-org-insert-dwim (&optional arg)
+    "Insert another entry of the same type as the current
+entry. For example, if the point is on a list item, then add
+another list item of the same type, and if the point is on a
+checkbox list item, then add an empty checkbox item. If instead
+the point is in a heading, then add another heading. If the point
+is in a TODO heading, then add another TODO heading (set to the
+TODO state).
+
+By default, the new entry is inserted below the current
+subtree/item. With a 'C-u' prefix, insert the entry above the
+current heading/item instead."
+    (interactive "P")
+    (when (eq major-mode 'org-mode)
+      (let ((org-special-ctrl-a/e t)
+            (below? (unless  (equal arg '(4)) '(4))))
+        ;; hack to ensure that the point is not after ellipses because
+        ;; that would mess up org-at-item-p etc.
+        (org-beginning-of-line)
+        (cond ((org-at-item-p) ;; at list item or checkbox
+               (let ((org-M-RET-may-split-line nil)
+                     (org-enable-sort-checkbox nil))
+                 ;; hack to make item be inserted after the current one
+                 ;; doesn't work if we are on an empty item line
+                 (when below?
+                   (org-end-of-line))
+                 (org-insert-item (org-at-item-checkbox-p))))
+              ((org-before-first-heading-p) ;; above first heading
+               (org-insert-heading))
+              (t ;; in some kind of heading
+               (org-back-to-heading)
+               (if (org-get-todo-state)
+                   ;; at TODO heading
+                   (org-insert-todo-heading t below?)
+                 ;; at non-TODO heading
+                 (org-insert-heading below?)))))))
+
+  (defun sbr-org-shift-return (&optional arg)
+    "If point is at a table, copy the table cell downward (i.e.,
+the usual effect of typing S-RET). Otherwise,  insert the same
+kind of heading or item as the current entry containing the
+point. "
+    (interactive "P")
+    (if (org-at-table-p)
+        (org-table-copy-down (prefix-numeric-value arg))
+      (sbr-org-insert-dwim arg)))
+
+  (bind-keys :map org-mode-map ("<S-return>" . sbr-org-insert-dwim))
+
   (setq org-blank-before-new-entry
         '((heading . nil)
           (plain-list-item . auto)))
@@ -679,6 +729,7 @@
   (setq org-anki-default-match "EXCLUDE=\"\"")
   (setq org-anki-default-note-type "Basic")
   )
+
 
 (provide 'orgconfig)
 
