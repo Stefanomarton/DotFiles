@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: anki card
+# condition: (and (not (texmathp)))
+# key: card
+# --
+`(org-insert-heading)``(org-promote-subtree)` $1
+`(org-insert-subheading 1)`Front
+$2
+`(org-insert-heading)`Back
+$0

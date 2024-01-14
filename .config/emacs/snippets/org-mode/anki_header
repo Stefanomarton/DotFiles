@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: anki header
+# condition: (and (not (texmathp)))
+# key: ankih
+# --
+`(insert-heading-with-incremented-level)` $1
+:PROPERTIES: 
+:ANKI_DECK: ${2:Deck}${4::${5:SubDeck}}
+:ANKI_NOTE_TYPE: Personal
+:END:
+$0
