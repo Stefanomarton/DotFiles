@@ -55,17 +55,17 @@ keys = [
 
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
-    Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
-    Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+    Key([mod, "shift"], "j", lazy.layout.shuffle_left(), desc="Move window to the left"),
+    Key([mod, "shift"], "Slash", lazy.layout.shuffle_right(), desc="Move window to the right"),
+    Key([mod, "shift"], "k", lazy.layout.shuffle_down(), desc="Move window down"),
+    Key([mod, "shift"], "l", lazy.layout.shuffle_up(), desc="Move window up"),
 
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
-    Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
+    Key([mod, "control"], "j", lazy.layout.grow_left(), desc="Grow window to the left"),
+    Key([mod, "control"], "Slash", lazy.layout.grow_right(), desc="Grow window to the right"),
+    Key([mod, "control"], "k", lazy.layout.grow_down(), desc="Grow window down"),
+    Key([mod, "control"], "l", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
 
     Key(
@@ -81,7 +81,7 @@ keys = [
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "s", lazy.spawn("tofi-drun | zsh", shell=True), desc="Tofi launcher"),
     Key([mod, "shift"], "s", lazy.spawn('grim -g "$(slurp)" - | wl-copy', shell=True), desc="Tofi launcher"),
-    Key([mod], "f", lazy.spawn("zsh -c 'export MOZ_ENABLE_WAYLAND=1 && firefox'"), desc="Firefox Browser"),
+    Key([mod], "f", lazy.spawn("zsh -c 'export MOZ_ENABLE_WAYLAND=1 && floorp'"), desc="Firefox Browser"),
     Key([mod, "shift"], "Return", lazy.spawn("emacsclient -c"), desc="emacs"),
 
     # Toggle between different layouts as defined below
@@ -182,9 +182,9 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 
 screens = [
-    Screen(
-        wallpaper="~/.local/share/Wallpapers/Nordic/ign_mountains.png",
-    ),
+    # Screen(
+    #     wallpaper="~/.local/share/Wallpapers/Nordic/ign_mountains.png",
+    # ),
     Screen(
         wallpaper="~/.local/share/Wallpapers/Nordic/ign_mountains.png",
         wallpaper_mode="fill",
