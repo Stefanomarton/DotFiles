@@ -68,6 +68,14 @@ point. "
 
   (bind-keys :map org-mode-map ("<S-return>" . sbr-org-insert-dwim))
 
+  (defun hide-subtree-and-parent ()
+    (interactive)
+    (outline-up-heading 1)
+    (hide-subtree))
+
+  (evil-define-key 'normal org-mode-map (kbd "hs") 'hide-subtree-and-parent)
+  (evil-define-key 'insert org-mode-map (kbd "C-a a") 'hide-subtree-and-parent)
+
   (setq org-blank-before-new-entry
         '((heading . nil)
           (plain-list-item . auto)))
