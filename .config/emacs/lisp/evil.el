@@ -51,8 +51,9 @@
   (evil-set-leader 'visual (kbd "SPC"))
   (evil-set-leader 'insert (kbd "M-SPC"))
 
-  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
-  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-d") 'evil-scroll-down)
+  ;; (evil-define-key 'normal 'evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+  ;; (evil-define-key 'normal 'evil-normal-state-map (kbd "C-d")
+  ;; 'evil-scroll-down)
 
   ;; Window focus
   (evil-define-key 'normal 'evil-normal-state-map
@@ -66,8 +67,8 @@
   (evil-define-key 'normal LaTeX-mode-map (kbd "<return>") 'evil-avy-goto-char-timer)
   (evil-define-key 'normal markdown-mode-map (kbd "<return>") 'evil-avy-goto-char-timer)
 
-  (evil-define-key 'normal 'evil-normal-state-map (kbd "h") 'evil-search-forward)
-  (evil-define-key 'normal 'evil-normal-state-map (kbd "H") 'evil-search-backward)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-s") 'evil-search-forward)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-S-s") 'evil-search-backward)
 
   (evil-define-key '(normal visual replace operator motion emacs) 'global
     (kbd "j") 'evil-backward-char
