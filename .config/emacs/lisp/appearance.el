@@ -120,21 +120,44 @@
 ;; Cool aspect
 (use-package mixed-pitch
   :straight t
-  :hook (mixed-pitch-mode . my/mixed-pitch-spacing)
+  :hook
+  (mixed-pitch-mode . my/mixed-pitch-spacing)
+  (text-mode . mixed-pitch-mode)
   :config
   (add-to-list 'mixed-pitch-fixed-pitch-faces 'line-number)
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'org-link)
   (add-to-list 'mixed-pitch-fixed-pitch-faces 'corfu-default)
   (add-to-list 'mixed-pitch-fixed-pitch-faces 'corfu-current)
   (add-to-list 'mixed-pitch-fixed-pitch-faces 'org-cite)
   (add-to-list 'mixed-pitch-fixed-pitch-faces 'error)
+
   (setq mixed-pitch-set-height nil)
+
   (defun my/mixed-pitch-spacing ()
     (if mixed-pitch-mode
         (setq line-spacing 0.12)
       (setq line-spacing 0.0))))
 
-;; (straight-use-package
-;;  '(nano :type git :host github :repo "rougier/nano-emacs"))
+(use-package emacs
+  :hook
+  (text-mode . variable-pitch-mode)
+  :config
+  (set-face-attribute 'default nil
+		              :family "JuliaMono"
+		              :height 135
+		              :weight 'normal
+		              :width 'normal)
+  (set-face-attribute 'variable-pitch nil
+    	              :family "JuliaMono"
+    	              :height 135
+    	              :weight 'normal
+    	              :width 'normal)
+  (set-face-attribute 'fixed-pitch nil
+		              :family "JuliaMono"
+		              :height 135
+		              :weight 'normal
+		              :width 'normal)
+  )
 
 (use-package breadcrumb
   :hook
