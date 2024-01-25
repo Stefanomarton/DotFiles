@@ -85,7 +85,9 @@
   (:states 'normal
            "<leader>cp" '(consult-yank-from-kill-ring :no-autoload t))
   (:states 'insert
-           "C-c p" '(consult-yank-from-kill-ring :no-autoload t))
+           "C-c p" '(consult-yank-from-kill-ring :no-autoload t)
+           "C-c l" '(consult-line :no-autoload t)
+           )
   :defer 1)
 
 (use-package consult-projectile
