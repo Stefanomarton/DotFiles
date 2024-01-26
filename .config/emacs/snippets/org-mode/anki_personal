@@ -3,7 +3,9 @@
 # condition: (and (not (texmathp)))
 # key: card
 # --
-`(org-insert-heading)``(org-promote-subtree)` $1
+`(if (> (org-current-level) 1)
+(progn (org-insert-heading)(org-promote-subtree))
+(org-insert-heading))` $1
 `(org-insert-subheading 1)`Front
 $2
 `(org-insert-heading)`Back

@@ -3,9 +3,15 @@
 # condition: (and (not (texmathp)))
 # key: ankih
 # --
-`(insert-heading-with-incremented-level)` $1
+`(if (> (org-current-level) 1)
+(progn (org-insert-heading)(org-promote-subtree)(org-promote-subtree))
+(org-insert-heading))`$1
 :PROPERTIES: 
 :ANKI_DECK: ${2:Deck}${4::${5:SubDeck}}
 :ANKI_NOTE_TYPE: Personal
 :END:
+`(org-insert-heading)``(org-demote-subtree)` $6
+`(org-insert-subheading 1)`Front
+$7
+`(org-insert-heading)`Back
 $0
