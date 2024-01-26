@@ -58,6 +58,34 @@
   :config
   (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
+
+(use-package indent-bars
+  :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
+  :config
+  ;; (setq
+  ;;  indent-bars-color '(highlight :face-bg t)
+  ;;  indent-bars-pattern "."
+  ;;  indent-bars-width-frac 0.2
+  ;;  indent-bars-pad-frac 0.1
+  ;;  indent-bars-zigzag nil
+  ;;  indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1) ; blend=1: blend with BG only
+  ;;  ;; indent-bars-highlight-current-depth '(:blend 0.5) ; pump up the BG blend on current
+  ;;  indent-bars-display-on-blank-lines t)
+  :custom
+  (indent-bars-treesit-support t)
+  (indent-bars-no-descend-string t)
+  (indent-bars-treesit-ignore-blank-lines-types '("module"))
+  ;; (indent-bars-treesit-wrap '((python argument_list parameters ; for python, as an example
+  ;;   			                      list list_comprehension
+  ;;   			                      dictionary dictionary_comprehension
+  ;;   			                      parenthesized_expression subscript)))
+  :hook
+  (python-mode yaml-mode) . (indent-bars-mode)) ; or whichever modes you prefer
+
+(use-package yaml-mode
+  :mode "\\.yml\\'"
+  )
+
 (provide 'programming)
 
 ;;; programming.el ends here
