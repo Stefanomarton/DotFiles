@@ -82,10 +82,10 @@
             (t (propertize "*" 'face 'font-lock-variable-name-face)))))
 
    ;; shortened directory (if buffer have a corresponding file)
-   my-mode-line-file-name
+   ;; my-mode-line-file-name
 
    ;; buffer name
-   (:propertize "%b" face font-lock-doc-face)
+   ;; (:propertize "%b" face font-lock-doc-face)
 
    ;; right aligned stuff
    (:eval
