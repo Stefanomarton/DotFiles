@@ -29,7 +29,7 @@
   (which-key-allow-evil-operators t)
   (which-key-show-remaining-keys t)
   (which-key-sort-order 'which-key-prefix-then-key-order)
-  (which-key-idle-delay 1)
+  (which-key-idle-delay 0.1)
   :config
   (which-key-mode)
   (which-key-setup-minibuffer))
