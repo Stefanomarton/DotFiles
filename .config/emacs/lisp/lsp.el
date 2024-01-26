@@ -42,7 +42,14 @@
   :commands (eglot eglot-ensure)
   :hook
   (python-mode . eglot-ensure)
-  (LaTeX-mode . eglot-ensure))
+  (LaTeX-mode . eglot-ensure)
+  :config
+  (setq eglot-workspace-configuration
+        '((pylsp
+           (plugins
+            (jedi_completion (fuzzy . t))
+            (pydocstyle (enabled . t))))))
+  )
 
 (provide 'lsp)
 
