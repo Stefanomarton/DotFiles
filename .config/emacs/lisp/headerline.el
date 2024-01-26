@@ -7,7 +7,7 @@
 (defun org-outline-path-headerline ()
   ;; (propertize
   ;; (substring-no-properties
-  (org-display-outline-path nil t " > " t)
+  (concat " - " (org-display-outline-path nil t "  " t))
   ;; )
   ;; 'face 'org-outline-path-headerline-face
   ;; )
@@ -17,7 +17,7 @@
   "Show outline path in header line."
   :ligher nil
   (if my/org-header-outline-path-mode
-      (setq header-line-format '((:eval (org-outline-path-headerline))))
+      (setq header-line-format '((:eval (org-get-title 'current-buffer))(:eval (org-outline-path-headerline))))
     )
   )
 
