@@ -19,6 +19,27 @@
 
   :config
 
+  ;; Narrow mode ease of life
+  (defun my/org-narrow-forward ()
+    "Move to the next subtree at same level, and narrow to it."
+    (interactive)
+    (widen)
+    ;; (outline-next-heading)
+    (org-forward-heading-same-level 1)
+    (org-narrow-to-subtree))
+
+  (defun my/org-narrow-backward ()
+    "Move to the next subtree at same level, and narrow to it."
+    (interactive)
+    (widen)
+    ;; (outline-previous-heading)
+    (org-backward-heading-same-level 1)
+    (org-narrow-to-subtree))
+
+  (evil-define-key 'normal org-mode-map (kbd "gk") 'my/org-narrow-forward)
+  (evil-define-key 'normal org-mode-map (kbd "gK") 'my/org-narrow-backward)
+  (evil-define-key 'normal org-mode-map (kbd "<leader>ns") 'org-narrow-to-subtree)
+
   (defun sbr-org-insert-dwim (&optional arg)
     "Insert another entry of the same type as the current
 entry. For example, if the point is on a list item, then add
