@@ -67,8 +67,14 @@
   (evil-define-key 'normal LaTeX-mode-map (kbd "<return>") 'evil-avy-goto-char-timer)
   (evil-define-key 'normal markdown-mode-map (kbd "<return>") 'evil-avy-goto-char-timer)
 
-  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-s") 'evil-search-forward)
-  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-S-s") 'evil-search-backward)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-z") 'evil-search-forward)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-S-z") 'evil-search-backward)
+
+  (evil-define-key 'normal 'evil-insert-state-map (kbd "C-d") 'kill-word)
+  (evil-define-key 'normal 'evil-normal-state-map (kbd "M-d") 'downcase-dwim)
+
+  (evil-define-key '(insert normal) 'evil-normal-state-map (kbd "C-s C-s") (lambda () (interactive)
+	                                                                         (yas-expand-snippet "\\\\($1\\\\) $0")))
 
   (evil-define-key '(normal visual replace operator motion emacs) 'global
     (kbd "j") 'evil-backward-char
@@ -189,6 +195,8 @@
 
     (kbd "<leader>cc") 'calc
     (kbd "<leader>co") 'consult-outline
+    (kbd "<leader>cf") 'consult-focus-lines
+    (kbd "<leader>cl") 'consult-line
     (kbd "<leader>cm") 'consult-global-mark
     (kbd "<leader>ci") 'consult-imenu
 
