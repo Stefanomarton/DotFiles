@@ -5,12 +5,20 @@ import subprocess
 
 import xcffib.xproto
 from libqtile import bar, hook, layout, qtile, widget
-from libqtile.config import (Click, Drag, DropDown, Group, Key, KeyChord,
-                             Match, ScratchPad, Screen)
+from libqtile.config import (
+    Click,
+    Drag,
+    DropDown,
+    Group,
+    Key,
+    KeyChord,
+    Match,
+    ScratchPad,
+    Screen,
+)
 from libqtile.lazy import lazy
 
 # from libqtile.utils import guess_terminal
-
 
 # import socket
 # import distutils.spawn
@@ -30,6 +38,12 @@ ColorH = colordict["colors"]["color8"]
 ColorI = colordict["colors"]["color9"]
 ColorFG = colordict["special"]["foreground"]
 ColorBG = colordict["special"]["background"]
+
+
+# picom conflict
+@hook.subscribe.startup
+def autostart():
+    qtile.cmd_hide_show_bar("bottom")
 
 
 @hook.subscribe.startup_once
@@ -57,7 +71,6 @@ def enter_chord(chord_name):
 @hook.subscribe.leave_chord
 def leave_chord():
     qtile.cmd_spawn("dunstify -C 124", shell=True)
-    # subprocess.Popen(["dunstify", "-C", "124"])
 
 
 @hook.subscribe.client_focus
@@ -205,7 +218,7 @@ def window_match_re(window, wmname=None, wmclass=None, role=None):
 #     #     Key([], lazy.ungrab_chord())
 #     # ]
 #     return [Key([], key, lazy.ungrab_chord()) for key in excluded_keys] for
-    # i in "abcdefghijklmnopqrstuvwxyz" if i not in excluded_keychords_keys
+# i in "abcdefghijklmnopqrstuvwxyz" if i not in excluded_keychords_keys
 
 # excluded_keychords_keys = {"j", "n", "l", "k", "m"}
 # key_list = create_keychord_list(excluded_keychords_keys)
@@ -244,13 +257,15 @@ keys = (
     )
     + modifier_window_commands({"wmclass": "spotify"}, "spotify-launcher", "r")
     + modifier_window_commands(
-        {"wmname": ".*pdf$", "wmclass": "(zathura|Evince|Acroread|Xpdf|Okular)"},
+        {"wmname": ".*pdf$", "wmclass": "(Zathura|Evince|Acroread|Xpdf|Okular)"},
+        # {"wmname": ".*pdf$", "wmclass": "(zathura|Evince|Acroread|Xpdf|Okular)"},
         "zathura",
-        "d",
+        "p",
     )
     + modifier_window_commands(
         {"wmname": "ticktick", "wmclass": "ticktick"}, "ticktick", "t"
     )
+    + modifier_window_commands({"wmname": "mpv", "wmclass": "mpv"}, "mpv", "z")
     + [
         Key([mod], "j", lazy.layout.grow(), lazy.layout.grow_left()),
         Key([mod], "Slash", lazy.layout.shrink(), lazy.layout.grow_right()),
@@ -297,12 +312,13 @@ keys = (
         Key([mod], "comma", lazy.next_screen(), desc="Keyboard focus to next monitor"),
         Key([mod], "o", focus_previous_window()),
         Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
-        Key(
-            [mod],
-            "d",
-            lazy.layout.toggle_split(),
-            desc="Toggle between split and unsplit sides of stack",
-        ),
+        # Key(
+        #     ],
+        #     "d",
+        #     lazy.layout.toggle_split(),
+        #     desc="Toggle between split and unsplit sides of stack",
+        # ),
+        Key([mod], "d", lazy.spawn("dunstctl action", shell=True), desc="dunstctl"),
         # App launching
         Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
         Key([mod], "s", lazy.spawn("dmenu_run -l 4", shell=True), desc="Tofi launcher"),
@@ -481,8 +497,8 @@ groups.append(
         "filemanager",
         [
             DropDown(
-                "ranger",
-                'zsh -c "kitty -e ranger"',
+                "yazi",
+                'zsh -c "kitty -e yazi"',
                 y=0.05,
                 height=0.8,
                 opacity=1,
@@ -514,9 +530,9 @@ groups.append(
 
 keys.extend(
     [
-        Key([mod], "a", lazy.group["filemanager"].dropdown_toggle("ranger")),
+        Key([mod], "a", lazy.group["filemanager"].dropdown_toggle("yazi")),
         Key([mod], "n", lazy.group["filemanager"].dropdown_toggle("nemo")),
-        Key([mod], "p", lazy.group["filemanager"].dropdown_toggle("pulse")),
+        Key([mod], "h", lazy.group["filemanager"].dropdown_toggle("pulse")),
         # Key([mod],'g',lazy.group['filemanager'].dropdown_toggle('qute')),
         Key([mod], "c", lazy.group["filemanager"].dropdown_toggle("qalc")),
     ]
@@ -718,9 +734,3 @@ reconfigure_screens = True
 auto_minimize = True
 
 wmname = "LG3D"
-
-
-# picom conflict
-@hook.subscribe.startup
-def autostart():
-    qtile.cmd_hide_show_bar("bottom")
