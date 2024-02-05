@@ -3,10 +3,13 @@
 # condition: (and (not (texmathp)))
 # key: card
 # --
-`(if (> (org-current-level) 1)
+`(if (> (org-current-level) 2)
 (progn (org-insert-heading)(org-promote-subtree))
-(org-insert-heading))` $1
+(org-insert-subheading 1))`$1
+:PROPERTIES:
+:ANKI_NOTE_TYPE: Personal
+:END:
 `(org-insert-subheading 1)`Front
-$2
+$1
 `(org-insert-heading)`Back
 $0

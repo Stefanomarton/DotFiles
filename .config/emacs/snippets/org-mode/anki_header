@@ -7,8 +7,7 @@
 (progn (org-insert-heading)(org-promote-subtree)(org-promote-subtree))
 (org-insert-heading))`$1
 :PROPERTIES: 
-:ANKI_DECK: ${2:Deck}${4::${5:SubDeck}}
-:ANKI_NOTE_TYPE: Personal
+:ANKI_DECK: ${2:Deck}${4:::${5:SubDeck}}
 :END:
 `(org-insert-heading)``(org-demote-subtree)` $6
 `(org-insert-subheading 1)`Front
