@@ -3,7 +3,7 @@ return	{
 		"ggandor/leap.nvim",
 		require = "tpope/vim-repeat",
 		config = function()
-			require("leap").add_default_mappings()
+	       vim.keymap.set("n", "<Enter>", function ()   require('leap').leap { target_windows = { vim.api.nvim_get_current_win() } } end)
 		end,
 	},
 	{
