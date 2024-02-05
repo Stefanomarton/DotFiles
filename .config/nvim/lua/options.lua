@@ -40,8 +40,8 @@ vim.opt.fillchars.eob = " "
 vim.opt.shortmess:append("c")
 vim.opt.whichwrap:append("<,>,[,],h,l")
 vim.opt.iskeyword:append("-")
--- vim.opt.spell = true
--- vim.opt.spelllang = { "en_us", "it" }
+vim.opt.spell = true
+vim.opt.spelllang = { "en_us", "it" }
 vim.opt.shell = "/bin/bash"
 vim.opt.lazyredraw = false
 vim.opt.shadafile = "NONE"
@@ -55,17 +55,17 @@ vim.g.neovide_scale_factor = 0.8
 vim.g.neovide_refresh_rate = 144
 
 -- Colorscheme
-vim.cmd.colorscheme("lushwal")
-vim.api.nvim_set_hl(0, 'CursorLine', { underline = false})
-vim.cmd('highlight Normal guibg=NONE')
-vim.cmd('highlight CursorLineNr guibg=NONE')
-vim.cmd('highlight CursorLine guifg=NONE')
-vim.cmd('highlight LineNr guibg=NONE')
-vim.cmd('highlight SignColumn guibg=NONE')
-vim.cmd('highlight NonText guibg=NONE')
-vim.cmd('highlight EndOfBuffer guibg=NONE')
-vim.cmd('highlight TabLine guibg=NONE')
-vim.cmd('highlight TabLineFill guibg=NONE')
-vim.cmd('highlight TabLinelSel guibg=NONE')
-vim.cmd('highlight IndentBlanklineIndent guibg=NONE')
-vim.cmd('highlight Conceal guibg=NONE')
+vim.cmd.colorscheme("pywal")
+-- vim.api.nvim_set_hl(0, 'CursorLine', { underline = false})
+-- vim.cmd('highlight Normal guibg=NONE')
+-- vim.cmd('highlight CursorLineNr guibg=NONE')
+-- vim.cmd('highlight CursorLine guifg=NONE')
+-- vim.cmd('highlight LineNr guibg=NONE')
+-- vim.cmd('highlight SignColumn guibg=NONE')
+-- vim.cmd('highlight NonText guibg=NONE')
+-- vim.cmd('highlight EndOfBuffer guibg=NONE')
+-- vim.cmd('highlight TabLine guibg=NONE')
+-- vim.cmd('highlight TabLineFill guibg=NONE')
+-- vim.cmd('highlight TabLinelSel guibg=NONE')
+-- vim.cmd('highlight IndentBlanklineIndent guibg=NONE')
+-- vim.cmd('highlight Conceal guibg=NONE')
