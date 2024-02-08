@@ -18,10 +18,46 @@ from libqtile.config import (
 )
 from libqtile.lazy import lazy
 
+from qtile_extras.popup.toolkit import PopupRelativeLayout, PopupText
+
 # from libqtile.utils import guess_terminal
 
 # import socket
 # import distutils.spawn
+
+
+def show_group_name(qtile, name, hide):
+    # group_name = qtile.current_group.label
+    name = name.upper()
+    controls = [
+        PopupText(
+            can_focus=False,
+            text=name,
+            pos_x=0.25,
+            pos_y=0.25,
+            width=0.5,
+            height=0.5,
+            h_align="center",
+            fontsize=20,
+            font="JuliaMono",
+            wrap=True,
+        ),
+    ]
+
+    global layout
+    layout = PopupRelativeLayout(
+        qtile,
+        width=250,
+        height=50,
+        controls=controls,
+        background=ColorBG,
+        initial_focus=None,
+        hide_on_timeout=hide,
+    )
+
+    # show popup
+    layout.show(centered=True)
+
 
 # Pywal Colors
 colors = os.path.expanduser("~/.cache/wal/colors.json")
@@ -54,23 +90,27 @@ def autostart_once():
 
 @hook.subscribe.setgroup
 def send_notification():
-    group_name = qtile.current_group.label
-    # group_name = qtile.current_group.name
-
-    notification_text = group_name.upper()
-    # Use dunstify to send a notification
-    qtile.cmd_spawn(f"dunstify -a qtile {notification_text} -r 123 -t 600", shell=True)
+    show_group_name(qtile, qtile.current_group.label, 0.5)
+    # group_name = qtile.current_group.label
+    # # group_name = qtile.current_group.name
+    # notification_text = group_name.upper()
+    # # Use dunstify to send a notification
+    # # qtile.cmd_spawn(f"dunstify -a qtile {notification_text} -r 123 -t 600", shell=True)
 
 
 @hook.subscribe.enter_chord
 def enter_chord(chord_name):
     chord_name = chord_name.upper()
-    qtile.cmd_spawn(f"dunstify -a qtile {chord_name} -r 124", shell=True)
+    # qtile.cmd_spawn(f"dunstify -a qtile {chord_name} -r 124", shell=True)
+    show_group_name(qtile, chord_name.upper(), 0)
 
 
 @hook.subscribe.leave_chord
 def leave_chord():
-    qtile.cmd_spawn("dunstify -C 124", shell=True)
+    # qtile.cmd_spawn("dunstify -C 124", shell=True)
+    # PopupRelativeLayout(qtile).kill
+
+    layout.kill()
 
 
 @hook.subscribe.client_focus
@@ -366,32 +406,39 @@ groups = [
         # exclusive=True,
         screen_affinity=0,
         persist=True,
-        matches=[Match(wm_class=["floorp"])],
+        # matches=[Match(wm_class=["floorp"])],
         spawn="floorp",
     ),
     Group(
         "w",
         label="windows",
+        exclusive=True,
         screen_affinity=0,
         persist=True,
         matches=[Match(wm_class=["looking-glass-client"])],
+        layout="max",
+        spawn="looking-glass-client",
     ),
     Group(
         "2",
         label="editor",
         screen_affinity=0,
         persist=True,
-        matches=[Match(wm_class=["emacs"])],
+        # matches=[Match(wm_class=["emacs"])],
+        spawn="emacsclient -c",
     ),
     Group(
         "3",
+        label="anki",
         screen_affinity=0,
         persist=True,
+        spawn="anki",
     ),
     Group(
         "4",
         screen_affinity=0,
         persist=True,
+        spawn="ticktick",
     ),
     Group(
         "5",
@@ -407,7 +454,7 @@ groups = [
         "7",
         screen_affinity=1,
         persist=True,
-        matches=[Match(wm_class=["ticktick"])],
+        # matches=[Match(wm_class=["ticktick"])],
     ),
     Group(
         "8",
