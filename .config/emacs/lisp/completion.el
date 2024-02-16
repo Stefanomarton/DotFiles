@@ -108,27 +108,11 @@
     "Default mapping of narrow and keywords.")
   )
 
-(use-package cape
-  :init
-  ;; Add completion to list
-  ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  ;; (add-to-list 'completion-at-point-functions #'cape-file)
-  ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-  ;;(add-to-list 'completion-at-point-functions #'cape-history)
-  ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-  ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-  ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-  ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-  ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-  ;; (add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
-  ;;(add-to-list 'completion-at-point-functions #'cape-line)
-  )
+(use-package cape)
 
 (use-package corfu
   :bind
   (:map corfu-map ("C-c" . corfu-insert-separator))
-  :after dashboard
   ;; Optional customizations
   :bind (:map corfu-popupinfo-map
               ("M-d" . corfu-popupinfo-toggle))
@@ -171,6 +155,24 @@
                            ;; (cape-capf-prefix-length #'cape-dabbrev 3)
                            ))))
 
+  (require 'cape)
+  (require 'eglot)
+  (defun my/eglot-capf ()
+    (setq-local completion-at-point-functions
+                (list (cape-super-capf #'eglot-completion-at-point #'yasnippet-capf #'cape-file
+                                       ))))
+
+  ;; Option 1: Specify explicitly to use Orderless for Eglot
+  ;; (setq completion-category-overrides '((eglot (styles orderless))
+  ;;                                       (eglot-capf (styles orderless))))
+
+  ;; Option 2: Undo the Eglot modification of completion-category-defaults
+  ;; (with-eval-after-load 'eglot
+  ;;   (setq completion-category-defaults nil))
+
+  ;; (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+
+
   (add-hook 'emacs-lisp-mode-hook
             (lambda ()
               (setq-local corfu-auto-prefix 1)
@@ -181,7 +183,6 @@
                             cape-elisp-symbol
                             cape-dict
                             cape-dabbrev))))
-  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
 
   (defun corfu-enable-always-in-minibuffer ()
     "Enable Corfu in the minibuffer if Vertico/Mct are not active."
