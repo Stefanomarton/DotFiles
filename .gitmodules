@@ -34,3 +34,6 @@
 [submodule ".config/xournalpp/plugins/vi"]
 	path = .config/xournalpp/plugins/vi
 	url = https://github.com/raw-bacon/vi-xournalpp.git
+[submodule "/home/stefanom/.config/tmux/tpm"]
+	path = /home/stefanom/.config/tmux/tpm
+	url = https://github.com/tmux-plugins/tpm
