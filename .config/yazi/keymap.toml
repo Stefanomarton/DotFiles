@@ -86,10 +86,10 @@ keymap = [
 	{ on = [ "Z" ],         exec = ["jump fzf", "open"],                                             desc = "Jump to a directory, or reveal a file using fzf" },
 
 	# Linemode
-	{ on = [ "m", "s" ], exec = "linemode size",        desc = "Set linemode to size" },
-	{ on = [ "m", "p" ], exec = "linemode permissions", desc = "Set linemode to permissions" },
-	{ on = [ "m", "m" ], exec = "linemode mtime",       desc = "Set linemode to mtime" },
-	{ on = [ "m", "n" ], exec = "linemode none",        desc = "Set linemode to none" },
+	# { on = [ "m", "s" ], exec = "linemode size",        desc = "Set linemode to size" },
+	# { on = [ "m", "p" ], exec = "linemode permissions", desc = "Set linemode to permissions" },
+	# { on = [ "m", "m" ], exec = "linemode mtime",       desc = "Set linemode to mtime" },
+	# { on = [ "m", "n" ], exec = "linemode none",        desc = "Set linemode to none" },
 
 	# Copy
 	{ on = [ "c", "c" ], exec = "copy path",             desc = "Copy the absolute path" },
@@ -156,6 +156,10 @@ keymap = [
 
   prepend_keymap = [
      {on   = [ "/" ], exec = "plugin --sync smart-enter", desc = "Enter the child directory, or open the file"},
+     { on = [ "m" ], exec = "plugin bookmarks --args=save", desc = "Save current position as a bookmark" },
+     { on = [ "'" ], exec = "plugin bookmarks --args=jump", desc = "Jump to a bookmark" },
+     { on = [ "b", "d" ], exec = "plugin bookmarks --args=delete", desc = "Delete a bookmark" },
+     { on = [ "b", "D" ], exec = "plugin bookmarks --args=delete_all", desc = "Delete all bookmarks" },
   ]
 
 [tasks]
@@ -303,5 +307,3 @@ keymap = [
 	# Filtering
 	{ on = [ "f" ], exec = "filter", desc = "Apply a filter for the help items" },
 ]
-
-
