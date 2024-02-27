@@ -4,7 +4,7 @@ import re
 import subprocess
 
 import xcffib.xproto
-from libqtile import bar, hook, layout, qtile, widget
+from libqtile import bar, hook, layout, qtile, widget, extension
 from libqtile.config import (
     Click,
     Drag,
@@ -382,6 +382,11 @@ keys = (
         Key([mod], "b", lazy.hide_show_bar(), desc="Hides the bar"),
         Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
         Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+        Key(
+            [mod, "shift"],
+            "v",
+            lazy.run_extension(extension.WindowList()),
+        ),
     ]
 )
 
