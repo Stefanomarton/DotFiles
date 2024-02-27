@@ -27,6 +27,16 @@ return {
 		end,
 	},
 	{
+			"jbyuki/nabla.nvim",
+			config = function ()
+				require("nabla").enable_virt({
+						autogen= true,
+						silent = true,
+            align_center=true
+				})
+			end
+	},
+	{
 		"lervag/vimtex",
 		config = function()
 			vim.g.vimtex_view_method = "zathura"
