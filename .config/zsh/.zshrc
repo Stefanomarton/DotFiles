@@ -25,6 +25,8 @@ export BW_SESSION="B6o+4VlAgK/+ne9t+IItf5viLHkYhlsCoS/dAtNu35wUwgcillYuCMkr075Rt
 export FZF_MARKS_FILE="$XDG_CONFIG_HOME"/fzf-marks/bookmarks
 export MOZ_ENABLE_WAYLAND=1
 
+if [ -z $TMUX ]; then; tmux; fi
+
 export VI_MODE_SET_CURSOR=true
 autoload -U colors && colors
 
@@ -55,7 +57,8 @@ alias cp= "cp -r"
 # \builtin alias cdi=__zoxide_zi
 # alias a="cd"
 alias v="nvim"
-alias e="emacs -nw"
+# alias e="emacs -nw"
+alias e="emacsclient --alternate-editor=\"\" $*"
 alias music="ncmpcpp"
 alias lsa="ls -a"
 alias gp="git push"
@@ -89,7 +92,7 @@ SAVEHIST=100000000
 path+=('~/bin')
 path+=('/home/stefanom/go/bin')
 path+=('/opt/')
-path+=('/home/stefanom/.cargo/bin')
+path+=('/home/stefanom/.local/share/cargo/bin')
 path+=('/home/stefanom/.local/bin')
 path+=('/home/stefanom/.local/bin/scripts/')
 path+=('/home/stefanom/.local/share/gem/ruby/3.0.0/bin')
