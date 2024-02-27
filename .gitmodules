@@ -37,3 +37,6 @@
 [submodule "/home/stefanom/.config/tmux/tpm"]
 	path = /home/stefanom/.config/tmux/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule ".config/yazi/plugins/bookmarks.yazi"]
+	path = .config/yazi/plugins/bookmarks.yazi
+	url = https://github.com/dedukun/bookmarks.yazi.git
