@@ -21,6 +21,8 @@ ColorF=(colordict['colors']['color6'])
 ColorG=(colordict['colors']['color7'])
 ColorH=(colordict['colors']['color8'])
 ColorI=(colordict['colors']['color9'])
+ColorFG = colordict["special"]["foreground"]
+ColorBG = colordict["special"]["background"]
 
 @hook.subscribe.startup_once
 def autostart():
@@ -195,7 +197,7 @@ screens = [
                 widget.Spacer(length=5),
                 widget.GroupBox(
                     highlight_method='block',
-                    background=ColorZ,
+                    background=ColorBG,
                 ),
                 widget.Prompt(),
                 widget.WindowName(),
@@ -220,7 +222,7 @@ screens = [
             24,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-            background=ColorZ,
+            background=ColorBG,
         ),
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
         # By default we handle these events delayed to already improve performance, however your system might still be struggling
