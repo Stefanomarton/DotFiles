@@ -151,7 +151,7 @@
                           (list
                            ;; (cape-capf-prefix-length #'cape-dict 3)
                            (cape-capf-prefix-length #'cape-file 1)
-                           (cape-capf-prefix-length #'yasnippet-capf 1)
+                           (cape-capf-prefix-length #'yasnippet-capf 2)
                            ;; (cape-capf-prefix-length #'cape-dabbrev 3)
                            ))))
 
