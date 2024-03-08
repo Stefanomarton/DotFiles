@@ -139,6 +139,7 @@ point. "
 
 
   ;; all possible latex highlight
+  ;; (setq org-highlight-latex-and-related '(latex script entities native))
   (setq org-highlight-latex-and-related '(latex script entities native))
 
   (defun my/org-time-stamp ()
@@ -251,7 +252,7 @@ point. "
                  \\DeclarePairedDelimiter\\bra{\\langle}{\\rvert}
                  \\DeclarePairedDelimiter\\ket{\\lvert}{\\rangle}
                  \\DeclarePairedDelimiterX\\braket[2]{\\langle}{\\rangle}{#1\\,\\delimsize\\vert\\,\\mathopen{}#2}
-
+                 \\usepackage{amsmath}
                  \\usepackage{textcomp}
                  \\usepackage{marvosym}
                  \\usepackage{wasysym}
