@@ -9,15 +9,15 @@
 ;;   (set-face-foreground 'highlight-indent-guides-character-face "#e3e3d3")
 ;;   )
 
-(use-package treesit
-  :straight (:type built-in)
-  :config
-  (customize-set-variable 'treesit-font-lock-level 4)
-  (setq major-mode-remap-alist
-        '((css-mode  . css-ts-mode)
-          (rust-mode . rust-ts-mode)
-          (python-mode . python-ts-mode)))
-  )
+;; (use-package treesit
+;;   :straight (:type built-in)
+;;   :config
+;;   (customize-set-variable 'treesit-font-lock-level 4)
+;;   (setq major-mode-remap-alist
+;;         '((css-mode  . css-ts-mode)
+;;           (rust-mode . rust-ts-mode)
+;;           (python-mode . python-ts-mode)))
+;;   )
 
 
 ;; Python mode setup
