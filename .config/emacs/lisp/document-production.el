@@ -176,20 +176,20 @@
   (LaTeX-mode . aas-activate-for-major-mode)
   :config
   (aas-set-snippets 'latex-mode
-                    "jf" (lambda () (interactive)
-	                       (yas-expand-snippet "\\\\($1\\\\) $0"))
-                    "kd  " (lambda () (interactive)
-	                         (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+    "jf" (lambda () (interactive)
+	       (yas-expand-snippet "\\\\($1\\\\) $0"))
+    "kd  " (lambda () (interactive)
+	         (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'org-mode
-                    "jf" (lambda () (interactive)
-	                       (yas-expand-snippet "\\\\( $1 \\\\) $0"))
-                    "kd" (lambda () (interactive)
-	                       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
+    "jf" (lambda () (interactive)
+	       (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+    "kd" (lambda () (interactive)
+	       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'markdown-mode
-                    "jf" (lambda () (interactive)
-	                       (yas-expand-snippet "$$1$ $0"))
-                    "kd" (lambda () (interactive)
-	                       (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
+    "jf" (lambda () (interactive)
+	       (yas-expand-snippet "$$1$ $0"))
+    "kd" (lambda () (interactive)
+	       (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
 (use-package laas
   :straight (laas :type git :host github :repo "Stefanomarton/LaTeX-auto-activating-snippets")
@@ -199,42 +199,42 @@
   (org-mode . laas-mode)
   :config
   (aas-set-snippets 'laas-mode
-                    ;; set condition!
-                    :cond #'texmathp ; expand only while in math
-                    ;; bind to functions!
-                    "sum" (lambda () (interactive)
-	                        (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
-                    ",t" (lambda () (interactive)
-	                       (yas-expand-snippet "\\int"))
-                    ",,t" (lambda () (interactive)
-	                        (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-                    "_" (lambda () (interactive)
-	                      (yas-expand-snippet "_{$0}"))
-                    "ds" (lambda () (interactive)
-	                       (yas-expand-snippet "\\Delta_{$1}S $0"))
-                    "dh" (lambda () (interactive)
-	                       (yas-expand-snippet "\\Delta_{$1}H $0"))
-                    "dg" (lambda () (interactive)
-	                       (yas-expand-snippet "\\Delta_{$1}G $0"))
-                    ",r" (lambda () (interactive)
-	                       (yas-expand-snippet "^{$1} $0"))
-                    ",s" (lambda () (interactive)
-	                       (yas-expand-snippet "^{-1} $0"))
-                    ",d" (lambda () (interactive)
-	                       (yas-expand-snippet "^{-2} $0"))
-                    ",f" (lambda () (interactive)
-	                       (yas-expand-snippet "^{-3} $0"))
-                    ",x" (lambda () (interactive)
-	                       (yas-expand-snippet "^- $0"))
-                    ",c" (lambda () (interactive)
-	                       (yas-expand-snippet "^{2} $0"))
-                    ",v" (lambda () (interactive)
-	                       (yas-expand-snippet "^{3} $0"))
-                    ;; add accent snippets
-                    :cond #'laas-object-on-left-condition
-                    ".q" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))
-                    ".v" (lambda () (interactive) (laas-wrap-previous-object "vec"))
-                    ".b" (lambda () (interactive) (laas-wrap-previous-object "mathbf"))))
+    ;; set condition!
+    :cond #'texmathp ; expand only while in math
+    ;; bind to functions!
+    "sum" (lambda () (interactive)
+	        (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+    ",t" (lambda () (interactive)
+	       (yas-expand-snippet "\\int"))
+    ",,t" (lambda () (interactive)
+	        (yas-expand-snippet "\\int_{$1}^{$2} $0"))
+    "_" (lambda () (interactive)
+	      (yas-expand-snippet "_{$0}"))
+    "ds" (lambda () (interactive)
+	       (yas-expand-snippet "\\Delta_{$1}S $0"))
+    "dh" (lambda () (interactive)
+	       (yas-expand-snippet "\\Delta_{$1}H $0"))
+    "dg" (lambda () (interactive)
+	       (yas-expand-snippet "\\Delta_{$1}G $0"))
+    ",r" (lambda () (interactive)
+	       (yas-expand-snippet "^{$1} $0"))
+    ",s" (lambda () (interactive)
+	       (yas-expand-snippet "^{-1} $0"))
+    ",d" (lambda () (interactive)
+	       (yas-expand-snippet "^{-2} $0"))
+    ",f" (lambda () (interactive)
+	       (yas-expand-snippet "^{-3} $0"))
+    ",x" (lambda () (interactive)
+	       (yas-expand-snippet "^- $0"))
+    ",c" (lambda () (interactive)
+	       (yas-expand-snippet "^{2} $0"))
+    ",v" (lambda () (interactive)
+	       (yas-expand-snippet "^{3} $0"))
+    ;; add accent snippets
+    :cond #'laas-object-on-left-condition
+    ".q" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))
+    ".v" (lambda () (interactive) (laas-wrap-previous-object "vec"))
+    ".b" (lambda () (interactive) (laas-wrap-previous-object "mathbf"))))
 
 (use-package cdlatex
   :commands latex-mode
@@ -275,43 +275,25 @@
 		              (delete-row . "Dr"	)
 		              )))
 
-(use-package languagetool
-  :after dashboard
-  :defer t
-  :commands (languagetool-check
-             languagetool-clear-suggestions
-             languagetool-correct-at-point
-             languagetool-correct-buffer
-             languagetool-set-language
-             languagetool-server-mode
-             languagetool-server-start
-             languagetool-server-stop)
-  :config
-  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8"
-                                      "-cp" "/usr/share/languagetool:/usr/share/java/languagetool/*")
-        languagetool-console-command "org.languagetool.commandline.Main"
-        languagetool-server-command "org.languagetool.server.HTTPServer")
-  )
-
-(use-package jinx
-  :hook
-  (org-mode . jinx-mode)
-  (text-mode . jinx-mode)
-  (markdown-mode . jinx-mode)
-  (LaTeX-mode . jinx-mode)
-  ;; :bind
-  ;; (:map jinx-mode-map
-  ;;       (("k") . jinx-previous)
-  ;;       (("l") . jinx-next))
-  :custom
-  (jinx-languages "it_IT, en_US")
-  :config
-  (evil-define-key 'normal 'global (kbd "<leader>j") 'jinx-correct)
-  (evil-define-key 'normal 'global (kbd "<leader>J") 'jinx-correct-all)
-  (general-define-key
-   :keymaps 'jinx-correct-map
-   "j" 'jinx-previous
-   "/" 'jinx-next))
+;; (use-package jinx
+;;   :hook
+;;   (org-mode . jinx-mode)
+;;   (text-mode . jinx-mode)
+;;   (markdown-mode . jinx-mode)
+;;   (LaTeX-mode . jinx-mode)
+;;   ;; :bind
+;;   ;; (:map jinx-mode-map
+;;   ;;       (("k") . jinx-previous)
+;;   ;;       (("l") . jinx-next))
+;;   :custom
+;;   (jinx-languages "it_IT, en_US")
+;;   :config
+;;   (evil-define-key 'normal 'global (kbd "<leader>j") 'jinx-correct)
+;;   (evil-define-key 'normal 'global (kbd "<leader>J") 'jinx-correct-all)
+;;   (general-define-key
+;;    :keymaps 'jinx-correct-map
+;;    "j" 'jinx-previous
+;;    "/" 'jinx-next))
 
 (provide 'document-production)
 
