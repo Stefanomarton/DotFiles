@@ -2,6 +2,7 @@ import json
 import os
 import re
 import subprocess
+from libqtile.backend.wayland import InputConfig
 
 import xcffib.xproto
 from libqtile import bar, hook, layout, qtile, widget, extension
@@ -412,7 +413,7 @@ groups = [
         screen_affinity=0,
         persist=True,
         # matches=[Match(wm_class=["floorp"])],
-        spawn="floorp",
+        # spawn="floorp",
     ),
     Group(
         "w",
@@ -466,8 +467,8 @@ groups = [
         label="music",
         screen_affinity=2,
         persist=True,
-        spawn="spotify-launcher",
-        matches=[Match(wm_class=["spotify"])],
+        # spawn="spotify-launcher",
+        # matches=[Match(wm_class=["spotify"])],
         layout="verticaltile",
         layout_opts={"border_width": 0, "border_focus": "#000000"},
     ),
@@ -786,3 +787,9 @@ reconfigure_screens = True
 auto_minimize = True
 
 wmname = "LG3D"
+
+wl_input_rules = {
+        "type:keyboard": InputConfig(dwt=True, kb_repeat_delay=150, kb_repeat_rate=50, kb_variant="intl", kb_layout="us"),
+        "*": InputConfig(tap=True, natural_scroll=True),
+    }
+
