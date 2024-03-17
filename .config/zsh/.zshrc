@@ -50,7 +50,6 @@ bindkey "^[[F" end-of-line
 # #############
 # #  Aliases  #
 # #############
-alias cp= "cp -r"
 
 # # Aliases for zoxide
 # \builtin alias cd=__zoxide_z
