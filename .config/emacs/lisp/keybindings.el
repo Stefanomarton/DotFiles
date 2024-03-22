@@ -34,7 +34,7 @@
 
   (general-nmap "c" (general-key-dispatch 'evil-change
                       "c" 'my-evil-change-whole-line))
-  (general-vmap "c" 'my-evil-change-visual-selection)
+  (general-vmap "c" 'evil-change)
   :init
   (general-evil-setup t)
   )
