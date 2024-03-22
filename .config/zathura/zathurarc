@@ -39,3 +39,4 @@ set dbus-service true
 set synctex true
 set synctex-editor-command "emacs +%{line}:%{input}"
 
+set database sqlite
