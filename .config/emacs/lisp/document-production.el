@@ -183,6 +183,8 @@
   (aas-set-snippets 'org-mode
     "jf" (lambda () (interactive)
 	       (yas-expand-snippet "\\\\( $1 \\\\) $0"))
+    "jc" (lambda () (interactive)
+	       (yas-expand-snippet "\\\\(\\ce{ $1 }\\\\) $0"))
     "kd" (lambda () (interactive)
 	       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'markdown-mode
@@ -237,12 +239,12 @@
     ".b" (lambda () (interactive) (laas-wrap-previous-object "mathbf"))))
 
 (use-package cdlatex
-  :commands latex-mode
+  ;; :commands latex-mode
   :hook (LaTeX-mode . cdlatex-mode)
   :custom
   (cdlatex-takeover-dollar nil)
-  (cdlatex-math-modify-prefix 58)
-  (cdlatex-math-symbol-prefix 59)
+  ;; (cdlatex-math-modify-prefix nil)
+  ;; (cdlatex-math-symbol-prefix nil)
   )
 
 (use-package latex-table-wizard
@@ -275,25 +277,25 @@
 		              (delete-row . "Dr"	)
 		              )))
 
-;; (use-package jinx
-;;   :hook
-;;   (org-mode . jinx-mode)
-;;   (text-mode . jinx-mode)
-;;   (markdown-mode . jinx-mode)
-;;   (LaTeX-mode . jinx-mode)
-;;   ;; :bind
-;;   ;; (:map jinx-mode-map
-;;   ;;       (("k") . jinx-previous)
-;;   ;;       (("l") . jinx-next))
-;;   :custom
-;;   (jinx-languages "it_IT, en_US")
-;;   :config
-;;   (evil-define-key 'normal 'global (kbd "<leader>j") 'jinx-correct)
-;;   (evil-define-key 'normal 'global (kbd "<leader>J") 'jinx-correct-all)
-;;   (general-define-key
-;;    :keymaps 'jinx-correct-map
-;;    "j" 'jinx-previous
-;;    "/" 'jinx-next))
+(use-package jinx
+  :hook
+  (org-mode . jinx-mode)
+  (text-mode . jinx-mode)
+  (markdown-mode . jinx-mode)
+  (LaTeX-mode . jinx-mode)
+  ;; :bind
+  ;; (:map jinx-mode-map
+  ;;       (("k") . jinx-previous)
+  ;;       (("l") . jinx-next))
+  :config
+  (evil-define-key 'normal 'global (kbd "<leader>j") 'jinx-correct)
+  (evil-define-key 'normal 'global (kbd "<leader>J") 'jinx-correct-all)
+  (setq jinx-languages "it_IT, en_US")
+  ;; (general-define-key
+  ;;  :keymaps 'jinx-correct-map
+  ;;  "j" 'jinx-previous
+  ;;  "/" 'jinx-next)
+  )
 
 (provide 'document-production)
 
