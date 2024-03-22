@@ -5,7 +5,7 @@
 (use-package emacs
   :config
   ;; Prefere visual line
-  (global-visual-line-mode t)
+  ;; (global-visual-line-mode t)
 
   ;; I keep losing the curson
   (blink-cursor-mode 1)
