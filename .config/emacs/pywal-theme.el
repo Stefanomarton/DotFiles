@@ -51,7 +51,7 @@
    `(mode-line-inactive ((t (:height 140 :foreground ,comment :background ,bg :box (:line-width 20 :color ,bg)))))
    ;; '(mode-line-buffer-id ((t (:box (:line-width 1 :color ,fg) :weight bold))))
 
-   `(header-line ((t (:height 140 :foreground ,fg :background ,hl :box (:line-width 20 :color ,bg)))))
+   `(header-line ((t (:height 160 :foreground ,fg :background ,hl :box (:line-width 20 :color ,bg)))))
 
    `(font-lock-comment-face ((t (:family "JuliaMono Light" :foreground ,comment :slant oblique))))
    `(font-lock-builtin-face ((t (:foreground ,violet))))
@@ -140,6 +140,7 @@
    `(org-outline-path-headerline-face ((t (:foreground ,red :weight ultra-bold ))))
    `(org-drawer ((t (:foreground ,blue))))
    `(org-date ((t (:foreground ,blue))))
+   ;; `(fill-column-indicator ((t (:foreground ,comment :background ,comment))))
 
 
    (custom-theme-set-variables
