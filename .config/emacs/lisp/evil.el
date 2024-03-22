@@ -6,6 +6,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-undo-system 'undo-fu)
   (setq evil-want-integration t)
+  (setq evil-move-beyond-eol nil)
 
   :custom
   (setq completion-in-region-function 'consult-completion-in-region)
@@ -19,8 +20,8 @@
   (setq evil-search-module 'evil-search)
   (setq evil-kill-on-visual-paste nil)
   (setq evil-esc-delay 0.0001)
-  (setq evil-move-beyond-eol t)
-  (setq evil-want-Y-yank-to-eol t)
+  (setq evil-want-Y-yank-to-eol nil)
+
 
   :config
 
@@ -248,6 +249,7 @@
 (use-package undo-fu-session
   :after undo-fu
   :config
+  (setq undo-fu-session-linear t)
   (undo-fu-session-global-mode))
 
 ;; Evil integrations
@@ -283,23 +285,21 @@
                   (?\{ . ("{" . "}"))
                   (?> . ("<" . ">"))
                   (?t . evil-surround-read-tag)
-                  (?< . evil-surround-read-tag)
+                  ;; (?< . evil-surround-read-tag)
                   (?\C-f . evil-surround-prefix-function)
                   (?f . evil-surround-function)))
   (add-hook 'org-mode-hook (lambda ()
     		                 (push '(?h . ("\$" . "\$")) evil-surround-pairs-alist)
     		                 (push '(?H . ("\$$" . "\$$")) evil-surround-pairs-alist)
     		                 (push '(?f . ("\\frac{" . "}{}")) evil-surround-pairs-alist)
+    		                 (push '(?w . ("\\(\\ce{" . "}\\)")) evil-surround-pairs-alist)
     		                 (push '(?v . ("_{" . "}")) evil-surround-pairs-alist)
     		                 (push '(?, . ("^{" . "}")) evil-surround-pairs-alist)))
-  (add-hook 'LaTeX-mode-hook (lambda ()
- 			                   (push '(?p . ("\(" . "\)")) evil-surround-pairs-alist)
- 			                   (push '(?s . ("\[" . "\]")) evil-surround-pairs-alist)
- 			                   (push '(?c . ("{" . "}")) evil-surround-pairs-alist)))
+  ;; (add-hook 'LaTeX-mode-hook (lambda ()
+  ;;   		                   (push '(?p . ("\(" . "\)")) evil-surround-pairs-alist)
+  ;;   		                   (push '(?s . ("\[" . "\]")) evil-surround-pairs-alist)
+  ;;   		                   (push '(?c . ("{" . "}")) evil-surround-pairs-alist)))
   (add-hook 'markdown-mode-hook (lambda ()
- 			                      (push '(?p . ("\(" . "\)")) evil-surround-pairs-alist)
- 			                      (push '(?s . ("\[" . "\]")) evil-surround-pairs-alist)
- 			                      (push '(?c . ("{" . "}")) evil-surround-pairs-alist)
                                   (push '(?* . ("**" . "**")) evil-surround-pairs-alist))))
 
 ;; (use-package embrace
