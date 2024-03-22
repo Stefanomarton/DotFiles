@@ -577,6 +577,16 @@ groups.append(
                 opacity=1,
                 on_focus_lost_hide=False,
             ),
+            DropDown(
+                "consult",
+                'zsh -c "kitty -e ~/prova.sh"',
+                y=0,
+                x=0,
+                height=0.2,
+                width=1,
+                opacity=1,
+                on_focus_lost_hide=True,
+            ),
         ],
     )
 )
@@ -586,7 +596,7 @@ keys.extend(
         Key([mod], "a", lazy.group["filemanager"].dropdown_toggle("yazi")),
         Key([mod], "n", lazy.group["filemanager"].dropdown_toggle("nemo")),
         Key([mod], "h", lazy.group["filemanager"].dropdown_toggle("pulse")),
-        # Key([mod],'g',lazy.group['filemanager'].dropdown_toggle('qute')),
+        Key([mod],'g',lazy.group['filemanager'].dropdown_toggle('consult')),
         Key([mod], "c", lazy.group["filemanager"].dropdown_toggle("qalc")),
     ]
 )
@@ -763,10 +773,10 @@ bring_front_click = False
 floats_kept_above = True
 cursor_warp = True
 floating_layout = layout.Floating(
-    border_focus=ColorA,
-    border_normal=ColorC,
-    border_width=2,
-    margin=2,
+    border_focus=ColorBG,
+    border_normal=ColorBG,
+    border_width=0,
+    margin=0,
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
