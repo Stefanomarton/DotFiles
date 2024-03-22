@@ -1,7 +1,7 @@
 ;;; headerline.el --- Minimal Headerline -*- lexical-binding: t; -*-
 
 (defface org-outline-path-headerline-face
-  '((t (:foreground "white" :weight ultra-bold)))
+  '((t (:height 140 :foreground "white" :weight ultra-bold)))
   "face for headerline outline in org-mode")
 
 (defun org-outline-path-headerline ()
@@ -21,7 +21,7 @@
     )
   )
 
-(add-hook 'org-mode-hook #'my/org-header-outline-path-mode)
+;; (add-hook 'org-mode-hook #'my/org-header-outline-path-mode)
 
 ;; (defvar-local org+-header-line-format nil
 ;;   "Cons with position of last synchronization of outline path
