@@ -72,6 +72,7 @@ alias -g V="sudoedit"
 alias -s {yml,yaml,lua,c,tex}=nvim #Auto open file with nvim based on extension
 alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings"
 alias -g lg="lazygit"
+alias -g ppttopdf="libreoffice --headless --invisible --convert-to pdf"
 
 # # Better use alias for convience and completion
 alias -g rp="lazygit --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@""
