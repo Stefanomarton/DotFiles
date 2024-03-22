@@ -3,41 +3,35 @@
 (use-package org
   :defer t
   :after dashboard
-  :straight t
   :ensure nil
   :hook
-  (org-mode . org-indent-mode)
+  ;; (org-mode . org-indent-mode)
   (org-mode . org-cdlatex-mode)
+  (org-mode . yas-minor-mode)
   (org-mode . er/add-latex-in-org-mode-expansions)
+  (org-mode . my/org-header-outline-path-mode)
+  (org-mode . display-fill-column-indicator-mode)
+  (org-mode . auto-fill-mode)
 
   :custom
   (org-use-speed-commands t)
   (org-adapt-indentation t)
   (org-list-allow-alphabetical t)
   (org-image-actual-width 500)
-  (org-hide-leading-stars t)
+  (org-hide-leading-stars nil)
+
+  :init
+  (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
 
   :config
 
-  ;; Narrow mode ease of life
-  (defun my/org-narrow-forward ()
-    "Move to the next subtree at same level, and narrow to it."
-    (interactive)
-    (widen)
-    ;; (outline-next-heading)
-    (org-forward-heading-same-level 1)
-    (org-narrow-to-subtree))
+  (setq org-link-abbrev-alist
+        '(("image-dir" . "file:~/GoogleDrive/org/uni/attachments/")))
 
-  (defun my/org-narrow-backward ()
-    "Move to the next subtree at same level, and narrow to it."
-    (interactive)
-    (widen)
-    ;; (outline-previous-heading)
-    (org-backward-heading-same-level 1)
-    (org-narrow-to-subtree))
+  ;; (setq org-link-abbrev-alist
+  ;;       `(
+  ;;         ("image-dir" . ,(format "file:%s%%s" (file-name-as-directory org-directory)))))
 
-  (evil-define-key 'normal org-mode-map (kbd "gk") 'my/org-narrow-forward)
-  (evil-define-key 'normal org-mode-map (kbd "gK") 'my/org-narrow-backward)
   (evil-define-key 'normal org-mode-map (kbd "<leader>ns") 'org-narrow-to-subtree)
 
   (defun sbr-org-insert-dwim (&optional arg)
@@ -105,7 +99,7 @@ point. "
    org-fontify-quote-and-verse-blocks t
    org-fontify-whole-heading-line t)
 
-  (setq org-cdlatex-math-modify nil)
+  ;; (setq org-cdlatex-math-modify nil)
 
   (setq org-emphasis-alist '(("*" bold)
                              ("/" italic)
@@ -135,11 +129,11 @@ point. "
 
 
   (add-hook 'org-mode-hook (lambda ()
-                             (setq-local fill-column 120)))
+                             (setq-local fill-column 110)
+                             (setq-local set-fill-column 115)))
 
 
   ;; all possible latex highlight
-  ;; (setq org-highlight-latex-and-related '(latex script entities native))
   (setq org-highlight-latex-and-related '(latex script entities native))
 
   (defun my/org-time-stamp ()
@@ -152,7 +146,8 @@ point. "
   (defun my/org-mode/load-prettify-symbols ()
     (interactive)
     (setq prettify-symbols-alist
-          '(("\\\\" . ?↩)
+          '(
+            ("\\\\" . ?↩)
             )))
 
   (add-hook 'org-mode-hook 'my/org-mode/load-prettify-symbols)
@@ -170,9 +165,6 @@ point. "
 		                      (list 'invisible nil))))
 
   (advice-add 'org-raise-scripts :after #'my/org-raise-scripts-no-braces)
-
-
-  (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
 
 
   (setq org-export-headline-levels 6)
@@ -233,7 +225,7 @@ point. "
                  \\usepackage[marginal]{footmisc} % cleaner footnotes
                  \\usepackage[utf8]{inputenc}
                  \\usepackage[margin=3cm]{geometry}
-                 \\usepackage[T1]{fontenc}
+                 % \\usepackage[T1]{fontenc}
                  \\usepackage{fixltx2e}
                  \\usepackage{graphicx}
                  \\usepackage{longtable}
@@ -304,6 +296,15 @@ point. "
                  \\hypersetup{
 	             colorlinks=true,       % false: boxed links; true: colored links
                  }
+
+                 \\usepackage[most]{tcolorbox}
+                 \\newtcolorbox{bx}{
+                    enhanced,
+                    boxrule=0pt,frame hidden,
+                    borderline west={4pt}{0pt}{black},
+                    colback=black!5!white,
+                    sharp corners,
+                 }
                  \\usepackage{fixltx2e}
                  \\usepackage{graphicx}
                  \\usepackage{longtable}
@@ -355,12 +356,9 @@ point. "
 (use-package org-download
   :defer t
   :commands (org-download-clipboard)
-  ;; :after (org-roam org)
   :init
   (setq org-download-display-inline-images 'posframe)
-  ;; (setq org-download-timestamp "")
   (setq org-download-method 'directory)
-  ;; (setq org-download-image-org-width 7)
   (setq org-download-image-latex-width 7)
   (setq org-download-heading-lvl nil)
   (defun custom/org-download-dir ()
@@ -445,13 +443,21 @@ point. "
   ;; update modified time stamp ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+  (defun disable-undo-one-off ()
+    (interactive)
+    (let ((undo buffer-undo-list))        ; save the undo list
+      (buffer-disable-undo)               ; disable undo
+      (time-stamp)                     ; do your thing
+      (buffer-enable-undo)                ; re-enable undo
+      (setq buffer-undo-list undo)))      ; restore the undo list
+
   (add-hook 'org-mode-hook (lambda ()
                              (setq-local time-stamp-active t
                                          time-stamp-line-limit 18
                                          time-stamp-start "^#\\+LAST_MODIFIED: [ \t]*"
                                          time-stamp-end "$"
                                          time-stamp-format "\[%Y-%m-%d %a %H:%M:%S\]")
-                             (add-hook 'before-save-hook 'time-stamp nil 'local)))
+                             (add-hook 'before-save-hook 'disable-undo-one-off)))
 
   ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; customise the slug function
@@ -676,11 +682,6 @@ point. "
         (message "No notes cite this reference."))))
   )
 
-;; (use-package org-image-preview
-;;   :straight (:host github :repo "karthink/org-image-preview")
-;;   :commands org-image-preview
-;;   :bind (:map org-mode-map
-;;               ([remap org-toggle-inline-images] . org-image-preview)))
 
 (use-package org-appear
   :hook (org-mode . org-appear-mode)
@@ -693,37 +694,28 @@ point. "
   (setq org-appear-inside-latex t)
   (setq org-appear-autoemphasis t))
 
-(use-package org-modern
-  :hook
-  (org-mode . org-modern-mode)
-  (org-modern-mode . my/org-modern-spacing)
-  :config
-  (defun my/org-modern-spacing ()
-    (setq-local line-spacing
-                (if org-modern-mode
-                    0.1 0.0)))
-
-  (setq org-modern-todo nil
-        org-modern-hide-stars nil
-        org-modern-horizontal-rule nil
-        org-modern-keyword "‣ "
-        org-modern-star '("1." "2." "3." "4." "5." "6.")
-        ;; org-modern-block-fringe 0
-        org-modern-table nil)
-
-  ;; customize bullet list symbols
-  ;; (setq org-modern-list '((42 . "◦") (45 . "–") (43 . "•")))
-  )
+;; (use-package org-modern
+;;   :hook
+;;   (org-mode . org-modern-mode)
+;;   :config
+;;   (setq org-modern-todo nil
+;;         org-modern-hide-stars nil
+;;         org-modern-horizontal-rule nil
+;;         org-modern-keyword "‣ "
+;;         ;; org-modern-star '("1." "2." "3." "4." "5." "6.")
+;;         org-modern-block-fringe 2
+;;         org-modern-table nil)
+;;   )
 
 ;; *** ORG-SRC
-(use-package org-src
-  :straight (:type built-in)
-  :after org
-  :config
-  (setq org-src-fontify-natively t)
-  (setq-default
-   org-src-tab-acts-natively t
-   org-src-preserve-indentation t))
+;; (use-package org-src
+;;   :straight (:type built-in)
+;;   :after org
+;;   :config
+;;   (setq org-src-fontify-natively t)
+;;   (setq-default
+;;    org-src-tab-acts-natively t
+;;    org-src-preserve-indentation t))
 
 ;; ;; Show org header path
 ;; (use-package org-sticky-header
@@ -758,6 +750,12 @@ point. "
   :config
   (setq org-anki-default-match "EXCLUDE=\"\"")
   (setq org-anki-default-note-type "Basic")
+  )
+
+(use-package org-transclusion
+  :bind (:map org-mode-map
+              ("<leader>ota" . org-transclusion-add)
+              ("<leader>otm" . org-transclusion-mode))
   )
 
 
