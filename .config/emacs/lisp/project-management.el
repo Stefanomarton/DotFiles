@@ -66,10 +66,11 @@
   :hook (magit-mode . magit-delta-mode))
 
 (use-package git-gutter+
-  :after dashboard)
+  :after git-gutter
+  :config
+  (git-gutter+-mode))
 
 (use-package git-gutter
-  :after dashboard
   :hook ((prog-mode markdown-mode LaTeX-mode) . git-gutter-mode)
   :config
   (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1)
@@ -90,7 +91,7 @@
   (setq git-gutter:update-interval 0.02))
 
 (use-package git-gutter-fringe
-  :after dashboard
+  :after git-gutter
   :config
   (fringe-mode nil)
   (setq-default left-margin-width 1)

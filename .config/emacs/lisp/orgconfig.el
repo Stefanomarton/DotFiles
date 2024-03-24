@@ -1,8 +1,6 @@
 :;;; orgconfig.el --- org-mode configuration -*- lexical-binding: t; -*-
 
 (use-package org
-  :defer t
-  :after dashboard
   :ensure nil
   :hook
   ;; (org-mode . org-indent-mode)
@@ -686,7 +684,7 @@ point. "
 (use-package org-appear
   :hook (org-mode . org-appear-mode)
   :config
-  (setq org-hide-emphasis-markers t)
+  (setq org-hide-emphasis-markers nil)
   (setq org-appear-elements '(bold italic underline verbatim code subscript superscript))
   (setq org-appear-autolinks t)
   (setq org-appear-autokeywords t)

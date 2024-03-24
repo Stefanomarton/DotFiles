@@ -35,7 +35,8 @@
 ;; Lua setup
 
 (use-package lua-mode
-  :after dashboard)
+  :mode ("\\.lua?\\'" . lua-mode)
+  )
 
 ;; (use-package lisp-mode
 ;;   :straight nil

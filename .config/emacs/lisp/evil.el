@@ -255,7 +255,6 @@
 ;; Evil integrations
 (use-package evil-collection
   :defer .5
-  :after dashboard
   :config
   (evil-collection-init))
 

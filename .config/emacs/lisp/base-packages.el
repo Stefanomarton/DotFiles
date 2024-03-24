@@ -35,7 +35,7 @@
   (which-key-setup-minibuffer))
 
 (use-package embark
-  :after dashboard
+  :commands (embark-minimal-act embark-dwim)
   :config
 
   ;; Base keybindings
@@ -100,7 +100,6 @@ targets."
 
 ;; Nice auto formatting
 (use-package format-all
-  :after dashboard
   :config
   (add-hook 'format-all-mode-hook 'format-all-ensure-formatter)
   (add-hook 'prog-mode-hook 'format-all-mode)

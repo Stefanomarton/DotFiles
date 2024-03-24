@@ -2,7 +2,6 @@
 
 ;; Better dired
 (use-package dirvish
-  :after dashboard
   :commands (dired-jump dirvish-dwim)
   :config
   (evil-define-key 'normal dirvish-mode-map

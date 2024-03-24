@@ -30,8 +30,7 @@
   )
 
 ;; I like icons
-(use-package nerd-icons
-  :after dashboard)
+(use-package nerd-icons)
 
 ;; Customize the divider beetween windows
 (use-package frame
@@ -84,38 +83,38 @@
   )
 
 ;; Cool dashboard setting with minimal loading times
-(use-package dashboard
-  :if (< (length command-line-args) 2)
-  :custom
-  (initial-buffer-choice #'(lambda () (get-buffer-create "*dashboard*")))
-  (dashboard-banner-logo-title "Welcome Back Goblin")
-  (dashboard-startup-banner "~/.config/emacs/themes/logo.txt")
-  (dashboard-center-content t)
-  (dashboard-set-footer nil)
-  (dashboard-icon-type 'nerd-icons) ;; use `nerd-icons' package
-  ;; (setq dashboard-set-navigator t)
-  ;; (setq dashboard-set-heading-icons t)
-  (dashboard-set-file-icons t)
-  (dashboard-items nil)
-  ;; (dashboard-items '((recents  . 10)))
-  ;; (bookmarks . 5))
-  ;; (projects . 5)))
-  ;; (agenda . 5)
-  ;; (registers . 5)))
-  :config
-  ;; define custom mode map avoiding problems with lazyloading
-  (evil-define-key 'normal dashboard-mode-map
-    (kbd "<leader>ff") 'find-file
-    (kbd "<leader>fr") 'consult-recent-file
-    (kbd "<leader>b") 'consult-buffer
-    (kbd "f") 'find-file
-    (kbd "<leader>pp") 'projectile-switch-project
-    (kbd "c") (lambda ()
-		        (interactive)
-		        (let ((folder-path "~/.config/emacs"))
-		          (find-file folder-path))))
-  (dashboard-setup-startup-hook)
-  )
+;; (use-package dashboard
+;;   :if (< (length command-line-args) 2)
+;;   :custom
+;;   (initial-buffer-choice #'(lambda () (get-buffer-create "*dashboard*")))
+;;   (dashboard-banner-logo-title "Welcome Back Goblin")
+;;   (dashboard-startup-banner "~/.config/emacs/themes/logo.txt")
+;;   (dashboard-center-content t)
+;;   (dashboard-set-footer nil)
+;;   (dashboard-icon-type 'nerd-icons) ;; use `nerd-icons' package
+;;   ;; (setq dashboard-set-navigator t)
+;;   ;; (setq dashboard-set-heading-icons t)
+;;   (dashboard-set-file-icons t)
+;;   (dashboard-items nil)
+;;   ;; (dashboard-items '((recents  . 10)))
+;;   ;; (bookmarks . 5))
+;;   ;; (projects . 5)))
+;;   ;; (agenda . 5)
+;;   ;; (registers . 5)))
+;;   :config
+;;   ;; define custom mode map avoiding problems with lazyloading
+;;   (evil-define-key 'normal dashboard-mode-map
+;;     (kbd "<leader>ff") 'find-file
+;;     (kbd "<leader>fr") 'consult-recent-file
+;;     (kbd "<leader>b") 'consult-buffer
+;;     (kbd "f") 'find-file
+;;     (kbd "<leader>pp") 'projectile-switch-project
+;;     (kbd "c") (lambda ()
+;; 		        (interactive)
+;; 		        (let ((folder-path "~/.config/emacs"))
+;; 		          (find-file folder-path))))
+;;   (dashboard-setup-startup-hook)
+;;   )
 
 ;; Cool aspect
 (use-package mixed-pitch

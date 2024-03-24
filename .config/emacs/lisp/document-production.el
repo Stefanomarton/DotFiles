@@ -16,7 +16,7 @@
   )
 
 (use-package markdown-mode
-  :after dashboard
+  :mode ("\\.md?\\'" . markdown-mode)
   :custom
   (setq markdown-fontify-code-blocks-natively t)
   (setq markdown-enable-math t)
