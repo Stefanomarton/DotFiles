@@ -85,6 +85,10 @@
       `(progn ,@form)
     '(progn)))
 
+(when (fboundp 'native-compile-async)
+  (setq comp-deferred-compilation t
+        comp-deferred-compilation-black-list '("/mu4e.*\\.el$")))
+
 (require 'bind-key)
 (load-module "core")
 (load-module "evil")
