@@ -13,7 +13,7 @@
 
   :custom
   (org-use-speed-commands t)
-  (org-adapt-indentation t)
+  (org-adapt-indentation nil)
   (org-list-allow-alphabetical t)
   (org-image-actual-width 500)
   (org-hide-leading-stars nil)
@@ -220,6 +220,8 @@ point. "
                  '("report"
                    "\\documentclass[a4paper,11pt,titlepage]{report}
                  \\hbadness 99999
+                 \\usepackage{tabularx}
+                 \\usepackage{booktabs}
                  \\usepackage[marginal]{footmisc} % cleaner footnotes
                  \\usepackage[utf8]{inputenc}
                  \\usepackage[margin=3cm]{geometry}
@@ -289,6 +291,8 @@ point. "
                  \\setlength{\\parindent}{0pt}
                  \\usepackage{mhchem}
                  \\usepackage[utf8]{inputenc}
+                 \\usepackage{tabularx}
+                 \\usepackage{booktabs}
                  \\usepackage[T1]{fontenc}
                  \\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
                  \\hypersetup{
