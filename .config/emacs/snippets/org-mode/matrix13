@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: matrix13
+# key: singmatrix
+# --
+\begin{pmatrix}
+$1 \\\\
+$2 \\\\
+$3
+\end{pmatrix}
+$0

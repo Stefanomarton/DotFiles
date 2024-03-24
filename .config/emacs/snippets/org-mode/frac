@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: frac
+# condition: (and (texmathp) 'auto)
+# key: frc
+# binding: C-s f
+# expand-env : ((yas-wrap-around-region nil))
+# --
+\frac{`(if (region-active-p) (yas-selected-text) "content")`}{$1}$0
