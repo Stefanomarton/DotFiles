@@ -56,7 +56,7 @@ bindkey "^[[F" end-of-line
 # \builtin alias cdi=__zoxide_zi
 # alias a="cd"
 alias v="nvim"
-# alias e="emacs -nw"
+alias e="emacsclient -nw"
 alias e="emacsclient --alternate-editor=\"\" $*"
 alias music="ncmpcpp"
 alias lsa="ls -a"
@@ -80,6 +80,7 @@ alias -g rpg="git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@""
 
 # # Variables
 export EDITOR='emacsclient -c'
+# export EDITOR='nvim'
 export BROWSER='/usr/bin/floorp'
 export PAGER='moar -colors "auto" -no-statusbar'
 HISTFILE=~/.zsh_history
