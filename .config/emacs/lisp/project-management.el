@@ -71,8 +71,9 @@
   (git-gutter+-mode))
 
 (use-package git-gutter
-  :hook ((prog-mode markdown-mode LaTeX-mode) . git-gutter-mode)
+  ;; :hook ((prog-mode markdown-mode LaTeX-mode) . git-gutter-mode)
   :config
+  (git-gutter-mode)
   (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1)
                                         :hint nil)
     ("n" git-gutter:next-hunk "next hunk")
@@ -91,7 +92,6 @@
   (setq git-gutter:update-interval 0.02))
 
 (use-package git-gutter-fringe
-  :after git-gutter
   :config
   (fringe-mode nil)
   (setq-default left-margin-width 1)
