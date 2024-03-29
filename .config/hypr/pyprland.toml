@@ -1,0 +1,36 @@
+[pyprland]
+plugins = [
+  "scratchpads",
+  # "lost_windows",
+  # "monitors",
+  # "toggle_dpms",
+  # "magnify",
+  # "expose",
+  # "shift_monitors",
+  # "workspaces_follow_focus",
+]
+
+[scratchpads.ranger]
+animation = ""
+command = "kitty --class kitty-yazi yazi"
+class = "kitty-yazi"
+lazy = false
+unfocus = "hide"
+margin = 0
+# position = "1770px 200px"
+# size = "1500px 1000px"
+# max_size = "3440px 1440px"
+# size = "100% 1440px"
+
+[scratchpads.term]
+animation = ""
+command = "kitty --class kitty-term"
+class = "kitty-term"
+lazy = false
+unfocus = "hide"
+margin = 0
+# position = "20% 5%"
+# size = "50% 80%"
+# preserve_aspect = true
+# max_size = "3440px 1440px"
+

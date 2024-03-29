@@ -475,30 +475,30 @@ point. "
            "%?"
            :if-new
            (file+head "uni/%<%Y%m%d>--${slug}__%(hiddyn/select-tag).org"
-                      "#+title: ${title}\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
+                      "#+title: ${title}\n#+author: Stefano Marton\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
            :immediate-finish t
            :unnarrowed t)
           ("c" "course" plain
            "%?"
            :if-new (file+head "uni/courses/%<%Y%m%d>--${slug}__%(hiddyn/select-tag).org"
-                              "#+title: ${title}\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
+                              "#+title: ${title}\n#+author: Stefano Marton\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
            :immediate-finish t
            :unnarrowed t)
           ("a" "anki" plain
            "%?"
            :if-new (file+head "anki/%<%Y%m%d>--${slug}__%(hiddyn/select-tag).org"
-                              "#+title: ${title}\n#+filetags: %(hiddyn/filetags)")
+                              "#+title: ${title}\n#+author: Stefano Marton\n#+filetags: %(hiddyn/filetags)")
            :immediate-finish t
            :unnarrowed t)
           ("n" "inbox" plain "%?"
            :if-new
            (file+head "inbox/%<%Y%m%d>--${slug}__%(hiddyn/select-tag).org"
-                      "#+title: ${title}\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
+                      "#+title: ${title}\n#+author: Stefano Marton\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
            :immediate-finish t
            :unnarrowed t)
           ("b" "blog" plain "%?"
            :if-new
-           (file+head "blog/${title}.org" "#+title: ${title}\n")
+           (file+head "blog/${title}.org" "#+title: ${title}\n#+author: Stefano Marton\n")
            :immediate-finish t
            :unnarrowed t)
           ("l" "literature note" plain
@@ -511,12 +511,12 @@ point. "
           ("m" "meta" plain "%?"
            :if-new
            (file+head "meta/%<%Y%m%d>--${slug}__%(hiddyn/select-tag).org"
-                      "#+title: ${title}\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
+                      "#+title: ${title}\n#+author: Stefano Marton\n#+filetags: %(hiddyn/filetags)\n#+CREATED: %U\n#+LAST_MODIFIED: %U")
            :immediate-finish t
            :unnarrowed t)
           ("w" "work" plain "%?"
            :if-new
-           (file+head "work/${slug}.org" "#+TITLE: ${title}\n#+FILETAGS: %^g :article:\n")
+           (file+head "work/${slug}.org" "#+TITLE: ${title}\n#+author: Stefano Marton\n#+FILETAGS: %^g :article:\n")
            :immediate-finish t
            :unnarrowed t)))
 
