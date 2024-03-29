@@ -5,7 +5,7 @@
 [manager]
 ratio          = [ 1, 4, 3 ]
 sort_by        = "natural"
-sort_sensitive = true
+sort_sensitive = false
 sort_reverse   = true
 sort_dir_first = true
 linemode       = "mtime"
@@ -25,8 +25,9 @@ ueberzug_offset = [ 0, 0, 0, 0 ]
 
 [opener]
 edit = [
-	{ run = 'emacsclient -nc "$@"', block = true,  for = "unix" },
 	{ run = 'emacsclient -t "$@"', block = true,  for = "unix" },
+	{ run = 'nvim "$@"', block = true,  for = "unix" },
+	{ run = 'emacsclient -nc "$@"', block = true,  for = "unix" },
 ]
 open = [
 	{ run = 'xdg-open "$@"',                desc = "Open", for = "linux" },
