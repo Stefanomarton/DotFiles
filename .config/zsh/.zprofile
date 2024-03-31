@@ -5,11 +5,9 @@ HOSTNAME=$(hostnamectl hostname)
 if [ "$(tty)" = "/dev/tty1" ]; then
     case "$HOSTNAME" in
     "desktop")
-        # Start awesome if not running
-        pgrep qtile || startx "$XDG_CONFIG_HOME/X11/.xinitrc"
-        # pgrep qtile || qtile start -b wayland -c ~/.config/qtileDesktop/config.py
+        Hyprland
         ;;
     "laptop")
-        pgrep qtile || qtile start -b wayland ;;
+        Hyprland
     esac
 fi
