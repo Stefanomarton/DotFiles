@@ -8,7 +8,7 @@
   ;; (global-visual-line-mode t)
 
   ;; I keep losing the curson
-  (blink-cursor-mode 1)
+  (blink-cursor-mode 0)
 
   ;; Enable `prettify-symbols' globally.
   (global-prettify-symbols-mode t)
