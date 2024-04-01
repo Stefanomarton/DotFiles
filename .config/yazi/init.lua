@@ -1,3 +1,16 @@
+require("bookmarks"):setup({
+	notify = {
+		enable = false,
+		timeout = 1,
+		message = {
+			new = "New bookmark '<key>' -> '<folder>'",
+			delete = "Deleted bookmark in '<key>'",
+			delete_all = "Deleted all bookmarks",
+		},
+	},
+    save_last_directory = true
+})
+
 function Status:name()
 	local h = cx.active.current.hovered
 	if h == nil then
@@ -67,3 +80,4 @@ function Status:size()
 		ui.Span(THEME.status.separator_close):fg(THEME.status.separator_style.fg),
 	}
 end
+
