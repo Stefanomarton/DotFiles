@@ -17,6 +17,9 @@
 ;; when quiting emacs, just kill processes
 (setq confirm-kill-processes nil)
 
+;; fix clipboard in wayland
+;; (setq x-select-request-type 'text/plain\;charset=utf-8)
+
 ;; ask if local variables are safe once.
 (setq enable-local-variables t)
 
