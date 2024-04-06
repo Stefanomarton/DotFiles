@@ -25,9 +25,14 @@ ueberzug_offset = [ 0, 0, 0, 0 ]
 
 [opener]
 edit = [
-	{ run = 'emacsclient -t "$@"', block = true,  for = "unix" },
-	{ run = 'nvim "$@"', block = true,  for = "unix" },
 	{ run = 'emacsclient -nc "$@"', block = true,  for = "unix" },
+	{ run = 'emacsclient -t "$@"', block = true,  for = "unix" },
+	{ run = 'floorp "$@"', block = true,  for = "unix" },
+]
+text = [
+	{ run = 'emacsclient -nc "$@"', block = true,  for = "unix" },
+	{ run = 'emacsclient -t "$@"', block = true,  for = "unix" },
+	{ run = 'floorp "$@"', block = true,  for = "unix" },
 ]
 open = [
 	{ run = 'xdg-open "$@"',                desc = "Open", for = "linux" },
@@ -37,7 +42,7 @@ open = [
 reveal = [
 	{ run = 'open -R "$1"',                          desc = "Reveal", for = "macos" },
 	{ run = 'explorer /select, "%1"', orphan = true, desc = "Reveal", for = "windows" },
-	{ run = '''exiftool "$1"; echo "Press enter to exit"; read''', block = true, desc = "Show EXIF", for = "unix" },
+	# { run = '''exiftool "$1"; echo "Press enter to exit"; read''', block = true, desc = "Show EXIF", for = "unix" },
 ]
 extract = [
 	{ run = 'unrar "$1"', desc = "Extract here", for = "unix" },
