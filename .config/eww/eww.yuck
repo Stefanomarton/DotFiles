@@ -1,2 +1,1 @@
-(include "./modules/bar.yuck")
-
+(include "./modules/bar/bar.yuck")
