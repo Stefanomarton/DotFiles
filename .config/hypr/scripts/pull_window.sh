@@ -1,4 +1,4 @@
-# #!/bin/bash
+#!/bin/bash
 
 # # Function to get the name of the active workspace
 get_active_workspace_name() {

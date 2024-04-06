@@ -34,3 +34,26 @@ margin = 0
 # preserve_aspect = true
 # max_size = "3440px 1440px"
 
+[scratchpads.editor]
+animation = ""
+command = "emacs --name editor"
+class = "editor"
+lazy = false
+unfocus = "hide"
+margin = 0
+# position = "20% 5%"
+# size = "50% 80%"
+# preserve_aspect = true
+# max_size = "3440px 1440px"
+
+[scratchpads.qalc]
+animation = ""
+command = "kitty --class kitty-qalc qalc"
+class = "kitty-qalc"
+lazy = false
+unfocus = "hide"
+margin = 0
+# position = "50% 5%"
+# size = "50% 80%"
+# preserve_aspect = true
+# max_size = "3440px 1440px"
