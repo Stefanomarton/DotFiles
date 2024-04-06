@@ -64,7 +64,8 @@
   (setq markdown-enable-math t))
 
 (use-package tex
-  :commands latex-mode
+  :hook
+  (latex-mode . LaTeX-mode)
   :straight auctex
   :config
   (setq TeX-save-query nil
@@ -178,6 +179,8 @@
   (aas-set-snippets 'latex-mode
     "jf" (lambda () (interactive)
 	       (yas-expand-snippet "\\\\($1\\\\) $0"))
+    "jc" (lambda () (interactive)
+	       (yas-expand-snippet "\\\\(\\ce{ $1 }\\\\) $0"))
     "kd  " (lambda () (interactive)
 	         (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'org-mode
@@ -190,6 +193,8 @@
   (aas-set-snippets 'markdown-mode
     "jf" (lambda () (interactive)
 	       (yas-expand-snippet "$$1$ $0"))
+    "jc" (lambda () (interactive)
+	       (yas-expand-snippet "\\\\(\\ce{ $1 }\\\\) $0"))
     "kd" (lambda () (interactive)
 	       (yas-expand-snippet "$$ \n $1 \n $$ \n \n $0"))))
 
@@ -203,39 +208,73 @@
   (aas-set-snippets 'laas-mode
     ;; set condition!
     :cond #'texmathp ; expand only while in math
-    ;; bind to functions!
-    "sum" (lambda () (interactive)
-	        (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+
     ",t" (lambda () (interactive)
 	       (yas-expand-snippet "\\int"))
-    ",,t" (lambda () (interactive)
-	        (yas-expand-snippet "\\int_{$1}^{$2} $0"))
-    "_" (lambda () (interactive)
-	      (yas-expand-snippet "_{$0}"))
+
+    ".." (lambda () (interactive)
+	       (yas-expand-snippet "_{$1}$0"))
     "ds" (lambda () (interactive)
 	       (yas-expand-snippet "\\Delta_{$1}S $0"))
     "dh" (lambda () (interactive)
 	       (yas-expand-snippet "\\Delta_{$1}H $0"))
     "dg" (lambda () (interactive)
 	       (yas-expand-snippet "\\Delta_{$1}G $0"))
-    ",r" (lambda () (interactive)
+
+    ;; positive apices
+    ",," (lambda () (interactive)
 	       (yas-expand-snippet "^{$1} $0"))
-    ",s" (lambda () (interactive)
-	       (yas-expand-snippet "^{-1} $0"))
-    ",d" (lambda () (interactive)
-	       (yas-expand-snippet "^{-2} $0"))
-    ",f" (lambda () (interactive)
-	       (yas-expand-snippet "^{-3} $0"))
     ",x" (lambda () (interactive)
-	       (yas-expand-snippet "^- $0"))
+	       (yas-expand-snippet "^{1} $0"))
     ",c" (lambda () (interactive)
 	       (yas-expand-snippet "^{2} $0"))
     ",v" (lambda () (interactive)
 	       (yas-expand-snippet "^{3} $0"))
+    ",s" (lambda () (interactive)
+	       (yas-expand-snippet "^{4} $0"))
+    ",d" (lambda () (interactive)
+	       (yas-expand-snippet "^{5} $0"))
+    ",f" (lambda () (interactive)
+	       (yas-expand-snippet "^{6} $0"))
+    ",w" (lambda () (interactive)
+	       (yas-expand-snippet "^{7} $0"))
+    ",e" (lambda () (interactive)
+	       (yas-expand-snippet "^{8} $0"))
+    ",r" (lambda () (interactive)
+	       (yas-expand-snippet "^{9} $0"))
+
+    ;; negative apices
+    ".." (lambda () (interactive)
+	       (yas-expand-snippet "^{-$1} $0"))
+    ".x" (lambda () (interactive)
+	       (yas-expand-snippet "^{-1} $0"))
+    ".c" (lambda () (interactive)
+	       (yas-expand-snippet "^{-2} $0"))
+    ".v" (lambda () (interactive)
+	       (yas-expand-snippet "^{-3} $0"))
+    ".s" (lambda () (interactive)
+	       (yas-expand-snippet "^{-4} $0"))
+    ".d" (lambda () (interactive)
+	       (yas-expand-snippet "^{-5} $0"))
+    ".f" (lambda () (interactive)
+	       (yas-expand-snippet "^{-6} $0"))
+    ".w" (lambda () (interactive)
+	       (yas-expand-snippet "^{-7} $0"))
+    ".e" (lambda () (interactive)
+	       (yas-expand-snippet "^{-8} $0"))
+    ".r" (lambda () (interactive)
+	       (yas-expand-snippet "^{-9} $0"))
+
+    ".," (lambda () (interactive)
+	       (yas-expand-snippet "^{$1}_{$0}"))
+
+    "kk" (lambda () (interactive)
+	       (yas-expand-snippet "_{$1} $0"))
     ;; add accent snippets
     :cond #'laas-object-on-left-condition
     ".q" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))
     ".v" (lambda () (interactive) (laas-wrap-previous-object "vec"))
+    ".t" (lambda () (interactive) (laas-wrap-previous-object "text"))
     ".b" (lambda () (interactive) (laas-wrap-previous-object "mathbf"))))
 
 (use-package cdlatex
@@ -243,7 +282,7 @@
   :hook (LaTeX-mode . cdlatex-mode)
   :custom
   (cdlatex-takeover-dollar nil)
-  ;; (cdlatex-math-modify-prefix nil)
+  (cdlatex-math-modify-prefix ?/)
   ;; (cdlatex-math-symbol-prefix nil)
   )
 
