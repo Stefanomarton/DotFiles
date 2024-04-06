@@ -122,10 +122,10 @@ If region is active, add its contents to the new buffer."
 (use-package hydra
   :after dashboard)
 
-(use-package xclip
-  :config
-  (unless (display-graphic-p)
-    (xclip-mode)))
+;; (use-package xclip
+;;   :config
+;;   (unless (display-graphic-p)
+;;     (xclip-mode)))
 
 ;; (use-package move-dup
 ;;   :config
