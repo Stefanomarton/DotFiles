@@ -4,7 +4,7 @@
   :ensure nil
   :hook
   ;; (org-mode . org-indent-mode)
-  (org-mode . org-cdlatex-mode)
+  ;; (org-mode . org-cdlatex-mode)
   (org-mode . yas-minor-mode)
   (org-mode . er/add-latex-in-org-mode-expansions)
   (org-mode . my/org-header-outline-path-mode)
@@ -760,6 +760,15 @@ point. "
               ("<leader>otm" . org-transclusion-mode))
   )
 
+(use-package org-journal
+  :init
+  (setq org-journal-prefix-key "C-c j")
+  :config
+  (setq org-journal-dir "~/GoogleDrive/org/journal/"
+        org-journal-date-format "%A, %d %B %Y"
+        org-journal-file-type 'weekly
+        )
+  )
 
 (provide 'orgconfig)
 
