@@ -45,8 +45,9 @@ reveal = [
 	# { run = '''exiftool "$1"; echo "Press enter to exit"; read''', block = true, desc = "Show EXIF", for = "unix" },
 ]
 extract = [
-	{ run = 'unrar "$1"', desc = "Extract here", for = "unix" },
-	{ run = 'unzip "$1"', desc = "Extract here", for = "unix" },
+	{ run = 'atool -x "$1"', desc = "atool", for = "unix" },
+	{ run = 'unrar "$1"', desc = "unrar", for = "unix" },
+	{ run = 'unzip "$1"', desc = "unzip", for = "unix" },
 ]
 play = [
 	{ run = 'mpv "$@"', orphan = true, for = "unix" },
