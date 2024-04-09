@@ -1,18 +1,18 @@
 #! /bin/bash
 
 #define icons for workspaces 1-9
-ic=(0 1 2 3 4 5 6 7 8 9)
+ic=(0 1 2 3 4 5 6 7 8 9 W)
 
 workspaces() {
 
 	unset -v \
-  o1 o2 o3 o4 o5 o6 o7 o8 o9 \
-  f1 f2 f3 f4 f5 f6 f7 f8 f9
+  o1 o2 o3 o4 o5 o6 o7 o8 o9 o10 \
+  f1 f2 f3 f4 f5 f6 f7 f8 f9 f10
 
 # Get occupied workspaces and remove workspace -99 aka scratchpad if it exists
 # a="$(hyprctl workspaces | grep ID | awk '{print $3}')"
 # a="$(echo "${a//-99/}" | sed '/^[[:space:]]*$/d')"
-ows="$(hyprctl workspaces -j | jq '.[] | del(select(.id == -99)) | .id')"
+ows="$(hyprctl workspaces -j | jq '.[] | del(select(.id < 0)) | .id')"
 
 for num in $ows; do
 	export o"$num"="$num"
@@ -34,6 +34,7 @@ echo 	"(eventbox :onscroll \"echo {} | sed -e 's/up/-1/g' -e 's/down/+1/g' | xar
               (button :class \"w0$o7$f7\" \"${ic[7]}\") \
               (button :class \"w0$o8$f8\" \"${ic[8]}\") \
               (button :class \"w0$o9$f9\" \"${ic[9]}\") \
+              (button :class \"w0$o10$f10\" \"${ic[10]}\") \
           )\
         )"
 }
