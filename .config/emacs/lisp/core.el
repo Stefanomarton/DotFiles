@@ -18,7 +18,16 @@
 (setq confirm-kill-processes nil)
 
 ;; fix clipboard in wayland
-;; (setq x-select-request-type 'text/plain\;charset=utf-8)
+(when (getenv "WAYLAND_DISPLAY")
+  (setq wl-copy-p nil
+        interprogram-cut-function (lambda (text)
+                                    (setq-local process-connection-type 'pipe)
+                                    (setq wl-copy-p (start-process "wl-copy" nil "wl-copy" "-f" "-n"))
+                                    (process-send-string wl-copy-p text)
+                                    (process-send-eof wl-copy-p))
+        interprogram-paste-function (lambda ()
+                                      (unless (and wl-copy-p (process-live-p wl-copy-p))
+                                        (shell-command-to-string "wl-paste -n | tr -d '\r'")))))
 
 ;; ask if local variables are safe once.
 (setq enable-local-variables t)
