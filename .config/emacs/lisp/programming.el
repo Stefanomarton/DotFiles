@@ -40,16 +40,16 @@
   )
 
 ;; Python mode setup
-(use-package python-mode
-  :commands python-mode
-  :straight (:type built-in)
-  :interpreter "python"
-  :config
-  (evil-define-key 'normal python-mode-map (kbd "<tab>") 'evil-shift-right-line)
-  (evil-define-key 'normal python-mode-map (kbd "<backtab>") 'evil-shift-left-line)
-  (evil-define-key 'visual python-mode-map (kbd "<tab>") 'evil-shift-right)
-  (evil-define-key 'visual python-mode-map (kbd "<backtab>") 'evil-shift-left)
-  )
+;; (use-package python
+;;   :commands python-mode
+;;   :straight (:type built-in)
+;;   :interpreter "python"
+;;   :config
+;;   (evil-define-key 'normal python-ts-mode-map (kbd "<tab>") 'evil-shift-right-line)
+;;   (evil-define-key 'normal python-ts-mode-map (kbd "<backtab>") 'evil-shift-left-line)
+;;   (evil-define-key 'visual python-ts-mode-map (kbd "<tab>") 'evil-shift-right)
+;;   (evil-define-key 'visual python-ts-mode-map (kbd "<backtab>") 'evil-shift-left)
+;;   )
 
 ;; Lua setup
 
@@ -89,19 +89,21 @@
   (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 
-(use-package indent-bars
-  :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-  :config
-  :custom
-  (indent-bars-treesit-support t)
-  (indent-bars-no-descend-string t)
-  (indent-bars-treesit-ignore-blank-lines-types '("module"))
-  (indent-bars-treesit-wrap '((python argument_list parameters ; for python, as an example
-				                      list list_comprehension
-				                      dictionary dictionary_comprehension
-				                      parenthesized_expression subscript)))
-  :hook
-  (python-ts-mode yaml-mode) . (indent-bars-mode)) ; or whichever modes you prefer
+;; (use-package indent-bars
+;;   :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
+;;   :config
+;;   :custom
+;;   (indent-bars-treesit-support nil)
+;;   (indent-bars-no-descend-string t)
+;;   (indent-bars-treesit-ignore-blank-lines-types '("module"))
+;;   (indent-bars-treesit-scope '((python function_definition class_definition for_statement
+;; 	                                   if_statement with_statement while_statement)))
+;;   ;; (indent-bars-treesit-wrap '((python argument_list parameters ; for python, as an example
+;;   ;;   			                      list list_comprehension
+;;   ;;   			                      dictionary dictionary_comprehension
+;;   ;;   			                      parenthesized_expression subscript)))
+;;   :hook
+;;   (python-ts-mode yaml-ts-mode) . (indent-bars-mode)) ; or whichever modes you prefer
 
 (use-package yaml-mode
   :mode "\\.yml\\'"
