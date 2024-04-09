@@ -22,21 +22,33 @@ export STARSHIP_CONFIG="$XDG_CONFIG_HOME"/starship.toml
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export GOPATH="$XDG_DATA_HOME"/go
 export BW_SESSION="B6o+4VlAgK/+ne9t+IItf5viLHkYhlsCoS/dAtNu35wUwgcillYuCMkr075RtNQ9vaQRj2dFhU0iHhwrA/McUg=="
-export FZF_MARKS_FILE="$XDG_CONFIG_HOME"/fzf-marks/bookmarks
-export MOZ_ENABLE_WAYLAND=1
 
-# if [ -z $TMUX ]; then; tmux; fi
+export FZF_MARKS_FILE="$XDG_CONFIG_HOME"/fzf-marks/bookmarks
+export FZF_MARKS_JUMP=""
+export MOZ_ENABLE_WAYLAND=1
 
 export VI_MODE_SET_CURSOR=true
 autoload -U colors && colors
 
 # Vim mode
-bindkey -v
+bindkey -v 
 
 bindkey -a '^[[3~' delete-char
 bindkey "^[[3~" delete-char
 bindkey "^H" backward-delete-char
 bindkey "^?" backward-delete-char
+
+# fzm yazi
+
+function fzm-ya() {
+    local output
+    fzm_output=$(fzm)
+    if [[ -n "$fzm_output" ]]; then
+        echo "$fzm_output" | xargs -r -d'\n' yazi
+    fi
+}
+
+bindkey -s "^f" "fzm-ya^M"
 
 # # Keybindings
 bindkey "^a" beginning-of-line
@@ -100,17 +112,6 @@ path+=('/home/stefanom/.local/share/gem/ruby/3.0.0/bin')
 export PATH
 
 setopt autocd autopushd 
-
-# Use ranger to switch diurectories and bind it to ctrl-o
-# rng () {
-#     tmp="$(mktemp)"
-#     ranger --choosedir="$tmp" "$@"
-#     if [ -f "$tmp" ]; then
-#         dir="$(cat "$tmp")"
-#         rm -f "$tmp" 
-#         [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
-#     fi
-# }
 
 function ya() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXX")"
@@ -215,6 +216,7 @@ PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f%F{white} • %F%f%'
 RPROMPT='%B%F{blue}%~%f%b'
 
 source ~/.cache/wal/colors.sh
+source /usr/share/fzf/key-bindings.zsh 
 
 eval "$(zoxide init zsh)"
 
