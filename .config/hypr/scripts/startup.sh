@@ -45,3 +45,11 @@ fi
 if [ "$(hostnamectl hostname)" = "laptop" ]; then
     sleep 1 && kmonad .config/kmonad/laptop.kbd
 fi
+
+
+
+# Eww
+eww daemon
+
+
+
