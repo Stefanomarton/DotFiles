@@ -14,7 +14,7 @@
   (projectile-mode)
   :init
   (setq projectile-indexing-method 'native)
-  (setq projectile-known-projects-file "~/.config/emacs/project.el")
+  ;; (setq projectile-known-projects-file "~/.config/emacs/project.el")
   )
 
 (use-package hl-todo
