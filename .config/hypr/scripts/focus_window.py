@@ -3,6 +3,7 @@
 import subprocess
 import json
 import sys
+import os
 
 
 # Get the class from the first argument
@@ -18,9 +19,13 @@ def focus_window(address):
     subprocess.run(["hyprctl", "dispatch", "focuswindow", f"address:{address}"])
 
 
+index_path = os.path.expanduser(f"~/.cache/last_focused_index_{window_class}.txt")
+
+
 # Clear index file
 def clear_index(window_class):
-    with open(f"last_focused_index_{window_class}.txt", "w") as file:
+    # Get the path to the cache directory in the user's home directory
+    with open(index_path, "w") as file:
         file.write("-1")
 
 
@@ -89,8 +94,9 @@ all_windows = [window for window in all_windows if window.get("focusHistoryID") 
 
 # Focus on each window in the list one by one
 # Read the index of the last focused window from a file
+
 try:
-    with open(f"last_focused_index_{window_class}.txt", "r") as file:
+    with open(index_path, "r") as file:
         last_focused_index = int(file.read().strip())
 except FileNotFoundError:
     last_focused_index = -1
@@ -102,5 +108,5 @@ next_index = (last_focused_index + 1) % len(all_windows)
 focus_window(all_windows[next_index]["address"])
 
 # Update the index of the last focused window in the file
-with open("last_focused_index.txt", "w") as file:
+with open(index_path, "w") as file:
     file.write(str(next_index))
