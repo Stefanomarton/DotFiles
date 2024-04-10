@@ -5,7 +5,7 @@
   :hook
   ;; (org-mode . org-indent-mode)
   ;; (org-mode . org-cdlatex-mode)
-  (org-mode . yas-minor-mode)
+  (org-mode . yas-minor-mode-on)
   (org-mode . er/add-latex-in-org-mode-expansions)
   (org-mode . my/org-header-outline-path-mode)
   (org-mode . display-fill-column-indicator-mode)
@@ -19,7 +19,7 @@
   (org-hide-leading-stars nil)
 
   :init
-  (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
+  ;; (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
 
   :config
 
@@ -132,7 +132,7 @@ point. "
 
 
   ;; all possible latex highlight
-  (setq org-highlight-latex-and-related '(latex script entities native))
+  (setq org-highlight-latex-and-related '(latex script entities))
 
   (defun my/org-time-stamp ()
     (interactive)
@@ -392,6 +392,8 @@ point. "
                    :files (:defaults "extensions/*"))
   :demand t
   :commands (org-roam-node-find org-roam-capture consult-notes)
+  :init
+  (setq org-roam-directory (file-truename "~/GoogleDrive/org"))
   :custom
   (org-roam-complete-everywhere t)
   :bind
@@ -420,7 +422,6 @@ point. "
                '("\w+\.org" (display-buffer-full-frame)))
 
   (setq org-pretty-entities t)
-  (setq org-roam-directory (file-truename "~/GoogleDrive/org"))
 
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (cl-defmethod org-roam-node-type ((node org-roam-node))
@@ -768,6 +769,12 @@ point. "
         org-journal-date-format "%A, %d %B %Y"
         org-journal-file-type 'weekly
         )
+  )
+
+(use-package poly-org
+  :config
+  (oset poly-org-latex-innermode :keep-in-mode 'host)
+  (oset poly-org-latex-innermode :mode 'LaTeX-mode)
   )
 
 (provide 'orgconfig)
