@@ -29,6 +29,8 @@
                                       (unless (and wl-copy-p (process-live-p wl-copy-p))
                                         (shell-command-to-string "wl-paste -n | tr -d '\r'")))))
 
+(setq select-enable-primary t)
+
 ;; ask if local variables are safe once.
 (setq enable-local-variables t)
 
