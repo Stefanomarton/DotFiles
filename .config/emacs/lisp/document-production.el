@@ -318,26 +318,26 @@
 		              (delete-row . "Dr"	)
 		              )))
 
-;; (use-package jinx
-;;   :straight (:host github :repo "minad/jinx")
-;;   :hook
-;;   (org-mode . jinx-mode)
-;;   (text-mode . jinx-mode)
-;;   (markdown-mode . jinx-mode)
-;;   (LaTeX-mode . jinx-mode)
-;;   ;; :bind
-;;   ;; (:map jinx-mode-map
-;;   ;;       (("k") . jinx-previous)
-;;   ;;       (("l") . jinx-next))
-;;   :config
-;;   (evil-define-key 'normal 'global (kbd "<leader>j") 'jinx-correct)
-;;   (evil-define-key 'normal 'global (kbd "<leader>J") 'jinx-correct-all)
-;;   (setq jinx-languages "it_IT, en_US")
-;;   ;; (general-define-key
-;;   ;;  :keymaps 'jinx-correct-map
-;;   ;;  "j" 'jinx-previous
-;;   ;;  "/" 'jinx-next)
-;;   )
+(use-package jinx
+  :straight (:host github :repo "minad/jinx")
+  :hook
+  (org-mode . jinx-mode)
+  (text-mode . jinx-mode)
+  (markdown-mode . jinx-mode)
+  (LaTeX-mode . jinx-mode)
+  ;; :bind
+  ;; (:map jinx-mode-map
+  ;;       (("k") . jinx-previous)
+  ;;       (("l") . jinx-next))
+  :config
+  (evil-define-key 'normal 'global (kbd "<leader>j") 'jinx-correct)
+  (evil-define-key 'normal 'global (kbd "<leader>J") 'jinx-correct-all)
+  (setq jinx-languages "it_IT, en_US")
+  ;; (general-define-key
+  ;;  :keymaps 'jinx-correct-map
+  ;;  "j" 'jinx-previous
+  ;;  "/" 'jinx-next)
+  )
 
 (provide 'document-production)
 
