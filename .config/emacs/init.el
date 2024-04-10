@@ -25,7 +25,6 @@
 (setq straight-vc-git-default-clone-depth '(1 single-branch))
 
 ;; Install use-package and ensure listed packages are installed
-;; (straight-use-package 'use-package) ;; No need for this after emacs 29+
 (setq straight-use-package-by-default t)
 
 ;; Enable packages at startup
@@ -90,7 +89,7 @@
   (setq comp-deferred-compilation t
         comp-deferred-compilation-black-list '("/mu4e.*\\.el$")))
 
-(require 'bind-key)
+;; (require 'bind-key)
 (load-module "core")
 (load-module "evil")
 (load-module "keybindings")
