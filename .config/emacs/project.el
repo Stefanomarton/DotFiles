@@ -1,1 +1,1 @@
-("~/.dotfiles/")
+("~/.dotfiles/" "~/GoogleDrive/Projects/MySmallProgrammingJourney/")
