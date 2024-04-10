@@ -66,7 +66,7 @@ bindkey "^[[F" end-of-line
 # # Aliases for zoxide
 # \builtin alias cd=__zoxide_z
 # \builtin alias cdi=__zoxide_zi
-# alias a="cd"
+alias a="cd"
 alias v="nvim"
 alias e="emacsclient -nw"
 alias e="emacsclient --alternate-editor=\"\" $*"
@@ -85,10 +85,6 @@ alias -s {yml,yaml,lua,c,tex}=nvim #Auto open file with nvim based on extension
 alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings"
 alias -g lg="lazygit"
 alias -g ppttopdf="libreoffice --headless --invisible --convert-to pdf"
-
-# # Better use alias for convience and completion
-alias -g rp="lazygit --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@""
-alias -g rpg="git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@""
 
 # # Variables
 export EDITOR='emacsclient -c'
@@ -139,11 +135,8 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --glob '"'"'!.git/'"'"
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^v' edit-command-line
 
-autoload -U compinit
-zstyle ':completion:*' menu select
-zmodload zsh/complist
-compinit
-_comp_options+=(globdots)
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 source ~/.local/lib/zpico/zpico.zsh
 zpico add zsh-users/zsh-syntax-highlighting 
