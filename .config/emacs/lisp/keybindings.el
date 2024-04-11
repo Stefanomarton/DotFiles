@@ -36,8 +36,7 @@
                       "c" 'my-evil-change-whole-line))
   (general-vmap "c" 'evil-change)
   :init
-  (general-evil-setup t)
-  )
+  (general-evil-setup t))
 
 
 (provide 'keybindings)
