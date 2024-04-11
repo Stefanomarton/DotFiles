@@ -89,6 +89,11 @@
   (setq comp-deferred-compilation t
         comp-deferred-compilation-black-list '("/mu4e.*\\.el$")))
 
+;; As stated https://github.com/jwiegley/use-package?tab=readme-ov-file#use-packageel-is-no-longer-needed-at-runtime
+(eval-when-compile
+  (require 'use-package))
+(require 'bind-key)
+
 ;; (require 'bind-key)
 (load-module "core")
 (load-module "evil")
