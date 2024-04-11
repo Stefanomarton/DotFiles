@@ -1,11 +1,7 @@
 ;;; base-packages.el -*- lexical-binding: t; -*-
 
-;; necessary to bind keys
-(use-package bind-key)
-
 ;; Recent file list
 (use-package recentf
-  :defer .5
   :after evil
   :config
   (add-hook 'emacs-startup-hook 'recentf-mode)
@@ -19,8 +15,7 @@
 (use-package zoxide
   :bind (:map evil-normal-state-map
               ("gz" . zoxide-find-file)
-              )
-  )
+              ))
 
 (use-package which-key
   :defer 1
@@ -104,6 +99,7 @@ targets."
   (add-hook 'format-all-mode-hook 'format-all-ensure-formatter)
   (add-hook 'prog-mode-hook 'format-all-mode)
   (add-hook 'LaTeX-mode-hook 'format-all-mode)
+  (add-hook 'markdown-mode-hook 'format-all-mode)
   :custom
   (format-all-show-errors 'error)
   )
@@ -119,18 +115,6 @@ If region is active, add its contents to the new buffer."
   :hook (scratch-create-buffer . my/scratch-buffer-setup)
   :bind ("C-c s" . scratch))
 
-(use-package hydra
-  :after dashboard)
-
-;; (use-package xclip
-;;   :config
-;;   (unless (display-graphic-p)
-;;     (xclip-mode)))
-
-;; (use-package move-dup
-;;   :config
-;;   (global-set-key (kbd "<leader>l") 'move-dup-duplicate-up)
-;;   (global-set-key (kbd "<leader>k") 'move-dup-duplicate-down)
-;;   )
+(use-package hydra)
 
 (provide 'base-packages)
