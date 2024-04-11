@@ -112,6 +112,17 @@ targets."
   (format-all-show-errors 'error)
   )
 
+
+;;Outline
+(use-package outline
+  :straight (:type built-in)
+  :hook
+  (emacs-lisp-mode . outline-minor-mode)
+  (python-ts-mode . outline-minor-mode)
+  )
+
+
+;;Scratchbuffer
 (use-package scratch
   :straight t
   :config
