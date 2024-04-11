@@ -52,10 +52,6 @@
   (evil-set-leader 'visual (kbd "SPC"))
   (evil-set-leader 'insert (kbd "M-SPC"))
 
-  ;; (evil-define-key 'normal 'evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
-  ;; (evil-define-key 'normal 'evil-normal-state-map (kbd "C-d")
-  ;; 'evil-scroll-down)
-
   ;; Window focus
   (evil-define-key 'normal 'evil-normal-state-map
     (kbd "C-w j") 'evil-window-left
@@ -149,27 +145,12 @@
     (yas-reload-all)
     )
 
-  (defun my/find-file-home ()
-    (interactive)
-    (let ((default-directory "~/"))
-      (ido-find-file)))
-
-  (defun my/find-file-config ()
-    (interactive)
-    (let ((default-directory "~/.config"))
-      (ido-find-file)))
-
-  (defun my/find-file-google ()
-    (interactive)
-    (let ((default-directory "~/GoogleDrive"))
-      (ido-find-file)))
 
   (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
   (evil-define-key 'normal 'evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
 
   (evil-define-key 'normal 'global
     (kbd ":") 'evil-ex
-    ;; (kbd ":") 'execute-extended-command
     (kbd ";") 'execute-extended-command
 
     (kbd "<leader>ff") 'find-file

@@ -3,18 +3,59 @@
 (use-package general
   :demand t
   :config
+  ;; fix unbindings
+  (general-auto-unbind-keys)
 
+  ;; general leader
   (defvar general-leader "SPC"
     "Leader key for Evil")
 
-  (defvar general-leader-alt "M-SPC"
-    "Leader key for Emacs and Evil Insert states")
 
-  (defvar general-localleader ","
-    "Local leader key for major-mode specific commands")
 
-  (defvar general-localleader-alt "M-SPC ,"
-    "Local leader key for major-mode specific commands for Emacs and Evil Insert states.")
+  ;; find-file keybindings
+  (defun my/find-file (directory)
+    (interactive)
+    (let ((default-directory directory))
+      (ido-find-file)))
+
+  (general-create-definer file-leader
+    :prefix "C-f")
+
+  (file-leader
+    :states '(normal insert)
+    "C-f" 'find-file
+    "h" '(lambda () (interactive) (my/find-file "~/"))
+    "d" '(lambda () (interactive) (my/find-file "~/GoogleDrive/"))
+    "c" '(lambda () (interactive) (my/find-file "~/.config"))
+    "u" '(lambda () (interactive) (my/find-file "~/GoogleDrive/University/"))
+    "o" '(lambda () (interactive) (my/find-file "~/GoogleDrive/org"))
+    "p" 'consult-projectile-find-file
+    "w" 'find-file-other-window)
+
+
+
+  ;; buffer keybinding
+  (general-create-definer buffer-leader
+    :prefix "C-b")
+
+  (buffer-leader
+    :states '(normal insert)
+    "C-b" 'consult-buffer)
+
+
+
+  ;; project keybinding
+  ;; buffer keybinding
+  (general-create-definer project-leader
+    :prefix "C-p")
+
+  (project-leader
+    :states '(insert normal)
+    "C-p" 'consult-projectile
+    "s" 'consult-projectile-switch-project
+    )
+
+
 
   ;; Fix change whole line
   (defun my-evil-change-whole-line ()
