@@ -11,16 +11,16 @@
   (setq evil-want-empty-ex-last-command t)
 
   :custom
-  (setq completion-in-region-function 'consult-completion-in-region)
-  (setq evil-operator-state-cursor nil)
-  (setq evil-jumps-cross-buffers t)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-d-scroll nil)
-  (setq evil-split-window-below t)
-  (setq evil-vsplit-window-right t)
-  (setq evil-search-module 'evil-search)
-  (setq evil-esc-delay 0.0001)
-  (setq evil-want-Y-yank-to-eol nil)
+  (completion-in-region-function 'consult-completion-in-region)
+  (evil-operator-state-cursor nil)
+  (evil-jumps-cross-buffers t)
+  (evil-want-C-u-scroll nil)
+  (evil-want-C-d-scroll nil)
+  (evil-split-window-below t)
+  (evil-vsplit-window-right t)
+  (evil-search-module 'evil-search)
+  (evil-esc-delay 0.0001)
+  (evil-want-Y-yank-to-eol nil)
 
 
   :config
