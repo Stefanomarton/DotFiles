@@ -51,24 +51,27 @@
   :mode ("\\.lua?\\'" . lua-mode)
   )
 
-;; (use-package lisp-mode
-;;   :straight nil
-;;   :ensure nil
-;;   :config
-;;   (defun auto-byte-recompile ()
-;;     "If the current buffer is in emacs-lisp-mode and there already exists an `.elc'
-;; file corresponding to the current buffer file, then recompile the file."
-;;     (interactive)
-;;     (when (and (eq major-mode 'emacs-lisp-mode)
-;;                (file-exists-p (byte-compile-dest-file buffer-file-name)))
-;;       (byte-compile-file buffer-file-name)))
-;;   (add-hook 'after-save-hook 'auto-byte-recompile)
-;;   (add-to-list 'display-buffer-alist
-;;                '("\\*Compile-Log\\*"
-;;                  (display-buffer-in-direction)
-;;                  (direction . down)
-;;                  (window-width . 0.1)
-;;                  (window-height . 0.1))))
+(use-package lisp-mode
+  :hook
+  (after-save-hook . auto-byte-recompile)
+  :straight (:type built-in)
+  :config
+  (defun auto-byte-recompile ()
+    "If the current buffer is in emacs-lisp-mode and there already exists an `.elc'
+file corresponding to the current buffer file, then recompile the file."
+    (interactive)
+    (when (and (eq major-mode 'emacs-lisp-mode)
+               (file-exists-p (byte-compile-dest-file buffer-file-name)))
+      (byte-compile-file buffer-file-name)))
+
+  (add-hook 'after-save-hook 'auto-byte-recompile)
+
+  (add-to-list 'display-buffer-alist
+               '("\\*Compile-Log\\*"
+                 (display-buffer-in-direction)
+                 (direction . down)
+                 (window-width . 0.1)
+                 (window-height . 0.2))))
 
 ;; Highlight kmonad files
 (use-package kbd-mode
@@ -82,22 +85,19 @@
   :config
   (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
-
-(use-package indent-bars
-  :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-  :config
-  :custom
-  (indent-bars-treesit-support t)
-  (indent-bars-no-descend-string t)
-  (indent-bars-treesit-ignore-blank-lines-types '("module"))
-  (indent-bars-treesit-scope '((python function_definition class_definition for_statement
-	                                   if_statement with_statement while_statement)))
-  ;; (indent-bars-treesit-wrap '((python argument_list parameters ; for python, as an example
-  ;;   			                      list list_comprehension
-  ;;   			                      dictionary dictionary_comprehension
-  ;;   			                      parenthesized_expression subscript)))
-  :hook
-  (python-ts-mode yaml-ts-mode) . (indent-bars-mode)) ; or whichever modes you prefer
+;; (use-package highlight-indent-guides
+;;   :config
+;;   (add-hook 'python-ts-mode-hook 'highlight-indent-guides-mode)
+;;   (setq highlight-indent-guides-method 'character)
+;;   (set-face-attribute 'highlight-indent-guides-odd-face nil
+;;                       :foreground "#808080" ;; :background "#808080"
+;;                       )
+;;   (set-face-attribute 'highlight-indent-guides-even-face nil
+;;                       :foreground "#808080" ;; :background "#808080"
+;;                       )
+;;   (set-face-attribute 'highlight-indent-guides-character-face nil
+;;                       :foreground "#808080" ;; :background "#808080"
+;;                       ))
 
 (use-package yaml-mode
   :mode "\\.yml\\'"
