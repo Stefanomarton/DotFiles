@@ -140,7 +140,6 @@
    `(org-outline-path-headerline-face ((t (:foreground ,red :weight ultra-bold ))))
    `(org-drawer ((t (:foreground ,blue))))
    `(org-date ((t (:foreground ,blue))))
-   ;; `(fill-column-indicator ((t (:foreground ,comment :background ,comment))))
 
 
    (custom-theme-set-variables
