@@ -66,6 +66,7 @@
   :hook (magit-mode . magit-delta-mode))
 
 (use-package git-gutter+
+  :hook ((prog-mode text-mode-hook) . git-gutter-mode)
   :after git-gutter
   :config
   (git-gutter+-mode))
