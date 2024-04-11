@@ -1,10 +1,10 @@
-:;;; orgconfig.el --- org-mode configuration -*- lexical-binding: t; -*-
+;;; orgconfig.el --- org-mode configuration -*- lexical-binding: t; -*-
 
 (use-package org
-  :ensure nil
   :hook
   ;; (org-mode . org-indent-mode)
   ;; (org-mode . org-cdlatex-mode)
+  (org-mode . org-margin-mode)
   (org-mode . yas-minor-mode-on)
   (org-mode . er/add-latex-in-org-mode-expansions)
   (org-mode . my/org-header-outline-path-mode)
@@ -18,7 +18,7 @@
   (org-image-actual-width 500)
   (org-hide-leading-stars nil)
 
-  :init
+  ;; :init
   ;; (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
 
   :config
@@ -97,14 +97,11 @@ point. "
    org-fontify-quote-and-verse-blocks t
    org-fontify-whole-heading-line t)
 
-  ;; (setq org-cdlatex-math-modify nil)
-
   (setq org-emphasis-alist '(("*" bold)
                              ("/" italic)
                              ("_" underline)
                              ("=" org-verbatim verbatim)
-                             ("~" org-code verbatim))
-        )
+                             ("~" org-code verbatim)))
 
   (defun er/add-latex-in-org-mode-expansions ()
     ;; Make Emacs recognize \ as an escape character in org
@@ -697,49 +694,33 @@ point. "
   (setq org-appear-inside-latex t)
   (setq org-appear-autoemphasis t))
 
-;; (use-package org-modern
-;;   :hook
-;;   (org-mode . org-modern-mode)
-;;   :config
-;;   (setq org-modern-todo nil
-;;         org-modern-hide-stars nil
-;;         org-modern-horizontal-rule nil
-;;         org-modern-keyword "‣ "
-;;         ;; org-modern-star '("1." "2." "3." "4." "5." "6.")
-;;         org-modern-block-fringe 2
-;;         org-modern-table nil)
-;;   )
+(use-package org-modern
+  :hook
+  (org-mode . org-modern-mode)
+  :config
+  (setq org-modern-todo nil
+        org-modern-hide-stars nil
+        org-modern-horizontal-rule nil
+        org-modern-keyword "‣ "
+        org-modern-star nil
+        org-modern-block-fringe 2
+        org-modern-table nil)
+  )
 
-;; *** ORG-SRC
-;; (use-package org-src
-;;   :straight (:type built-in)
-;;   :after org
-;;   :config
-;;   (setq org-src-fontify-natively t)
-;;   (setq-default
-;;    org-src-tab-acts-natively t
-;;    org-src-preserve-indentation t))
+(use-package org-src
+  :straight (:type built-in)
+  :after org
+  :config
+  (setq org-src-fontify-natively t)
+  (setq-default
+   org-src-tab-acts-natively t
+   org-src-preserve-indentation t))
 
-;; ;; Show org header path
-;; (use-package org-sticky-header
-;;   :hook
-;;   (org-mode . org-sticky-header-mode)
-;;   :config
-;;   (setq org-sticky-header-full-path 'full)
-;;   (setq org-sticky-header-heading-star "*")
-;;   (setq org-sticky-header-always-show-header t)
-;;   )
-
-;; (use-package org-margin
-;;   :straight (:host github :repo "rougier/org-margin")
-;;   :requires svg-lib
-;;   :hook
-;;   (org-mode . org-margin-mode)
-;;   (org-mode . org-margin-mode-on)
-;;   )
-
-;; (use-package svg-lib
-;;   :defer t)
+(use-package org-margin
+  :hook (org-mode . org-margin-mode)
+  :straight (:host github :repo "rougier/org-margin")
+  :requires svg-lib
+  )
 
 (use-package anki-editor
   :commands (anki-editor-push-notes anki-editor-insert-note)
@@ -752,14 +733,12 @@ point. "
 (use-package org-anki
   :config
   (setq org-anki-default-match "EXCLUDE=\"\"")
-  (setq org-anki-default-note-type "Basic")
-  )
+  (setq org-anki-default-note-type "Basic"))
 
 (use-package org-transclusion
   :bind (:map org-mode-map
               ("<leader>ota" . org-transclusion-add)
-              ("<leader>otm" . org-transclusion-mode))
-  )
+              ("<leader>otm" . org-transclusion-mode)))
 
 (use-package org-journal
   :init
@@ -767,9 +746,7 @@ point. "
   :config
   (setq org-journal-dir "~/GoogleDrive/org/journal/"
         org-journal-date-format "%A, %d %B %Y"
-        org-journal-file-type 'weekly
-        )
-  )
+        org-journal-file-type 'weekly))
 
 (use-package poly-org
   :config
