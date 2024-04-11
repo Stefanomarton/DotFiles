@@ -13,3 +13,6 @@
 .config/emacs/*.elc
 .config/emacs/straight
 .config/emacs/history
+
+# mypy
+.mypy_cache/
