@@ -171,7 +171,6 @@
 
     (kbd "Q") 'my-kill-this-buffer
     (kbd "<leader>gt") 'google-this
-    (kbd "<leader>gh") 'dashboard-open
     (kbd "<leader>pp") 'consult-projectile
     (kbd "<leader>ps") 'consult-projectile-switch-project
 
