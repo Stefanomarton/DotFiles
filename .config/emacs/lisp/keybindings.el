@@ -76,6 +76,23 @@
   (general-nmap "c" (general-key-dispatch 'evil-change
                       "c" 'my-evil-change-whole-line))
   (general-vmap "c" 'evil-change)
+
+
+
+  ;; Fix visual end-of-line and custom function
+
+  (defun my-visual-line ()
+    (interactive)
+    (evil-normal-state)
+    (evil-first-non-blank)
+    (evil-visual-state)
+    (evil-end-of-line)
+    (evil-backward-char)
+    )
+
+  (general-vmap "v" 'my-visual-line)
+
+
   :init
   (general-evil-setup t))
 
