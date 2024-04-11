@@ -14,6 +14,9 @@
 ;; Make easy ovveride settings
 (setq site-run-file nil)
 
+;; Not a good idea
+(setq max-lisp-eval-depth 10000)
+
 ;; when quiting emacs, just kill processes
 (setq confirm-kill-processes nil)
 
