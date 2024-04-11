@@ -7,18 +7,18 @@
   (setq evil-undo-system 'undo-fu)
   (setq evil-want-integration t)
   (setq evil-move-beyond-eol nil)
+  (setq evil-kill-on-visual-paste nil)
+  (setq evil-want-empty-ex-last-command t)
 
   :custom
   (setq completion-in-region-function 'consult-completion-in-region)
   (setq evil-operator-state-cursor nil)
   (setq evil-jumps-cross-buffers t)
-  (setq evil-want-empty-ex-last-command t)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-d-scroll nil)
   (setq evil-split-window-below t)
   (setq evil-vsplit-window-right t)
   (setq evil-search-module 'evil-search)
-  (setq evil-kill-on-visual-paste nil)
   (setq evil-esc-delay 0.0001)
   (setq evil-want-Y-yank-to-eol nil)
 
