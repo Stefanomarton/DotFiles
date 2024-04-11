@@ -12,11 +12,15 @@
   (setq recentf-auto-cleanup 'never)
   (setq recentf-max-saved-items 25))
 
+
+;; Zoxide
 (use-package zoxide
   :bind (:map evil-normal-state-map
               ("gz" . zoxide-find-file)
               ))
 
+
+;;Which-key
 (use-package which-key
   :defer 1
   :diminish which-key-mode
@@ -29,6 +33,8 @@
   (which-key-mode)
   (which-key-setup-minibuffer))
 
+
+;; Embark
 (use-package embark
   :commands (embark-minimal-act embark-dwim)
   :config
@@ -94,6 +100,8 @@ targets."
 	          ("j" . consult-find)))
 
 ;; Nice auto formatting
+
+;;Format-all
 (use-package format-all
   :config
   (add-hook 'format-all-mode-hook 'format-all-ensure-formatter)
@@ -115,6 +123,8 @@ If region is active, add its contents to the new buffer."
   :hook (scratch-create-buffer . my/scratch-buffer-setup)
   :bind ("C-c s" . scratch))
 
+
+;;Hydra
 (use-package hydra)
 
 (provide 'base-packages)
