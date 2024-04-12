@@ -1,1 +1,2 @@
 (include "./modules/bar/bar.yuck")
+(include "./modules/ws-popup/ws-popup.yuck")

@@ -1,0 +1,22 @@
+(defwindow ws-popup
+           :monitor 0
+           :geometry (geometry :x "50%"
+                               :y "90%"
+                               :width "100px"
+                               :height "100px"
+                               :anchor "center")
+           :stacking "fg"
+           ;; :reserve (struts :distance "40px" :side "top")
+           :windowtype "dock"
+           :wm-ignore false
+  (ws-popup))  
+
+
+(deflisten active-ws :initial ""
+  "hyprctl activeworkspace -j | jq -r '.name'")
+
+(defwidget ws-popup []
+           (box 
+            :class "ws-popup"
+            :spacing 5
+                {"${active-ws}"}))
