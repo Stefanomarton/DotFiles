@@ -1,6 +1,7 @@
 ;;; orgconfig.el --- org-mode configuration -*- lexical-binding: t; -*-
 
 (use-package org
+
   :hook
   ;; (org-mode . org-indent-mode)
   ;; (org-mode . org-cdlatex-mode)
@@ -23,14 +24,6 @@
 
   :config
 
-  (setq org-link-abbrev-alist
-        '(("image-dir" . "file:~/GoogleDrive/org/uni/attachments/")))
-
-  ;; (setq org-link-abbrev-alist
-  ;;       `(
-  ;;         ("image-dir" . ,(format "file:%s%%s" (file-name-as-directory org-directory)))))
-
-  (evil-define-key 'normal org-mode-map (kbd "<leader>ns") 'org-narrow-to-subtree)
 
   (defun sbr-org-insert-dwim (&optional arg)
     "Insert another entry of the same type as the current
@@ -78,6 +71,26 @@ point. "
     (if (org-at-table-p)
         (org-table-copy-down (prefix-numeric-value arg))
       (sbr-org-insert-dwim arg)))
+
+  (use-package org-src
+    :straight (:type built-in)
+    :config
+    (org-babel-do-load-languages 'org-babel-load-languages '((shell . t)))
+    (setq org-src-fontify-natively t)
+    (setq-default
+     org-src-tab-acts-natively t
+     org-src-preserve-indentation t))
+
+
+  (setq org-link-abbrev-alist
+        '(("image-dir" . "file:~/GoogleDrive/org/uni/attachments/")))
+
+  ;; (setq org-link-abbrev-alist
+  ;;       `(
+  ;;         ("image-dir" . ,(format "file:%s%%s" (file-name-as-directory org-directory)))))
+
+  (evil-define-key 'normal org-mode-map (kbd "<leader>ns") 'org-narrow-to-subtree)
+
 
   (bind-keys :map org-mode-map ("<S-return>" . sbr-org-insert-dwim))
 
@@ -571,13 +584,6 @@ point. "
                            (expand-file-name "uni/courses" org-roam-directory)))))
   )
 
-(use-package consult-org-roam
-  :commands (consult-org-roam-file-find)
-  :custom
-  (consult-org-roam-buffer-narrow-key ?r)
-  :config
-  (consult-org-roam-mode))
-
 (use-package org-roam-ui
   :defer t
   :commands org-roam-ui-mode
@@ -588,6 +594,15 @@ point. "
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
+
+
+(use-package consult-org-roam
+  :commands (consult-org-roam-file-find)
+  :custom
+  (consult-org-roam-buffer-narrow-key ?r)
+  :config
+  (consult-org-roam-mode))
+
 
 (use-package citar
   :defer t
@@ -694,34 +709,6 @@ point. "
   (setq org-appear-inside-latex t)
   (setq org-appear-autoemphasis t))
 
-(use-package org-modern
-  :hook
-  (org-mode . org-modern-mode)
-  :config
-  (setq org-modern-todo nil
-        org-modern-hide-stars nil
-        org-modern-horizontal-rule nil
-        org-modern-keyword "‣ "
-        org-modern-star nil
-        org-modern-block-fringe 2
-        org-modern-table nil)
-  )
-
-(use-package org-src
-  :straight (:type built-in)
-  :after org
-  :config
-  (setq org-src-fontify-natively t)
-  (setq-default
-   org-src-tab-acts-natively t
-   org-src-preserve-indentation t))
-
-(use-package org-margin
-  :hook (org-mode . org-margin-mode)
-  :straight (:host github :repo "rougier/org-margin")
-  :requires svg-lib
-  )
-
 (use-package anki-editor
   :commands (anki-editor-push-notes anki-editor-insert-note)
   :bind (:map org-mode-map
@@ -740,6 +727,7 @@ point. "
               ("<leader>ota" . org-transclusion-add)
               ("<leader>otm" . org-transclusion-mode)))
 
+;; Keep a journal
 (use-package org-journal
   :init
   (setq org-journal-prefix-key "C-c j")
@@ -748,10 +736,31 @@ point. "
         org-journal-date-format "%A, %d %B %Y"
         org-journal-file-type 'weekly))
 
+;; Make latex highlight fast, easy
 (use-package poly-org
   :config
   (oset poly-org-latex-innermode :keep-in-mode 'host)
-  (oset poly-org-latex-innermode :mode 'LaTeX-mode)
+  )
+
+;; Cool org mode
+(use-package org-modern
+  :hook
+  (org-mode . org-modern-mode)
+  :config
+  (setq org-modern-todo nil
+        org-modern-hide-stars nil
+        org-modern-horizontal-rule nil
+        org-modern-keyword "‣ "
+        org-modern-star nil
+        org-modern-block-fringe nil
+        org-modern-table nil)
+  )
+
+;; Cool margin annotations
+(use-package org-margin
+  :hook (org-mode . org-margin-mode)
+  :straight (:host github :repo "rougier/org-margin")
+  :requires svg-lib
   )
 
 (provide 'orgconfig)
