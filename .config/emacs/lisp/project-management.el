@@ -55,8 +55,8 @@
     (call-interactively 'magit-status))
 
   ;; Fixing keybinding
-  (evil-define-key 'normal magit-mode-map (kbd "h") 'magit-section-backward-sibling)
-  (evil-define-key 'normal magit-mode-map (kbd "l") 'magit-section-forward-sibling)
+  (evil-define-key 'normal magit-mode-map (kbd "l") 'magit-section-backward-sibling)
+  (evil-define-key 'normal magit-mode-map (kbd "k") 'magit-section-forward-sibling)
   (evil-define-key 'normal magit-mode-map (kbd "SPC") 'magit-section-cycle)
   )
 
