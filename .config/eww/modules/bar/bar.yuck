@@ -35,7 +35,7 @@
        :orientation "h"
        :space-evenly false
        :halign "center"
-    {music != "" ? "🎵${music}" : ""}))
+    {music != "" ? "🎵 ${music}" : ""}))
 
 
 (defwidget metric [label value onchange]
