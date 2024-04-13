@@ -35,15 +35,19 @@
 (use-package frame
   :straight (:type built-in)
   :config
-  ;; Make sure new frames use window-divider
-  ;; (add-hook 'before-make-frame-hook 'window-divider-mode)
-  (set-frame-parameter nil 'internal-border-width 20)
-  (set-frame-parameter nil 'external-border-width 5)
-  (set-window-margins nil 2 2)
-  :custom
-  ;; (window-divider-default-right-width 3)
-  ;; (window-divider-default-bottom-width 3)
-  (window-divider-default-places nil))
+
+  (defun setup-margin ()
+    (set-frame-parameter nil 'internal-border-width 15)
+    (set-frame-parameter nil 'external-border-width 5)
+    (setq-local line-spacing 0.12)
+    ;; (set-window-margins nil 1 1)
+    )
+
+  ;; (add-hook 'window-configuration-change-hook #'setup-margin)
+  (add-hook 'text-mode-hook #'setup-margin)
+  (add-hook 'prog-mode-hook #'setup-margin)
+
+  (setq window-divider-default-places nil))
 
 (use-package ewal
   :init
