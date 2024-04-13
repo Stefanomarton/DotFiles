@@ -21,6 +21,7 @@
 (setq confirm-kill-processes nil)
 
 ;; fix clipboard in wayland
+(setq select-enable-clipboard t)
 (when (getenv "WAYLAND_DISPLAY")
   (setq wl-copy-p nil
         interprogram-cut-function (lambda (text)
