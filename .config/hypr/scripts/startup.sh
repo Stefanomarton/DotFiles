@@ -15,13 +15,9 @@ if ! virsh -c qemu:///system dominfo "$vm_name" | grep -q "State:\s*running"; th
 
 fi
 
-## Check looking glass
-if ! pgrep -f "looking-glass-client" > /dev/null; then
-
-    ### Command to start Looking Glass
-    hyprctl dispatch exec "[workspace name:w11 silent;noanim] looking-glass-client"
-
-fi
+### Command to start Looking Glass
+killall looking-glass-client
+hyprctl dispatch exec "[workspace name:w11 silent; noanim] looking-glass-client"
 
 
 
@@ -53,3 +49,5 @@ eww daemon
 
 
 
+# Dropbox
+dropbox >/dev/null 2>&1
