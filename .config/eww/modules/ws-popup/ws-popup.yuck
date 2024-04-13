@@ -1,14 +1,10 @@
 (defwindow ws-popup
            :monitor 0
-           :geometry (geometry :x "50%"
-                               :y "90%"
-                               :width "100px"
+           :geometry (geometry :width "200px"
                                :height "100px"
                                :anchor "center")
-           :stacking "fg"
-           ;; :reserve (struts :distance "40px" :side "top")
-           :windowtype "dock"
-           :wm-ignore false
+           :stacking "overlay"
+           :focusable false
   (ws-popup))  
 
 
