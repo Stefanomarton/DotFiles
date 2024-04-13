@@ -219,7 +219,16 @@
   (evil-define-key 'visual 'global (kbd "<leader>gg") 'google-this-noconfirm)
   (evil-define-key 'normal 'prog-mode-map (kbd "<leader>m") 'rainbow-mode)
 
-  (evil-mode 1))
+  ;; Redefine single and double quote mappings
+  (define-key evil-outer-text-objects-map "q" 'evil-a-single-quote)
+  (define-key evil-outer-text-objects-map "Q" 'evil-a-double-quote)
+  (define-key evil-inner-text-objects-map "q" 'evil-inner-single-quote)
+  (define-key evil-inner-text-objects-map "Q" 'evil-inner-double-quote)
+
+
+
+  (evil-mode 1)
+  )
 
 ;; ;; Undo for evil
 (use-package undo-fu
@@ -259,6 +268,8 @@
                 '((?j . ("(" . ")"))
                   (?k . ("[" . "]"))
                   (?l . ("{" . "}"))
+                  (?q . ("\'" . "\'"))
+                  (?Q . ("\"" . "\""))
                   (?\( . ("(" . ")"))
                   (?\[ . ("[" . "]"))
                   (?\{ . ("{" . "}"))
@@ -274,6 +285,8 @@
     		                 (push '(?f . ("\\frac{" . "}{}")) evil-surround-pairs-alist)
     		                 (push '(?w . ("\\(\\ce{" . "}\\)")) evil-surround-pairs-alist)
     		                 (push '(?. . ("_{" . "}")) evil-surround-pairs-alist)
+                             (push '(?q . ("\'" . "\'")) evil-surround-pairs-alist)
+    		                 (push '(?Q . ("\"" . "\"")) evil-surround-pairs-alist)
     		                 (push '(?, . ("^{" . "}")) evil-surround-pairs-alist)))
 
   (add-hook 'prog-mode-hook (lambda ()
@@ -335,12 +348,35 @@
   )
 
 (use-package evil-tex
-  :defer t
   :hook
   (LaTeX-mode . evil-tex-mode)
   (org-mode . evil-tex-mode)
-  ;; :config
-  ;; (setq evil-tex-toggle-override-m t)
+  :init
+  ;; Remove q from evil-tex surrounds
+  (setq evil-tex-include-newlines-in-envs nil)
+  (setq evil-tex-select-newlines-with-envs nil)
+  (setq evil-tex-surround-delimiters
+        '((?m "\\(" . "\\)")
+          (?M "\\[" . "\\]")
+          (?c . ,#'evil-tex-surround-command-prompt)
+          (?e . ,#'evil-tex-surround-env-prompt)
+          (?d . ,#'evil-tex-surround-delim-prompt)
+          (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt)
+          ;; (?q "`" . "'")
+          ;; (?Q "``" . "''")
+          (?^ "^{" . "}")
+          (?_ "_{" . "}")
+          (?T "&" . "&")))
+
+  (add-hook 'org-mode-hook (lambda ()
+                             (setq-local evil-tex-inner-text-objects-map
+                                         '((?q . evil-inner-single-quote)
+                                           (?Q . evil-inner-double-quote)
+                                           ))
+                             (setq-local evil-outer-text-objects-map
+                                         '((?q . evil-a-single-quote)
+                                           (?Q . evil-a-double-quote)
+                                           ))))
   )
 
 (use-package more-evil-avy
@@ -383,5 +419,4 @@
   (evil-lion-mode))
 
 (provide 'evil)
-
 ;;; evil.el ends here
