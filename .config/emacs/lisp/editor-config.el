@@ -151,7 +151,7 @@
   (set-default 'er--show-expansion-message nil)
   (setq expand-region-show-usage-message nil
         expand-region-fast-keys-enabled t
-        expand-region-contract-fast-key "c"
+        expand-region-contract-fast-key "-"
         expand-region-reset-fast-key "r")
 
   (evil-define-key 'normal 'global (kbd "<backspace>") 'er/expand-region)
