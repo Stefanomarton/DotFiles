@@ -267,17 +267,19 @@
                   ;; (?< . evil-surround-read-tag)
                   (?\C-f . evil-surround-prefix-function)
                   (?f . evil-surround-function)))
+
   (add-hook 'org-mode-hook (lambda ()
     		                 (push '(?h . ("\$" . "\$")) evil-surround-pairs-alist)
     		                 (push '(?H . ("\$$" . "\$$")) evil-surround-pairs-alist)
     		                 (push '(?f . ("\\frac{" . "}{}")) evil-surround-pairs-alist)
     		                 (push '(?w . ("\\(\\ce{" . "}\\)")) evil-surround-pairs-alist)
-    		                 (push '(?v . ("_{" . "}")) evil-surround-pairs-alist)
+    		                 (push '(?. . ("_{" . "}")) evil-surround-pairs-alist)
     		                 (push '(?, . ("^{" . "}")) evil-surround-pairs-alist)))
-  ;; (add-hook 'LaTeX-mode-hook (lambda ()
-  ;;   		                   (push '(?p . ("\(" . "\)")) evil-surround-pairs-alist)
-  ;;   		                   (push '(?s . ("\[" . "\]")) evil-surround-pairs-alist)
-  ;;   		                   (push '(?c . ("{" . "}")) evil-surround-pairs-alist)))
+
+  (add-hook 'prog-mode-hook (lambda ()
+    		                  (push '(?q . ("\'" . "\'")) evil-surround-pairs-alist)
+    		                  (push '(?Q . ("\"" . "\"")) evil-surround-pairs-alist)))
+
   (add-hook 'markdown-mode-hook (lambda ()
                                   (push '(?* . ("**" . "**")) evil-surround-pairs-alist))))
 
