@@ -140,6 +140,7 @@
    `(org-outline-path-headerline-face ((t (:foreground ,red :weight ultra-bold ))))
    `(org-drawer ((t (:foreground ,blue))))
    `(org-date ((t (:foreground ,blue))))
+   '(yas-field-highlight-face ((t (:inherit t))))
 
 
    (custom-theme-set-variables
