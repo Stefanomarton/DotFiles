@@ -6,5 +6,5 @@
 # binding: C-s b
 # --
 \begin{bx}
-${1:`(if (region-active-p) (yas-selected-text) "content")`}
+${1:`(if (region-active-p) (yas-selected-text) (propertize "content" 'font-lock-face '(:inherit region)))`}
 \end{bx}

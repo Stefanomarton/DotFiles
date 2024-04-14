@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: \left( \right)
+# condition: (and (texmathp) 'auto)
+# key: lrp
+# --
+\\left( $1 \\right) $0
