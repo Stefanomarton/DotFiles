@@ -1,7 +1,6 @@
 ;;; orgconfig.el --- org-mode configuration -*- lexical-binding: t; -*-
 
 (use-package org
-
   :hook
   ;; (org-mode . org-indent-mode)
   ;; (org-mode . org-cdlatex-mode)
@@ -9,7 +8,7 @@
   (org-mode . yas-minor-mode-on)
   (org-mode . er/add-latex-in-org-mode-expansions)
   (org-mode . my/org-header-outline-path-mode)
-  (org-mode . display-fill-column-indicator-mode)
+  ;; (org-mode . display-fill-column-indicator-mode)
   (org-mode . auto-fill-mode)
 
   :custom
@@ -698,16 +697,17 @@ point. "
   )
 
 
-(use-package org-appear
-  :hook (org-mode . org-appear-mode)
-  :config
-  (setq org-hide-emphasis-markers nil)
-  (setq org-appear-elements '(bold italic underline verbatim code subscript superscript))
-  (setq org-appear-autolinks t)
-  (setq org-appear-autokeywords t)
-  (setq org-appear-autoentities t)
-  (setq org-appear-inside-latex t)
-  (setq org-appear-autoemphasis t))
+;; (use-package org-appear
+;;   :hook (org-mode . org-appear-mode)
+;;   :config
+;;   (setq org-hide-emphasis-markers nil)
+;;   (setq org-appear-elements '(bold italic underline verbatim code subscript superscript))
+;;   (setq org-appear-autolinks t)
+;;   ;; (setq org-appear-delay )
+;;   (setq org-appear-autokeywords t)
+;;   (setq org-appear-autoentities t)
+;;   (setq org-appear-inside-latex t)
+;;   (setq org-appear-autoemphasis t))
 
 (use-package anki-editor
   :commands (anki-editor-push-notes anki-editor-insert-note)
