@@ -87,10 +87,9 @@
     ("c" git-gutter+-commit "commit hunk")
     ("C" git-gutter+-stage-and-commit "stange and commit hunk")
     ("q" nil "quit"))
+  (setq git-gutter:update-interval 0.02)
   :bind
-  (("<leader>gn" . hydra-git-gutter/body))
-  :custom
-  (setq git-gutter:update-interval 0.02))
+  (("<leader>gn" . hydra-git-gutter/body)))
 
 (use-package git-gutter-fringe
   :config
