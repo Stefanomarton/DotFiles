@@ -85,20 +85,6 @@ file corresponding to the current buffer file, then recompile the file."
   :config
   (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
-;; (use-package highlight-indent-guides
-;;   :config
-;;   (add-hook 'python-ts-mode-hook 'highlight-indent-guides-mode)
-;;   (setq highlight-indent-guides-method 'character)
-;;   (set-face-attribute 'highlight-indent-guides-odd-face nil
-;;                       :foreground "#808080" ;; :background "#808080"
-;;                       )
-;;   (set-face-attribute 'highlight-indent-guides-even-face nil
-;;                       :foreground "#808080" ;; :background "#808080"
-;;                       )
-;;   (set-face-attribute 'highlight-indent-guides-character-face nil
-;;                       :foreground "#808080" ;; :background "#808080"
-;;                       ))
-
 (use-package yaml-mode
   :mode "\\.yml\\'"
   )
@@ -106,9 +92,6 @@ file corresponding to the current buffer file, then recompile the file."
 (use-package yuck-mode
   :mode "\\.yuck\\'"
   )
-
-(use-package rust-mode
-  :mode "\\.rs\\'")
 
 (provide 'programming)
 
