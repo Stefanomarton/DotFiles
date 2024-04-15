@@ -11,6 +11,7 @@
 
   ;; Enable `prettify-symbols' globally.
   (global-prettify-symbols-mode t)
+  (setq prettify-symbols-unprettify-at-point t)
 
   ;; Display line number relative and absolute
   (setq display-line-numbers-grow-only t)
