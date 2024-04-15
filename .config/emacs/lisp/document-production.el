@@ -194,7 +194,7 @@
 	       (yas-expand-snippet "\\[ \n $1 \n \\] \n \n $0")))
   (aas-set-snippets 'markdown-mode
     "jf" (lambda () (interactive)
-	       (yas-expand-snippet "$$1$ $0"))
+	       (yas-expand-snippet "$ $1$ $0 $"))
     "jc" (lambda () (interactive)
 	       (yas-expand-snippet "\\\\(\\ce{ $1 }\\\\) $0"))
     "kd" (lambda () (interactive)
@@ -325,18 +325,10 @@
   (text-mode . jinx-mode)
   (markdown-mode . jinx-mode)
   (LaTeX-mode . jinx-mode)
-  ;; :bind
-  ;; (:map jinx-mode-map
-  ;;       (("k") . jinx-previous)
-  ;;       (("l") . jinx-next))
   :config
   (evil-define-key 'normal 'global (kbd "<leader>j") 'jinx-correct)
   (evil-define-key 'normal 'global (kbd "<leader>J") 'jinx-correct-all)
   (setq jinx-languages "it_IT, en_US")
-  ;; (general-define-key
-  ;;  :keymaps 'jinx-correct-map
-  ;;  "j" 'jinx-previous
-  ;;  "/" 'jinx-next)
   )
 
 (provide 'document-production)
