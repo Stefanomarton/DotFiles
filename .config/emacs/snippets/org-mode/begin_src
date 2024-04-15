@@ -3,5 +3,5 @@
 # key: src
 # --
 #+begin_src ${1:lang}
-$2
+${1:`(if (region-active-p) (yas-selected-text) (propertize "content" 'font-lock-face '(:inherit region)))`}
 #+end_src

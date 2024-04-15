@@ -4,5 +4,5 @@
 # condition: (and (not (texmathp)))
 # --
 \begin{equation*}
-$1
+${1:`(if (region-active-p) (yas-selected-text) (propertize "content" 'font-lock-face '(:inherit region)))`}
 \end{equation*}
