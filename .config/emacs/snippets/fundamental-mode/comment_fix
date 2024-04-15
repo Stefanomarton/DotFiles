@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: FIX Comment
-# key: fix
+# key: fix-comment
 # --
-`(insert (concat comment-start))` FIX:
+`(insert (concat comment-start))` FIX: 

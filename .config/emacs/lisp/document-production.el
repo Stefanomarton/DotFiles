@@ -21,6 +21,7 @@
   (setq markdown-fontify-code-blocks-natively t)
   (setq markdown-enable-math t)
   :config
+
   (defun export-buffer-to-pdf ()
     "Export the current Markdown buffer to PDF using Pandoc with conditional flags."
     (interactive)
@@ -58,14 +59,11 @@
     (kbd "<leader>ez") 'open-pdf-with-zathura
     (kbd "<leader>ep") 'open-pdf-with-pdf-tools)
 
-
   :mode ("README\\.md\\'" . gfm-mode)
   :init
   (setq markdown-enable-math t))
 
 (use-package tex
-  ;; :hook
-  ;; (latex-mode . LaTeX-mode)
   :straight auctex
   :config
   (add-to-list 'major-mode-remap-alist '(latex-mode . LaTeX-mode))
@@ -155,16 +153,14 @@
   :defer t
   :commands (yas-minor-mode)
   :hook
-  (prog-mode . my/yas-activate)
-  (LaTeX-mode . my/yas-activate)
-  (markdown-mode . my/yas-activate)
-  (org-mode . my/yas-activate)
-  (laas-mode . my/yas-activate)
+  (text-mode . yas-minor-mode)
+  (prog-mode . yas-minor-mode)
+  (LaTeX-mode . yas-minor-mode)
+  (markdown-mode . yas-minor-mode)
+  (org-mode . yas-minor-mode)
+  (yas-minor-mode . yas-reload-all)
   :config
-  (defun my/yas-activate ()
-    (yas-minor-mode)
-    (yas-reload-all)
-    )
+  (yas-global-mode 1)
   (setq yas-triggers-in-field t)
   (setq yas-snippet-dirs '("~/.config/emacs/snippets")))
 
@@ -178,7 +174,7 @@
   (markdown-mode . aas-activate-for-major-mode)
   (LaTeX-mode . aas-activate-for-major-mode)
   :config
-  (aas-set-snippets 'latex-mode
+  (aas-set-snippets 'LaTeX-mode
     "jf" (lambda () (interactive)
 	       (yas-expand-snippet "\\\\($1\\\\) $0"))
     "jc" (lambda () (interactive)
@@ -284,7 +280,7 @@
   :hook (LaTeX-mode . cdlatex-mode)
   :custom
   (cdlatex-takeover-dollar nil)
-  (cdlatex-math-modify-prefix ?/)
+  (cdlatex-math-modify-prefix ?~)
   ;; (cdlatex-math-symbol-prefix nil)
   )
 
@@ -320,14 +316,10 @@
 
 (use-package jinx
   :straight (:host github :repo "minad/jinx")
-  :hook
-  (org-mode . jinx-mode)
-  (text-mode . jinx-mode)
-  (markdown-mode . jinx-mode)
-  (LaTeX-mode . jinx-mode)
+  :bind (:map evil-normal-state-map
+              ("<leader>j" . jinx-correct)
+              ("<leader>J" . jinx-correct-all))
   :config
-  (evil-define-key 'normal 'global (kbd "<leader>j") 'jinx-correct)
-  (evil-define-key 'normal 'global (kbd "<leader>J") 'jinx-correct-all)
   (setq jinx-languages "it_IT, en_US")
   )
 
