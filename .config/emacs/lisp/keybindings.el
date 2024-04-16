@@ -1,6 +1,39 @@
 ;;; keybindings.el --- Useful Tools -*- lexical-binding: t; -*-
 
 (use-package general
+  :preface
+  ;; find-file keybindings
+  (defun my/find-file (directory)
+    (interactive)
+    (let ((default-directory directory))
+      (ido-find-file)))
+
+  ;; Fix change whole line
+  (defun my-evil-change-whole-line ()
+    (interactive)
+    (beginning-of-line)
+    (evil-change-line (point) (line-end-position)))
+
+  (defun my-evil-change-visual-selection ()
+    "Replace the region with an empty line and enter insert mode."
+    (interactive)
+    (let ((start (region-beginning))
+          (end (region-end)))
+      (delete-region start end)
+      (goto-char start)
+      (open-line 1)
+      (evil-insert 1)))
+
+  ;; Fix visual end-of-line and custom function
+  (defun my-visual-line ()
+    (interactive)
+    (evil-normal-state)
+    (evil-first-non-blank)
+    (evil-visual-state)
+    (evil-end-of-line)
+    (evil-backward-char)
+    )
+
   :demand t
   :config
   ;; fix unbindings
@@ -12,11 +45,6 @@
 
 
 
-  ;; find-file keybindings
-  (defun my/find-file (directory)
-    (interactive)
-    (let ((default-directory directory))
-      (ido-find-file)))
 
   (general-create-definer file-leader
     :prefix "C-f")
@@ -57,38 +85,9 @@
 
 
 
-  ;; Fix change whole line
-  (defun my-evil-change-whole-line ()
-    (interactive)
-    (beginning-of-line)
-    (evil-change-line (point) (line-end-position)))
-
-  (defun my-evil-change-visual-selection ()
-    "Replace the region with an empty line and enter insert mode."
-    (interactive)
-    (let ((start (region-beginning))
-          (end (region-end)))
-      (delete-region start end)
-      (goto-char start)
-      (open-line 1)
-      (evil-insert 1)))
-
   (general-nmap "c" (general-key-dispatch 'evil-change
                       "c" 'my-evil-change-whole-line))
   (general-vmap "c" 'evil-change)
-
-
-
-  ;; Fix visual end-of-line and custom function
-
-  (defun my-visual-line ()
-    (interactive)
-    (evil-normal-state)
-    (evil-first-non-blank)
-    (evil-visual-state)
-    (evil-end-of-line)
-    (evil-backward-char)
-    )
 
   (general-vmap "v" 'my-visual-line)
 
