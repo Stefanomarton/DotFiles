@@ -20,21 +20,6 @@
 ;; when quiting emacs, just kill processes
 (setq confirm-kill-processes nil)
 
-;; fix clipboard in wayland
-(setq select-enable-clipboard t)
-(when (getenv "WAYLAND_DISPLAY")
-  (setq wl-copy-p nil
-        interprogram-cut-function (lambda (text)
-                                    (setq-local process-connection-type 'pipe)
-                                    (setq wl-copy-p (start-process "wl-copy" nil "wl-copy" "-f" "-n"))
-                                    (process-send-string wl-copy-p text)
-                                    (process-send-eof wl-copy-p))
-        interprogram-paste-function (lambda ()
-                                      (unless (and wl-copy-p (process-live-p wl-copy-p))
-                                        (shell-command-to-string "wl-paste -n | tr -d '\r'")))))
-
-;; (setq select-enable-primary t)
-
 ;; ask if local variables are safe once.
 (setq enable-local-variables t)
 
@@ -114,6 +99,7 @@
 
 (setq-default indent-tabs-mode nil
               tab-width 4)
+(setq tab-always-indent t)
 
 ;; Modern conventions state that 80 characters is the standard width.
 
@@ -179,5 +165,12 @@
   (defun my/new-frame-settings (frame)
     (if (daemonp)
         (setq evil-echo-state nil))))
+
+(use-package xclip
+  :config
+  (setq xclip-program "wl-copy")
+  (setq xclip-select-enable-clipboard t)
+  (setq xclip-mode t)
+  (setq xclip-method (quote wl-copy)))
 
 (provide 'core)
