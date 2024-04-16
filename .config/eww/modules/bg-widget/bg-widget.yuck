@@ -1,15 +1,15 @@
-(defpoll time-bg :interval "10s"
-  "date '+%H:%M'")
+(defpoll time-bg :interval "1s"
+  "date '+%H:%M:%S'")
 
 (defpoll date-bg :interval "10s"
   "date '+%A %B %d, %Y'")
 
 
 (defwidget bg-widget []
-           (box :class "bg-widget" :orientation "v" :space-evenly false 
-                (box :class "time" :orientation "h" :space-evenly false 
+           (box :class "bg-widget" :halign "center" :orientation "v" :space-evenly false 
+                (box :class "time-bg" :orientation "h" :space-evenly true 
                      time-bg)
-                (box :class "date" :orientation "h" :space-evenly false 
+                (box :class "date-bg" :orientation "h" :space-evenly true 
                      date-bg)))
 
 (defwindow bg-widget

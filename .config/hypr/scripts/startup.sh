@@ -46,8 +46,9 @@ fi
 
 # Eww
 eww daemon
+eww open bg-widget
 
 
 
 # Dropbox
-dropbox >/dev/null 2>&1
+dropbox

@@ -2,6 +2,12 @@
   all: unset;
   color: white;
   font-weight: bold;
-  font-size: 70px;
+  font-size: 100px;
+  font-family: $font;
+}
+
+.time-bg {
+  font-weight: bold;
+  font-size: 130px;
   font-family: $font;
 }
