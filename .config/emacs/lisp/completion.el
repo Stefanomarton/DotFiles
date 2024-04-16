@@ -47,13 +47,6 @@
 
 (use-package vertico-posframe
   :after posframe
-  ;; :init
-  ;; (custom-set-faces
-  ;;  '(vertico-posframe ((t (:background "#090a0c"))))
-  ;;  '(vertico-posframe-border ((t (:background "#B9788C")))))
-  ;; :custom-face
-  ;; (vertico-posframe ((t (:background "#090a0c"))))
-  ;; (vertico-posframe-border ((t (:background "#B9788C"))))
   :custom
   (vertico-posframe-width 150)
   (vertico-posframe-border-width 2)
