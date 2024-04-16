@@ -120,14 +120,17 @@
   (corfu-min-width 10)
   (corfu-max-width 80)
   (corfu-separator nil)          ;; Orderless field separator
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  (corfu-quit-at-boundary 'seperator)   ;; Never quit at completion boundary
+  (corfu-quit-no-match t)      ;; Never quit, even if there is no match
   (corfu-preview-current nil)    ;; Disable current candidate preview
   (corfu-preselect 'first)      ;; Preselect the prompt
   (corfu-popupinfo-delay (cons nil 1.0)) ;; Autoupdate only after toggling
   :config
 
+  ;; Enable popuinfo
   (corfu-popupinfo-mode)
+
+  ;; Corfu for org mode setup
   (add-hook 'org-mode-hook
             (lambda ()
               ;; (setq-local corfu-auto-prefix 1)
@@ -145,27 +148,22 @@
                            ;; (cape-capf-prefix-length #'cape-dict 3)
                            (cape-capf-prefix-length #'cape-file 1)
                            (cape-capf-prefix-length #'yasnippet-capf 2)
-                           ;; (cape-capf-prefix-length #'cape-dabbrev 3)
+                           (cape-capf-prefix-length #'cape-dabbrev 5)
                            ))))
 
-  (require 'cape)
-  (require 'eglot)
+  ;; Eglot and corfu setup
+
   (defun my/eglot-capf ()
     (setq-local completion-at-point-functions
-                (list (cape-super-capf #'eglot-completion-at-point #'yasnippet-capf #'cape-file
-                                       ))))
+                (list (cape-capf-super
+                       #'eglot-completion-at-point
+                       #'yasnippet-capf
+                       #'cape-file))))
 
-  ;; Option 1: Specify explicitly to use Orderless for Eglot
-  ;; (setq completion-category-overrides '((eglot (styles orderless))
-  ;;                                       (eglot-capf (styles orderless))))
-
-  ;; Option 2: Undo the Eglot modification of completion-category-defaults
-  ;; (with-eval-after-load 'eglot
-  ;;   (setq completion-category-defaults nil))
-
-  ;; (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+  (add-hook 'eglot-managed-mode-hook #'my/eglot-capf)
 
 
+  ;; Setup for emacs lisp-mode
   (add-hook 'emacs-lisp-mode-hook
             (lambda ()
               (setq-local corfu-auto-prefix 1)
