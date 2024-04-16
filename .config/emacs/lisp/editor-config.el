@@ -58,8 +58,6 @@
   (setq show-paren-when-point-inside-paren t)
   )
 
-(use-package tab-jump-out)
-
 ;; Highlight nested parentheses
 (use-package rainbow-delimiters
   :defer 1
@@ -89,13 +87,6 @@
 	      "ace" "act" "add" "age" "ago" "aim" "air"
 	      "ale" "all" "and" "ant" "any" "ape" "apt"))
 
-  ;; (evil-define-key 'operator 'global (kbd "l") 'avy-goto-line)
-
-  (evil-define-key 'normal 'global (kbd "<leader> s") 'evil-avy-goto-char-timer)
-
-  (evil-define-key 'normal 'global (kbd "s") 'evil-avy-goto-char-2-below)
-  (evil-define-key 'normal 'global (kbd "S") 'evil-avy-goto-char-2-above)
-
   (evil-define-key 'normal 'global (kbd "F") 'evil-avy-goto-char-in-line-beg)
   (evil-define-key 'visual 'global (kbd "F") 'evil-avy-goto-char-in-line-beg)
   (evil-define-key 'operator 'global (kbd "F") 'evil-avy-goto-char-in-line-beg)
@@ -107,7 +98,6 @@
   (evil-define-key 'operator 'global (kbd "f") 'evil-avy-goto-char-in-line-end)
   (evil-define-key 'normal 'global (kbd "C-k") 'pop-global-mark)
 
-  ;; (evil-define-key 'motion 'global (kbd "L") 'avy-copy-line)
 
   (setq avy-timeout-seconds 0.3)
   (defun avy-action-kill-whole-line (pt)
