@@ -72,9 +72,9 @@ git:
     parseEmoji: false
     diffContextSize: 3 # how many lines of context are shown around a change in diffs
 os:
-  edit: 'nvim {{filename}}'
-  editAtLine: 'nvim --line={{line}} {{filename}}'
-  editAtLineAndWait: 'nvim --block --line={{line}} {{filename}}'
+  edit: 'emacsclient -t {{filename}}'
+  editAtLine: 'nvim +{{line}} {{filename}}'
+  # editAtLineAndWait: 'nvim --block --line={{line}} {{filename}}'
   editInTerminal: true
   openDirInEditor: 'nvim {{dir}}'
 refresher:
