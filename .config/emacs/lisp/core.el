@@ -50,9 +50,7 @@
 ;; I don't use 'custom.el' to set variables, but a few of the packages I use do.
 ;; This snippet ensures that a massacre is not made of my init.el.
 
-(setq custom-file (make-temp-file "emacs-custom-"))
-(when (file-exists-p custom-file)
-  (load custom-file))
+(setq custom-file "/dev/null")
 
 ;; Set default directory to home and abbreviate it
 (setq default-directory "~/")
