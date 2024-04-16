@@ -93,22 +93,21 @@
   :straight (:host github :repo "liuyinz/consult-todo")
   :after consult
   :config
-  (defconst consult-todo--narrow
-    '((?t . "TODO")
-      (?f . "FIXME")
-      (?b . "BUG")
-      (?h . "ASK"))
-    "Default mapping of narrow and keywords.")
-  )
+  (setq consult-todo-narrow
+        '((?t . "TODO")
+          (?f . "FIX")
+          (?b . "BUG")
+          (?h . "ASK"))))
 
-(use-package cape)
+(use-package cape
+  :config
+  (setq cape-dict-file '("/usr/share/dict/italian" "/usr/share/dict/british-english")))
 
 (use-package corfu
   :bind
-  (:map corfu-map ("C-c" . corfu-insert-separator))
-  ;; Optional customizations
-  :bind (:map corfu-popupinfo-map
-              ("M-d" . corfu-popupinfo-toggle))
+  ;; (:map corfu-map ("SPC" . corfu-insert-separator))
+  (:map corfu-popupinfo-map
+        ("M-d" . corfu-popupinfo-toggle))
   :custom
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
@@ -172,9 +171,9 @@
                             yasnippet-capf
                             cape-keyword
                             cape-elisp-symbol
-                            cape-dict
                             cape-dabbrev))))
 
+  ;; Enable corfu in the minibuffer
   (defun corfu-enable-always-in-minibuffer ()
     "Enable Corfu in the minibuffer if Vertico/Mct are not active."
     (unless (or (bound-and-true-p mct--active)
@@ -182,6 +181,8 @@
                 (eq (current-local-map) read-passwd-map))
       (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
                   corfu-popupinfo-delay nil
+                  corfu-auto-prefix 3
+                  corfu-preselect 'valid
                   corfu-min-width 10
                   corfu-max-width 80
                   )
