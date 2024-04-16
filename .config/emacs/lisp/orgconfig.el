@@ -2,7 +2,6 @@
 
 (use-package org
   :hook
-  ;; (org-mode . org-indent-mode)
   ;; (org-mode . org-cdlatex-mode)
   (org-mode . org-margin-mode)
   (org-mode . yas-minor-mode-on)
@@ -18,11 +17,7 @@
   (org-image-actual-width 500)
   (org-hide-leading-stars nil)
 
-  ;; :init
-  ;; (setq org-agenda-files (directory-files-recursively "~/GoogleDrive/org" "\\.org$"))
-
   :config
-
 
   (defun sbr-org-insert-dwim (&optional arg)
     "Insert another entry of the same type as the current
@@ -71,25 +66,12 @@ point. "
         (org-table-copy-down (prefix-numeric-value arg))
       (sbr-org-insert-dwim arg)))
 
-  (use-package org-src
-    :straight (:type built-in)
-    :config
-    (org-babel-do-load-languages 'org-babel-load-languages '((shell . t)))
-    (setq org-src-fontify-natively t)
-    (setq-default
-     org-src-tab-acts-natively t
-     org-src-preserve-indentation t))
-
-
   (setq org-link-abbrev-alist
         '(("image-dir" . "file:~/GoogleDrive/org/uni/attachments/")))
 
   ;; (setq org-link-abbrev-alist
   ;;       `(
   ;;         ("image-dir" . ,(format "file:%s%%s" (file-name-as-directory org-directory)))))
-
-  (evil-define-key 'normal org-mode-map (kbd "<leader>ns") 'org-narrow-to-subtree)
-
 
   (bind-keys :map org-mode-map ("<S-return>" . sbr-org-insert-dwim))
 
@@ -100,6 +82,9 @@ point. "
 
   (evil-define-key 'normal org-mode-map (kbd "hs") 'hide-subtree-and-parent)
   (evil-define-key 'insert org-mode-map (kbd "C-a a") 'hide-subtree-and-parent)
+
+  (evil-define-key 'normal org-mode-map (kbd "TAB") 'cdlatex-tab)
+  (evil-define-key 'insert org-mode-map (kbd "C-a a") 'cdlatex-tab)
 
   (setq org-blank-before-new-entry
         '((heading . nil)
@@ -173,7 +158,6 @@ point. "
 
   (advice-add 'org-raise-scripts :after #'my/org-raise-scripts-no-braces)
 
-
   (setq org-export-headline-levels 6)
 
   (setq org-export-preserve-breaks nil) ;; preserve newline in exports
@@ -197,7 +181,7 @@ point. "
   (setq org-latex-default-class "report")
   (setq org-startup-folded t)
   (setq org-pretty-entities t)
-  (setq org-pretty-entities-include-sub-superscripts t)
+  (setq org-pretty-entities-include-sub-superscripts nil)
   (setq org-use-sub-superscripts '{})
   )
 
@@ -363,6 +347,16 @@ point. "
   (use-package ox-hugo
     :after ox)
   )
+
+(use-package org-src
+  :after org
+  :straight (:type built-in)
+  :config
+  (org-babel-do-load-languages 'org-babel-load-languages '((shell . t) (python . t) (latex . t)))
+  (setq org-src-fontify-natively t)
+  (setq-default
+   org-src-tab-acts-natively t
+   org-src-preserve-indentation t))
 
 (use-package org-download
   :defer t
