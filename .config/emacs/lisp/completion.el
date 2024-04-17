@@ -21,7 +21,6 @@
 
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t)
-  :config
 
   ;; Indicated in the documentation
   (setq fast-but-imprecise-scrolling t
@@ -38,22 +37,10 @@
   (setq vertico-count 10)
   (setq vertico-resize nil)
   (setq vertico-cycle t)
+
   :init
   (vertico-multiform-mode)
   (vertico-mode))
-
-(use-package posframe
-  :after vertico)
-
-(use-package vertico-posframe
-  :after posframe
-  :custom
-  (vertico-posframe-width 150)
-  (vertico-posframe-border-width 2)
-  (vertico-multiform-commands
-   '((execute-extended-command posframe)
-     (consult-outline buffer ,(lambda (_) (text-scale-set -1)))
-     (:not posframe))))
 
 ;; orderless completion method
 (use-package orderless
@@ -67,11 +54,12 @@
 (use-package marginalia
   :defer .1
   :after vertico
-  :init
+  :config
   (marginalia-mode))
 
 ;; musthave
 (use-package consult
+  :defer 1
   :init
   (setq consult-preview-allowed-hooks '(global-font-lock-mode-check-buffers save-place-find-file-hook display-line-numbers-mode))
   :general
@@ -81,7 +69,7 @@
            "C-c p" '(consult-yank-from-kill-ring :no-autoload t)
            "C-c l" '(consult-line :no-autoload t)
            )
-  :defer 1)
+  )
 
 (use-package consult-projectile
   :commands (consult-projectile))
@@ -100,31 +88,30 @@
           (?h . "ASK"))))
 
 (use-package cape
+  :after corfu
   :config
   (setq cape-dict-file '("/usr/share/dict/italian" "/usr/share/dict/british-english")))
 
 (use-package corfu
   :bind
-  ;; (:map corfu-map ("SPC" . corfu-insert-separator))
   (:map corfu-popupinfo-map
         ("M-d" . corfu-popupinfo-toggle))
-  :custom
-  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  (corfu-auto t)                 ;; Enable auto completion
-  (corfu-auto-prefix 1)
-  (corfu-auto-delay 0)
-  (corfu-bar-width 0)
-  (corfu-right-margin-width 1)
-  (corfu-left-margin-width 1)
-  (corfu-min-width 10)
-  (corfu-max-width 80)
-  (corfu-separator nil)          ;; Orderless field separator
-  (corfu-quit-at-boundary 'seperator)   ;; Never quit at completion boundary
-  (corfu-quit-no-match t)      ;; Never quit, even if there is no match
-  (corfu-preview-current nil)    ;; Disable current candidate preview
-  (corfu-preselect 'first)      ;; Preselect the prompt
-  (corfu-popupinfo-delay (cons nil 1.0)) ;; Autoupdate only after toggling
   :config
+  (setq corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (setq corfu-auto t)                 ;; Enable auto completion
+  (setq corfu-auto-prefix 1)
+  (setq corfu-auto-delay 0)
+  (setq corfu-bar-width 0)
+  (setq corfu-right-margin-width 1)
+  (setq corfu-left-margin-width 1)
+  (setq corfu-min-width 10)
+  (setq corfu-max-width 80)
+  (setq corfu-separator nil)          ;; Orderless field separator
+  (setq corfu-quit-at-boundary 'seperator)   ;; Never quit at completion boundary
+  (setq corfu-quit-no-match t)      ;; Never quit, even if there is no match
+  (setq corfu-preview-current nil)    ;; Disable current candidate preview
+  (setq corfu-preselect 'first)      ;; Preselect the prompt
+  (setq corfu-popupinfo-delay (cons nil 1.0)) ;; Autoupdate only after toggling
 
   ;; Enable popuinfo
   (corfu-popupinfo-mode)
@@ -189,18 +176,6 @@
       (corfu-mode 1)))
   (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
 
-  (use-package pcomplete
-    :defer
-    :config
-    ;; Silence the pcomplete capf, no errors or messages!
-    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
-    ;; (advice-remove 'pcomplete-completions-at-point #'cape-wrap-silent)
-
-    ;; Ensure that pcomplete does not write to the buffer
-    ;; and behaves as a pure `completion-at-point-function'.
-    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
-    ;; (advice-remove 'pcomplete-completions-at-point #'cape-wrap-purify)
-    )
   :init
   (global-corfu-mode))
 

@@ -1,6 +1,7 @@
 ;;; orgconfig.el --- org-mode configuration -*- lexical-binding: t; -*-
 
 (use-package org
+  :defer 0.5
   :hook
   ;; (org-mode . org-cdlatex-mode)
   (org-mode . org-margin-mode)
@@ -82,9 +83,6 @@ point. "
 
   (evil-define-key 'normal org-mode-map (kbd "hs") 'hide-subtree-and-parent)
   (evil-define-key 'insert org-mode-map (kbd "C-a a") 'hide-subtree-and-parent)
-
-  (evil-define-key 'normal org-mode-map (kbd "TAB") 'cdlatex-tab)
-  (evil-define-key 'insert org-mode-map (kbd "C-a a") 'cdlatex-tab)
 
   (setq org-blank-before-new-entry
         '((heading . nil)
@@ -393,7 +391,7 @@ point. "
 (use-package org-roam
   :straight (:host github :repo "org-roam/org-roam"
                    :files (:defaults "extensions/*"))
-  :demand t
+  :defer 0.5
   :commands (org-roam-node-find org-roam-capture consult-notes)
   :init
   (setq org-roam-directory (file-truename "~/GoogleDrive/org"))
@@ -578,7 +576,6 @@ point. "
   )
 
 (use-package org-roam-ui
-  :defer t
   :commands org-roam-ui-mode
   :straight
   (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
@@ -711,10 +708,10 @@ point. "
   :config
   (setq anki-editor-create-decks t))
 
-(use-package org-anki
-  :config
-  (setq org-anki-default-match "EXCLUDE=\"\"")
-  (setq org-anki-default-note-type "Basic"))
+;; (use-package org-anki
+;;   :config
+;;   (setq org-anki-default-match "EXCLUDE=\"\"")
+;;   (setq org-anki-default-note-type "Basic"))
 
 (use-package org-transclusion
   :bind (:map org-mode-map
@@ -723,8 +720,9 @@ point. "
 
 ;; Keep a journal
 (use-package org-journal
-  :init
-  (setq org-journal-prefix-key "C-c j")
+  :bind (:map evil-normal-state-map
+              ("<leader>oj" . org-journal-new-entry)
+              ("<leader>oJ" . org-journal-open-current-journal-file))
   :config
   (setq org-journal-dir "~/GoogleDrive/org/journal/"
         org-journal-date-format "%A, %d %B %Y"

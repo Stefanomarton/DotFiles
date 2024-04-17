@@ -2,7 +2,7 @@
 
 ;; Recent file list
 (use-package recentf
-  :after evil
+  :defer 0.5
   :config
   (add-hook 'emacs-startup-hook 'recentf-mode)
   (add-hook 'after-init-hook
@@ -28,7 +28,7 @@
   (which-key-allow-evil-operators t)
   (which-key-show-remaining-keys t)
   (which-key-sort-order 'which-key-prefix-then-key-order)
-  (which-key-idle-delay 0.1)
+  (which-key-idle-delay 0.5)
   :config
   (which-key-mode)
   (which-key-setup-minibuffer))
@@ -103,14 +103,13 @@ targets."
 
 ;;Format-all
 (use-package format-all
+  :hook
+  (format-all-mode-hook . format-all-ensure-formatter)
+  (prog-mode-hook . format-all-mode)
+  (LaTeX-mode-hook . format-all-mode)
+  (markdown-mode-hook . format-all-mode)
   :config
-  (add-hook 'format-all-mode-hook 'format-all-ensure-formatter)
-  (add-hook 'prog-mode-hook 'format-all-mode)
-  (add-hook 'LaTeX-mode-hook 'format-all-mode)
-  (add-hook 'markdown-mode-hook 'format-all-mode)
-  :custom
-  (format-all-show-errors 'error)
-  )
+  (setq format-all-show-errors 'error))
 
 
 ;;Outline
@@ -125,7 +124,7 @@ targets."
 ;;Scratchbuffer
 (use-package scratch
   :straight t
-  :config
+  :preface
   (defun my/scratch-buffer-setup ()
     "Add contents to `scratch' buffer and name it accordingly.
 If region is active, add its contents to the new buffer."
@@ -136,6 +135,7 @@ If region is active, add its contents to the new buffer."
 
 
 ;;Hydra
-(use-package hydra)
+(use-package hydra
+  :defer 0.5)
 
 (provide 'base-packages)
