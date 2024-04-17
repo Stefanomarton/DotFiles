@@ -51,5 +51,8 @@
 
 (setq inhibit-compacting-font-caches t)
 
+;; fix delay in pgtk build
+(setq-default pgtk-wait-for-event-timeout 0)
+
 ;; Set scratch buffer mode
 (customize-set-variable 'initial-major-mode 'fundamental-mode)
