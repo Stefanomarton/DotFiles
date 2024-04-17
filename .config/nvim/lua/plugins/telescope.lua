@@ -83,6 +83,7 @@ return {
 					-- Default configuration for builtin pickers goes here:
 					find_files = {
 						hidden = true,
+						follow = true,
 					},
 					file_browser = {
 						hidden = true,
