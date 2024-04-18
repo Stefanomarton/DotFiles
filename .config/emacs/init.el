@@ -53,7 +53,7 @@
 ;; The rest of my configuration is broken into "modules", which I include into
 ;; the init.el at macro expansion time.
 
-;; ;;"Directory containing configuration 'modules'.")
+;; Directory containing configuration 'modules'.
 (defvar module-directory "~/.config/emacs/lisp")
 
 ;; Multiples macros to properly load submodules
