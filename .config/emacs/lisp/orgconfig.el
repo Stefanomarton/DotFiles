@@ -2,6 +2,9 @@
 
 (use-package org
   :defer 0.5
+  :bind (:map org-mode-map
+              ("C-," . embrace-commander)
+              ("C-c o h" . consult-org-heading))
   :hook
   ;; (org-mode . org-cdlatex-mode)
   (org-mode . org-margin-mode)
@@ -18,7 +21,12 @@
   (org-image-actual-width 500)
   (org-hide-leading-stars nil)
 
+  :init
+  (setq org-fold-core-style 'text-properties)
+
   :config
+
+  (use-package org-ref)
 
   (defun sbr-org-insert-dwim (&optional arg)
     "Insert another entry of the same type as the current
@@ -124,7 +132,7 @@ point. "
 
 
   ;; all possible latex highlight
-  (setq org-highlight-latex-and-related '(latex script entities))
+  (setq org-highlight-latex-and-related '(native))
 
   (defun my/org-time-stamp ()
     (interactive)
@@ -132,15 +140,6 @@ point. "
     )
 
   (evil-define-key 'normal org-mode-map (kbd "gt") 'my/org-time-stamp)
-
-  (defun my/org-mode/load-prettify-symbols ()
-    (interactive)
-    (setq prettify-symbols-alist
-          '(
-            ("\\\\" . ?↩)
-            )))
-
-  (add-hook 'org-mode-hook 'my/org-mode/load-prettify-symbols)
 
   ;; Make org use `display-buffer' like every other Emacs citizen.
   (advice-add #'org-switch-to-buffer-other-window :override #'switch-to-buffer-other-window)
@@ -164,23 +163,710 @@ point. "
 
   (add-to-list 'org-file-apps '("\\.pdf" . "zathura %s")) ;; open pdf files with zathura
 
-  (advice-add 'org-latex-compile :after #'delete-file) ;; delete compilation files after .tex export
+  ;; (advice-add 'org-latex-compile :after #'delete-file) ;; delete compilation files after .tex export
 
   ;; modify export folder for org export
   ;; taken from https://stackoverflow.com/questions/9559753/emacs-org-mode-export-to-another-directory
+
+  (setq org-export-in-background t)
+  (setq org-export-async-debug t)
+  ;; (setq org-export-async-init-file "~/.config/emacs/async-init.el")
+
   (defun org-export-output-file-name-modified (orig-fun extension &optional subtreep pub-dir)
     (unless pub-dir
-      (setq pub-dir "~/GoogleDrive/org/pdf")
+      (setq pub-dir "/tmp/pdf")
       (unless (file-directory-p pub-dir)
         (make-directory pub-dir)))
     (apply orig-fun extension subtreep pub-dir nil))
   (advice-add 'org-export-output-file-name :around #'org-export-output-file-name-modified)
 
+  (defun copy-new-pdf-files ()
+    "Copy new PDF files from /tmp/pdf to home/stefanom/pdf."
+    (interactive)
+    (let ((source-directory "/tmp/pdf/")
+          (destination-directory "~/GoogleDrive/org/pdf/"))
+      (dolist (file (directory-files source-directory t "\\.pdf$"))
+        (let ((filename (file-name-nondirectory file))
+              (destination-file (concat destination-directory (file-name-nondirectory file))))
+          (copy-file file destination-file t)))))
+
+  (defun export-org-latex-and-copy-pdf ()
+    "Export Org mode to LaTeX asynchronously and copy new PDF files."
+    (interactive)
+    (org-latex-export-to-pdf t)
+    (run-at-time "5 sec" nil 'copy-new-pdf-files))
+
+  (add-hook 'after-save-hook 'export-org-latex-and-copy-pdf)
+
+  (evil-define-key 'normal org-mode-map (kbd "<leader>ee") 'export-org-latex-and-copy-pdf)
+
   (setq org-latex-default-class "report")
   (setq org-startup-folded t)
-  (setq org-pretty-entities t)
+  (setq org-pretty-entities nil)
   (setq org-pretty-entities-include-sub-superscripts nil)
   (setq org-use-sub-superscripts '{})
+
+  (defun vz/org-prettify--predicate (_start end _match)
+    ;; There's no need the check the character before the entity match
+    ;; since all of them start with \. The characters that are
+    ;; acceptable after the match are mathematical operators and some
+    ;; special characters.
+    (seq-contains-p '(?\C-j ?} ?{ ?\\ ?_ ?- ?+ ?^ ?\( ?\) ?$ ?  ?/ ?| ?. ?, ?\;)
+                    (char-after end)))
+
+  (defun my/org-mode/load-prettify-symbols ()
+    (interactive)
+    (setq-local prettify-symbols-alist
+                (cl-copy-list my-org-prettify-symbols-alist))
+    (setq-local prettify-symbols-compose-predicate #'vz/org-prettify--predicate)
+
+    (prettify-symbols-mode))
+
+  (add-hook 'org-mode-hook 'my/org-mode/load-prettify-symbols)
+
+  (defvar my-org-prettify-symbols-alist
+    '( ;; Lowercase Greek letters.
+      ("\\\\" . ?↩)
+      ("\\alpha" . ?α)
+      ("\\beta" . ?β)
+      ("\\gamma" . ?γ)
+      ("\\delta" . ?δ)
+      ("\\epsilon" . ?ϵ)
+      ("\\zeta" . ?ζ)
+      ("\\eta" . ?η)
+      ("\\theta" . ?θ)
+      ("\\iota" . ?ι)
+      ("\\kappa" . ?κ)
+      ("\\lambda" . ?λ)
+      ("\\mu" . ?μ)
+      ("\\nu" . ?ν)
+      ("\\xi" . ?ξ)
+      ;; There is no \omicron because it looks like a latin o.
+      ("\\pi" . ?π)
+      ("\\rho" . ?ρ)
+      ("\\sigma" . ?σ)
+      ("\\tau" . ?τ)
+      ("\\upsilon" . ?υ)
+      ("\\phi" . ?ϕ)
+      ("\\chi" . ?χ)
+      ("\\psi" . ?ψ)
+      ("\\omega" . ?ω)
+      ;; Uppercase Greek letters.
+      ("\\Gamma" . ?Γ)
+      ("\\Delta" . ?Δ)
+      ("\\Lambda" . ?Λ)
+      ("\\Phi" . ?Φ)
+      ("\\Pi" . ?Π)
+      ("\\Psi" . ?Ψ)
+      ("\\Sigma" . ?Σ)
+      ("\\Theta" . ?Θ)
+      ("\\Upsilon" . ?Υ)
+      ("\\Xi" . ?Ξ)
+      ("\\Omega" . ?Ω)
+
+      ;; Other math symbols (taken from leim/quail/latin-ltx.el).
+      ("\\Box" . ?□)
+      ("\\Bumpeq" . ?≎)
+      ("\\Cap" . ?⋒)
+      ("\\Cup" . ?⋓)
+      ("\\Diamond" . ?◇)
+      ("\\Downarrow" . ?⇓)
+      ("\\H{o}" . ?ő)
+      ("\\Im" . ?ℑ)
+      ("\\Join" . ?⋈)
+      ("\\Leftarrow" . ?⇐)
+      ("\\Leftrightarrow" . ?⇔)
+      ("\\Ll" . ?⋘)
+      ("\\Lleftarrow" . ?⇚)
+      ("\\Longleftarrow" . ?⇐)
+      ("\\Longleftrightarrow" . ?⇔)
+      ("\\Longrightarrow" . ?⇒)
+      ("\\Lsh" . ?↰)
+      ("\\Re" . ?ℜ)
+      ("\\Rightarrow" . ?⇒)
+      ("\\Rrightarrow" . ?⇛)
+      ("\\Rsh" . ?↱)
+      ("\\Subset" . ?⋐)
+      ("\\Supset" . ?⋑)
+      ("\\Uparrow" . ?⇑)
+      ("\\Updownarrow" . ?⇕)
+      ("\\Vdash" . ?⊩)
+      ("\\Vert" . ?‖)
+      ("\\Vvdash" . ?⊪)
+      ("\\aleph" . ?ℵ)
+      ("\\amalg" . ?∐)
+      ("\\angle" . ?∠)
+      ("\\approx" . ?≈)
+      ("\\approxeq" . ?≊)
+      ("\\ast" . ?∗)
+      ("\\asymp" . ?≍)
+      ("\\backcong" . ?≌)
+      ("\\backepsilon" . ?∍)
+      ("\\backprime" . ?‵)
+      ("\\backsim" . ?∽)
+      ("\\backsimeq" . ?⋍)
+      ("\\backslash" . ?\\)
+      ("\\barwedge" . ?⊼)
+      ("\\because" . ?∵)
+      ("\\beth" . ?ℶ)
+      ("\\between" . ?≬)
+      ("\\bigcap" . ?⋂)
+      ("\\bigcirc" . ?◯)
+      ("\\bigcup" . ?⋃)
+      ("\\bigstar" . ?★)
+      ("\\bigtriangledown" . ?▽)
+      ("\\bigtriangleup" . ?△)
+      ("\\bigvee" . ?⋁)
+      ("\\bigwedge" . ?⋀)
+      ("\\blacklozenge" . ?✦)
+      ("\\blacksquare" . ?▪)
+      ("\\blacktriangle" . ?▴)
+      ("\\blacktriangledown" . ?▾)
+      ("\\blacktriangleleft" . ?◂)
+      ("\\blacktriangleright" . ?▸)
+      ("\\bot" . ?⊥)
+      ("\\bowtie" . ?⋈)
+      ("\\boxminus" . ?⊟)
+      ("\\boxplus" . ?⊞)
+      ("\\boxtimes" . ?⊠)
+      ("\\bullet" . ?•)
+      ("\\bumpeq" . ?≏)
+      ("\\cap" . ?∩)
+      ("\\cdots" . ?⋯)
+      ("\\centerdot" . ?·)
+      ("\\checkmark" . ?✓)
+      ("\\chi" . ?χ)
+      ("\\cdot" . ?⋅)
+      ("\\cdots" . ?⋯)
+      ("\\circ" . ?∘)
+      ("\\circeq" . ?≗)
+      ("\\circlearrowleft" . ?↺)
+      ("\\circlearrowright" . ?↻)
+      ("\\circledR" . ?®)
+      ("\\circledS" . ?Ⓢ)
+      ("\\circledast" . ?⊛)
+      ("\\circledcirc" . ?⊚)
+      ("\\circleddash" . ?⊝)
+      ("\\clubsuit" . ?♣)
+      ("\\coloneq" . ?≔)
+      ("\\complement" . ?∁)
+      ("\\cong" . ?≅)
+      ("\\coprod" . ?∐)
+      ("\\cup" . ?∪)
+      ("\\curlyeqprec" . ?⋞)
+      ("\\curlyeqsucc" . ?⋟)
+      ("\\curlypreceq" . ?≼)
+      ("\\curlyvee" . ?⋎)
+      ("\\curlywedge" . ?⋏)
+      ("\\curvearrowleft" . ?↶)
+      ("\\curvearrowright" . ?↷)
+      ("\\dag" . ?†)
+      ("\\dagger" . ?†)
+      ("\\daleth" . ?ℸ)
+      ("\\dashv" . ?⊣)
+      ("\\ddag" . ?‡)
+      ("\\ddagger" . ?‡)
+      ("\\ddots" . ?⋱)
+      ("\\diamond" . ?⋄)
+      ("\\diamondsuit" . ?♢)
+      ("\\divideontimes" . ?⋇)
+      ("\\doteq" . ?≐)
+      ("\\doteqdot" . ?≑)
+      ("\\dotplus" . ?∔)
+      ("\\dotsquare" . ?⊡)
+      ("\\downarrow" . ?↓)
+      ("\\downdownarrows" . ?⇊)
+      ("\\downleftharpoon" . ?⇃)
+      ("\\downrightharpoon" . ?⇂)
+      ("\\ell" . ?ℓ)
+      ("\\emptyset" . ?∅)
+      ("\\eqcirc" . ?≖)
+      ("\\eqcolon" . ?≕)
+      ("\\eqslantgtr" . ?⋝)
+      ("\\eqslantless" . ?⋜)
+      ("\\equiv" . ?≡)
+      ("\\exists" . ?∃)
+      ("\\fallingdotseq" . ?≒)
+      ("\\flat" . ?♭)
+      ("\\forall" . ?∀)
+      ("\\frown" . ?⌢)
+      ("\\ge" . ?≥)
+      ("\\geq" . ?≥)
+      ("\\geqq" . ?≧)
+      ("\\geqslant" . ?≥)
+      ("\\gets" . ?←)
+      ("\\gg" . ?≫)
+      ("\\ggg" . ?⋙)
+      ("\\gimel" . ?ℷ)
+      ("\\gnapprox" . ?⋧)
+      ("\\gneq" . ?≩)
+      ("\\gneqq" . ?≩)
+      ("\\gnsim" . ?⋧)
+      ("\\gtrapprox" . ?≳)
+      ("\\gtrdot" . ?⋗)
+      ("\\gtreqless" . ?⋛)
+      ("\\gtreqqless" . ?⋛)
+      ("\\gtrless" . ?≷)
+      ("\\gtrsim" . ?≳)
+      ("\\gvertneqq" . ?≩)
+      ("\\hbar" . ?ℏ)
+      ("\\heartsuit" . ?♥)
+      ("\\hookleftarrow" . ?↩)
+      ("\\hookrightarrow" . ?↪)
+      ("\\iff" . ?⇔)
+      ("\\imath" . ?ı)
+      ("\\in" . ?∈)
+      ("\\infty" . ?∞)
+      ("\\int" . ?∫)
+      ("\\intercal" . ?⊺)
+      ("\\langle" . 10216)          ; Literal ?⟨ breaks indentation.
+      ("\\lbrace" . ?{)
+      ("\\lbrack" . ?\[)
+      ("\\lceil" . ?⌈)
+      ("\\ldots" . ?…)
+      ("\\le" . ?≤)
+      ("\\leadsto" . ?↝)
+      ("\\leftarrow" . ?←)
+      ("\\leftarrowtail" . ?↢)
+      ("\\leftharpoondown" . ?↽)
+      ("\\leftharpoonup" . ?↼)
+      ("\\leftleftarrows" . ?⇇)
+      ;; ("\\leftparengtr" ?〈), see bug#12948.
+      ("\\leftrightarrow" . ?↔)
+      ("\\leftrightarrows" . ?⇆)
+      ("\\leftrightharpoons" . ?⇋)
+      ("\\leftrightsquigarrow" . ?↭)
+      ("\\leftthreetimes" . ?⋋)
+      ("\\leq" . ?≤)
+      ("\\leqq" . ?≦)
+      ("\\leqslant" . ?≤)
+      ("\\lessapprox" . ?≲)
+      ("\\lessdot" . ?⋖)
+      ("\\lesseqgtr" . ?⋚)
+      ("\\lesseqqgtr" . ?⋚)
+      ("\\lessgtr" . ?≶)
+      ("\\lesssim" . ?≲)
+      ("\\lfloor" . ?⌊)
+      ("\\lhd" . ?◁)
+      ("\\rhd" . ?▷)
+      ("\\ll" . ?≪)
+      ("\\llcorner" . ?⌞)
+      ("\\lnapprox" . ?⋦)
+      ("\\lneq" . ?≨)
+      ("\\lneqq" . ?≨)
+      ("\\lnsim" . ?⋦)
+      ("\\longleftarrow" . ?←)
+      ("\\longleftrightarrow" . ?↔)
+      ("\\longmapsto" . ?↦)
+      ("\\longrightarrow" . ?→)
+      ("\\looparrowleft" . ?↫)
+      ("\\looparrowright" . ?↬)
+      ("\\lozenge" . ?✧)
+      ("\\lq" . ?‘)
+      ("\\lrcorner" . ?⌟)
+      ("\\ltimes" . ?⋉)
+      ("\\lvertneqq" . ?≨)
+      ("\\maltese" . ?✠)
+      ("\\mapsto" . ?↦)
+      ("\\measuredangle" . ?∡)
+      ("\\mho" . ?℧)
+      ("\\mid" . ?∣)
+      ("\\models" . ?⊧)
+      ("\\mp" . ?∓)
+      ("\\multimap" . ?⊸)
+      ("\\nLeftarrow" . ?⇍)
+      ("\\nLeftrightarrow" . ?⇎)
+      ("\\nRightarrow" . ?⇏)
+      ("\\nVDash" . ?⊯)
+      ("\\nVdash" . ?⊮)
+      ("\\nabla" . ?∇)
+      ("\\napprox" . ?≉)
+      ("\\natural" . ?♮)
+      ("\\ncong" . ?≇)
+      ("\\ne" . ?≠)
+      ("\\nearrow" . ?↗)
+      ("\\neg" . ?¬)
+      ("\\neq" . ?≠)
+      ("\\nequiv" . ?≢)
+      ("\\newline" . ? )
+      ("\\nexists" . ?∄)
+      ("\\ngeq" . ?≱)
+      ("\\ngeqq" . ?≱)
+      ("\\ngeqslant" . ?≱)
+      ("\\ngtr" . ?≯)
+      ("\\ni" . ?∋)
+      ("\\nleftarrow" . ?↚)
+      ("\\nleftrightarrow" . ?↮)
+      ("\\nleq" . ?≰)
+      ("\\nleqq" . ?≰)
+      ("\\nleqslant" . ?≰)
+      ("\\nless" . ?≮)
+      ("\\nmid" . ?∤)
+      ;; ("\\not" ?̸)              ;FIXME: conflict with "NOT SIGN" ¬.
+      ("\\notin" . ?∉)
+      ("\\nparallel" . ?∦)
+      ("\\nprec" . ?⊀)
+      ("\\npreceq" . ?⋠)
+      ("\\nrightarrow" . ?↛)
+      ("\\nshortmid" . ?∤)
+      ("\\nshortparallel" . ?∦)
+      ("\\nsim" . ?≁)
+      ("\\nsimeq" . ?≄)
+      ("\\nsubset" . ?⊄)
+      ("\\nsubseteq" . ?⊈)
+      ("\\nsubseteqq" . ?⊈)
+      ("\\nsucc" . ?⊁)
+      ("\\nsucceq" . ?⋡)
+      ("\\nsupset" . ?⊅)
+      ("\\nsupseteq" . ?⊉)
+      ("\\nsupseteqq" . ?⊉)
+      ("\\ntriangleleft" . ?⋪)
+      ("\\ntrianglelefteq" . ?⋬)
+      ("\\ntriangleright" . ?⋫)
+      ("\\ntrianglerighteq" . ?⋭)
+      ("\\nvDash" . ?⊭)
+      ("\\nvdash" . ?⊬)
+      ("\\nwarrow" . ?↖)
+      ("\\odot" . ?⊙)
+      ("\\oint" . ?∮)
+      ("\\ominus" . ?⊖)
+      ("\\oplus" . ?⊕)
+      ("\\oslash" . ?⊘)
+      ("\\otimes" . ?⊗)
+      ("\\parallel" . ?∥)
+      ("\\partial" . ?∂)
+      ("\\perp" . ?⊥)
+      ("\\pitchfork" . ?⋔)
+      ("\\prec" . ?≺)
+      ("\\precapprox" . ?≾)
+      ("\\preceq" . ?≼)
+      ("\\precnapprox" . ?⋨)
+      ("\\precnsim" . ?⋨)
+      ("\\precsim" . ?≾)
+      ("\\prime" . ?′)
+      ("\\prod" . ?∏)
+      ("\\propto" . ?∝)
+      ("\\qed" . ?∎)
+      ("\\qquad" . ?⧢)
+      ("\\quad" . ?␣)
+      ("\\rangle" . 10217)            ; Literal ?⟩ breaks indentation.
+      ("\\rbrace" . ?})
+      ("\\rbrack" . ?\])
+      ("\\rceil" . ?⌉)
+      ("\\rfloor" . ?⌋)
+      ("\\rightarrow" . ?→)
+      ("\\rightarrowtail" . ?↣)
+      ("\\rightharpoondown" . ?⇁)
+      ("\\rightharpoonup" . ?⇀)
+      ("\\rightleftarrows" . ?⇄)
+      ("\\rightleftharpoons" . ?⇌)
+      ;; ("\\rightparengtr" ?⦔) ;; Was ?〉, see bug#12948.
+      ("\\rightrightarrows" . ?⇉)
+      ("\\rightthreetimes" . ?⋌)
+      ("\\risingdotseq" . ?≓)
+      ("\\rtimes" . ?⋊)
+      ("\\times" . ?×)
+      ("\\sbs" . ?﹨)
+      ("\\searrow" . ?↘)
+      ("\\setminus" . ?∖)
+      ("\\sharp" . ?♯)
+      ("\\shortmid" . ?∣)
+      ("\\shortparallel" . ?∥)
+      ("\\sim" . ?∼)
+      ("\\simeq" . ?≃)
+      ("\\smallamalg" . ?∐)
+      ("\\smallsetminus" . ?∖)
+      ("\\smallsmile" . ?⌣)
+      ("\\smile" . ?⌣)
+      ("\\spadesuit" . ?♠)
+      ("\\sphericalangle" . ?∢)
+      ("\\sqcap" . ?⊓)
+      ("\\sqcup" . ?⊔)
+      ("\\sqsubset" . ?⊏)
+      ("\\sqsubseteq" . ?⊑)
+      ("\\sqsupset" . ?⊐)
+      ("\\sqsupseteq" . ?⊒)
+      ("\\square" . ?□)
+      ("\\squigarrowright" . ?⇝)
+      ("\\star" . ?⋆)
+      ("\\straightphi" . ?φ)
+      ("\\subset" . ?⊂)
+      ("\\subseteq" . ?⊆)
+      ("\\subseteqq" . ?⊆)
+      ("\\subsetneq" . ?⊊)
+      ("\\subsetneqq" . ?⊊)
+      ("\\succ" . ?≻)
+      ("\\succapprox" . ?≿)
+      ("\\succcurlyeq" . ?≽)
+      ("\\succeq" . ?≽)
+      ("\\succnapprox" . ?⋩)
+      ("\\succnsim" . ?⋩)
+      ("\\succsim" . ?≿)
+      ("\\sum" . ?∑)
+      ("\\supset" . ?⊃)
+      ("\\supseteq" . ?⊇)
+      ("\\supseteqq" . ?⊇)
+      ("\\supsetneq" . ?⊋)
+      ("\\supsetneqq" . ?⊋)
+      ("\\surd" . ?√)
+      ("\\swarrow" . ?↙)
+      ("\\therefore" . ?∴)
+      ("\\thickapprox" . ?≈)
+      ("\\thicksim" . ?∼)
+      ("\\to" . ?→)
+      ("\\top" . ?⊤)
+      ("\\triangle" . ?▵)
+      ("\\triangledown" . ?▿)
+      ("\\triangleleft" . ?◃)
+      ("\\trianglelefteq" . ?⊴)
+      ("\\triangleq" . ?≜)
+      ("\\triangleright" . ?▹)
+      ("\\trianglerighteq" . ?⊵)
+      ("\\twoheadleftarrow" . ?↞)
+      ("\\twoheadrightarrow" . ?↠)
+      ("\\ulcorner" . ?⌜)
+      ("\\uparrow" . ?↑)
+      ("\\updownarrow" . ?↕)
+      ("\\upleftharpoon" . ?↿)
+      ("\\uplus" . ?⊎)
+      ("\\uprightharpoon" . ?↾)
+      ("\\upuparrows" . ?⇈)
+      ("\\urcorner" . ?⌝)
+      ("\\u{i}" . ?ĭ)
+      ("\\vDash" . ?⊨)
+      ("\\varepsilon" . ?ε)
+      ("\\varphi" . ?φ)
+      ("\\varprime" . ?′)
+      ("\\varpropto" . ?∝)
+      ("\\varrho" . ?ϱ)
+      ("\\varsigma" . ?ς)
+      ("\\vartriangleleft" . ?⊲)
+      ("\\vartriangleright" . ?⊳)
+      ("\\vdash" . ?⊢)
+      ("\\vdots" . ?⋮)
+      ("\\vee" . ?∨)
+      ("\\veebar" . ?⊻)
+      ("\\vert" . ?|)
+      ("\\wedge" . ?∧)
+      ("\\wp" . ?℘)
+      ("\\wr" . ?≀)
+      ("\\Bbb{N}" . ?ℕ)			; AMS commands for blackboard bold
+      ("\\Bbb{P}" . ?ℙ)			; Also sometimes \mathbb.
+      ("\\Bbb{Q}" . ?ℚ)
+      ("\\Bbb{R}" . ?ℝ)
+      ("\\Bbb{T}" . ?𝕋)
+      ("\\Bbb{Z}" . ?ℤ)
+      ("\\mathbb{N}" . ?ℕ)			; AMS commands for blackboard bold
+      ("\\mathbb{P}" . ?ℙ)			; Also sometimes \mathbb.
+      ("\\mathbb{Q}" . ?ℚ)
+      ("\\mathbb{R}" . ?ℝ)
+      ("\\mathbb{T}" . ?𝕋)
+      ("\\mathbb{Z}" . ?ℤ)
+      ("\\pm" . ?±)
+      ("\\|" . ?‖)
+      ("\\varkappa" . ?ϰ)
+      ;; caligraphic
+      ("\\mathcal{A}" . ?𝒜)
+      ("\\mathcal{B}" . ?ℬ)
+      ("\\mathcal{C}" . ?𝒞)
+      ("\\mathcal{D}" . ?𝒟)
+      ("\\mathcal{E}" . ?ℰ)
+      ("\\mathcal{F}" . ?ℱ)
+      ("\\mathcal{G}" . ?𝒢)
+      ("\\mathcal{H}" . ?ℋ)
+      ("\\mathcal{I}" . ?ℐ)
+      ("\\mathcal{J}" . ?𝒥)
+      ("\\mathcal{K}" . ?𝒦)
+      ("\\mathcal{L}" . ?ℒ)
+      ("\\mathcal{M}" . ?ℳ)
+      ("\\mathcal{N}" . ?𝒩)
+      ("\\mathcal{O}" . ?𝒪)
+      ("\\mathcal{P}" . ?𝒫)
+      ("\\mathcal{Q}" . ?𝒬)
+      ("\\mathcal{R}" . ?ℛ)
+      ("\\mathcal{S}" . ?𝒮)
+      ("\\mathcal{T}" . ?𝒯)
+      ("\\mathcal{U}" . ?𝒰)
+      ("\\mathcal{V}" . ?𝒱)
+      ("\\mathcal{W}" . ?𝒲)
+      ("\\mathcal{X}" . ?𝒳)
+      ("\\mathcal{Y}" . ?𝒴)
+      ("\\mathcal{Z}" . ?𝒵)
+      ;; fractur
+      ("\\mathfrak{A}" . ?𝔄)
+      ("\\mathfrak{B}" . ?𝔅)
+      ("\\mathfrak{C}" . ?ℭ)
+      ("\\mathfrak{D}" . ?𝔇)
+      ("\\mathfrak{E}" . ?𝔈)
+      ("\\mathfrak{F}" . ?𝔉)
+      ("\\mathfrak{G}" . ?𝔊)
+      ("\\mathfrak{H}" . ?ℌ)
+      ("\\mathfrak{I}" . ?ℑ)
+      ("\\mathfrak{J}" . ?𝔍)
+      ("\\mathfrak{K}" . ?𝔎)
+      ("\\mathfrak{L}" . ?𝔏)
+      ("\\mathfrak{M}" . ?𝔐)
+      ("\\mathfrak{N}" . ?𝔑)
+      ("\\mathfrak{O}" . ?𝔒)
+      ("\\mathfrak{P}" . ?𝔓)
+      ("\\mathfrak{Q}" . ?𝔔)
+      ("\\mathfrak{R}" . ?ℜ)
+      ("\\mathfrak{S}" . ?𝔖)
+      ("\\mathfrak{T}" . ?𝔗)
+      ("\\mathfrak{U}" . ?𝔘)
+      ("\\mathfrak{V}" . ?𝔙)
+      ("\\mathfrak{W}" . ?𝔚)
+      ("\\mathfrak{X}" . ?𝔛)
+      ("\\mathfrak{Y}" . ?𝔜)
+      ("\\mathfrak{Z}" . ?ℨ)
+      ("\\mathfrak{a}" . ?𝔞)
+      ("\\mathfrak{b}" . ?𝔟)
+      ("\\mathfrak{c}" . ?𝔠)
+      ("\\mathfrak{d}" . ?𝔡)
+      ("\\mathfrak{e}" . ?𝔢)
+      ("\\mathfrak{f}" . ?𝔣)
+      ("\\mathfrak{g}" . ?𝔤)
+      ("\\mathfrak{h}" . ?𝔥)
+      ("\\mathfrak{i}" . ?𝔦)
+      ("\\mathfrak{j}" . ?𝔧)
+      ("\\mathfrak{k}" . ?𝔨)
+      ("\\mathfrak{l}" . ?𝔩)
+      ("\\mathfrak{m}" . ?𝔪)
+      ("\\mathfrak{n}" . ?𝔫)
+      ("\\mathfrak{o}" . ?𝔬)
+      ("\\mathfrak{p}" . ?𝔭)
+      ("\\mathfrak{q}" . ?𝔮)
+      ("\\mathfrak{r}" . ?𝔯)
+      ("\\mathfrak{s}" . ?𝔰)
+      ("\\mathfrak{t}" . ?𝔱)
+      ("\\mathfrak{u}" . ?𝔲)
+      ("\\mathfrak{v}" . ?𝔳)
+      ("\\mathfrak{w}" . ?𝔴)
+      ("\\mathfrak{x}" . ?𝔵)
+      ("\\mathfrak{y}" . ?𝔶)
+      ("\\mathfrak{z}" . ?𝔷)
+      ("--" . ?–)
+      ("---" . ?—)
+      ("\\ordfeminine" . ?ª)
+      ("\\ordmasculine" . ?º)
+      ("\\lambdabar" . ?ƛ)
+      ("\\celsius" . ?℃)
+      ;; Text symbols formerly part of textcomp package:
+      ("\\textdollar" . ?$)
+      ("\\textborn" . ?*)
+      ("\\textless" . ?<)
+      ("\\textgreater" . ?>)
+      ("\\textbackslash" . ?\\)
+      ("\\textasciicircum" . ?^)
+      ("\\textunderscore" . ?_)
+      ("\\textbraceleft" . ?\{)
+      ("\\textbar" . ?|)
+      ("\\textbraceright" . ?\})
+      ("\\textasciitilde" . ?~)
+      ("\\textexclamdown" . ?¡)
+      ("\\textcent" . ?¢)
+      ("\\textsterling" . ?£)
+      ("\\textcurrency" . ?¤)
+      ("\\textyen" . ?¥)
+      ("\\textbrokenbar" . ?¦)
+      ("\\textsection" . ?§)
+      ("\\textasciidieresis" . ?¨)
+      ("\\textcopyright" . ?©)
+      ("\\textordfeminine" . ?ª)
+      ("\\guillemetleft" . ?«)
+      ("\\guillemotleft" . ?«)
+      ("\\textlnot" . ?¬)
+      ("\\textregistered" . ?®)
+      ("\\textasciimacron" . ?¯)
+      ("\\textdegree" . ?°)
+      ("\\textpm" . ?±)
+      ("\\texttwosuperior" . ?²)
+      ("\\textthreesuperior" . ?³)
+      ("\\textasciiacute" . ?´)
+      ("\\textmu" . ?µ)
+      ("\\textparagraph" . ?¶)
+      ("\\textpilcrow" . ?¶)
+      ("\\textperiodcentered" . ?·)
+      ("\\textonesuperior" . ?¹)
+      ("\\textordmasculine" . ?º)
+      ("\\guillemetright" . ?»)
+      ("\\guillemotright" . ?»)
+      ("\\textonequarter" . ?¼)
+      ("\\textonehalf" . ?½)
+      ("\\textthreequarters" . ?¾)
+      ("\\textquestiondown" . ?¿)
+      ("\\texttimes" . ?×)
+      ("\\textdiv" . ?÷)
+      ("\\textflorin" . ?ƒ)
+      ("\\textasciicaron" . ?ˇ)
+      ("\\textasciibreve" . ?˘)
+      ("\\textacutedbl" . ?˝)
+      ("\\textgravedbl" . 757)
+      ("\\texttildelow" . 759)
+      ("\\textbaht" . ?฿)
+      ("\\textendash" . ?–)
+      ("\\textemdash" . ?—)
+      ("\\textbardbl" . ?‖)
+      ("\\textquoteleft" . 8216)
+      ("\\textquoteright" . 8217)
+      ("\\quotesinglbase" . 8218)
+      ("\\textquotedblleft" . 8220)
+      ("\\textquotedblright" . 8221)
+      ("\\quotedblbase" . 8222)
+      ;; \textdagger and \textdied are replaced with DAGGER (#x2020) and
+      ;; not with LATIN CROSS (#x271d)
+      ("\\textdagger" . ?†)
+      ("\\textdied" . ?†)
+      ("\\textdaggerdbl" . ?‡)
+      ("\\textbullet" . ?•)
+      ("\\textellipsis" . ?…)
+      ("\\textperthousand" . ?‰)
+      ("\\textpertenthousand" . ?‱)
+      ("\\guilsinglleft" . ?‹)
+      ("\\guilsinglright" . ?›)
+      ("\\textreferencemark" . ?※)
+      ("\\textinterrobang" . ?‽)
+      ("\\textfractionsolidus" . ?⁄)
+      ("\\textlquill" . 8261) ; Literal ?⁅ breaks indentation
+      ("\\textrquill" . 8262) ; Literal ?⁆ breaks indentation
+      ("\\textdiscount" . ?⁒)
+      ("\\textcolonmonetary" . ?₡)
+      ("\\textlira" . ?₤)
+      ("\\textnaira" . ?₦)
+      ("\\textwon" . ?₩)
+      ("\\textdong" . ?₫)
+      ("\\texteuro" . ?€)
+      ("\\textpeso" . ?₱)
+      ("\\textguarani" . ?₲)
+      ("\\textcelsius" . ?℃)
+      ("\\textnumero" . ?№)
+      ("\\textcircledP" . ?℗)
+      ("\\textrecipe" . ?℞)
+      ("\\textservicemark" . ?℠)
+      ("\\texttrademark" . ?™)
+      ("\\textohm" . ?Ω)
+      ("\\textmho" . ?℧)
+      ("\\textestimated" . ?℮)
+      ("\\textleftarrow" . ?←)
+      ("\\textuparrow" . ?↑)
+      ("\\textrightarrow" . ?→)
+      ("\\textdownarrow" . ?↓)
+      ("\\textminus" . ?−)
+      ("\\textsurd" . ?√)
+      ("\\textlangle" . 9001) ; Literal ?〈 breaks indentation
+      ("\\textrangle" . 9002) ; Literal ?〉 breaks indentation
+      ("\\textblank" . ?␢)
+      ("\\textvisiblespace" . ?␣)
+      ("\\textopenbullet" . ?◦)
+      ;; \textbigcircle is replaced with LARGE CIRCLE (#x25ef) and not
+      ;; with COMBINING ENCLOSING CIRCLE (#x20dd)
+      ("\\textbigcircle" . ?◯)
+      ("\\textmusicalnote" . ?♪)
+      ("\\textmarried" . ?⚭)
+      ("\\textdivorced" . ?⚮)
+      ("\\textlbrackdbl" . 10214) ; Literal ?⟦ breaks indentation
+      ("\\textrbrackdbl" . 10215) ; Literal ?⟧ breaks indentation
+      ("\\textinterrobangdown" . ?⸘)))
   )
 
 (use-package ox
@@ -194,13 +880,16 @@ point. "
     :ensure nil
     :after ox
     :config
+
     (setq org-latex-pdf-process
           '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-            "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+            "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+            ))
 
     (setq org-latex-tables-centered t
           org-latex-tables-booktabs t
           org-export-with-smart-quotes t
+          org-latex-prefer-user-labels t
           )
 
     (unless (boundp 'org-latex-classes)
@@ -230,6 +919,7 @@ point. "
                  \\usepackage{mhchem}
                  \\usepackage[normalem]{ulem}
                  \\usepackage{amsmath}
+                 \\usepackage{cleveref}
 
                  \\usepackage{mathtools}
                  \\DeclarePairedDelimiter\\bra{\\langle}{\\rvert}
@@ -248,7 +938,10 @@ point. "
                      filecolor=blue,     % color of file links
                      urlcolor=blue
                  }
-                 \\usepackage{mathpazo}
+                 %% \\usepackage{mathpazo}
+
+                 \\usepackage{newpxtext}
+                 \\usepackage{newpxmath}
                  \\usepackage{color}
                  \\definecolor{bg}{rgb}{0.95,0.95,0.95}
                  % Define cool colorboxes
@@ -405,10 +1098,19 @@ point. "
         ("<leader>on" . consult-notes-org-roam-find-node)
         ("<leader>ok" . org-roam-capture)
         ("<leader>oc" . my/org-roam-node-find-courses))
+  :bind
+  ("C-C of" . consult-org-roam-file-find)
+  ("C-C og" . consult-notes-search-in-all-notes)
+  ("C-C oo" . consult-notes)
+  ("C-C on" . consult-notes-org-roam-find-node)
+  ("C-C ok" . org-roam-capture)
+  ("C-C oc" . my/org-roam-node-find-courses)
+
   (:map org-mode-map
         ("<leader>ob" . org-roam-buffer-toggle)
         ("C-c o i" . org-roam-node-insert)
         )
+
   :config
   (setq org-roam-mode-sections
         '((org-roam-backlinks-section :unique t)
@@ -421,8 +1123,6 @@ point. "
                  (window-width . 0.33)
                  (window-height . fit-window-to-buffer))
                '("\w+\.org" (display-buffer-full-frame)))
-
-  (setq org-pretty-entities t)
 
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (cl-defmethod org-roam-node-type ((node org-roam-node))
@@ -443,25 +1143,25 @@ point. "
   (require 'org-roam-protocol)
 
 
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; update modified time stamp ;;
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; ;; update modified time stamp ;;
+  ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  (defun disable-undo-one-off ()
-    (interactive)
-    (let ((undo buffer-undo-list))        ; save the undo list
-      (buffer-disable-undo)               ; disable undo
-      (time-stamp)                     ; do your thing
-      (buffer-enable-undo)                ; re-enable undo
-      (setq buffer-undo-list undo)))      ; restore the undo list
+  ;; (defun disable-undo-one-off ()
+  ;;   (interactive)
+  ;;   (let ((undo buffer-undo-list))        ; save the undo list
+  ;;     (buffer-disable-undo)               ; disable undo
+  ;;     (time-stamp)                     ; do your thing
+  ;;     (buffer-enable-undo)                ; re-enable undo
+  ;;     (setq buffer-undo-list undo)))      ; restore the undo list
 
-  (add-hook 'org-mode-hook (lambda ()
-                             (setq-local time-stamp-active t
-                                         time-stamp-line-limit 18
-                                         time-stamp-start "^#\\+LAST_MODIFIED: [ \t]*"
-                                         time-stamp-end "$"
-                                         time-stamp-format "\[%Y-%m-%d %a %H:%M:%S\]")
-                             (add-hook 'before-save-hook 'disable-undo-one-off)))
+  ;; (add-hook 'org-mode-hook (lambda ()
+  ;;                            (setq-local time-stamp-active t
+  ;;                                        time-stamp-line-limit 18
+  ;;                                        time-stamp-start "^#\\+LAST_MODIFIED: [ \t]*"
+  ;;                                        time-stamp-end "$"
+  ;;                                        time-stamp-format "\[%Y-%m-%d %a %H:%M:%S\]")
+  ;;                            (add-hook 'before-save-hook 'disable-undo-one-off)))
 
   ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; customise the slug function
@@ -688,17 +1388,17 @@ point. "
   )
 
 
-;; (use-package org-appear
-;;   :hook (org-mode . org-appear-mode)
-;;   :config
-;;   (setq org-hide-emphasis-markers nil)
-;;   (setq org-appear-elements '(bold italic underline verbatim code subscript superscript))
-;;   (setq org-appear-autolinks t)
-;;   ;; (setq org-appear-delay )
-;;   (setq org-appear-autokeywords t)
-;;   (setq org-appear-autoentities t)
-;;   (setq org-appear-inside-latex t)
-;;   (setq org-appear-autoemphasis t))
+(use-package org-appear
+  :straight (:type git :host github :repo "awth13/org-appear")
+  :hook (org-mode . org-appear-mode)
+  :config
+  (setq org-hide-emphasis-markers t)
+  (setq org-appear-elements '(bold italic underline verbatim code))
+  (setq org-appear-autolinks t)
+  (setq org-appear-autokeywords t)
+  (setq org-appear-autoentities t)
+  (setq org-appear-inside-latex nil)
+  (setq org-appear-autoemphasis t))
 
 (use-package anki-editor
   :commands (anki-editor-push-notes anki-editor-insert-note)
@@ -728,16 +1428,12 @@ point. "
         org-journal-date-format "%A, %d %B %Y"
         org-journal-file-type 'weekly))
 
-;; Make latex highlight fast, easy
-(use-package poly-org
-  :config
-  (oset poly-org-latex-innermode :keep-in-mode 'host)
-  )
 
 ;; Cool org mode
 (use-package org-modern
   :hook
   (org-mode . org-modern-mode)
+  (org-modern-mode . org-margin-mode)
   :config
   (setq org-modern-todo nil
         org-modern-hide-stars nil
