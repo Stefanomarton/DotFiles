@@ -11,6 +11,9 @@
       initial-scratch-message nil
       initial-buffer-choice nil)
 
+;; Disable useless messsages
+(setq inhibit-message nil)
+
 ;; Make easy ovveride settings
 (setq site-run-file nil)
 
@@ -65,7 +68,6 @@
 (setq use-short-answers t)
 
 ;; Automatically revert buffers and dired listings when something on disk
-
 (use-package autorevert
   :config
   (global-auto-revert-mode 1)
@@ -134,9 +136,6 @@
 ;;Useless
 (setq ring-bell-function 'ignore)
 
-;; (setq pop-up-frames t)
-;; (setq pop-up-windows nil)
-
 ;; Disable bidirectional text rendering for a modest performance boost. Just
 ;; need to remember to turn it on when displaying a right-to-left language!
 (setq-default bidi-display-reordering 'left-to-right)
@@ -144,11 +143,13 @@
 (use-package emacs
   :hook
   (after-make-frame-functions . my/new-frame-settings)
+
   :config
   ;; Autobyte recompile init.elc when exiting emacs
   (add-hook 'kill-emacs-hook (lambda () (byte-recompile-file user-init-file)))
 
   (setq server-client-instructions nil)
+
   (mapc
    (lambda (command)
      (put command 'disabled nil))
@@ -164,7 +165,10 @@
     (if (daemonp)
         (setq evil-echo-state nil))))
 
+(setq sentence-end-double-space nil)
+
 (use-package xclip
+  :defer 0.5
   :config
   (setq xclip-program "wl-copy")
   (setq xclip-select-enable-clipboard t)
