@@ -10,8 +10,8 @@
   (blink-cursor-mode 0)
 
   ;; Enable `prettify-symbols' globally.
-  (global-prettify-symbols-mode t)
-  (setq prettify-symbols-unprettify-at-point t)
+  ;; (global-prettify-symbols-mode t)
+  (setq prettify-symbols-unprettify-at-point 'right-edge)
 
   ;; Display line number relative and absolute
   (setq display-line-numbers-grow-only t)
@@ -101,5 +101,7 @@
 (use-package breadcrumb
   :hook
   (prog-mode . breadcrumb-local-mode))
+
+(use-package focus)
 
 (provide 'appearance)
