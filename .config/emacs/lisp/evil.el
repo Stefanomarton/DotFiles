@@ -1,4 +1,4 @@
-;;; evil.el --- Evil configuration
+;;; evil.el -*- lexical-binding: t; -*-
 
 (use-package evil
   :init
@@ -10,20 +10,18 @@
   (setq evil-kill-on-visual-paste nil)
   (setq evil-want-empty-ex-last-command t)
 
-  :custom
-  (completion-in-region-function 'consult-completion-in-region)
-  (evil-operator-state-cursor nil)
-  (evil-jumps-cross-buffers t)
-  (evil-want-C-u-scroll nil)
-  (evil-want-C-d-scroll nil)
-  (evil-split-window-below t)
-  (evil-vsplit-window-right t)
-  (evil-search-module 'evil-search)
-  (evil-esc-delay 0.0001)
-  (evil-want-Y-yank-to-eol nil)
-
-
   :config
+
+  (setq completion-in-region-function 'consult-completion-in-region)
+  (setq evil-operator-state-cursor nil)
+  (setq evil-jumps-cross-buffers t)
+  (setq evil-want-C-u-scroll nil)
+  (setq evil-want-C-d-scroll nil)
+  (setq evil-split-window-below t)
+  (setq evil-vsplit-window-right t)
+  (setq evil-search-module 'evil-search)
+  (setq evil-esc-delay 0.0001)
+  (setq evil-want-Y-yank-to-eol nil)
 
   (mapc #'evil-declare-abort-repeat
         '(balance-windows
@@ -64,6 +62,19 @@
   (evil-define-key 'normal LaTeX-mode-map (kbd "<return>") 'evil-avy-goto-char-timer)
   (evil-define-key 'normal markdown-mode-map (kbd "<return>") 'evil-avy-goto-char-timer)
 
+
+
+  ;; ;; Enable message for the function list, I can't stand them
+  (defun my:advice-silence-messages (orig-fun &rest args)
+    "Advice function that silences all messages in ORIG-FUN."
+    (let ((inhibit-message t))
+      (apply orig-fun args)))
+
+  (defvar enable-message-functions '(format-all-ensure-formatter))
+
+  (dolist (fn enable-message-functions)
+    (advice-add fn :around #'my:advice-silence-messages))
+
   (evil-define-key 'normal 'evil-normal-state-map (kbd "C-z") 'evil-search-forward)
   (evil-define-key 'normal 'evil-normal-state-map (kbd "C-S-z") 'evil-search-backward)
 
@@ -80,8 +91,8 @@
     (kbd "/") 'evil-forward-char
     )
 
-  (evil-define-key 'normal 'global (kbd "C-m") 'point-to-register)
-  (evil-define-key 'normal 'global (kbd "gm") 'jump-to-register)
+  ;; (evil-define-key 'normal 'global (kbd "C-m") 'point-to-register)
+  ;; (evil-define-key 'normal 'global (kbd "gm") 'jump-to-register)
 
   (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
 
@@ -147,7 +158,7 @@
 
 
   (evil-define-key 'insert 'global (kbd "C-y") 'evil-paste-after)
-  (evil-define-key 'normal 'evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+  ;; (evil-define-key 'normal 'evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
 
   (evil-define-key 'normal 'global
     (kbd ":") 'evil-ex
@@ -227,7 +238,7 @@
 
 
 
-  (evil-mode 1)
+  ;; (evil-mode 1)
   )
 
 ;; ;; Undo for evil
@@ -296,9 +307,6 @@
   (add-hook 'markdown-mode-hook (lambda ()
                                   (push '(?* . ("**" . "**")) evil-surround-pairs-alist))))
 
-;; (use-package embrace
-;;   :after evil)
-
 ;; (use-package evil-embrace
 ;;   :after embrace
 ;;   :config
@@ -317,8 +325,8 @@
   (defun comment-end-of-line ()
     (interactive)
     (indent-for-comment)
-    (evil-insert 1)
-    )
+    (evil-insert 1))
+
   (evil-define-key 'normal 'global (kbd "gcA") 'comment-end-of-line)
 
   ;; Comment box
@@ -395,7 +403,6 @@
 
 ;; go to last edit with g;
 (use-package goto-chg
-  :after bind-key
   :bind (:map evil-normal-state-map
               ("<escape>" . evil-goto-last-change)
               ("S-<escape>" . evil-goto-last-change-reverse)))
@@ -414,7 +421,7 @@
 
 (use-package evil-lion
   ;; Align string and caracther based of a char of choice using gl (align left) and GL (align right)
-  :after evil
+  :commands (evil-lion-left evil-lion-right)
   :config
   (evil-lion-mode))
 
