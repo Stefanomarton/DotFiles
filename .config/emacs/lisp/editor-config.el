@@ -145,6 +145,11 @@
         expand-region-reset-fast-key "r")
 
   (evil-define-key 'normal 'global (kbd "<backspace>") 'er/expand-region)
+  (evil-define-key 'emacs 'global (kbd "C-<backspace>") 'er/expand-region)
+
+  (define-key global-map (kbd "C-<escape>") 'er/expand-region)
+  (define-key global-map (kbd "C-a ") 'back-to-indentation)
+
 
   (defun er/mark-latex-text-sentence ()
     (unless (texmathp) (er/mark-text-sentence)))
