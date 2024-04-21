@@ -36,7 +36,7 @@
 
 ;; Embark
 (use-package embark
-  :commands (embark-minimal-act embark-dwim)
+  :commands (embark-minimal-act embark-dwim embark-act)
   :config
 
   ;; Base keybindings
@@ -86,6 +86,7 @@ targets."
 	     nil nil t))))
   (setq embark-cycle-key "SPC")
   (setq embark-quit-after-action t)
+
   :init
   (setq prefix-help-command #'embark-prefix-help-command))
 
@@ -93,21 +94,23 @@ targets."
 (use-package embark-consult
   :straight (:host github :repo "oantolin/embark"
 		           :files ("embark-consult.el"))
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode)
   :after (embark consult)
   :bind (:map embark-become-file+buffer-map
 	          ("m" . consult-bookmark)
 	          ("b" . consult-buffer)
 	          ("j" . consult-find)))
 
-;; Nice auto formatting
 
-;;Format-all
+;; Nice auto formatting
+;; Format-all
 (use-package format-all
   :hook
-  (format-all-mode-hook . format-all-ensure-formatter)
-  (prog-mode-hook . format-all-mode)
-  (LaTeX-mode-hook . format-all-mode)
-  (markdown-mode-hook . format-all-mode)
+  (format-all-mode . format-all-ensure-formatter)
+  (prog-mode . format-all-mode)
+  (LaTeX-mode . format-all-mode)
+  (markdown-mode . format-all-mode)
   :config
   (setq format-all-show-errors 'error))
 
@@ -117,8 +120,7 @@ targets."
   :straight (:type built-in)
   :hook
   (emacs-lisp-mode . outline-minor-mode)
-  (python-ts-mode . outline-minor-mode)
-  )
+  (python-ts-mode . outline-minor-mode))
 
 
 ;;Scratchbuffer
@@ -137,5 +139,11 @@ If region is active, add its contents to the new buffer."
 ;;Hydra
 (use-package hydra
   :defer 0.5)
+
+;; Embrace
+(use-package embrace
+  :config
+  (add-hook 'org-mode-hook #'embrace-org-mode-hook)
+  (define-key global-map (kbd "C-,") #'embrace-commander))
 
 (provide 'base-packages)
