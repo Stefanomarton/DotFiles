@@ -2,10 +2,11 @@
 
 ;; emacs tools
 (use-package helpful
-  :commands (helpful-callable helpful-variable helpful-command helpful-key)
   :bind
   ([remap describe-command] . helpful-command)
-  ([remap describe-key] . helpful-key))
+  ([remap describe-key] . helpful-key)
+  ([remap describe-variable] . helpful-variable)
+  ([remap describe-function] . helpful-function))
 
 ;; Startup time evaluation
 (use-package esup
@@ -41,6 +42,19 @@
 (use-package csv-mode
   :commands csv-mode
   )
+
+(use-package pkg-info
+  :defer 2)
+
+(use-package bug-hunter
+  :defer 2)
+
+(use-package explain-pause-mode
+  :defer 2
+  :config
+  (explain-pause-mode)
+  )
+
 
 (provide 'tools)
 
