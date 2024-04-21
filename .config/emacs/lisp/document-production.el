@@ -64,6 +64,9 @@
   (setq markdown-enable-math t))
 
 (use-package tex
+  :mode ("\\.tex?\\'" . LaTeX-mode)
+  :hook
+  (LaTeX-mode-hook . prettify-symbols-mode)
   :straight auctex
   :config
   (add-to-list 'major-mode-remap-alist '(latex-mode . LaTeX-mode))
@@ -144,10 +147,8 @@
 	    (goto-char end))))
 
   ;; (global-set-key (kbd "C-c f") 'my-select-frac)
-  (evil-define-key 'normal LaTeX-mode-map (kbd "<leader>r") 'my-select-frac)
+  (evil-define-key 'normal LaTeX-mode-map (kbd "<leader>r") 'my-select-frac))
 
-  :init
-  (add-hook 'LaTeX-mode-hook 'prettify-symbols-mode))
 
 (use-package yasnippet
   :defer t
@@ -159,6 +160,12 @@
   (markdown-mode . yas-minor-mode)
   (org-mode . yas-minor-mode)
   (yas-minor-mode . yas-reload-all)
+  :preface
+  (defun make-silent (func &rest args)
+    (cl-letf (((symbol-function 'message)
+               (lambda (&rest args) nil)))
+      (apply func args)))
+  (advice-add 'yas-reload-all :around #'make-silent)
   :config
   (yas-global-mode 1)
   (setq yas-triggers-in-field t)
@@ -166,7 +173,7 @@
 
 (use-package warnings
   :config
-  (add-to-list 'warning-suppress-types '(yasnippet backquote-change)))
+  (add-to-list 'warning-suppress-types '(yasnippet backquote-change ox-latex)))
 
 (use-package aas
   :hook
@@ -268,6 +275,13 @@
 
     "kk" (lambda () (interactive)
 	       (yas-expand-snippet "_{$1} $0"))
+
+    "++" (lambda () (interactive)
+	       (yas-expand-snippet "^+ $0"))
+
+    "--" (lambda () (interactive)
+	       (yas-expand-snippet "^- $0"))
+
     ;; add accent snippets
     :cond #'laas-object-on-left-condition
     ".q" (lambda () (interactive) (laas-wrap-previous-object "sqrt"))
@@ -315,13 +329,16 @@
 		              )))
 
 (use-package jinx
+  :hook
+  (org-mode . jinx-mode)
+  (LaTeX-mode . jinx-mode)
+  (text-mode . jinx-mode)
+  (markdown-mode . jinx-mode)
   :straight (:host github :repo "minad/jinx")
-  :bind (:map evil-normal-state-map
-              ("<leader>j" . jinx-correct)
-              ("<leader>J" . jinx-correct-all))
   :config
-  (setq jinx-languages "it_IT, en_US")
-  )
+  (evil-define-key 'normal org-mode-map  (kbd "<leader>j") 'jinx-correct)
+  (evil-define-key 'normal org-mode-map  (kbd "<leader>J") 'jinx-correct-all)
+  (setq jinx-languages "it_IT, en_US"))
 
 (provide 'document-production)
 
