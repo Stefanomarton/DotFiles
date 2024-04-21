@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Multicols Environment
-# key: multicols
-# --
-\begin{multicols}{${1:columns number}}
-$2
-\end{multicols}

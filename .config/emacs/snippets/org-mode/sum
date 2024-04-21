@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: \sum_{}^{}
-# condition: (and (texmathp) 'auto)
-# key: sum
-# --
-\sum${1:_{${2:`(propertize "i=1" 'font-lock-face '(:inherit region))`}\}}${3:^{${4:`(propertize "N" 'font-lock-face '(:inherit region))`}\}} $0

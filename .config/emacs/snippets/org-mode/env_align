@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: \begin{align}
-# key: ali
-# condition: (and (not (texmathp)))
-# --
-\begin{align}
-${1:`(if (region-active-p) (yas-selected-text) (propertize "content" 'font-lock-face '(:inherit region)))`}
-\end{align}

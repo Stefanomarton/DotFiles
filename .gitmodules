@@ -37,3 +37,6 @@
 [submodule ".config/yazi/plugins/bookmarks.yazi"]
 	path = .config/yazi/plugins/bookmarks.yazi
 	url = https://github.com/dedukun/bookmarks.yazi.git
+[submodule ".config/emacs"]
+	path = .config/emacs
+	url = https://github.com/Stefanomarton/.emacs.git

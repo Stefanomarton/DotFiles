@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Center Environment
-# key: center
-# --
-\begin{center}
-$1
-\end{center}
