@@ -196,7 +196,8 @@ point. "
     (org-latex-export-to-pdf t)
     (run-at-time "5 sec" nil 'copy-new-pdf-files))
 
-  (add-hook 'after-save-hook 'export-org-latex-and-copy-pdf)
+  (add-hook 'org-mode-hook
+            (lambda () (add-hook 'after-save-hook 'export-org-latex-and-copy-pdf nil 'local)))
 
   (evil-define-key 'normal org-mode-map (kbd "<leader>ee") 'export-org-latex-and-copy-pdf)
 
