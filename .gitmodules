@@ -13,29 +13,26 @@
 [submodule ".config/awesome/module/awesomewm-micky"]
 	path = .config/awesome/module/awesomewm-micky
 	url = https://github.com/basaran/awesomewm-micky.git
-[submodule "/home/stefanom/.config/ranger/plugins/fzf-filter"]
-	path = /home/stefanom/.config/ranger/plugins/fzf-filter
+[submodule ".config/ranger/plugins/fzf-filter"]
+	path = .config/ranger/plugins/fzf-filter
 	url = https://github.com/MuXiu1997/ranger-fzf-filter.git
-[submodule "/home/stefanom/.config/ranger/plugins/archives"]
-	path = /home/stefanom/.config/ranger/plugins/archives
+[submodule ".config/ranger/plugins/archives"]
+	path = .config/ranger/plugins/archives
 	url = https://github.com/MuXiu1997/ranger-fzf-filter.git
-[submodule "/home/stefanom/.config/ranger/plugins/fzf-marks"]
-	path = /home/stefanom/.config/ranger/plugins/fzf-marks
+[submodule ".config/ranger/plugins/fzf-marks"]
+	path = .config/ranger/plugins/fzf-marks
 	url = https://github.com/laggardkernel/ranger-fzf-marks.git
-[submodule "/home/stefanom/.config/ranger/plugins/devicons"]
-	path = /home/stefanom/.config/ranger/plugins/devicons
+[submodule ".config/ranger/plugins/devicons"]
+	path = .config/ranger/plugins/devicons
 	url = https://github.com/cdump/ranger-devicons2.git
 [submodule ".config/ranger/plugins/fzf-archives"]
 	path = .config/ranger/plugins/fzf-archives
 	url = https://github.com/maximtrp/ranger-archives.git
-[submodule ".config/ranger/ranger-zoxide"]
-	path = .config/ranger/plugins/ranger-zoxide
-	url = https://github.com/jchook/ranger-zoxide.git
 [submodule ".config/xournalpp/plugins/vi"]
 	path = .config/xournalpp/plugins/vi
 	url = https://github.com/raw-bacon/vi-xournalpp.git
-[submodule "/home/stefanom/.config/tmux/tpm"]
-	path = /home/stefanom/.config/tmux/tpm
+[submodule ".config/tmux/tpm"]
+	path = .config/tmux/tpm
 	url = https://github.com/tmux-plugins/tpm
 [submodule ".config/yazi/plugins/bookmarks.yazi"]
 	path = .config/yazi/plugins/bookmarks.yazi
