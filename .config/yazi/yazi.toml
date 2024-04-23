@@ -55,12 +55,16 @@ play = [
 	{ run = '''mediainfo "$1"; echo "Press enter to exit"; read''', block = true, desc = "Show media info", for = "unix" },
 ]
 
+image = [
+	{ run = 'imv "$@"', orphan = true, for = "linux" },
+]
+
 [open]
 rules = [
 	{ name = "*/", use = [ "edit", "open", "reveal" ] },
 
 	{ mime = "text/*",  use = [ "edit", "reveal" ] },
-	{ mime = "image/*", use = [ "open", "reveal" ] },
+	{ mime = "image/*", use = [ "image", "reveal" ] },
 	{ mime = "video/*", use = [ "play", "reveal" ] },
 	{ mime = "audio/*", use = [ "play", "reveal" ] },
 	{ mime = "inode/x-empty", use = [ "edit", "reveal" ] },
