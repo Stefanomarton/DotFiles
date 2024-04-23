@@ -1,4 +1,5 @@
 require("bookmarks"):setup({
+    save_last_directory = true,
 	notify = {
 		enable = false,
 		timeout = 1,
