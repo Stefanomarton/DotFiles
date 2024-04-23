@@ -9,7 +9,6 @@ require("bookmarks"):setup({
 			delete_all = "Deleted all bookmarks",
 		},
 	},
-    save_last_directory = true
 })
 
 function Status:name()
@@ -82,3 +81,13 @@ function Status:size()
 	}
 end
 
+
+require("zoxide"):setup {
+    update_db = true,
+                        }
+
+require("session"):setup {
+	sync_yanked = true,
+                         }
+
+require("parent-arrow")
