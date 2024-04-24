@@ -48,7 +48,6 @@ keymap = [
 	{ on = [ "<C-r>" ],   run = "select_all --state=none",            desc = "Inverse selection of all files" },
 
 	# Operation
-	# { on = [ "o" ],         run = "open",                                                 desc = "Open the selected files" },
 	{ on = [ "o" ],         run = "open",                                                 desc = "Open the selected files" },
 	{ on = [ "O" ],         run = "open --interactive",                                   desc = "Open the selected files interactively" },
 	{ on = [ "e" ],         run = '''shell "emacsclient -t $@" --block --confirm''',                                                 desc = "Open the selected files" },
@@ -152,7 +151,7 @@ keymap = [
      { on = [ "'" ], run = "plugin bookmarks --args=jump", desc = "Jump to a bookmark" },
      { on = [ "b", "d" ], run = "plugin bookmarks --args=delete", desc = "Delete a bookmark" },
      { on = [ "b", "D" ], run = "plugin bookmarks --args=delete_all", desc = "Delete all bookmarks" },
-     { on = [ "<C-n>" ], run = '''shell 'dragon -x -i -T "$1"' --confirm'''}
+     { on = [ "<C-n>" ], run = '''shell 'dragon-drop -x -i -T "$1"' --confirm'''}
   ]
 
 [tasks]
