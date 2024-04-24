@@ -1,28 +1,28 @@
 {
-    "wallpaper": ".local/share/Wallpapers/Misc/wp9302457-3440x1440-summer-wallpapers.jpg",
+    "wallpaper": "/home/stefanom/.local/share/Wallpapers/Misc/clouds.jpg",
     "alpha": "100",
 
     "special": {
-        "background": "#000405",
-        "foreground": "#ECF5FA",
-        "cursor": "#ECF5FA"
+        "background": "#000006",
+        "foreground": "#E4FAFF",
+        "cursor": "#E4FAFF"
     },
     "colors": {
-        "color0": "#000507",
-        "color1": "#5E767C",
-        "color2": "#4B7A8F",
-        "color3": "#597596",
-        "color4": "#688199",
-        "color5": "#8199B2",
-        "color6": "#97ABB6",
-        "color7": "#DCE9F0",
-        "color8": "#9AA3A8",
-        "color9": "#5D828B",
-        "color10": "#4D92B1",
-        "color11": "#6D93C2",
-        "color12": "#8BACCD",
-        "color13": "#ACCDEE",
-        "color14": "#CAE4F3",
-        "color15": "#DCE9F0"
+        "color0": "#000006",
+        "color1": "#954DA2",
+        "color2": "#427D8A",
+        "color3": "#5D80B1",
+        "color4": "#4EA19E",
+        "color5": "#C58DC8",
+        "color6": "#83B6C3",
+        "color7": "#D0EFF6",
+        "color8": "#91A7AC",
+        "color9": "#B983C3",
+        "color10": "#61A5B3",
+        "color11": "#9BB0CF",
+        "color12": "#80C1BE",
+        "color13": "#EDDCEE",
+        "color14": "#CBE1E6",
+        "color15": "#D0EFF6"
     }
 }
