@@ -46,3 +46,7 @@ target = "~/.config/qutebrowser/colors.json"
 [[entry]]
 template = "templates/xresources"
 target = "~/.Xresources"
+
+[[entry]]
+template = "templates/tofi-colors"
+target = "~/.config/tofi/colors"
