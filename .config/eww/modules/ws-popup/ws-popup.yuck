@@ -5,6 +5,7 @@
                                :anchor "center")
            :stacking "overlay"
            :focusable false
+           :exclusive false
   (ws-popup))  
 
 
@@ -13,6 +14,6 @@
 
 (defwidget ws-popup []
            (box 
-            :class "ws-popup"
+            :class "ws-popup-widget"
             :spacing 5
                 {"${active-ws}"}))

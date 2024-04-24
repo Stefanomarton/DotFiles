@@ -14,6 +14,9 @@ threshold = 19
 # dark mode forever
 filter = "dark16"
 
+# pywal
+pywal = false
+
 #############
 # Templates #
 #############
@@ -50,3 +53,11 @@ target = "~/.Xresources"
 [[entry]]
 template = "templates/tofi-colors"
 target = "~/.config/tofi/colors"
+
+[[entry]]
+template = "templates/eww-scss"
+target = "~/.config/eww/_colors.scss"
+
+[[entry]]
+template = "templates/testing"
+target = "~/.config/wallust/testing"

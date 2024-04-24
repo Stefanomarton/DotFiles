@@ -1,15 +1,16 @@
-.ws-popup {
+.ws-popup-widget {
   all: unset;
-  background-color: #000000;
-  border-color: #7f9ab3;
-  color: white;
+  background-color: $background;
+  border-color: $color5;
+  color: $foreground;
 
-  padding: 5px;
+  padding: 35px;
 
   font-weight: bold;
   font-size: 32px;
   font-family: $font;
 
   border-style: solid;
-  border-width: 2;
+  border-width: 3px;
+  border-radius: 15px;
 }

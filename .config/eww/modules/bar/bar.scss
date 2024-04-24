@@ -4,8 +4,8 @@
 
 //Global Styles
 .bar {
-  background-color: #000000;
-  color: #b0b4bc;
+  background-color: $background;
+  color: $foreground;
   padding: 5px;
   font-size: 15px;
   font-family: $font;
@@ -15,18 +15,18 @@
 
 .sidestuff slider {
   all: unset;
-  color: #ffd5cd;
+  color: $color0;
 }
 
 .metric scale trough highlight {
   all: unset;
-  background-color: #d35d6e;
-  color: #000000;
+  background-color: $color2;
+  color: $background;
   border-radius: 10px;
 }
 .metric scale trough {
   all: unset;
-  background-color: #4e4e4e;
+  background-color: $color4;
   border-radius: 50px;
   min-height: 3px;
   min-width: 50px;
@@ -35,13 +35,13 @@
 }
 .metric scale trough highlight {
   all: unset;
-  background-color: #7f9ab3;
-  color: #000000;
+  background-color: $color5;
+  color: $background;
   border-radius: 10px;
 }
 .metric scale trough {
   all: unset;
-  background-color: #4e4e4e;
+  background-color: $color0;
   border-radius: 50px;
   min-height: 3px;
   min-width: 50px;
@@ -86,7 +86,7 @@
 
 /* Unoccupied */
 .w0 {
-  color: #45514d;
+  color: $color8;
 }
 
 /* Occupied */
@@ -99,7 +99,7 @@
 .w07,
 .w08,
 .w09 {
-  color: #8faabf;
+  color: $color13;
 }
 
 /* Focused */
@@ -112,8 +112,8 @@
 .w077,
 .w088,
 .w099 {
-  color: #ffffff;
-  box-shadow: inset 0 -3px #ffffff;
+  color: $color5;
+  box-shadow: inset 0 -3px $color5;
 }
 
 .workspace {
@@ -121,5 +121,5 @@
 }
 
 .workspace button:hover {
-  box-shadow: inset 0 -3px #ffffff;
+  box-shadow: inset 0 -3px;
 }
