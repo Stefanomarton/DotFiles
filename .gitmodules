@@ -37,9 +37,6 @@
 [submodule ".config/tmux/tmux-sensible"]
 	path = .config/tmux/plugins/tmux-sensible
 	url = https://github.com/tmux-plugins/tmux-sensible.git
-[submodule ".config/tmux/tmux-fzf"]
-	path = .config/tmux/plugins/tmux-fzf
-	url = https://github.com/sainnhe/tmux-fzf.git
 [submodule ".config/tmux/tmux-sessionx"]
 	path = .config/tmux/plugins/tmux-sessionx
 	url = https://github.com/omerxx/tmux-sessionx.git
@@ -51,3 +48,6 @@
 	url = https://github.com/Stefanomarton/.emacs.git
 
 
+[submodule ".config/tmux/tmux-fzf"]
+	path = .config/tmux/tmux-fzf
+	url = https://github.com/sainnhe/tmux-fzf.git
