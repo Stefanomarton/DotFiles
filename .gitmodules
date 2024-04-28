@@ -31,12 +31,23 @@
 [submodule ".config/xournalpp/plugins/vi"]
 	path = .config/xournalpp/plugins/vi
 	url = https://github.com/raw-bacon/vi-xournalpp.git
-[submodule ".config/tmux/tpm"]
-	path = .config/tmux/tpm
-	url = https://github.com/tmux-plugins/tpm
+[submodule ".config/tmux/plugins/tpm"]
+	path = .config/tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
+[submodule ".config/tmux/tmux-sensible"]
+	path = .config/tmux/plugins/tmux-sensible
+	url = https://github.com/tmux-plugins/tmux-sensible.git
+[submodule ".config/tmux/tmux-fzf"]
+	path = .config/tmux/plugins/tmux-fzf
+	url = https://github.com/sainnhe/tmux-fzf.git
+[submodule ".config/tmux/tmux-sessionx"]
+	path = .config/tmux/plugins/tmux-sessionx
+	url = https://github.com/omerxx/tmux-sessionx.git
 [submodule ".config/yazi/plugins/bookmarks.yazi"]
 	path = .config/yazi/plugins/bookmarks.yazi
 	url = https://github.com/dedukun/bookmarks.yazi.git
 [submodule ".config/emacs"]
 	path = .config/emacs
 	url = https://github.com/Stefanomarton/.emacs.git
+
+
