@@ -111,7 +111,7 @@ export PATH
 
 setopt autocd autopushd 
 
-function ya() {
+function yazi-wrapper() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXX")"
 	yazi "$@" --cwd-file="$tmp"
 	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
@@ -121,7 +121,7 @@ function ya() {
 }
 
 
-bindkey -s '^a' 'ya\n'
+bindkey -s '^a' 'yazi-wrapper\n'
 
 source /usr/share/fzf/completion.zsh
 
