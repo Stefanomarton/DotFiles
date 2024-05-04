@@ -25,7 +25,7 @@
 # By default, espanso uses the "Auto" backend which should work well in most cases,
 # but you may want to try the "Clipboard" or "Inject" backend in case of issues.
 # backend: Clipboard
-backend: Inject
+backend: Clipboard
 
 # --- Auto-restart
 
@@ -40,4 +40,5 @@ auto_restart: true
 
 # For a list of all the available options, visit the official docs at: https://espanso.org/docs/
 
-keyboard_layout: {layout: us, variant: intl}
+keyboard_layout: {layout: us, variant: altgr-intl}
+
