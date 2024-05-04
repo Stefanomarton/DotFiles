@@ -1,11 +1,17 @@
 (defwidget bar []
   (centerbox :orientation "h"
     (workspaces0)
-    (music)
+    (window-title-widget)
     (sidestuff)))
+
+(defwidget left-stuff []
+           (box :orientation "h" :halign "start"
+            (workspaces0)
+            (window-title-widget)))
 
 (defwidget sidestuff []
            (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
+                (music)
                 (metric :label ""
                         :value volume
                         :onchange "amixer -D pulse sset Master {}%")
@@ -20,15 +26,19 @@
                  :spacing 1
                  :orientation "h"
                  :space-evenly true
-                 :icon-size 20                )
-                )
-           )
+                 :icon-size 20)))
 
 (deflisten workspace0
-  "scripts/workspace.sh 0")
+  "~/.config/eww/scripts/workspace.sh 0")
 
 (defwidget workspaces0 []
-  (literal :content workspace0))
+           (literal :content workspace0))
+
+(deflisten window-title-listen
+           "~/.dotfiles/.config/eww/scripts/get_window_title.sh")
+
+(defwidget window-title-widget []
+    (label :text "${window-title-listen}"))
 
 (defwidget music []
   (box :class "music"
@@ -36,7 +46,6 @@
        :space-evenly false
        :halign "center"
     {music != "" ? "🎵 ${music}" : ""}))
-
 
 (defwidget metric [label value onchange]
   (box :orientation "h"
@@ -48,8 +57,6 @@
            :active {onchange != ""}
            :value value
            :onchange onchange)))
-
-
 
 (deflisten music :initial ""
   "playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
@@ -66,13 +73,6 @@
 (defwidget tray []
            (systray
             :spacing 1))
-;;             :orientation "h"
-;;             :space-evenly t
-;;             :icon-size 10
-;;             ))
-;;             :icon-size 20
-;;             :pack-direction "ltr")
-           ;;             ;; :active-only false
 
 (defwindow bar
   :monitor 0
