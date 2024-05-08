@@ -25,10 +25,9 @@ export f"$num"="$num"
 
 echo 	"(eventbox :onscroll \"echo {} | sed -e 's/up/-1/g' -e 's/down/+1/g' | xargs hyprctl dispatch workspace\" \
           (box	:class \"workspace\" :spacing 15 :orientation \"h\" :space-evenly \"false\" 	\
-              (button :class \"w0$o1$f1\" \"${ic[1]}\") \
-              (button :class \"w0$o2$f2\" \"${ic[2]}\") \
-              (button :class \"w0$o3$f3\" \"${ic[3]}\") \
-              (button :class \"w0$o4$f4\" \"${ic[4]}\") \
+              (button :class \"w0$o5$f5\" \"${ic[5]}\") \
+              (button :class \"w0$o6$f6\" \"${ic[6]}\") \
+              (button :class \"w0$o7$f7\" \"${ic[7]}\") \
           )\
         )"
 }

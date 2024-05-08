@@ -1,13 +1,15 @@
 (defwidget bar []
   (centerbox :orientation "h"
-    (workspaces0)
+    (left-bar)
     (window-title-widget)
     (sidestuff)))
 
-(defwidget left-stuff []
-           (box :orientation "h" :halign "start"
-            (workspaces0)
-            (window-title-widget)))
+(defwidget left-bar []
+           (box :class "sidestuff" :orientation "h" :space-evenly false :halign "start" :spacing 10
+                (workspaces0)
+                (workspaces1)
+                (workspaces2)
+           ))
 
 (defwidget sidestuff []
            (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
@@ -29,10 +31,22 @@
                  :icon-size 20)))
 
 (deflisten workspace0
-  "~/.config/eww/scripts/workspace.sh 0")
+           "~/.dotfiles/.config/eww/scripts/workspace.sh 0")
 
 (defwidget workspaces0 []
            (literal :content workspace0))
+
+(deflisten workspace1
+           "~/.dotfiles/.config/eww/scripts/workspace_1.sh 1")
+
+(defwidget workspaces1 []
+           (literal :content workspace1))
+
+(deflisten workspace2
+           "~/.dotfiles/.config/eww/scripts/workspace_2.sh 2")
+
+(defwidget workspaces2 []
+           (literal :content workspace2))
 
 (deflisten window-title-listen
            "~/.dotfiles/.config/eww/scripts/get_window_title.sh")
