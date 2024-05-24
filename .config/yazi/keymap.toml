@@ -151,7 +151,7 @@ keymap = [
      { on = [ "'" ], run = "plugin bookmarks --args=jump", desc = "Jump to a bookmark" },
      { on = [ "b", "d" ], run = "plugin bookmarks --args=delete", desc = "Delete a bookmark" },
      { on = [ "b", "D" ], run = "plugin bookmarks --args=delete_all", desc = "Delete all bookmarks" },
-     { on = [ "<C-n>" ], run = '''shell 'dragon-drop -x -i -T "$1"' --confirm'''}
+     { on = [ "<C-n>" ], run = '''shell 'dragon-drop -T -x -A "$@"' --confirm'''}
   ]
 
 [tasks]
