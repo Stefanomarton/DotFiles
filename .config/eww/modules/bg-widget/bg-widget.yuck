@@ -10,7 +10,29 @@
                 (box :class "time-bg" :orientation "h" :space-evenly true 
                      time-bg)
                 (box :class "date-bg" :orientation "h" :space-evenly true 
-                     date-bg)))
+                     date-bg)
+                (box :class "date-bg" :orientation "h" :space-evenly true
+                (metric-bg :label "RAM"
+                        :value {EWW_RAM.used_mem_perc}
+                        :onchange "")
+                (metric-bg :label "CPU"
+                        :value {EWW_CPU.avg}
+                        :onchange "")
+                (metric-bg :label "HDD"
+                        :value {EWW_DISK["/"].used_perc}
+                        :onchange "")
+                )))
+
+(defwidget metric-bg [label value onchange]
+  (box :orientation "h"
+       :class "metric-bg"
+       :space-evenly false
+    (box :class "label" label)
+    (scale :min 0
+           :max 101
+           :active {onchange != ""}
+           :value value
+           :onchange onchange)))
 
 (defwindow bg-widget
            :monitor 0

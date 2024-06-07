@@ -1,3 +1,7 @@
+* {
+  all: unset; //Unsets everything so you can style everything from scratch
+}
+
 .bg-widget {
   all: unset;
   color: $foreground;
@@ -10,4 +14,27 @@
   font-weight: bold;
   font-size: 130px;
   font-family: $font;
+}
+
+.metric-bg {
+  font-size: 20px;
+}
+
+.metric-bg scale trough highlight {
+  all: unset;
+  background-color: white;
+  color: $background;
+  border-radius: 10px;
+}
+
+.metric-bg scale trough {
+  all: unset;
+  background-color: $color0;
+  border-radius: 50px;
+  min-height: 10px;
+  min-width: 200px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-right: 50px;
+  margin-left: 10px;
 }
