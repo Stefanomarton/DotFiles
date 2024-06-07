@@ -72,11 +72,11 @@ git:
     parseEmoji: false
     diffContextSize: 3 # how many lines of context are shown around a change in diffs
 os:
-  edit: 'emacsclient -t {{filename}}'
-  editAtLine: 'nvim +{{line}} {{filename}}'
-  # editAtLineAndWait: 'nvim --block --line={{line}} {{filename}}'
-  editInTerminal: true
-  openDirInEditor: 'nvim {{dir}}'
+    edit: 'emacsclient -t {{filename}}'
+    editAtLine: 'nvim +{{line}} {{filename}}'
+    # editAtLineAndWait: 'nvim --block --line={{line}} {{filename}}'
+    editInTerminal: true
+    openDirInEditor: 'nvim {{dir}}'
 refresher:
     refreshInterval: 10 # File/submodule refresh interval in seconds. Auto-refresh can be disabled via option 'git.autoRefresh'.
     fetchInterval: 60 # Re-fetch interval in seconds. Auto-fetch can be disabled via option 'git.autoFetch'.
@@ -95,7 +95,7 @@ keybinding:
         quit-alt1: '<c-c>' # alternative/alias of quit
         return: '<esc>' # return to previous menu, will quit if there's nowhere to return
         # When set to a printable character, this will work for returning from non-prompt panels
-        return-alt1: null
+        return-alt1: <disabled>
         quitWithoutChangingDirectory: 'Q'
         togglePanel: '<tab>' # goto the next panel
         prevItem: '<up>' # go one line up
