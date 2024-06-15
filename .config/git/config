@@ -1,15 +1,29 @@
 [user]
-	email = sstefanomarton@gmail.com
-	name = Stefanomarton
+  email = sstefanomarton@gmail.com
+  name = Stefanomarton
+    
 [init]
-	defaultbranch = master
+  defaultbranch = master
 
 [credential "https://github.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential
- 	credentialStore = cache
+  helper = 
+  helper = !/usr/bin/gh auth git-credential
+  credentialStore = cache
+    
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+
+[diff]
+  # ignore uncommited hunks submodules 
+  ignoreSubmodules = dirty
+  # Use better, descriptive initials (c, i, w) instead of a/b.
+  mnemonicPrefix = true
+  # Show renames/moves as such
+  renames = true
+    
+[color]
+   # Enable colors in color-supporting terminals
+   ui = auto
