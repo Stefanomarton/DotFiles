@@ -57,3 +57,15 @@ margin = 0
 # size = "50% 80%"
 # preserve_aspect = true
 # max_size = "3440px 1440px"
+
+[scratchpads.ebuku]
+animation = ""
+command = """kitty --class emacs-ebuku --hold emacsclient -t --eval '(ebuku)'"""
+class = "emacs-ebuku"
+lazy = true
+unfocus = "hide"
+margin = 60
+position = "25% 25%"
+size = "50% 50%"
+# preserve_aspect = true
+# max_size = "3440px 1440px"

@@ -85,7 +85,6 @@ alias -s {yml,yaml,lua,c,tex}=nvim #Auto open file with nvim based on extension
 alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings"
 alias -g lg="lazygit"
 alias -g ppttopdf="libreoffice --headless --invisible --convert-to pdf"
-alias buku="buku --db ~/GoogleDrive/Projects/Linux/buku/buku.db"
 
 # # Variables
 export EDITOR='emacsclient -c'
