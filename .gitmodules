@@ -46,8 +46,6 @@
 [submodule ".config/emacs"]
 	path = .config/emacs
 	url = https://github.com/Stefanomarton/.emacs.git
-
-
 [submodule ".config/tmux/tmux-fzf"]
 	path = .config/tmux/tmux-fzf
 	url = https://github.com/sainnhe/tmux-fzf.git
