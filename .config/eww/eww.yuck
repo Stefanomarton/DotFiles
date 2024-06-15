@@ -1,3 +1,6 @@
 (include "./modules/bar/bar.yuck")
 (include "./modules/ws-popup/ws-popup.yuck")
+(include "./modules/ws-popup-0/ws-popup-0.yuck")
+(include "./modules/ws-popup-1/ws-popup-1.yuck")
+(include "./modules/ws-popup-2/ws-popup-2.yuck")
 (include "./modules/bg-widget/bg-widget.yuck")

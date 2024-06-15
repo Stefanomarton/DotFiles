@@ -1,0 +1,20 @@
+(defwindow ws-popup-2
+           :monitor 2
+           :geometry (geometry :width "200px"
+                               :height "100px"
+                               :anchor "center")
+           :stacking "overlay"
+           :focusable false
+           :exclusive false
+           (ws-popup-2))
+
+
+(deflisten active-ws-2 :initial ""
+           "hyprctl -j monitors | jq -r '.[] | select(.id == 2) | .activeWorkspace.name' ")
+
+
+(defwidget ws-popup-2 []
+           (box 
+            :class "ws-popup-widget"
+            :spacing 5
+                {"${active-ws-2}"}))
