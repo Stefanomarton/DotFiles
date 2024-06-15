@@ -10,17 +10,15 @@ plugins = [
   # "workspaces_follow_focus",
 ]
 
-[scratchpads.ranger]
+[scratchpads.yazi]
 animation = ""
 command = "kitty --class kitty-yazi yazi"
 class = "kitty-yazi"
 lazy = true
 unfocus = "hide"
-margin = 0
-# position = "1770px 200px"
-# size = "1500px 1000px"
-# max_size = "3440px 1440px"
-# size = "100% 1440px"
+margin = 60
+position = "25% 10%"
+size = "50% 80%"
 
 [scratchpads.term]
 animation = ""
@@ -28,11 +26,9 @@ command = "kitty --class kitty-term"
 class = "kitty-term"
 lazy = true
 unfocus = "hide"
-margin = 0
-# position = "20% 5%"
-# size = "50% 80%"
-# preserve_aspect = true
-# max_size = "3440px 1440px"
+margin = 60
+position = "25% 5%"
+size = "50% 55%"
 
 [scratchpads.editor]
 animation = ""
@@ -40,11 +36,9 @@ command = "emacs --name editor"
 class = "editor"
 lazy = true
 unfocus = "hide"
-margin = 0
-# position = "20% 5%"
-# size = "50% 80%"
-# preserve_aspect = true
-# max_size = "3440px 1440px"
+margin = 60
+position = "25% 10%"
+size = "50% 80%"
 
 [scratchpads.qalc]
 animation = ""
@@ -52,11 +46,9 @@ command = "kitty --class kitty-qalc qalc"
 class = "kitty-qalc"
 lazy = true
 unfocus = "hide"
-margin = 0
-# position = "50% 5%"
-# size = "50% 80%"
-# preserve_aspect = true
-# max_size = "3440px 1440px"
+margin = 60
+position = "25% 70%"
+size = "50% 25%"
 
 [scratchpads.ebuku]
 animation = ""
@@ -67,5 +59,4 @@ unfocus = "hide"
 margin = 60
 position = "25% 25%"
 size = "50% 50%"
-# preserve_aspect = true
-# max_size = "3440px 1440px"
+
