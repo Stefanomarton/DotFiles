@@ -5,9 +5,11 @@ export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
 export XDG_DESKTOP_DIR="$HOME/"
 
+
+
 ##>>> XDG - ENV
 source "$XDG_CONFIG_HOME"/zsh/xdg-env
-export ANDROID_HOME="$XDG_DATA_HOME"/android
+export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
 export HISTFILE="$XDG_STATE_HOME"/bash/history
 export HISTFILE="$XDG_STATE_HOME"/zsh/history
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java export
@@ -21,7 +23,11 @@ export ZDOTDIR="$HOME"/.config/zsh
 export STARSHIP_CONFIG="$XDG_CONFIG_HOME"/starship.toml
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export GOPATH="$XDG_DATA_HOME"/go
-export BW_SESSION="B6o+4VlAgK/+ne9t+IItf5viLHkYhlsCoS/dAtNu35wUwgcillYuCMkr075RtNQ9vaQRj2dFhU0iHhwrA/McUg=="
+export XCURSOR_PATH=/usr/share/icons:$XDG_DATA_HOME/icons
+export MYPY_CACHE_DIR="$XDG_CACHE_HOME"/mypy
+export TEXMFVAR="$XDG_CACHE_HOME"/texlive/texmf-var
+
+export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
 
 export FZF_MARKS_FILE="$XDG_CONFIG_HOME"/fzf-marks/bookmarks
 export FZF_MARKS_JUMP=""
@@ -85,6 +91,8 @@ alias -s {yml,yaml,lua,c,tex}=nvim #Auto open file with nvim based on extension
 alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings"
 alias -g lg="lazygit"
 alias -g ppttopdf="libreoffice --headless --invisible --convert-to pdf"
+
+alias adb='HOME="$XDG_DATA_HOME"/android adb'
 
 # # Variables
 export EDITOR='emacsclient -c'
