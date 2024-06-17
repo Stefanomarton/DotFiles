@@ -4,18 +4,28 @@ set colourscheme mytheme
 "" BINDINGS ""
 "" Open the selection in a new tab
 bind --mode=visual t composite js document.getSelection().toString() | tabopen
-bind ,v composite js document.location.href.replace('https://', 'ytdl://') | shellescape | js -p 'PATH="$PATH:/usr/local/bin" mpv ' + JS_ARG | !s
 
 "" Unbindings
 unbind --mode=ex <C-a>
 unbind --mode=ex <C-c>
-unbind <C-f> 
+unbind <C-f>
+
+" Reverse to sidebery
+unbind <C-e>
 
 "" Better bindings
 bind o fillcmdline bmarks  
 bind O fillcmdline bmarks -t
 bind a fillcmdline tabopen
 bind d tabdetach
+bind D delete
+
+unbind j
+unbind /
+bind j back
+bind / forward
+bind r tabnext
+bind l tabprev
 
 "" Handy multiwindow/multitasking binds
  bind gd tabdetach
@@ -41,10 +51,4 @@ quickmark m https://mail.google.com/mail/u/0/#inbox
 "" Blacklist
 blacklistadd https://mail.google.com/mail/u/0/#inbox
 
-"" Inject Google Translate
-command translate js let googleTranslateCallback = document.createElement('script'); googleTranslateCallback.innerHTML = "function googleTranslateElementInit(){ new google.translate.TranslateElement(); }"; document.body.insertBefore(googleTranslateCallback, document.body.firstChild); let googleTranslateScript = document.createElement('script'); googleTranslateScript.charset="UTF-8"; googleTranslateScript.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=&sl=&hl="; document.body.insertBefore(googleTranslateScript, document.body.firstChild);
-
-"" For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
-"" vim: set filetype=tridactyl
-autocmd DocStart ^http(s?)://www.reddit.com js tri.excmds.urlmodify("-t", "www", " ")
 
