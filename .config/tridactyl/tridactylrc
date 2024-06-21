@@ -49,6 +49,6 @@ quickmark d https://drive.google.com/drive/my-drive
 quickmark m https://mail.google.com/mail/u/0/#inbox
 
 "" Blacklist
-blacklistadd https://mail.google.com/mail/u/0/#inbox
+blacklistadd mail.google.com
 
 
