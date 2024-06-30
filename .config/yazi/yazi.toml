@@ -59,9 +59,14 @@ image = [
 	{ run = 'imv "$@"', orphan = true, for = "linux" },
 ]
 
+office = [
+    {run = 'soffice "$@"', orphan = true, for= "linux"}
+]
+
 [open]
 rules = [
-	{ name = "*/", use = [ "edit", "open", "reveal" ] },
+    { name = "*/", use = [ "edit", "open", "reveal" ] },
+  	{ name = "*.rtf", use = [ "office"] },
 
 	{ mime = "text/*",  use = [ "edit", "reveal" ] },
 	{ mime = "image/*", use = [ "image", "reveal" ] },
