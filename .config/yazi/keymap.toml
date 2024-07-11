@@ -86,7 +86,7 @@ keymap = [
 	{ on = [ "c", "n" ], run = "copy name_without_ext", desc = "Copy the name of the file without the extension" },
 
 	# Filter
-	{ on = [ "f" ], run = "filter --smart", desc = "Filter the files" },
+	# { on = [ "f" ], run = "filter --smart", desc = "Filter the files" },
 
 	# Find
 	{ on = [ "h" ], run = "find --smart",            desc = "Find next file" },
@@ -139,7 +139,9 @@ keymap = [
    	{ on = [ "g", "w" ],       run = "cd ~/Dropbox/SDS_DRIVE", desc = "Go to the config directory" },
   	{ on = [ "g", "p" ],       run = "cd ~/GoogleDrive/Projects", desc = "Go to the config directory" },
 	{ on = [ "g", "d" ],       run = "cd ~/Downloads",   desc = "Go to the downloads directory" },
-	{ on = [ "g", "t" ],       run = "cd /tmp",          desc = "Go to the temporary directory" },
+   { on = [ "g", "t" ],       run = "cd /tmp",          desc = "Go to the temporary directory" },
+  
+
 
 	# Help
 	{ on = [ "~" ], run = "help", desc = "Open help" },
@@ -147,13 +149,38 @@ keymap = [
 ]
 
   prepend_keymap = [
+     # bookmark plugin
      { on = [ "/" ], run = "plugin --sync smart-enter", desc = "Enter the child directory, or open the file"},
      { on = [ "m" ], run = "plugin bookmarks --args=save", desc = "Save current position as a bookmark" },
      { on = [ "'" ], run = "plugin bookmarks --args=jump", desc = "Jump to a bookmark" },
      { on = [ "b", "d" ], run = "plugin bookmarks --args=delete", desc = "Delete a bookmark" },
      { on = [ "b", "D" ], run = "plugin bookmarks --args=delete_all", desc = "Delete all bookmarks" },
-     { on = [ "<C-n>" ], run = '''shell 'dragon-drop -T -x -A "$@"' --confirm'''}
+     { on = [ "<C-n>" ], run = '''shell 'dragon-drop -T -x -A "$@" & pypr hide yazi' --confirm'''},
+     { on = [ "<A-s>" ], run = '''shell 'python ~/GoogleDrive/Projects/MySmallProgrammingJourney/Python/LinuxScript/fast-open-directory/yazi.py ' --confirm --block'''}, 
+     {on = [ "u", "a" ], run = "plugin yamb --args=save", desc = "Add bookmark"},
+     {on = [ "u", "g" ], run = "plugin yamb --args=jump_by_key", desc = "Jump bookmark by key"},
+     {on = [ "u", "G" ], run = "plugin yamb --args=jump_by_fzf", desc = "Jump bookmark by fzf"},
+     {on = [ "u", "d" ], run = "plugin yamb --args=delete_by_key", desc = "Delete bookmark by key"},
+     {on = [ "u", "D" ], run = "plugin yamb --args=delete_by_fzf", desc = "Delete bookmark by fzf"},
+     {on = [ "u", "A" ], run = "plugin yamb --args=delete_all", desc = "Delete all bookmarks"},
+     {on = [ "u", "r" ], run = "plugin yamb --args=rename_by_key", desc = "Rename bookmark by key"},
+     {on = [ "u", "R" ], run = "plugin yamb --args=rename_by_fzf", desc = "Rename bookmark by fzf"},
+
+    # chmod plugin
+    {on   = [ "c", "m" ], run  = "plugin chmod", desc = "Chmod on selected files"},
+    {on   = [ "<A-d>" ], run  = "plugin diff", desc = "Diff the selected with the hovered file"},
+
+    # archive plugin
+    {on   = [ "c", "a" ], run  = "plugin archive", desc = "Archive selected files"},
+
+    # smart-filter plugin
+    {on   = [ "f" ], run  = "plugin smart-filter", desc = "Smart filter"},
+
+    {on   = [ "T" ], run  = "plugin --sync max-preview", desc = "Maximize or restore preview"},
+    
   ]
+
+
 
 [tasks]
 

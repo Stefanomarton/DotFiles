@@ -1,16 +1,17 @@
-require("bookmarks"):setup({
-    save_last_directory = true,
-	notify = {
-		enable = false,
-		timeout = 1,
-		message = {
-			new = "New bookmark '<key>' -> '<folder>'",
-			delete = "Deleted bookmark in '<key>'",
-			delete_all = "Deleted all bookmarks",
-		},
-	},
-})
+-- Bookmarks plugins
+require("yamb"):setup {
+  -- Optional, the path ending with path seperator represents folder.
+  bookmarks = bookmarks,
+  -- Optional, the cli of fzf.
+  cli = "fzf",
+  -- Optional, a string used for randomly generating keys, where the preceding characters have higher priority.
+  keys = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  -- Optional, the path of bookmarks
+  path = (ya.target_family() == "windows" and os.getenv("APPDATA") .. "\\yazi\\config\\bookmark") or
+        (os.getenv("HOME") .. "/.config/yazi/bookmark"),
+}
 
+-- show link path
 function Status:name()
 	local h = cx.active.current.hovered
 	if h == nil then
@@ -24,50 +25,15 @@ function Status:name()
 	return ui.Span(" " .. h.name .. linked)
 end
 
-function Manager:render(area)
-	self.area = area
-
-	local chunks = ui.Layout()
-		:direction(ui.Layout.HORIZONTAL)
-		:constraints({
-			ui.Constraint.Ratio(MANAGER.ratio.parent, MANAGER.ratio.all),
-			ui.Constraint.Ratio(MANAGER.ratio.current, MANAGER.ratio.all),
-			ui.Constraint.Ratio(MANAGER.ratio.preview, MANAGER.ratio.all),
-		})
-		:split(area)
-
-	local bar = function(c, x, y)
-		x, y = math.max(0, x), math.max(0, y)
-		return ui.Bar(ui.Rect { x = x, y = y, w = ya.clamp(0, area.w - x, 1), h = math.min(1, area.h) }, ui.Bar.TOP)
-			:symbol(c)
-	end
-
-	return ya.flat {
-		-- Borders
-		ui.Border(area, ui.Border.ALL):type(ui.Border.ROUNDED),
-		ui.Bar(chunks[1], ui.Bar.RIGHT),
-		ui.Bar(chunks[3], ui.Bar.LEFT),
-
-		bar("┬", chunks[1].right - 1, chunks[1].y),
-		bar("┴", chunks[1].right - 1, chunks[1].bottom - 1),
-		bar("┬", chunks[2].right, chunks[2].y),
-		bar("┴", chunks[2].right, chunks[1].bottom - 1),
-
-		-- Parent
-		Parent:render(chunks[1]:padding(ui.Padding.xy(1))),
-		-- Current
-		Current:render(chunks[2]:padding(ui.Padding.y(1))),
-		-- Preview
-		Preview:render(chunks[3]:padding(ui.Padding.xy(1))),
-	}
-    end
-
+-- remove position from status bar
 function Status:position()
 end
 
+-- remove percentage from status bar
 function Status:percentage()
 end
 
+-- show size in status bar
 function Status:size()
 	local h = cx.active.current.hovered
 	if h == nil then
@@ -81,13 +47,16 @@ function Status:size()
 	}
 end
 
+-- full-border plugin
+require("full-border"):setup()
 
+-- zoxide plugin
 require("zoxide"):setup {
     update_db = true,
                         }
-
+-- sync clipboard plugin
 require("session"):setup {
 	sync_yanked = true,
                          }
-
+-- use arrow to move in parents folders
 require("parent-arrow")
