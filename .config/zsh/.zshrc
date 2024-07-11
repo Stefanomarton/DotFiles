@@ -5,8 +5,6 @@ export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
 export XDG_DESKTOP_DIR="$HOME/"
 
-
-
 ##>>> XDG - ENV
 source "$XDG_CONFIG_HOME"/zsh/xdg-env
 export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
@@ -19,7 +17,7 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
-export ZDOTDIR="$HOME"/.config/zsh 
+export ZDOTDIR="$HOME"/.config/zsh
 export STARSHIP_CONFIG="$XDG_CONFIG_HOME"/starship.toml
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export GOPATH="$XDG_DATA_HOME"/go
@@ -37,7 +35,7 @@ export VI_MODE_SET_CURSOR=true
 autoload -U colors && colors
 
 # Vim mode
-bindkey -v 
+bindkey -v
 
 bindkey -a '^[[3~' delete-char
 bindkey "^[[3~" delete-char
@@ -47,11 +45,11 @@ bindkey "^?" backward-delete-char
 # fzm yazi
 
 function fzm-ya() {
-    local output
-    fzm_output=$(fzm)
-    if [[ -n "$fzm_output" ]]; then
-        echo "$fzm_output" | xargs -r -d'\n' yazi
-    fi
+	local output
+	fzm_output=$(fzm)
+	if [[ -n "$fzm_output" ]]; then
+		echo "$fzm_output" | xargs -r -d'\n' yazi
+	fi
 }
 
 bindkey -s "^f" "fzm-ya^M"
@@ -103,7 +101,6 @@ HISTFILE=~/.zsh_history
 HISTSIZE=100000000
 SAVEHIST=100000000
 
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 path+=('~/bin')
@@ -116,7 +113,7 @@ path+=('/home/stefanom/.local/bin/scripts/')
 path+=('/home/stefanom/.local/share/gem/ruby/3.0.0/bin')
 export PATH
 
-setopt autocd autopushd 
+setopt autocd autopushd
 
 function yazi-wrapper() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXX")"
@@ -126,7 +123,6 @@ function yazi-wrapper() {
 	fi
 	rm -f -- "$tmp"
 }
-
 
 bindkey -s '^a' 'yazi-wrapper\n'
 
@@ -140,15 +136,16 @@ export FZF_DEFAULT_OPTS='
 '
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob '"'"'!.git/'"'"
 
-# Edit in the command in vim 
-autoload edit-command-line; zle -N edit-command-line
+# Edit in the command in vim
+autoload edit-command-line
+zle -N edit-command-line
 bindkey '^v' edit-command-line
 
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 source ~/.local/lib/zpico/zpico.zsh
-zpico add zsh-users/zsh-syntax-highlighting 
+zpico add zsh-users/zsh-syntax-highlighting
 zpico add qoomon/zsh-lazyload
 zpico add zsh-users/zsh-autosuggestions
 zpico add zsh-users/zsh-completions
@@ -165,9 +162,9 @@ bindkey -M vicmd ' ' vi-easy-motion
 
 # options
 setopt SHARE_HISTORY
-setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
-setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
-setopt APPEND_HISTORY            # append to history file
+setopt EXTENDED_HISTORY   # Write the history file in the ':start:elapsed;command' format.
+setopt INC_APPEND_HISTORY # Write to the history file immediately, not when the shell exits.
+setopt APPEND_HISTORY     # append to history file
 
 # vi mode
 bindkey -v
@@ -175,24 +172,24 @@ export KEYTIMEOUT=1
 
 # Change cursor shape for different vi modes.
 function zle-keymap-select {
-  if [[ ${KEYMAP} == vicmd ]] ||
-     [[ $1 = 'block' ]]; then
-    echo -ne '\e[1 q'
-  elif [[ ${KEYMAP} == main ]] ||
-       [[ ${KEYMAP} == viins ]] ||
-       [[ ${KEYMAP} = '' ]] ||
-       [[ $1 = 'beam' ]]; then
-    echo -ne '\e[5 q'
-  fi
+	if [[ ${KEYMAP} == vicmd ]] ||
+		[[ $1 = 'block' ]]; then
+		echo -ne '\e[1 q'
+	elif [[ ${KEYMAP} == main ]] ||
+		[[ ${KEYMAP} == viins ]] ||
+		[[ ${KEYMAP} = '' ]] ||
+		[[ $1 = 'beam' ]]; then
+		echo -ne '\e[5 q'
+	fi
 }
 zle -N zle-keymap-select
 zle-line-init() {
-    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
-    echo -ne "\e[5 q"
+	zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+	echo -ne "\e[5 q"
 }
 zle -N zle-line-init
-echo -ne '\e[5 q' # Use beam shape cursor on startup.
-preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+echo -ne '\e[5 q'                # Use beam shape cursor on startup.
+preexec() { echo -ne '\e[5 q'; } # Use beam shape cursor for each new prompt.
 
 ## ripgrep-all integration with fzf
 
@@ -202,23 +199,41 @@ rga-fzf() {
 	file="$(
 		FZF_DEFAULT_COMMAND="$RG_PREFIX '$1'" \
 			fzf --height 100% --sort --preview="[[ ! -z {} ]] && rga -j 12 --pretty --context 5 {q} {}" \
-				--phony -q "$1" \
-				--bind "change:reload:$RG_PREFIX {q}" \
-				--preview-window="70%:wrap"
+			--phony -q "$1" \
+			--bind "change:reload:$RG_PREFIX {q}" \
+			--preview-window="70%:wrap"
 	)" &&
-	echo "opening $file" &&
-	xdg-open "$file"
+		echo "opening $file" &&
+		xdg-open "$file"
 }
 
 # zle -N rga-fzf rga-fzf
 # bindkey "^b" rga-fzf
 alias jf="rga-fzf"
 
+function cd() {
+	builtin cd "$@"
+
+	if [[ -z "$VIRTUAL_ENV" ]]; then
+		## If env folder is found then activate the vitualenv
+		if [[ -d ./.env ]]; then
+			source ./.env/bin/activate
+		fi
+	else
+		## check the current folder belong to earlier VIRTUAL_ENV folder
+		# if yes then do nothing
+		# else deactivate
+		parentdir="$(dirname "$VIRTUAL_ENV")"
+		if [[ "$PWD"/ != "$parentdir"/* ]]; then
+			deactivate
+		fi
+	fi
+}
+
 PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f%F{white} • %F%f%'
 RPROMPT='%B%F{blue}%~%f%b'
 
 source ~/.cache/wal/colors.sh
-source /usr/share/fzf/key-bindings.zsh 
+source /usr/share/fzf/key-bindings.zsh
 
 eval "$(zoxide init zsh)"
-
