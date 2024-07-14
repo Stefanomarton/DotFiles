@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# clipboard history
+wl-paste --watch cliphist store
+
+# syncthing
+syncthing --no-browser
+
+# insync
+insync start
+
 # Check VM
 
 ## Define the name of the VM
@@ -49,7 +58,7 @@ eww open bg-widget
 
 # ollama
 if [ "$(hostnamectl hostname)" = "desktop" ]; then
-	ollama serve
+	ollama serve &
 	disown
 fi
 
