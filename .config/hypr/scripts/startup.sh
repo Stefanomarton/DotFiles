@@ -47,5 +47,11 @@ fi
 eww daemon
 eww open bg-widget
 
+# ollama
+if [ "$(hostnamectl hostname)" = "desktop" ]; then
+	ollama serve
+	disown
+fi
+
 # Dropbox
 # dropbox
