@@ -94,6 +94,7 @@ alias adb='HOME="$XDG_DATA_HOME"/android adb'
 
 # # Variables
 export EDITOR='emacsclient -c'
+export VISUAL='emacsclient -c'
 # export EDITOR='nvim'
 export BROWSER='/usr/bin/floorp'
 export PAGER='moar -colors "auto" -no-statusbar'
