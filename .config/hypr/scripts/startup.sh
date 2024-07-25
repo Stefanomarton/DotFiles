@@ -15,10 +15,10 @@ insync start
 vm_name="work"
 
 ### Check if the VM is running
-if ! virsh -c qemu:///system dominfo "$vm_name" | grep -q "State:\s*running"; then
+if ! virsh dominfo "$vm_name" | grep -q "State:\s*running"; then
 
 	### Start VM using virsh
-	virsh -c qemu:///system start "$vm_name"
+	virsh start "$vm_name"
 
 	killall looking-glass-client
 
