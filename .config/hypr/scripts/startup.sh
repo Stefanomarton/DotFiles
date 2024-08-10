@@ -1,13 +1,16 @@
 #!/bin/bash
 
 # clipboard history
-wl-paste --watch cliphist store
+wl-paste --watch cliphist store &
+disown
 
 # syncthing
-syncthing --no-browser
+syncthing --no-browser &
+disown
 
 # insync
-insync start
+insync start &
+disown
 
 # Check VM
 
