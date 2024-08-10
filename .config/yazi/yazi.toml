@@ -64,6 +64,8 @@ image = [{ run = 'imv "$@"', orphan = true, for = "linux" }]
 
 office = [{ run = 'soffice "$@"', orphan = true, for = "linux" }]
 
+stl = [{ run = 'fstl "$@"', orphan = true, for = "linux" }]
+
 [open]
 rules = [
   { name = "*/", use = [
@@ -73,6 +75,9 @@ rules = [
   ] },
   { name = "*.rtf", use = [
     "office",
+  ] },
+    { name = "*.stl", use = [
+    "stl",
   ] },
 
   { mime = "text/*", use = [
