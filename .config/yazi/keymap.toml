@@ -462,7 +462,7 @@ prepend_keymap = [
   { on = [
     "c",
     "a",
-  ], run = "plugin archive", desc = "Archive selected files" },
+  ], run = "plugin compress", desc = "Archive selected files" },
 
   # smart-filter plugin
   { on = [
