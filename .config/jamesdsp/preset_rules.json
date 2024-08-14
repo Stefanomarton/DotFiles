@@ -1,0 +1,9 @@
+[
+    {
+        "deviceId": "alsa_card.usb-Roland_UA-22-00",
+        "deviceName": "DUO-CAPTURE EX",
+        "preset": "IEM",
+        "routeId": "*",
+        "routeName": "<any output route>"
+    }
+]
