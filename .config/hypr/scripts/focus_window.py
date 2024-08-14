@@ -1,112 +1,74 @@
-#!/bin/python
-
-import subprocess
-import json
+#!/usr/bin/env python3
+import pickle
+from pathlib import Path
 import sys
+import argparse
+import hyprpython as hp
 import os
+from plyer import notification
 
 
-# Get the class from the first argument
-if len(sys.argv) < 2:
-    print("Usage: python script.py <window_class>")
-    sys.exit(1)
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("window_class", help="cycle focus to windows with window_class")
+    args = parser.parse_args()
 
-window_class = sys.argv[1]
+    client = hp.Clients
+
+    client_ordered = client.byFocusID()
+
+    with open("/tmp/last_focus_adress.pkl", "rb") as file:
+        last_window = pickle.load(file)
+
+    current_window = client.focused()
+
+    with open("/tmp/last_focus_adress.pkl", "wb") as file:
+        pickle.dump(current_window, file)
+
+    emacs_windows = [
+        windows for windows in client_ordered if windows.wm_class == args.window_class
+    ]
+
+    focus_list = [w for w in emacs_windows if w.workspace.id > 0]
+
+    if current_window.wm_class != args.window_class:
+        file_path = f"/tmp/{args.window_class}.pkl"
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        hp.Hyprctl.focus_window(focus_list[0].address)
+
+        # Serialize and write the list of objects to a file
+        with open(f"/tmp/{args.window_class}.pkl", "wb") as file:
+            pickle.dump(focus_list, file)
+    else:
+        # Read the list of objects from the file
+        with open(f"/tmp/{args.window_class}.pkl", "rb") as file:
+            loaded_items = pickle.load(file)
+
+            index = next(
+                (
+                    i
+                    for i, item in enumerate(loaded_items)
+                    if item.address == current_window.address
+                ),
+                None,
+            )
+
+        if index == len(loaded_items) - 1:
+            hp.Hyprctl.focus_window(loaded_items[0].address)
+
+            file_path = f"/tmp/{args.window_class}.pkl"
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+            # Serialize and write the list of objects to a file
+            with open(f"/tmp/{args.window_class}.pkl", "wb") as file:
+                pickle.dump(focus_list, file)
+
+        if loaded_items[index].address == current_window.address:
+
+            hp.Hyprctl.focus_window(loaded_items[index + 1].address)
 
 
-# Focus window with address
-def focus_window(address):
-    subprocess.run(["hyprctl", "dispatch", "focuswindow", f"address:{address}"])
-
-
-index_path = os.path.expanduser(f"~/.cache/last_focused_index_{window_class}.txt")
-
-
-# Clear index file
-def clear_index(window_class):
-    # Get the path to the cache directory in the user's home directory
-    with open(index_path, "w") as file:
-        file.write("-1")
-
-
-# Get the current active workspace
-activeworkspace_output = subprocess.check_output(["hyprctl", "-j", "activeworkspace"])
-activeworkspace_json = json.loads(activeworkspace_output.decode("utf-8"))
-current_workspace_id = activeworkspace_json["id"]
-
-# Get the current active workspace on other monitors
-monitors_output = subprocess.check_output(["hyprctl", "-j", "monitors"])
-monitors_json = json.loads(monitors_output.decode("utf-8"))
-
-# Extract the IDs of active workspaces on
-# other monitors excluding the current workspace
-other_monitor_workspace_ids = [
-    monitor["activeWorkspace"]["id"]
-    for monitor in monitors_json
-    if monitor["activeWorkspace"]["id"] != current_workspace_id
-]
-
-# Get the class of the current active window
-current_window_output = subprocess.check_output(["hyprctl", "-j", "activewindow"])
-current_window_json = json.loads(current_window_output.decode("utf-8"))
-current_window_class = current_window_json["class"]
-
-# Check if the current window class is different from the desired class
-if current_window_class != window_class:
-    # If different, clear the index and create a new list of windows
-    clear_index(window_class)
-
-# Get information about all windows
-windows_output = subprocess.check_output(["hyprctl", "-j", "clients"])
-windows_json = json.loads(windows_output.decode("utf-8"))
-
-# Filter windows by class equal to "emacs"
-class_windows = [
-    window for window in windows_json if window.get("class") == window_class
-]
-
-# Initialize a list to hold all windows
-all_windows = []
-
-# Add windows from the current workspace
-current_workspace_windows = [
-    window
-    for window in class_windows
-    if window["workspace"]["id"] == current_workspace_id
-]
-all_windows.extend(current_workspace_windows)
-
-# Add windows from other workspaces
-for window in class_windows:
-    if window["workspace"]["id"] in other_monitor_workspace_ids:
-        all_windows.append(window)
-
-# Add remaining windows
-for window in class_windows:
-    if window["workspace"]["id"] not in (
-        current_workspace_id,
-        *other_monitor_workspace_ids,
-    ):
-        all_windows.append(window)
-
-# Remove current focused window# Sort the windows based on their position in the workspace
-all_windows = [window for window in all_windows if window.get("focusHistoryID") != 0]
-
-# Focus on each window in the list one by one
-# Read the index of the last focused window from a file
-
-try:
-    with open(index_path, "r") as file:
-        last_focused_index = int(file.read().strip())
-except FileNotFoundError:
-    last_focused_index = -1
-
-# Calculate the index of the next window to focus
-next_index = (last_focused_index + 1) % len(all_windows)
-
-# Focus on the next window in the list
-focus_window(all_windows[next_index]["address"])
-
-# Update the index of the last focused window in the file
-with open(index_path, "w") as file:
-    file.write(str(next_index))
+if __name__ == "__main__":
+    main()
