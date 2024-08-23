@@ -415,7 +415,7 @@ prepend_keymap = [
   ], run = '''shell 'dragon-drop -T -x -A "$@" & pypr hide yazi' --confirm''' },
   { on = [
     "<A-s>",
-  ], run = '''shell --interactive 'python ~/GoogleDrive/Projects/MySmallProgrammingJourney/Python/LinuxScript/fast-open-directory/yazi.py ' --confirm --block''' },
+  ], run = '''shell 'python ~/GoogleDrive/Projects/MySmallProgrammingJourney/Python/LinuxScript/fast-open-directory/yazi.py ' --confirm --block''' },
   { on = [
     "u",
     "a",
