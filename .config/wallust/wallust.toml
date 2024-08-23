@@ -8,6 +8,9 @@ backend = "full"
 # color space "lab" for more even colors
 color_space = "lab"
 
+# Ensures a "readable contrast"
+check_contrast = true
+
 # good balance for not too similiar nor different colors
 threshold = 19
 
@@ -22,37 +25,20 @@ pywal = false
 #############
 
 # Replicate pywal colors.json for compatibility
-[[entry]]
-template = "templates/pywal"
-target = "~/.cache/wal/colors.json"
+[templates]
 
-[[entry]]
-template = "templates/walcolors"
-target = "~/.cache/wal/colors"
+colors-json = { template = "pywal", target = "~/.cache/wal/colors.json" }
 
-# Zathura template
-[[entry]]
-template = "templates/zathura"
-target = "~/.config/zathura/wallust"
+colors = { template = "walcolors", target = "~/.cache/wal/colors" }
 
-# Kitty template
-[[entry]]
-template = "templates/kitty"
-target = "~/.config/kitty/wallust.conf"
+colors-sh = { template = "sh-colors", target = "~/.cache/wal/colors.sh" }
 
-# Qutebrowser template
-[[entry]]
-template = "templates/colors.json"
-target = "~/.config/qutebrowser/colors.json"
+zathura = { template = "zathura", target = "~/.config/zathura/wallust" }
 
-[[entry]]
-template = "templates/tofi-colors"
-target = "~/.config/tofi/colors"
+kitty = { template = "kitty", target = "~/.config/kitty/wallust.conf" }
 
-[[entry]]
-template = "templates/eww-scss"
-target = "~/.config/eww/_colors.scss"
+qutebrowser = { template = "colors.json", target = "~/.config/qutebrowser/colors.json" }
 
-[[entry]]
-template = "templates/sh-colors"
-target = "~/.cache/wal/colors.sh"
+tofi = { template = "tofi-colors", target = "~/.config/tofi/colors" }
+
+eww = { template = "eww-scss", target = "~/.config/eww/_colors.scss" }
