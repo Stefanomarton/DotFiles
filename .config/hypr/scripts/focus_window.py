@@ -17,9 +17,6 @@ def main():
 
     client_ordered = client.byFocusID()
 
-    with open("/tmp/last_focus_adress.pkl", "rb") as file:
-        last_window = pickle.load(file)
-
     current_window = client.focused()
 
     with open("/tmp/last_focus_adress.pkl", "wb") as file:
