@@ -72,6 +72,7 @@ bindkey "^[[F" end-of-line
 # \builtin alias cdi=__zoxide_zi
 alias a="cd"
 alias v="nvim"
+alias ,,="fc -ln -1 | wl-copy"
 alias e="emacsclient -nw"
 alias e="emacsclient --alternate-editor=\"\" $*"
 alias music="ncmpcpp"
