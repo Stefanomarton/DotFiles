@@ -1,28 +1,28 @@
 {
-    "wallpaper": ".local/share/Wallpapers/Misc/clouds.jpg",
-    "alpha": "100",
+  "wallpaper": "/home/stefanom/Downloads/x9iVQ5z.jpeg",
+  "alpha": "100",
 
-    "special": {
-        "background": "#000006",
-        "foreground": "#E4FAFF",
-        "cursor": "#E4FAFF"
-    },
-    "colors": {
-        "color0": "#000006",
-        "color1": "#8D5996",
-        "color2": "#4D7780",
-        "color3": "#6982A5",
-        "color4": "#5A9593",
-        "color5": "#BE95C0",
-        "color6": "#8CB0BA",
-        "color7": "#D0EFF6",
-        "color8": "#91A7AC",
-        "color9": "#B38CBA",
-        "color10": "#6C9DA7",
-        "color11": "#A3B1C8",
-        "color12": "#89B8B6",
-        "color13": "#EBDFEC",
-        "color14": "#CFDEE2",
-        "color15": "#D0EFF6"
-    }
+  "special": {
+    "background": "#222321",
+    "foreground": "#FBEFE7",
+    "cursor": "#FBEFE7"
+  },
+  "colors": {
+    "color0": "#4D4E4C",
+    "color1": "#A07E79",
+    "color2": "#7292A8",
+    "color3": "#948788",
+    "color4": "#BB7773",
+    "color5": "#838D8C",
+    "color6": "#B79C8C",
+    "color7": "#F1DFD5",
+    "color8": "#A99C95",
+    "color9": "#B47D74",
+    "color10": "#6DA2C5",
+    "color11": "#B6A2A4",
+    "color12": "#F99F99",
+    "color13": "#AFBCBB",
+    "color14": "#F4D0BB",
+    "color15": "#F1DFD5"
+  }
 }

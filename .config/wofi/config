@@ -3,9 +3,10 @@ exec_search=false
 hide_scroll=true
 matching=contain
 insensitive=true
-width=30%
-lines=3 
-columns=2
+width=10%
+lines=5
+columns=1
+
 /* sort_order=ORDER */
 /*        Specifies  the  default  sort  order.  There  are currently two orders, default and */
 /*        alphabetical. See wofi(7) for details. */
@@ -20,6 +21,7 @@ orientation=vertical
 halign=default
 content_halign=center
 valign=center
+
 /* filter_rate=RATE */
 /*        Specifies the rate at which search results are updated in milliseconds, default  is */
 /*        100. */
