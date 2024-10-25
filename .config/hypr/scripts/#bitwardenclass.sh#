@@ -16,7 +16,7 @@ handle() {
 		# Check if the title matches the characteristics of the Bitwarden popup window
 		if [[ "$window_title" == *"(Bitwarden"*"Password Manager) - Bitwarden"* ]]; then
 
-			# echo "$window_id", "$window_title"
+k			# echo "$window_id", "$window_title"
 			hyprctl --batch "dispatch togglefloating address:0x$window_id; dispatch resizewindowpixel exact 20% 54%,address:0x$window_id; dispatch centerwindow"
 		fi
 		;;
