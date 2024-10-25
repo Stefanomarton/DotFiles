@@ -173,6 +173,9 @@ keymap = [
     "a",
   ], run = "create", desc = "Create a file or directory (ends with / for directories)" },
   { on = [
+    "A",
+  ], run = "create --dir", desc = "Create a directory" },
+  { on = [
     "r",
   ], run = "rename --cursor=before_ext", desc = "Rename a file or directory" },
   { on = [
@@ -197,7 +200,6 @@ keymap = [
     "z",
   ], run = [
     "plugin zoxide",
-    "filter --smart",
   ], desc = "Jump to a directory using zoxide" },
   { on = [
     "Z",
@@ -467,7 +469,7 @@ prepend_keymap = [
   # smart-filter plugin
   { on = [
     "f",
-  ], run = "plugin smart-filter", desc = "Smart filter" },
+  ], run = "filter --smart", desc = "Smart filter" },
 
   { on = [
     "T",

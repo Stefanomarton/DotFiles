@@ -26,27 +26,11 @@ function Status:name()
 end
 
 -- remove position from status bar
-function Status:position()
+function Status:permissions()
 end
 
 -- remove percentage from status bar
 function Status:percentage()
-end
-
--- show size in status bar
-function Status:size()
-    local h = cx.active.current.hovered
-    if h == nil then
-        return ui.Line {}
-    end
-
-    local style = self.style()
-    return ui.Line {
-        ui.Span(" " .. ya.readable_size(h:size() or h.cha.length) .. " "):fg(style.bg):bg(
-            THEME.status.separator_style.bg
-        ),
-        ui.Span(THEME.status.separator_close):fg(THEME.status.separator_style.fg)
-    }
 end
 
 -- full-border plugin
