@@ -232,7 +232,7 @@ function cd() {
 	fi
 }
 
-PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f%F{white} • %F%f%'
+PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f%F{white} • '
 RPROMPT='%B%F{blue}%~%f%b'
 
 source ~/.cache/wal/colors.sh
