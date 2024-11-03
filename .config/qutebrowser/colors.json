@@ -1,28 +1,28 @@
 {
-  "wallpaper": "/home/stefanom/Downloads/x9iVQ5z.jpeg",
+  "wallpaper": "/home/stefanom/output.png",
   "alpha": "100",
 
   "special": {
-    "background": "#222321",
-    "foreground": "#FBEFE7",
-    "cursor": "#FBEFE7"
+    "background": "#000001",
+    "foreground": "#F1F5F9",
+    "cursor": "#F1F5F9"
   },
   "colors": {
-    "color0": "#4D4E4C",
-    "color1": "#A07E79",
-    "color2": "#7292A8",
-    "color3": "#948788",
-    "color4": "#BB7773",
-    "color5": "#838D8C",
-    "color6": "#B79C8C",
-    "color7": "#F1DFD5",
-    "color8": "#A99C95",
-    "color9": "#B47D74",
-    "color10": "#6DA2C5",
-    "color11": "#B6A2A4",
-    "color12": "#F99F99",
-    "color13": "#AFBCBB",
-    "color14": "#F4D0BB",
-    "color15": "#F1DFD5"
+    "color0": "#000001",
+    "color1": "#545859",
+    "color2": "#617991",
+    "color3": "#7A8F69",
+    "color4": "#AA8F8A",
+    "color5": "#AA90BF",
+    "color6": "#A2AAB2",
+    "color7": "#E3E8EE",
+    "color8": "#9FA2A7",
+    "color9": "#5D6263",
+    "color10": "#81A1C1",
+    "color11": "#A3BE8C",
+    "color12": "#E3BFB8",
+    "color13": "#E2C0FF",
+    "color14": "#D8E2EE",
+    "color15": "#E3E8EE"
   }
 }
