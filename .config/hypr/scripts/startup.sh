@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # clipboard history
 wl-paste --watch cliphist store &
@@ -15,26 +15,26 @@ disown
 # Check VM
 
 ## Define the name of the VM
-vm_name="work"
+# vm_name="work"
 
-### Check if the VM is running
-if ! virsh dominfo "$vm_name" | grep -q "State:\s*running"; then
+# ### Check if the VM is running
+# if ! virsh dominfo "$vm_name" | grep -q "State:\s*running"; then
 
-	### Start VM using virsh
-	virsh start "$vm_name"
+# 	### Start VM using virsh
+# 	virsh start "$vm_name"
 
-	killall looking-glass-client
+# 	killall looking-glass-client
 
-	sleep 10
-	hyprctl dispatch exec "[workspace name:w11 silent; noanim] looking-glass-client"
+# 	sleep 10
+# 	hyprctl dispatch exec "[workspace name:w11 silent; noanim] looking-glass-client"
 
-else
+# else
 
-	### Command to start Looking Glass
-	killall looking-glass-client
-	hyprctl dispatch exec "[workspace name:w11 silent; noanim] looking-glass-client"
+# 	### Command to start Looking Glass
+# 	killall looking-glass-client
+# 	hyprctl dispatch exec "[workspace name:w11 silent; noanim] looking-glass-client"
 
-fi
+# fi
 
 # Check Emacs server
 

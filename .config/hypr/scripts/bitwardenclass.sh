@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 timeout=0
 handle() {

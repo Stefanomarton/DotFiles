@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 ewww close-popup
 hyprctl --batch dispatch workspace $1
 hyprctl --batch dispatch animatefocused
