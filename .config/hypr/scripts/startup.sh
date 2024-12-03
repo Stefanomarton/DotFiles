@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # clipboard history
 wl-paste --watch cliphist store &
