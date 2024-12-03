@@ -1,0 +1,10 @@
+prompt=Search it on Google!
+exec_search=false
+hide_scroll=true
+matching=contain
+insensitive=true
+width=15%
+heigth=20%
+lines=1
+columns=1
+hide_search=false
