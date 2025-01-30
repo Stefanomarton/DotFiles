@@ -2,7 +2,7 @@
 
 # Variables
 dmenu_command="wofi --show dmenu --conf ~/.config/wofi/minimal --style ~/.config/wofi/minimal.css"
-browser="firefox"
+browser="zen-browser"
 
 # Prompt the user for input using dmenu
 search_query=$(echo "" | eval "$dmenu_command")
