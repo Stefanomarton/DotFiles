@@ -4,13 +4,13 @@
 wl-paste --watch cliphist store &
 disown
 
-# syncthing
-syncthing --no-browser &
+# nextcloud
+nextcloud &
 disown
 
-# insync
-insync start &
-disown
+# syncthing
+# syncthing --no-browser &
+# disown
 
 # Check VM
 
@@ -64,8 +64,5 @@ if [ "$(hostnamectl hostname)" = "desktop" ]; then
 	ollama serve &
 	disown
 fi
-
-# Dropbox
-# dropbox
 
 jamesdsp -t
