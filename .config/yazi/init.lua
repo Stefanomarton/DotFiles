@@ -44,5 +44,25 @@ require("zoxide"):setup {
 require("session"):setup {
     sync_yanked = true
 }
--- use arrow to move in parents folders
-require("parent-arrow")
+
+require("augment-command"):setup(
+    {
+        prompt = true,
+        default_item_group_for_prompt = "hovered",
+        smart_enter = true,
+        smart_paste = false,
+        smart_tab_create = true,
+        smart_tab_switch = true,
+        open_file_after_creation = false,
+        enter_directory_after_creation = false,
+        use_default_create_behaviour = false,
+        enter_archives = false,
+        extract_retries = 3,
+        recursively_extract_archives = true,
+        preserve_file_permissions = false,
+        must_have_hovered_item = true,
+        skip_single_subdirectory_on_enter = true,
+        skip_single_subdirectory_on_leave = true,
+        wraparound_file_navigation = false
+    }
+)

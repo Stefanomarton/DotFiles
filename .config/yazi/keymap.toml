@@ -31,10 +31,10 @@ keymap = [
 
   { on = [
     "<Up>",
-  ], run = "plugin --sync parent-arrow --args=-1", desc = "Move up in the parent directory" },
+  ], run = "plugin augment-command --args='parent_arrow -1'", desc = "Move up in the parent directory" },
   { on = [
     "<Down>",
-  ], run = "plugin --sync parent-arrow --args=1", desc = "Move down in the parent directory" },
+  ], run = "plugin augment-command --args='parent_arrow 1'", desc = "Move down in the parent directory" },
 
   { on = [
     "<S-Up>",
@@ -95,7 +95,7 @@ keymap = [
   { on = [
     "<Space>",
   ], run = [
-    "select --state=none",
+    "toggle --state=none",
     "arrow 1",
   ], desc = "Toggle the current selection state" },
   { on = [
@@ -106,10 +106,10 @@ keymap = [
   ], run = "visual_mode --unset", desc = "Enter visual mode (unset mode)" },
   { on = [
     "<C-a>",
-  ], run = "select_all --state=true", desc = "Select all files" },
+  ], run = "toggle_all --state=true", desc = "Select all files" },
   { on = [
     "<C-r>",
-  ], run = "select_all --state=none", desc = "Inverse selection of all files" },
+  ], run = "toggle_all --state=none", desc = "Inverse selection of all files" },
 
   # Operation
   { on = [
@@ -308,13 +308,13 @@ keymap = [
   ], run = "tab_switch 0", desc = "Switch to the first tab" },
   { on = [
     "2",
-  ], run = "tab_switch 1", desc = "Switch to the second tab" },
+  ], run = "plugin smart-switch --args=1", desc = "Switch to the second tab" },
   { on = [
     "3",
-  ], run = "tab_switch 2", desc = "Switch to the third tab" },
+  ], run = "plugin smart-switch --args=2", desc = "Switch to the third tab" },
   { on = [
     "4",
-  ], run = "tab_switch 3", desc = "Switch to the fourth tab" },
+  ], run = "plugin smart-switch --args=3", desc = "Switch to the fourth tab" },
   { on = [
     "5",
   ], run = "tab_switch 4", desc = "Switch to the fifth tab" },
@@ -397,7 +397,7 @@ prepend_keymap = [
   # bookmark plugin
   { on = [
     "/",
-  ], run = "plugin --sync smart-enter", desc = "Enter the child directory, or open the file" },
+  ], run = "plugin augment-command --args='enter'", desc = "Enter the child directory, or open the file" },
   { on = [
     "m",
   ], run = "plugin bookmarks --args=save", desc = "Save current position as a bookmark" },
@@ -692,9 +692,11 @@ keymap = [
     "delete --cut",
     "move 1 --in-operating",
   ], desc = "Cut the current character" },
+
   { on = [
     "y",
   ], run = "yank", desc = "Copy the selected characters" },
+
   { on = [
     "p",
   ], run = "paste", desc = "Paste the copied characters after the cursor" },
