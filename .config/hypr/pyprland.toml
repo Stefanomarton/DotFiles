@@ -60,12 +60,12 @@ margin = 60
 position = "25% 25%"
 size = "50% 50%"
 
-[scratchpads.volume]
+[scratchpads.qutebrowser]
 animation = ""
-command = """kitty --class volume --hold ~/GoogleDrive/Projects/MySmallProgrammingJourney/Bash/keyboard-input.sh"""
-class = "volume"
+command = """qutebrowser"""
+class = "org.qutebrowser.qutebrowser"
 lazy = true
 unfocus = "hide"
 margin = 60
-position = "42% 40%"
-size = "20% 30%"
+position = "25% 25%"
+size = "50% 50%"
