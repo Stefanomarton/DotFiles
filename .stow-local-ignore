@@ -1,7 +1,3 @@
-\.git
-\.gitignore
-\.gitmodules
-
 RCS
 .+,v
 
@@ -16,6 +12,7 @@ _darcs
 \.git
 \.gitignore
 \.gitmodules
+\.github
 
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
