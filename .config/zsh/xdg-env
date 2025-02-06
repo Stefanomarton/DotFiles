@@ -1,3 +1,0 @@
-export ANDROID_HOME="$XDG_DATA_HOME"/android
-export HISTFILE="$XDG_STATE_HOME"/bash/history
-export HISTFILE="$XDG_STATE_HOME"/zsh/history

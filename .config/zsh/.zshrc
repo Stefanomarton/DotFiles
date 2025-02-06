@@ -6,7 +6,6 @@ export XDG_STATE_HOME=$HOME/.local/state
 export XDG_DESKTOP_DIR="$HOME/"
 
 ##>>> XDG - ENV
-source "$XDG_CONFIG_HOME"/zsh/xdg-env
 export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
 export HISTFILE="$XDG_STATE_HOME"/bash/history
 export HISTFILE="$XDG_STATE_HOME"/zsh/history
@@ -99,7 +98,7 @@ export VISUAL='emacsclient -c'
 # export EDITOR='nvim'
 export BROWSER='/usr/bin/floorp'
 export PAGER='moar -colors "auto" -no-statusbar'
-HISTFILE=~/.zsh_history
+export HISTFILE="$XDG_STATE_HOME"/zsh/history
 HISTSIZE=100000000
 SAVEHIST=100000000
 
@@ -128,7 +127,7 @@ function yazi-wrapper() {
 
 bindkey -s '^a' 'yazi-wrapper\n'
 
-source /usr/share/fzf/completion.zsh
+# source /usr/share/fzf/completion.zsh
 
 ##FZF config
 export FZF_DEFAULT_OPTS='
@@ -236,7 +235,7 @@ PROMPT=' %(?.%F{blue}%B𝝍%b.%F{red}?%?)%f%F{white} • '
 RPROMPT='%B%F{blue}%~%f%b'
 
 source ~/.cache/wal/colors.sh
-source /usr/share/fzf/key-bindings.zsh
+# source /usr/share/fzf/key-bindings.zsh
 
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
 zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
