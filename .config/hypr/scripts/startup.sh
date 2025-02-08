@@ -57,12 +57,12 @@ fi
 
 # Eww
 eww daemon
-eww open bg-widget
+#eww open bg-widget
 
-# ollama
-if [ "$(hostnamectl hostname)" = "desktop" ]; then
-	ollama serve &
-	disown
-fi
+# # ollama
+# if [ "$(hostnamectl hostname)" = "desktop" ]; then
+# 	ollama serve &
+# 	disown
+# fi
 
 jamesdsp -t
