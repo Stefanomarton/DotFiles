@@ -7,8 +7,6 @@ export XDG_DESKTOP_DIR="$HOME/"
 
 ##>>> XDG - ENV
 export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
-export HISTFILE="$XDG_STATE_HOME"/bash/history
-export HISTFILE="$XDG_STATE_HOME"/zsh/history
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java export
 export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
