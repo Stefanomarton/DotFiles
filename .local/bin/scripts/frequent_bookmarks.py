@@ -5,17 +5,14 @@ import webbrowser
 
 # List of bookmarks
 bookmarks = [
-    (
-        "work-timesheet",
-        "https://docs.google.com/spreadsheets/d/1zncWCq9d1nZMX2thhDO4UD8JSCJoJFJVvnkdM7K4G20/edit?gid=1732172782#gid=1732172782",
-    ),
     ("kiro", "https://elearning.unipv.it/"),
     ("gmail", "https://mail.google.com/mail/u/0/"),
-    ("drive", "https://drive.google.com/drive/u/0/my-drive"),
-    ("nextcloud", "https://nextcloud.s3m.dev/index.php/login"),
+    ("drive", "https://drive.marton.dev/drive/u/0/my-drive"),
     ("youtube", "https://www.youtube.com/"),
-    ("commercialista", "https://fidocommercialista.it/"),
-    ("ynab", "https://www.ynab.com/"),
+    ("quickfisco", "https://app.quickfisco.it/"),
+    ("budget", "https://budget.marton.dev"),
+    ("audio-tanscript", "https://revoldiv.com/"),
+    ("noco", "https://noco.marton.dev/"),
 ]
 
 
