@@ -1,7 +1,7 @@
 (defwidget bar []
   (centerbox :orientation "h"
     (left-bar)
-    (window-title-widget)
+    (music)
     (sidestuff)))
 
 (defwidget left-bar []
@@ -13,22 +13,17 @@
 
 (defwidget sidestuff []
            (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
-                (music)
-                (metric :label ""
-                        :value volume
-                        :onchange "amixer -D pulse sset Master {}%")
-                (metric :label ""
-                        :value {EWW_RAM.used_mem_perc}
-                        :onchange "")
+                ;; (music)
                 (box :class "time" :orientation "h" :space-evenly false :halign "end"
                      time)
                 (box :class "date" :orientation "h" :space-evenly false :halign "end"
                      date)
-                (systray
-                 :spacing 1
-                 :orientation "h"
-                 :space-evenly true
-                 :icon-size 20)))
+                ;; (systray
+                ;;  :spacing 1
+                ;;  :orientation "h"
+                ;;  :space-evenly true
+                ;;  :icon-size 20)
+                ))
 
 (deflisten workspace0
            "~/.dotfiles/.config/eww/scripts/workspace.sh 0")
@@ -59,7 +54,7 @@
        :orientation "h"
        :space-evenly false
        :halign "center"
-    {music != "" ? "🎵 ${music}" : ""}))
+    {music != "" ? "${music}" : ""}))
 
 (defwidget metric [label value onchange]
   (box :orientation "h"
