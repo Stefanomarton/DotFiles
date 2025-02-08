@@ -123,7 +123,7 @@ keymap = [
   ], run = '''shell  --block --confirm "emacsclient -t $@"''', desc = "Open the selected files" },
   { on = [
     "E",
-  ], run = '''shell --confirm "emacsclient -nc $@"''', desc = "Open the selected files" },
+  ], run = '''shell --confirm "emacsclient -c $@"''', desc = "Open the selected files" },
   { on = [
     "$",
   ], run = '''shell --confirm "kitty -d $(pwd)"''', desc = "Open kitty in current pwd" },
