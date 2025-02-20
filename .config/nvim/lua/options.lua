@@ -55,7 +55,6 @@ vim.g.neovide_scale_factor = 0.8
 vim.g.neovide_refresh_rate = 144
 
 -- Colorscheme
-vim.cmd.colorscheme("pywal")
 -- vim.api.nvim_set_hl(0, 'CursorLine', { underline = false})
 -- vim.cmd('highlight Normal guibg=NONE')
 -- vim.cmd('highlight CursorLineNr guibg=NONE')

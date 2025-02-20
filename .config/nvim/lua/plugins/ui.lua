@@ -1,8 +1,8 @@
 return {
 {
-		'AlphaTechnolog/pywal.nvim', as = 'pywal',
+		'RRethy/base16-nvim', 
 		config = function ()
-			require('pywal').setup()
+      vim.cmd('colorscheme base16-everforest-dark-hard')
 		end
 },
 	{
