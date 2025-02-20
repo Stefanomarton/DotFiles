@@ -27,16 +27,16 @@ ueberzug_offset = [0, 0, 0, 0]
 [opener]
 
 edit = [
-  { run = 'emacsclient -t "$@"', block = true, for = "unix" },
-  { run = 'emacsclient -c "$@"', block = true, for = "unix" },
+  { run = 'emacsclient -t "$@"', block = true, for = "unix", desc = "emacs terminal" },
+  { run = 'emacsclient -c "$@"', block = true, for = "unix", desc = "emacs GUI" },
   { run = 'firefox "$@"', block = true, for = "unix" },
 ]
 
-text = [
-  { run = 'emacsclient -c "$@"', block = true, for = "unix" },
-  { run = 'emacsclient -t "$@"', block = true, for = "unix" },
-  { run = 'firefox "$@"', block = true, for = "unix" },
-]
+# text = [
+#   { run = 'emacsclient -c \""$@"\"', block = true, for = "unix" },
+#   { run = 'emacsclient -t "$1"', block = true, for = "unix" },
+#   { run = 'firefox "$@"', block = true, for = "unix" },
+# ]
 
 open = [
   { run = 'xdg-open "$@"', orphan = true, desc = "Open", for = "linux" },
@@ -68,6 +68,8 @@ office = [{ run = 'soffice "$@"', orphan = true, for = "linux" }]
 
 stl = [{ run = 'fstl "$@"', orphan = true, for = "linux" }]
 
+pdf = [{ run = 'sioyek --new-window "$@"', orphan = true, for = "linux" }]
+
 [open]
 rules = [
   { name = "*/", use = [
@@ -80,6 +82,9 @@ rules = [
   ] },
   { name = "*.stl", use = [
     "stl",
+  ] },
+  { name = "*.pdf", use = [
+    "pdf",
   ] },
 
   { mime = "text/*", use = [

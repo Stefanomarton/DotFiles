@@ -1,7 +1,3 @@
-# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
-# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
-"$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
-
 [manager]
 
 keymap = [
@@ -31,10 +27,10 @@ keymap = [
 
   { on = [
     "<Up>",
-  ], run = "plugin augment-command --args='parent_arrow -1'", desc = "Move up in the parent directory" },
+  ], run = "plugin augment-command -- parent_arrow -1", desc = "Move up in the parent directory" },
   { on = [
     "<Down>",
-  ], run = "plugin augment-command --args='parent_arrow 1'", desc = "Move down in the parent directory" },
+  ], run = "plugin augment-command -- parent_arrow 1", desc = "Move down in the parent directory" },
 
   { on = [
     "<S-Up>",
@@ -86,10 +82,10 @@ keymap = [
 
   { on = [
     "<End>",
-  ], run = "arrow 99999999", desc = "Move cursor to the top" },
+  ], run = "arrow bot", desc = "Move cursor to the top" },
   { on = [
     "<Home>",
-  ], run = "arrow -99999999", desc = "Move cursor to the bottom" },
+  ], run = "arrow bot", desc = "Move cursor to the bottom" },
 
   # Selection
   { on = [
@@ -120,13 +116,17 @@ keymap = [
   ], run = "open --interactive", desc = "Open the selected files interactively" },
   { on = [
     "e",
-  ], run = '''shell  --block --confirm "emacsclient -t $@"''', desc = "Open the selected files" },
+  ], run = '''
+    shell  --block --confirm 'emacsclient -t "$@"'
+    ''', desc = "Open the selected files" },
   { on = [
     "E",
-  ], run = '''shell --confirm "emacsclient -c $@"''', desc = "Open the selected files" },
+  ], run = '''
+    shell --confirm 'emacsclient -c "$@"'
+    ''', desc = "Open the selected files" },
   { on = [
     "$",
-  ], run = '''shell --confirm "kitty -d $(pwd)"''', desc = "Open kitty in current pwd" },
+  ], run = '''shell --confirm 'kitty -d "$(pwd)"'''', desc = "Open kitty in current pwd" },
   { on = [
     "y",
   ], run = [
@@ -308,13 +308,13 @@ keymap = [
   ], run = "tab_switch 0", desc = "Switch to the first tab" },
   { on = [
     "2",
-  ], run = "plugin smart-switch --args=1", desc = "Switch to the second tab" },
+  ], run = "plugin smart-switch 1", desc = "Switch to the second tab" },
   { on = [
     "3",
-  ], run = "plugin smart-switch --args=2", desc = "Switch to the third tab" },
+  ], run = "plugin smart-switch 2", desc = "Switch to the third tab" },
   { on = [
     "4",
-  ], run = "plugin smart-switch --args=3", desc = "Switch to the fourth tab" },
+  ], run = "plugin smart-switch 3", desc = "Switch to the fourth tab" },
   { on = [
     "5",
   ], run = "tab_switch 4", desc = "Switch to the fifth tab" },
@@ -367,19 +367,23 @@ keymap = [
   { on = [
     "g",
     "u",
-  ], run = "cd ~/GoogleDrive/University/", desc = "Go to the config directory" },
+  ], run = "cd $HOME/uni", desc = "Go to the uni directory" },
   { on = [
     "g",
     "w",
-  ], run = "cd ~/Dropbox/SDS_DRIVE", desc = "Go to the config directory" },
+  ], run = "cd $HOME/work", desc = "Go to the work directory" },
+  { on = [
+    "g",
+    "P",
+  ], run = "cd $HOME/projects", desc = "Go to the project directory" },
   { on = [
     "g",
     "p",
-  ], run = "cd ~/GoogleDrive/Projects", desc = "Go to the config directory" },
+  ], run = "cd $HOME/personal", desc = "Go to the personal directory" },
   { on = [
     "g",
     "d",
-  ], run = "cd ~/Downloads", desc = "Go to the downloads directory" },
+  ], run = "cd $HOME/inbox", desc = "Go to the downloads directory" },
   { on = [
     "g",
     "t",
@@ -397,59 +401,66 @@ prepend_keymap = [
   # bookmark plugin
   { on = [
     "/",
-  ], run = "plugin augment-command --args='enter'", desc = "Enter the child directory, or open the file" },
+  ], run = "plugin augment-command enter", desc = "Enter the child directory, or open the file" },
   { on = [
     "m",
-  ], run = "plugin bookmarks --args=save", desc = "Save current position as a bookmark" },
+  ], run = "plugin bookmarks save", desc = "Save current position as a bookmark" },
   { on = [
     "'",
-  ], run = "plugin bookmarks --args=jump", desc = "Jump to a bookmark" },
+  ], run = "plugin bookmarks jump", desc = "Jump to a bookmark" },
   { on = [
     "b",
     "d",
-  ], run = "plugin bookmarks --args=delete", desc = "Delete a bookmark" },
+  ], run = "plugin bookmarks delete", desc = "Delete a bookmark" },
   { on = [
     "b",
     "D",
-  ], run = "plugin bookmarks --args=delete_all", desc = "Delete all bookmarks" },
+  ], run = "plugin bookmarks delete_all", desc = "Delete all bookmarks" },
   { on = [
     "<C-n>",
-  ], run = '''shell 'dragon-drop -T -x -A "$@" & pypr hide yazi' --confirm''' },
+  ], run = '''shell 'xdragon -T -x -A "$@" & pypr hide yazi' --confirm''' },
   { on = [
     "<A-s>",
   ], run = '''shell 'python ~/GoogleDrive/Projects/MySmallProgrammingJourney/Python/LinuxScript/fast-open-directory/yazi.py ' --confirm --block''' },
   { on = [
     "u",
     "a",
-  ], run = "plugin yamb --args=save", desc = "Add bookmark" },
+  ], run = "plugin yamb save", desc = "Add bookmark" },
   { on = [
     "u",
     "g",
-  ], run = "plugin yamb --args=jump_by_key", desc = "Jump bookmark by key" },
+  ], run = "plugin yamb jump_by_key", desc = "Jump bookmark by key" },
   { on = [
     "u",
     "G",
-  ], run = "plugin yamb --args=jump_by_fzf", desc = "Jump bookmark by fzf" },
+  ], run = "plugin yamb jump_by_fzf", desc = "Jump bookmark by fzf" },
   { on = [
     "u",
     "d",
-  ], run = "plugin yamb --args=delete_by_key", desc = "Delete bookmark by key" },
+  ], run = "plugin yamb delete_by_key", desc = "Delete bookmark by key" },
   { on = [
     "u",
     "D",
-  ], run = "plugin yamb --args=delete_by_fzf", desc = "Delete bookmark by fzf" },
+  ], run = "plugin yamb delete_by_fzf", desc = "Delete bookmark by fzf" },
   { on = [
     "u",
     "A",
-  ], run = "plugin yamb --args=delete_all", desc = "Delete all bookmarks" },
+  ], run = "plugin yamb delete_all", desc = "Delete all bookmarks" },
   { on = [
     "u",
     "r",
-  ], run = "plugin yamb --args=rename_by_key", desc = "Rename bookmark by key" },
+  ], run = "plugin yamb rename_by_key", desc = "Rename bookmark by key" },
   { on = [
     "u",
     "R",
-  ], run = "plugin yamb --args=rename_by_fzf", desc = "Rename bookmark by fzf" },
+  ], run = "plugin yamb rename_by_fzf", desc = "Rename bookmark by fzf" },
+
+  # work tools
+  { on = [
+    "u",
+    "u",
+    "o",
+  ], run = '''shell 'python ~/move_to_obsolete.py "$@" --confirm --block'''', desc = "move to obsolete" },
 
   # chmod plugin
   { on = [
@@ -537,6 +548,7 @@ keymap = [
   { on = [
     "~",
   ], run = "help", desc = "Open help" },
+
 ]
 
 [input]
