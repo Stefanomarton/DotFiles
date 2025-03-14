@@ -85,7 +85,7 @@ keymap = [
   ], run = "arrow bot", desc = "Move cursor to the top" },
   { on = [
     "<Home>",
-  ], run = "arrow bot", desc = "Move cursor to the bottom" },
+  ], run = "arrow top", desc = "Move cursor to the bottom" },
 
   # Selection
   { on = [
