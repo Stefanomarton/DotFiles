@@ -252,11 +252,11 @@ keymap = [
   { on = [
     ",",
     "m",
-  ], run = "sort modified --reverse=no", desc = "Sort by modified time" },
+  ], run = "sort mtime", desc = "Sort by modified time" },
   { on = [
     ",",
     "M",
-  ], run = "sort modified --reverse", desc = "Sort by modified time (reverse)" },
+  ], run = "sort mtime --reverse", desc = "Sort by modified time (reverse)" },
   { on = [
     ",",
     "c",
