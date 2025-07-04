@@ -13,5 +13,10 @@ use = "hankertrix/augment-command"
 rev = "15a75d8"
 hash = "374139554462a9dfc10dc8bfd0b01b19"
 
+[[plugin.deps]]
+use = "KKV9/compress"
+rev = "9fc8fe0"
+hash = "2ad086899bf368fba211a33d8f68c39d"
+
 [flavor]
 deps = []
