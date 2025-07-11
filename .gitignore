@@ -18,3 +18,4 @@
 .mypy_cache/
 .config/emacs/snippets/latex-mode/.yas-compiled-snippets.el
 .config/tmux/tpm
+.config/yazi/plugins
