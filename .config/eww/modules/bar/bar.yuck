@@ -1,14 +1,14 @@
 (defwidget bar []
-  (centerbox :orientation "h"
-    (left-bar)
+           (centerbox :orientation "h"
     (music)
+    (left-bar)
     (sidestuff)))
 
 (defwidget left-bar []
-           (box :class "sidestuff" :orientation "h" :space-evenly false :halign "start" :spacing 10
+           (box :class "sidestuff" :orientation "h" :space-evenly false :halign "start" 
                 (workspaces0)
-                (workspaces1)
-                (workspaces2)
+                ;; (workspaces1)
+                ;; (workspaces2)
            ))
 
 (defwidget sidestuff []
@@ -18,43 +18,32 @@
                      time)
                 (box :class "date" :orientation "h" :space-evenly false :halign "end"
                      date)
-                ;; (systray
-                ;;  :spacing 1
-                ;;  :orientation "h"
-                ;;  :space-evenly true
-                ;;  :icon-size 20)
+                (systray
+                 :spacing 1
+                 :orientation "h"
+                 :space-evenly true
+                 :icon-size 20)
                 ))
 
 (deflisten workspace0
-           "~/.dotfiles/.config/eww/scripts/workspace.sh 0")
+           "~/.dotfiles/.config/eww/scripts/workspace.sh 1")
 
 (defwidget workspaces0 []
            (literal :content workspace0))
 
-(deflisten workspace1
-           "~/.dotfiles/.config/eww/scripts/workspace_1.sh 1")
+;; (deflisten workspace1
+;;            "~/.dotfiles/.config/eww/scripts/workspace_1.sh 2")
 
-(defwidget workspaces1 []
-           (literal :content workspace1))
-
-(deflisten workspace2
-           "~/.dotfiles/.config/eww/scripts/workspace_2.sh 2")
-
-(defwidget workspaces2 []
-           (literal :content workspace2))
-
-(deflisten window-title-listen
-           "~/.dotfiles/.config/eww/scripts/get_window_title.sh")
-
-(defwidget window-title-widget []
-    (label :text "${window-title-listen}"))
+;; (defwidget workspaces1 []
+;;            (literal :content workspace1))
 
 (defwidget music []
   (box :class "music"
        :orientation "h"
        :space-evenly false
-       :halign "center"
-    {music != "" ? "${music}" : ""}))
+       :spacing 1
+       ;; :halign "left"
+    {music != "" ? "${music}" : ""} ))
 
 (defwidget metric [label value onchange]
   (box :orientation "h"
@@ -84,7 +73,7 @@
             :spacing 1))
 
 (defwindow bar
-  :monitor 0
+  :monitor 1
   :windowtype "dock"
   :exclusive true
   :geometry (geometry :x "0%"

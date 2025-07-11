@@ -1,19 +1,135 @@
-(defwindow ws-popup
-           :monitor 0
-           :geometry (geometry :width "200px"
-                               :height "100px"
-                               :anchor "center")
-           :stacking "overlay"
-           :focusable false
-           :exclusive false
-  (ws-popup))  
-
-
 (deflisten active-ws :initial ""
-  "hyprctl activeworkspace -j | jq -r '.name'")
+           "hyprctl activeworkspace -j | jq -r '.name'")
 
-(defwidget ws-popup []
+(defwidget active-ws- []
            (box 
             :class "ws-popup-widget"
             :spacing 5
-                {"${active-ws}"}))
+            {"${active-ws}"}))
+
+;; ────────────── workspace 1 ──────────────
+(deflisten ws1 "~/.dotfiles/.config/eww/scripts/ws-check.sh 1")
+
+(defwidget ws1-widget []
+  (box :class "ws-popup-widget"
+       :orientation "v"  ; number on its own line
+       :spacing 5
+
+    (label :class "ws-num"  :text "1")   ;; the workspace number
+    (label :class "ws-dots" :text ws1))) ;; one ● per window
+
+
+;; ────────────── workspace 2 ──────────────
+(deflisten ws2 "~/.dotfiles/.config/eww/scripts/ws-check.sh 2")
+
+(defwidget ws2-widget []
+  (box :class "ws-popup-widget"
+       :orientation "v"
+       :spacing 5
+    (label :class "ws-num"  :text "2")
+    (label :class "ws-dots" :text ws2)))
+
+
+;; ────────────── workspace 3 ──────────────
+(deflisten ws3 "~/.dotfiles/.config/eww/scripts/ws-check.sh 3")
+
+(defwidget ws3-widget []
+  (box :class "ws-popup-widget"
+       :orientation "v"
+       :spacing 5
+    (label :class "ws-num"  :text "3")
+    (label :class "ws-dots" :text ws3)))
+
+
+;; ────────────── workspace 4 ──────────────
+(deflisten ws4 "~/.dotfiles/.config/eww/scripts/ws-check.sh 4")
+
+(defwidget ws4-widget []
+  (box :class "ws-popup-widget"
+       :orientation "v"
+       :spacing 5
+    (label :class "ws-num"  :text "4")
+    (label :class "ws-dots" :text ws4)))
+
+
+;; ────────────── workspace 5 ──────────────
+(deflisten ws5 "~/.dotfiles/.config/eww/scripts/ws-check.sh 5")
+
+(defwidget ws5-widget []
+  (box :class "ws-popup-widget"
+       :orientation "v"
+       :spacing 5
+    (label :class "ws-num"  :text "5")
+    (label :class "ws-dots" :text ws5)))
+
+
+;; ────────────── workspace 6 ──────────────
+(deflisten ws6 "~/.dotfiles/.config/eww/scripts/ws-check.sh 6")
+
+(defwidget ws6-widget []
+  (box :class "ws-popup-widget"
+       :orientation "v"
+       :spacing 5
+    (label :class "ws-num"  :text "6")
+    (label :class "ws-dots" :text ws6)))
+
+;; ────────────── workspace 7 ──────────────
+(deflisten ws7 "~/.dotfiles/.config/eww/scripts/ws-check.sh 7")
+
+(defwidget ws7-widget []
+  (box :class "ws-popup-widget"
+       :orientation "v"
+       :spacing 5
+    (label :class "ws-num"  :text "7")
+    (label :class "ws-dots" :text ws7)))
+
+;; ────────────── workspace 8 ──────────────
+(deflisten ws8 "~/.dotfiles/.config/eww/scripts/ws-check.sh 8")
+
+(defwidget ws8-widget []
+  (box :class "ws-popup-widget"
+       :orientation "v"
+       :spacing 5
+    (label :class "ws-num"  :text "8")
+    (label :class "ws-dots" :text ws8)))
+
+;; ────────────── workspace 9 ──────────────
+(deflisten ws9 "~/.dotfiles/.config/eww/scripts/ws-check.sh 9")
+
+(defwidget ws9-widget []
+  (box :class "ws-popup-widget"
+       :orientation "v"
+       :spacing 3
+    (label :class "ws-num"  :text "9")
+    (label :class "ws-dots" :text ws9)))
+
+
+(defwidget ws []
+           (box :class "sidestuff" :orientation "v" :space-evenly false :halign "start" :spacing 20
+                (active-ws-)
+                (_ws)))
+
+(defwidget _ws []
+           (box :class "sidestuff" :orientation "h" :space-evenly true :halign "start" :spacing 50
+                (ws1-widget)
+                (ws2-widget)
+                (ws3-widget)
+                (ws4-widget)
+                (ws5-widget)
+                (ws6-widget)
+                (ws7-widget)
+                (ws8-widget)
+                (ws9-widget)
+           ))
+
+(defwindow ws-popup-00
+           :monitor 0
+           :windowtype "dock"
+  :exclusive true
+  :geometry (geometry :x "0%"
+                      :y "1%"
+                      :height "30px"
+                      :anchor "center bottom")
+           (_ws)
+           )
+

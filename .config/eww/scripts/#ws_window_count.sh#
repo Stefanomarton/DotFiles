@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# Prints how many regular (visible, non-scratchpad) windows are on
+# the currently active Hyprland workspace.
+#
+
+active_ws=$(hyprctl activeworkspace -j | jq '.id')
+hyprctl clients -j |
+    jq --argjson ws "$active_ws" '[.[] | select(.workspace.id == $ws)] | length'

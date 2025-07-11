@@ -1,5 +1,5 @@
 (defwindow ws-popup-2
-           :monitor 2
+           :monitor 1
            :geometry (geometry :width "200px"
                                :height "100px"
                                :anchor "center")
