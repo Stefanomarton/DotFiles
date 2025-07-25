@@ -68,7 +68,7 @@ office = [{ run = 'soffice "$@"', orphan = true, for = "linux" }]
 
 stl = [{ run = 'fstl "$@"', orphan = true, for = "linux" }]
 
-pdf = [{ run = 'sioyek --new-window "$@"', orphan = true, for = "linux" }]
+pdf = [{ run = 'for f in "$@"; do sioyek "$f" & done', orphan = true, for = "linux" }]
 
 [open]
 rules = [
