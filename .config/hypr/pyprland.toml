@@ -1,0 +1,71 @@
+[pyprland]
+plugins = [
+  "scratchpads",
+  # "lost_windows",
+  # "monitors",
+  # "toggle_dpms",
+  # "magnify",
+  # "expose",
+  # "shift_monitors",
+  # "workspaces_follow_focus",
+]
+
+[scratchpads.yazi]
+animation = ""
+command = "kitty --class kitty-yazi yazi"
+class = "kitty-yazi"
+lazy = true
+unfocus = "hide"
+margin = 60
+position = "25% 10%"
+size = "50% 80%"
+
+[scratchpads.term]
+animation = ""
+command = "kitty --class kitty-term"
+class = "kitty-term"
+lazy = true
+unfocus = "hide"
+margin = 60
+position = "25% 5%"
+size = "50% 55%"
+
+[scratchpads.editor]
+animation = ""
+command = "emacs --name editor"
+class = "editor"
+lazy = true
+unfocus = "hide"
+margin = 60
+position = "25% 10%"
+size = "50% 80%"
+
+[scratchpads.qalc]
+animation = ""
+command = "kitty --class kitty-qalc qalc"
+class = "kitty-qalc"
+lazy = true
+unfocus = "hide"
+margin = 60
+position = "25% 70%"
+size = "50% 25%"
+
+[scratchpads.ebuku]
+animation = ""
+command = """kitty --class emacs-ebuku --hold emacsclient -t --eval '(ebuku)'"""
+class = "emacs-ebuku"
+lazy = true
+unfocus = "hide"
+margin = 60
+position = "25% 25%"
+size = "50% 50%"
+
+[scratchpads.qutebrowser]
+animation = ""
+command = """qutebrowser"""
+class = "org.qutebrowser.qutebrowser"
+lazy = true
+unfocus = "hide"
+margin = 60
+position = "25% 25%"
+size = "50% 50%"

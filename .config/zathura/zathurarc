@@ -1,0 +1,42 @@
+# include colorscheme
+include wallust
+
+set scroll-step 40
+set selection-clipboard clipboard
+set recolor false
+
+# set guioptions none
+
+unmap k
+map k navigate next 
+
+unmap l
+map l navigate previous
+
+unmap L
+map L scroll up
+
+unmap K
+map K scroll down
+
+set adjust-open "width"
+
+set incremental-search "true"
+
+set font "JetBrainsMono Nerd Font 10"
+
+set zoom-center "true"
+
+set statusbar-home-tilde "true"
+
+set render-loading "false"
+
+set scroll-page-aware "true"
+
+set scroll-full-overlap 0.01
+
+set dbus-service true
+set synctex true
+set synctex-editor-command "emacs +%{line}:%{input}"
+
+set database sqlite
