@@ -21,6 +21,7 @@ export ZDOTDIR="$HOME"/.config/zsh
 export STARSHIP_CONFIG="$XDG_CONFIG_HOME"/starship.toml
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export GOPATH="$XDG_DATA_HOME"/go
+export PATH="$HOME/.local/bin:$PATH"
 export XCURSOR_PATH=/usr/share/icons:$XDG_DATA_HOME/icons
 export MYPY_CACHE_DIR="$XDG_CACHE_HOME"/mypy
 export TEXMFVAR="$XDG_CACHE_HOME"/texlive/texmf-var
