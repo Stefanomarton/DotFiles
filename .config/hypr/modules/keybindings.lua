@@ -146,3 +146,9 @@ hl.bind(mainMod .. "+ SHIFT + k",
 
 
 -- hl.bind(mainMod .. " + comma", hl.dsp.layout("swapcol l"))jjj
+
+-- Notifiche (dunst)
+hl.bind(mainMod .. " + N",         hl.dsp.exec_cmd("dunstctl history-pop"))
+hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("dunstctl close-all"))
+hl.bind(mainMod .. " + CTRL + N",  hl.dsp.exec_cmd("dunstctl action"))
+hl.bind(mainMod .. " + ALT + N",   hl.dsp.exec_cmd("~/.config/hypr/scripts/notifiche-cronologia.sh"))
