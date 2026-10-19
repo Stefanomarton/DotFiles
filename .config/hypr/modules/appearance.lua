@@ -51,6 +51,7 @@ hl.config({
     misc = {
         force_default_wallpaper = -1,   -- 0/1 to disable the anime mascot wallpapers
         disable_hyprland_logo   = true,
+        focus_on_activate       = true,  -- clic su una notifica (es. sessione Claude in kitty) porta alla sua finestra
     },
 })
 
