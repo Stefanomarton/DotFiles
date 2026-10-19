@@ -44,7 +44,7 @@ hl.window_rule({
       match = {
          class = "com.nextcloud.desktopclient.nextcloud",
       },
-         stay_focused = true,
+         stay_focused = false,
          float = true,
          center = true,
          monitor = "DP-1",

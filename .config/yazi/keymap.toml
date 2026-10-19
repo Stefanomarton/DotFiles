@@ -540,6 +540,11 @@ run = """shell 'xdragon -T -x -A %s & pypr hide yazi' --confirm"""
 desc = ""
 
 [[mgr.prepend_keymap]]
+on = ["<C-N>"]
+run = """shell --block --confirm 'f=%h; d=$(dirname "$f"); read -e -p "Nome: " -i "$(basename "$f")" n && mv -n -- "$f" "$d/$n" && { xdragon -T -x -A "$d/$n" & pypr hide yazi; }'"""
+desc = "Rename hovered file, then drag it"
+
+[[mgr.prepend_keymap]]
 on = ["<A-s>"]
 run = """shell 'python ~/GoogleDrive/Projects/MySmallProgrammingJourney/Python/LinuxScript/fast-open-directory/yazi.py ' --confirm --block"""
 desc = ""
