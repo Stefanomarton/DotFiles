@@ -16,6 +16,7 @@ hl.config({
 
         natural_scroll = true,
         follow_mouse   = 1,
+        mouse_refocus  = false, -- il focus segue il mouse solo attraversando un bordo: le attivazioni (clic su notifica) non vengono annullate
         sensitivity    = 0, -- -1.0 - 1.0, 0 means no modification.
 
         touchpad = {
