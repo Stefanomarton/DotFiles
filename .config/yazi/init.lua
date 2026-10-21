@@ -53,9 +53,3 @@ require("augment-command"):setup(
         wraparound_file_navigation = false
     }
 )
-
--- You can configure your bookmarks using simplified syntax
-local bookmarks = {
-  { tag = "uni", path = "~/uni", key = "u" },
-  { tag = "inbox", path = "~/inbox", key = "i" },
-}

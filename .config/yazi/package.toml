@@ -18,5 +18,10 @@ use = "macydnah/office"
 rev = "41ebef8"
 hash = "5805affd3ae8adcb3c72b6997d21c0a6"
 
+[[plugin.deps]]
+use = "yazi-rs/plugins:chmod"
+rev = "9166202"
+hash = "87472b05a8c420100f6a2b9cde1e7746"
+
 [flavor]
 deps = []

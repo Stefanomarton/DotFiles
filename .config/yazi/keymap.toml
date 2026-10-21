@@ -525,101 +525,19 @@ run = "plugin augment-command.enter"
 desc = "Enter the child directory, or open the file"
 
 [[mgr.prepend_keymap]]
-on = ["m"]
-run = "plugin bookmarks save"
-desc = "Save current position as a bookmark"
-
-[[mgr.prepend_keymap]]
-on = ["'"]
-run = "plugin bookmarks jump"
-desc = "Jump to a bookmark"
-
-[[mgr.prepend_keymap]]
 on = ["<C-n>"]
-run = """shell 'xdragon -T -x -A %s & pypr hide yazi' --confirm"""
+run = """shell 'c=$(hyprctl activewindow -j | jq -r .class); xdragon -T -x -A %s & pypr hide "${c#kitty-}"' --confirm"""
 desc = ""
 
 [[mgr.prepend_keymap]]
 on = ["<C-N>"]
-run = """shell --block --confirm 'f=%h; d=$(dirname "$f"); read -e -p "Nome: " -i "$(basename "$f")" n && mv -n -- "$f" "$d/$n" && { xdragon -T -x -A "$d/$n" & pypr hide yazi; }'"""
+run = """shell --block --confirm 'f=%h; d=$(dirname "$f"); read -e -p "Nome: " -i "$(basename "$f")" n && mv -n -- "$f" "$d/$n" && c=$(hyprctl activewindow -j | jq -r .class) && { xdragon -T -x -A "$d/$n" & pypr hide "${c#kitty-}"; }'"""
 desc = "Rename hovered file, then drag it"
 
 [[mgr.prepend_keymap]]
 on = ["<A-s>"]
 run = """shell 'python ~/GoogleDrive/Projects/MySmallProgrammingJourney/Python/LinuxScript/fast-open-directory/yazi.py ' --confirm --block"""
 desc = ""
-
-[[mgr.prepend_keymap]]
-on = "b"
-run = "plugin whoosh jump_by_key"
-desc = "Jump bookmark by key"
-
-# Direct fuzzy search access
-[[mgr.prepend_keymap]]
-on = "B"
-run = "plugin whoosh jump_by_fzf"
-desc = "Direct fuzzy search for bookmarks"
-
-# Basic bookmark operations
-[[mgr.prepend_keymap]]
-on = ["]", "a"]
-run = "plugin whoosh save"
-desc = "Add bookmark (hovered file/directory)"
-
-[[mgr.prepend_keymap]]
-on = ["]", "A"]
-run = "plugin whoosh save_cwd"
-desc = "Add bookmark (current directory)"
-
-# Temporary bookmarks
-[[mgr.prepend_keymap]]
-on = ["]", "t"]
-run = "plugin whoosh save_temp"
-desc = "Add temporary bookmark (hovered file/directory)"
-
-[[mgr.prepend_keymap]]
-on = ["]", "T"]
-run = "plugin whoosh save_cwd_temp"
-desc = "Add temporary bookmark (current directory)"
-
-# Jump to bookmarks
-[[mgr.prepend_keymap]]
-on = "<A-k>"
-run = "plugin whoosh jump_key_k"
-desc = "Jump directly to bookmark with key k"
-
-[[mgr.prepend_keymap]]
-on = ["]", "f"]
-run = "plugin whoosh jump_by_fzf"
-desc = "Jump bookmark by fzf"
-
-# Delete bookmarks
-[[mgr.prepend_keymap]]
-on = ["]", "d"]
-run = "plugin whoosh delete_by_key"
-desc = "Delete bookmark by key"
-
-[[mgr.prepend_keymap]]
-on = ["]", "D"]
-run = "plugin whoosh delete_by_fzf"
-desc = "Delete bookmarks by fzf (use TAB to select multiple)"
-
-[[mgr.prepend_keymap]]
-on = ["]", "C"]
-run = "plugin whoosh delete_all"
-desc = "Delete all user bookmarks"
-
-# Rename bookmarks
-[[mgr.prepend_keymap]]
-on = ["]", "r"]
-run = "plugin whoosh rename_by_key"
-desc = "Rename bookmark by key"
-
-[[mgr.prepend_keymap]]
-on = ["]", "R"]
-run = "plugin whoosh rename_by_fzf"
-desc = "Rename bookmark by fzf"
-
 
 # work tools
 [[mgr.prepend_keymap]]
@@ -638,11 +556,6 @@ on = ["c", "m"]
 run = "plugin chmod"
 desc = "Chmod on selected files"
 
-[[mgr.prepend_keymap]]
-on = ["<A-d>"]
-run = "plugin diff"
-desc = "Diff the selected with the hovered file"
-
 # archive plugin
 [[mgr.prepend_keymap]]
 on = ["c", "a"]
@@ -654,11 +567,6 @@ desc = "Archive selected files"
 on = ["f"]
 run = "filter --smart"
 desc = "Smart filter"
-
-[[mgr.prepend_keymap]]
-on = ["T"]
-run = "plugin --sync max-preview"
-desc = "Maximize or restore preview"
 
 
 [tasks]
