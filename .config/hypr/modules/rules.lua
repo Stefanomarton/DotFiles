@@ -62,6 +62,37 @@ hl.window_rule({
 })
 
 
+-- Zotero: every window but the main one is a popup (dialogs, Sci-Hub, "Progress" toasts)
+hl.window_rule({
+      name = "zotero-popups",
+      match = {
+         class = "^Zotero$",
+      },
+      float = true,
+      center = true,
+})
+
+hl.window_rule({
+      name = "zotero-main",
+      match = {
+         class = "^Zotero$",
+         title = "^(.* - )?Zotero$",
+      },
+      tile = true,
+})
+
+-- the "Progress" toasts (PDF downloads, sync): bottom-right corner, without taking focus
+hl.window_rule({
+      name = "zotero-progress",
+      match = {
+         class = "^Zotero$",
+         title = "^Progress$",
+      },
+      no_initial_focus = true,
+      move = {"(monitor_w-window_w-20)", "(monitor_h-window_h-20)"},
+})
+
+
 hl.on("window.title", function(w)
     local prefix = "Bitwarden"
     if w.title:sub(1, #prefix) == prefix then
