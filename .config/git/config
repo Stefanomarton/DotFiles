@@ -29,4 +29,5 @@
 [color]
    # Enable colors in color-supporting terminals
    ui = auto
-   
+[url "https://github.com/"]
+	insteadOf = git@github.com:
