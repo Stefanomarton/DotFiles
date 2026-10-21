@@ -11,9 +11,14 @@ QtObject {
     readonly property var pickerExcludedWorkspaces: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
     // Windows on these workspaces are excluded from window picker
-    // Use strings: "1", "2", "special:scratch", etc.
-    readonly property var windowPickerExcludedWorkspaces: ["special:scratch_editor", "special:scratch_qalc", "special:scratch_yazi", "w11"]
-        .concat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => "special:scratch_yazi-" + n))
+    // Use strings: "1", "2", "special:scratch", etc. A trailing "*" matches a prefix.
+    readonly property var windowPickerExcludedWorkspaces: ["special:scratch_editor", "special:scratch_qalc", "special:scratch_yazi*", "w11"]
+
+    function isWindowWorkspaceExcluded(ws) {
+        return windowPickerExcludedWorkspaces.some(function(ex) {
+            return ex.endsWith("*") ? ws.startsWith(ex.slice(0, -1)) : ws === ex
+        })
+    }
 
     // Target monitor for "move workspace" action (Ctrl+Enter in picker)
     // "auto" = move to first available other monitor

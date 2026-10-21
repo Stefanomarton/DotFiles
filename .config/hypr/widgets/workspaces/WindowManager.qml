@@ -35,13 +35,8 @@ QtObject {
 
     // Filtered list based on filterText and excluded workspaces
     readonly property var filteredWindows: {
-        var excluded = Config.windowPickerExcludedWorkspaces
         var list = windows.filter(function(win) {
-            // Check exclusion list for workspaces
-            for (var i = 0; i < excluded.length; i++) {
-                if (win.workspace === excluded[i]) return false
-            }
-            return true
+            return !Config.isWindowWorkspaceExcluded(win.workspace)
         })
 
         // Apply fuzzy filter

@@ -187,7 +187,7 @@ Items are grouped under section headers (Workspaces / Windows / Applications):
 | `pickerWorkspacePreview` | `true` | Show the workspace mini-map preview pane in the smart picker |
 | `pickerWorkspacePreviewLive` | `true` | Fill preview tiles with live window captures; `false` = app icons only |
 | `pickerPreviewWidth` | `2400` | Preview pane width in px (height follows the monitor aspect ratio); used by both the smart and workspace pickers |
-| `windowPickerExcludedWorkspaces` | `[]` | Workspaces whose windows are hidden from window picker |
+| `windowPickerExcludedWorkspaces` | `[]` | Workspaces whose windows are hidden from window picker (trailing `*` = prefix) |
 
 ## Theme (Theme.qml)
 
