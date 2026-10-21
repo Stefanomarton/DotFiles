@@ -162,4 +162,88 @@ ShellRoot {
             }
         }
     }
+
+    // ── Dettatura (hyprwhspr-rs) — microfono in basso al centro ─────────────
+    // Legge lo stato che hyprwhspr-rs scrive in ~/.cache/hyprwhspr-rs/status.json:
+    // alt = inactive | active (registra) | processing (trascrive) | error.
+    FileView {
+        path: `${Quickshell.env("HOME")}/.cache/hyprwhspr-rs/status.json`
+        watchChanges: true
+        onFileChanged: reload()
+        JsonAdapter {
+            id: whspr
+            property string text: ""
+            property string tooltip: ""
+            property string alt: ""
+        }
+    }
+
+    Variants {
+        model: Quickshell.screens
+
+        PanelWindow {
+            property var modelData
+            screen: modelData
+
+            visible: modelData.name === "DP-1" &&
+                     (whspr.alt === "active" || whspr.alt === "processing" || whspr.alt === "error")
+
+            anchors.bottom: true
+            margins.bottom: Config.cornerMargin
+
+            WlrLayershell.layer:         WlrLayer.Overlay
+            WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
+            WlrLayershell.namespace:     "dictation-indicator"
+
+            exclusionMode: ExclusionMode.Ignore
+            color:         "transparent"
+            mask:          Region {}
+
+            implicitWidth:  micRow.implicitWidth + Config.cornerPaddingH * 2
+            implicitHeight: micRow.implicitHeight + Config.cornerPaddingV * 2
+
+            Rectangle {
+                anchors.fill: parent
+                radius: Theme.radius
+                color: Theme.cornerBackground
+                border.width: Theme.borderWidth
+                border.color: whspr.alt === "active" ? Theme.accent2 : Theme.warning
+
+                Row {
+                    id: micRow
+                    anchors.centerIn: parent
+                    spacing: 14
+
+                    Text {
+                        id: micIcon
+                        text: whspr.text
+                        color: whspr.alt === "active" ? Theme.accent2 : Theme.warning
+                        font.pixelSize: 32
+                        font.family: "Symbols Nerd Font"
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        // Pulsa mentre registra
+                        SequentialAnimation on opacity {
+                            running: whspr.alt === "active"
+                            loops: Animation.Infinite
+                            onRunningChanged: if (!running) micIcon.opacity = 1
+                            NumberAnimation { to: 0.35; duration: 600 }
+                            NumberAnimation { to: 1;    duration: 600 }
+                        }
+                    }
+
+                    Text {
+                        text: whspr.alt === "active" ? "Registro…"
+                            : whspr.alt === "processing" ? "Trascrivo…"
+                            : whspr.tooltip
+                        color: Theme.cornerText
+                        font.pixelSize: 22
+                        font.bold: true
+                        font.family: "sans-serif"
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+            }
+        }
+    }
 }

@@ -1,0 +1,140 @@
+{
+  "$schema": "https://raw.githubusercontent.com/better-slop/hyprwhspr-rs/main/config/schema.json",
+  "shortcuts": {
+    "press": "SUPER+ALT+D",
+    "hold": "SUPER+ALT+CTRL",
+  },
+  "word_overrides": {
+    "under score": "_",
+    "em dash": "—",
+    "equal": "=",
+    "at sign": "@",
+    "pound": "#",
+    "hashtag": "#",
+    "hash tag": "#",
+    "newline": "\n",
+    "Omarkey": "Omarchy",
+    "dot": ".",
+    "Hyperland": "hyprland",
+    "hyperland": "hyprland",
+  },
+  "audio_feedback": true, // Play start/stop sounds while recording
+  "start_sound_volume": 0.5, // 0.1 - 1.0
+  "stop_sound_volume": 0.5, // 0.1 - 1.0
+  "start_sound_path": null, // Optional custom audio asset overrides
+  "stop_sound_path": null, // Optional custom audio asset overrides
+  "auto_copy_clipboard": true, // Automatically copy the final transcription to the clipboard
+  "shift_paste": false, // Whether to force shift paste
+  "global_paste_shortcut": false, // Enable compositor-level paste; uses Hyprland sendshortcut with Shift+Insert for all pastes
+  "paste_hints": {
+    "shift": [
+      // List of window classes that will always paste with Ctrl+Shift+V
+    ],
+    "shift_insert": [
+      // List of window classes that will always paste with Shift+Insert
+      "emacs", // Ctrl+V in Emacs scrolls instead of pasting
+    ],
+  },
+  "audio_device": null, // Force a specific input device index (null uses system default)
+  "fast_vad": {
+    "enabled": true, // Enable Earshot fast VAD trimming
+    "profile": "aggressive", // quality | low_bitrate | aggressive | very_aggressive (lowercase only, serde-enforced; default aggressive)
+    "min_speech_ms": 120, // Minimum detected speech before keeping a segment
+    "silence_timeout_ms": 500, // Drop silence longer than this (ms)
+    "pre_roll_ms": 120, // Audio to keep before speech to avoid clipping words
+    "post_roll_ms": 150, // Audio to keep after speech before trimming
+    "volatility_window": 24, // Frames observed for adaptive aggressiveness (30 ms per frame, matches FRAME_MS in src/audio/vad.rs)
+    "volatility_increase_threshold": 0.35, // Bump profile when toggles exceed this ratio
+    "volatility_decrease_threshold": 0.12, // Relax profile when toggles stay below this ratio
+  },
+  "transcription": {
+    "provider": "whisper_cpp", // whisper_cpp | groq | gemini | parakeet | custom.<name>
+    "request_timeout_secs": 45,
+    "max_retries": 2,
+    "whisper_cpp": {
+      "prompt": "Buongiorno, le invio la scheda di sicurezza aggiornata (SDS), con il codice UFI e la classificazione CLP. Fammi sapere, grazie.",
+      "model": "large-v3-turbo-q8_0", // Whisper model to use (must exist in specified directories)
+      "threads": 24, // CPU threads dedicated to whisper.cpp
+      "gpu_layers": 999, // Number of layers to keep on GPU (999 = auto/GPU preferred)
+      "fallback_cli": false, // Fallback to whisper-cli (uses CPU)
+      "no_speech_threshold": 0.6, // Whisper's "no speech" confidence gate
+      "models_dirs": ["/home/sm/.local/share/hyprwhspr-rs/models"], // Directories to search for models
+      "vad": {
+        "enabled": true, // Toggle whisper-cli's native Silero VAD
+        "model": "ggml-silero-v5.1.2.bin", // Path or filename for the ggml Silero VAD model
+        // Probability threshold for deciding a frame is speech. Higher = fewer false positives, but may miss quiet speech.
+        "threshold": 0.5,
+        // Minimum contiguous speech duration (ms) to accept. Increase to ignore quick clicks/taps.
+        "min_speech_ms": 250,
+        // Minimum silence gap (ms) required to end a speech segment. Raise if mid-sentence pauses are being split.
+        "min_silence_ms": 120,
+        // Maximum speech duration (seconds) before forcing a cut. Use null (or omit) to leave unlimited.
+        "max_speech_s": 15.0,
+        // Extra padding (ms) added before/after detected speech so words aren't clipped.
+        "speech_pad_ms": 80,
+        // Overlap ratio between segments. Higher overlap helps smooth transitions at the cost of a little extra decode time.
+        "samples_overlap": 0.1,
+      },
+    },
+    "groq": {
+      "model": "whisper-large-v3-turbo",
+      "endpoint": "https://api.groq.com/openai/v1/audio/transcriptions",
+      "prompt": "Transcribe as technical documentation with proper capitalization, acronyms, and technical terminology. Do not add punctuation.",
+    },
+    "gemini": {
+      "model": "gemini-2.5-flash-preview-09-2025",
+      "endpoint": "https://generativelanguage.googleapis.com/v1beta/models",
+      "temperature": 0.0,
+      "max_output_tokens": 1024,
+      "prompt": "Transcribe as technical documentation with proper capitalization, acronyms, and technical terminology. Do not add punctuation.",
+    },
+    "parakeet": {
+      "model_dir": "models/parakeet/parakeet-tdt-0.6b-v3-onnx", // Relative to $XDG_DATA_HOME/hyprwhspr-rs (or ~/.local/share/hyprwhspr-rs)
+      "prompt": "Transcribe as technical documentation with proper capitalization, acronyms, and technical terminology. Do not add punctuation.",
+    },
+    // "provider": "custom.remote_whisper",
+    "custom": {
+      "remote_whisper": {
+        "kind": "openai_audio_transcriptions",
+        "label": "Remote whisper.cpp",
+        "base_url": {
+          "env": "HYPRWHSPR_REMOTE_WHISPER_BASE_URL",
+          "value": "http://localhost:8080",
+        },
+        "endpoint": "/v1/audio/transcriptions",
+        "model": "base",
+        "audio_format": "wav", // wav | flac; wav works with whisper.cpp server by default
+        "api_key": {
+          "env": "HYPRWHSPR_REMOTE_WHISPER_API_KEY",
+          "file": "/run/secrets/hyprwhspr-remote-key",
+          "file_env": "HYPRWHSPR_REMOTE_WHISPER_API_KEY_FILE",
+        },
+        "headers": {},
+        "body": {},
+        "prompt": "Transcribe as technical documentation with proper capitalization, acronyms, and technical terminology. Do not add punctuation.",
+      },
+      "openai-codex": {
+        "kind": "openai_audio_transcriptions",
+        "label": "OpenAI Codex gpt-4o-mini-transcribe",
+        "base_url": {
+          "value": "https://chatgpt.com/backend-api",
+        },
+        "endpoint": "/transcribe",
+        "model": "gpt-4o-mini-transcribe",
+        "audio_format": "wav",
+        "subscription": {
+          "file": "~/.codex/auth.json", // Reads /tokens/access_token by default
+          // "json_pointer": "/tokens/access_token",
+          // "file_env": "HYPRWHSPR_REMOTE_WHISPER_AUTH_FILE",
+          // "env": "HYPRWHSPR_REMOTE_WHISPER_AUTH_TOKEN",
+        },
+        "headers": {
+          "originator": "Codex Desktop",
+          "User-Agent": "Codex Desktop/26.527.60818 (X11; Linux; x64)",
+        },
+        "body": {},
+        "prompt": "Transcribe as technical documentation with proper capitalization, acronyms, and technical terminology. Do not add punctuation.",
+      },
+    },
+  },
+}

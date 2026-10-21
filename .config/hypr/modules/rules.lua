@@ -95,3 +95,13 @@ hl.layer_rule({
     blur         = true,
     ignore_alpha = 0.0,
 })
+
+-- Popup di dettatura (scripts/dettatura-emacs.sh): frame Emacs chiamato "dettatura"
+hl.window_rule({
+    name  = "dettatura-popup",
+    match = { class = "emacs", title = "^dettatura$" },
+    float   = true,
+    center  = true,
+    size    = {"(monitor_w*0.4)", "(monitor_h*0.35)"},
+    monitor = "DP-1",
+})

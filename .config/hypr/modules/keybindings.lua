@@ -10,7 +10,9 @@ hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("cliphist list | tofi | cliphist decode | wl-copy"))
 
-hl.bind(mainMod .. " + ALT + D", hl.dsp.exec_cmd("hyprwhspr-rs record toggle"))
+-- Dettatura da rivedere in Emacs (Super+Alt+D la dettatura diretta, gestita da hyprwhspr-rs)
+hl.bind(mainMod .. " + ALT + E", hl.dsp.exec_cmd("~/.config/hypr/scripts/dettatura-emacs.sh"))
+
 
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
