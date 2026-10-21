@@ -118,19 +118,10 @@ QtObject {
         var lower = effectiveQuery.toLowerCase().trim()
 
         // Windows
-        var excludedWinWs = Config.windowPickerExcludedWorkspaces
         if (narrowType < 0 || narrowType === typeWindow)
         for (var j = 0; j < windows.length; j++) {
             var win = windows[j]
-            // Check workspace exclusion
-            var winExcluded = false
-            for (var we = 0; we < excludedWinWs.length; we++) {
-                if (win.workspace === excludedWinWs[we]) {
-                    winExcluded = true
-                    break
-                }
-            }
-            if (winExcluded) continue
+            if (Config.isWindowWorkspaceExcluded(win.workspace)) continue
 
             var winScore = scoreItem(win.title + " " + win.class, lower, 0)
             // Boost score for windows on current workspace

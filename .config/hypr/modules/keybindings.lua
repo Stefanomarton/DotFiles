@@ -52,12 +52,8 @@ hl.bind(mainMod .. " + Down", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_S
 -- Example special workspace (scratchpad)
 hl.bind(mainMod .. " + S",         hl.dsp.exec_cmd("pkill tofi || tofi-run | zsh"))
 
--- Super+A: lo yazi del workspace attivo (yazi-1..10 in pypr), Super+Shift+A: quello globale
-hl.bind(mainMod .. " + A", function()
-    local n = tonumber(hl.get_active_workspace().name)
-    local name = (n and n >= 1 and n <= 10) and ("yazi-" .. n) or "yazi"
-    hl.dispatch(hl.dsp.exec_cmd("pypr toggle " .. name))
-end)
+-- Super+A: lo yazi del workspace attivo, Super+Shift+A: quello globale
+hl.bind(mainMod .. " + A",         hl.dsp.exec_cmd("~/.config/hypr/scripts/yazi-workspace.sh"))
 hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("pypr toggle yazi"))
 hl.bind(mainMod .. " + X",         hl.dsp.exec_cmd("pypr toggle editor"))
 hl.bind(mainMod .. " + I",         hl.dsp.exec_cmd("pypr toggle term"))
