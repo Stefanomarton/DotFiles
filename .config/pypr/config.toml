@@ -13,6 +13,57 @@ position = "25% 10%"
 size = "50% 80%"
 match_by = "class"
 
+# Uno yazi per workspace (Super+A); "yazi" resta quello globale (Super+Shift+A)
+[scratchpads.yazi-1]
+use = "yazi"
+command = "kitty --class kitty-yazi-1 yazi"
+class = "kitty-yazi-1"
+
+[scratchpads.yazi-2]
+use = "yazi"
+command = "kitty --class kitty-yazi-2 yazi"
+class = "kitty-yazi-2"
+
+[scratchpads.yazi-3]
+use = "yazi"
+command = "kitty --class kitty-yazi-3 yazi"
+class = "kitty-yazi-3"
+
+[scratchpads.yazi-4]
+use = "yazi"
+command = "kitty --class kitty-yazi-4 yazi"
+class = "kitty-yazi-4"
+
+[scratchpads.yazi-5]
+use = "yazi"
+command = "kitty --class kitty-yazi-5 yazi"
+class = "kitty-yazi-5"
+
+[scratchpads.yazi-6]
+use = "yazi"
+command = "kitty --class kitty-yazi-6 yazi"
+class = "kitty-yazi-6"
+
+[scratchpads.yazi-7]
+use = "yazi"
+command = "kitty --class kitty-yazi-7 yazi"
+class = "kitty-yazi-7"
+
+[scratchpads.yazi-8]
+use = "yazi"
+command = "kitty --class kitty-yazi-8 yazi"
+class = "kitty-yazi-8"
+
+[scratchpads.yazi-9]
+use = "yazi"
+command = "kitty --class kitty-yazi-9 yazi"
+class = "kitty-yazi-9"
+
+[scratchpads.yazi-10]
+use = "yazi"
+command = "kitty --class kitty-yazi-10 yazi"
+class = "kitty-yazi-10"
+
 [scratchpads.term]
 animation = ""
 command = "kitty --class kitty-term"

@@ -33,7 +33,7 @@ hl.window_rule({
 hl.window_rule({
       name = "dim-aroud-scratchpads",
       match = {
-         class = "kitty-yazi",
+         class = "kitty-yazi.*",
 
       },
       dim_around = true,
