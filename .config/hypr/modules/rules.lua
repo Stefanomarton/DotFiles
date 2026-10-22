@@ -135,9 +135,16 @@ end)
 -- corner or the transient volume OSD).
 hl.layer_rule({
     name  = "widget-blur",
-    match = { namespace = "^(smart-picker|workspaces-picker|window-picker|move-window-picker|expose)$" },
+    match = { namespace = "^(smart-picker|expose)$" },
     blur         = true,
     ignore_alpha = 0.0,
+})
+
+-- Pickers and the focus frame appear at once: without this, layersIn inherits the global speed 8 (800 ms popin)
+hl.layer_rule({
+    name    = "picker-no-anim",
+    match   = { namespace = "^(smart-picker|expose|focus-frame)$" },
+    no_anim = true,
 })
 
 -- Popup di dettatura (scripts/dettatura-emacs.sh): frame Emacs chiamato "dettatura"

@@ -19,7 +19,7 @@ QtObject {
     // When holding Super must NOT open the menu:
     readonly property int moveTolerance: 20      // px the pointer moved meanwhile (Super+drag/resize)
     readonly property var blockers: [            // these panels are showing and have the keyboard
-        "workspaces-picker", "window-picker", "smart-picker", "move-window-picker",
+        "smart-picker",
         "expose", "notifications-history", "tofi", "launcher"
     ]
     // Opened by holding Super: after Super is released, closes by itself if no key comes (ms)

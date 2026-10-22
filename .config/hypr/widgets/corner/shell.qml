@@ -6,7 +6,7 @@ import QtQuick
 
 // Workspace Corner Indicator — mostra il nome del workspace attivo.
 // Il badge è sempre click-through (non blocca i click sotto di sé). Il fade
-// on-hover è ottenuto leggendo la posizione del cursore (hyprctl cursorpos),
+// on-hover è ottenuto leggendo la posizione del cursore dal socket di Hyprland,
 // perché una superficie click-through non riceve eventi hover.
 // Eseguire con: qs -p .
 ShellRoot {
@@ -16,36 +16,26 @@ ShellRoot {
     property real curX: -1
     property real curY: -1
 
-    Process {
-        id: curProc
-        command: ["hyprctl", "cursorpos", "-j"]
-        running: false
-        property string buffer: ""
-        stdout: SplitParser {
-            onRead: data => curProc.buffer += data
-        }
-        onRunningChanged: {
-            if (!running && buffer !== "") {
-                try {
-                    var p = JSON.parse(buffer)
-                    root.curX = p.x
-                    root.curY = p.y
-                } catch (e) {}
-                buffer = ""
+    // "j/cursorpos" direttamente sul socket (una richiesta per connessione): prima era un
+    // `hyprctl cursorpos` ogni 120 ms, ~80 processi ogni 10 s e ~9% di un core.
+    Socket {
+        id: curSock
+        path: Quickshell.env("XDG_RUNTIME_DIR") + "/hypr/" + Quickshell.env("HYPRLAND_INSTANCE_SIGNATURE") + "/.socket.sock"
+        parser: SplitParser {
+            onRead: line => {
+                var m = /"(x|y)": (-?[\d.]+)/.exec(line)
+                if (m) root[m[1] === "x" ? "curX" : "curY"] = Number(m[2])
+                if (line === "}") curSock.connected = false   // close first: else a PeerClosedError warning per poll
             }
         }
+        onConnectedChanged: if (connected) { write("j/cursorpos"); flush() }
     }
 
     Timer {
         interval: 120
         repeat: true
         running: Config.showCorner && Config.cornerHoverFade
-        onTriggered: {
-            if (!curProc.running) {
-                curProc.buffer = ""
-                curProc.running = true
-            }
-        }
+        onTriggered: if (!curSock.connected) curSock.connected = true
     }
 
     // ── Corner indicator — one instance per monitor ─────────────────────────
@@ -128,6 +118,16 @@ ShellRoot {
                 root.curX >= badgeX && root.curX <= badgeX + width &&
                 root.curY >= badgeY && root.curY <= badgeY + height
 
+            // One pulse when a workspace on this monitor takes the focus (switch, or focus
+            // coming here from the other monitor)
+            Connections {
+                target: Hyprland
+                function onFocusedWorkspaceChanged() {
+                    if (Hyprland.focusedMonitor && Hyprland.focusedMonitor.name === cornerWin.modelData.name)
+                        pulseAnim.restart()
+                }
+            }
+
             Rectangle {
                 id: cornerRect
                 anchors.fill: parent
@@ -136,12 +136,29 @@ ShellRoot {
                 opacity: cornerWin.hovered ? 0 : 1
                 Behavior on opacity { NumberAnimation { duration: 150 } }
 
+                // Accent glow, 0 except during the pulse
                 Rectangle {
+                    id: pulseFill
+                    anchors.fill: parent
+                    radius: parent.radius
+                    color: Theme.accent
+                    opacity: 0
+                }
+
+                Rectangle {
+                    id: cornerBorder
                     anchors.fill: parent
                     radius: parent.radius
                     color: "transparent"
                     border.color: Theme.cornerBorderColor
                     border.width: Theme.borderWidth
+                }
+
+                ParallelAnimation {
+                    id: pulseAnim
+                    ColorAnimation { target: cornerBorder; property: "border.color"; from: Theme.accent; to: Theme.cornerBorderColor; duration: 700; easing.type: Easing.OutCubic }
+                    NumberAnimation { target: cornerBorder; property: "border.width"; from: 5; to: Theme.borderWidth; duration: 700; easing.type: Easing.OutCubic }
+                    NumberAnimation { target: pulseFill; property: "opacity"; from: 0.35; to: 0; duration: 700; easing.type: Easing.OutCubic }
                 }
 
                 Text {
@@ -159,6 +176,62 @@ ShellRoot {
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
                 }
+            }
+        }
+    }
+
+    // ── Cornice intorno al monitor appena messo in focus ─────────────────────
+    // Solo quando il focus passa a un altro monitor (non a ogni cambio di workspace).
+    // Stesso impulso del badge; mappata solo mentre pulsa (un overlay sempre presente
+    // sopra un'app a schermo intero le toglierebbe la direct scanout).
+    Variants {
+        model: Quickshell.screens
+
+        PanelWindow {
+            id: frameWin
+            property var modelData
+            screen: modelData
+            visible: false
+
+            anchors.top: true
+            anchors.bottom: true
+            anchors.left: true
+            anchors.right: true
+
+            WlrLayershell.layer:         WlrLayer.Overlay
+            WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
+            WlrLayershell.namespace:     "focus-frame"
+
+            exclusionMode: ExclusionMode.Ignore
+            color:         "transparent"
+            mask:          Region {}
+
+            Connections {
+                target: Hyprland
+                function onFocusedMonitorChanged() {
+                    if (Hyprland.focusedMonitor && Hyprland.focusedMonitor.name === frameWin.modelData.name)
+                        frameWin.pulse()
+                }
+            }
+            function pulse() {
+                visible = true
+                frameAnim.restart()
+            }
+
+            Rectangle {
+                id: frame
+                anchors.fill: parent
+                color: "transparent"
+                border.color: Theme.accent
+                border.width: 6
+                opacity: 0
+            }
+
+            NumberAnimation {
+                id: frameAnim
+                target: frame; property: "opacity"
+                from: 1; to: 0; duration: 700; easing.type: Easing.OutCubic
+                onFinished: frameWin.visible = false
             }
         }
     }

@@ -10,7 +10,7 @@ Gira su desktop (G9 + Xiaomi) e sui portatili (`laptop`, `tm-laptop`): profili i
   Nel menu il tasto è la scorciatoia senza Super (Super+N veloce = Super tenuto, poi N).
   Le sezioni sono solo titoli; l'unico accordo è Layout (Shift+L, poi m/f/s/d).
   Al caricamento scrive `$XDG_RUNTIME_DIR/whichkey.json`, che il widget legge; il widget esegue
-  la voce scelta con `hyprctl dispatch 'function() whichkey_run("3.9.1") end'`.
+  la voce scelta con `Hyprland.dispatch('function() whichkey_run("3.9.1") end')` (in-process, niente `hyprctl`).
 - `modules/keybindings.lua`: solo movimento, workspace, volume, mouse (`navigation_binds`),
   ripetuti anche nel submap `whichkey` perché restino attivi col menu aperto.
   Quindi i tasti del menu non possono essere cifre, j/k/l, slash, frecce, Esc, Backspace.
@@ -30,7 +30,7 @@ Gira su desktop (G9 + Xiaomi) e sui portatili (`laptop`, `tm-laptop`): profili i
 | `notifications` | server notifiche (al posto di dunst) | Super+N/Shift+N/Ctrl+N/Alt+N, Super+D non disturbare |
 | `recorder` | badge e popup di `~/.local/bin/meet-rec` | la registrazione è il servizio utente `meet-rec` |
 | `volume` | OSD del volume | |
-| `workspaces` | picker, exposé, `pickers-close` | |
+| `workspaces` | Smart picker (Super+S), exposé, `pickers-close` | ordinamento in `rank.js`: `node rank_test.js` |
 | `corner` | nome del workspace in ogni monitor | |
 | `pomodoro` | non avviato | tema suo, non toccato |
 
@@ -61,12 +61,19 @@ Gira su desktop (G9 + Xiaomi) e sui portatili (`laptop`, `tm-laptop`): profili i
   anche la notifica d'errore): gira in un ciclo in autostart, log in `~/.cache/pypr.log`.
 - **Sessione Hyprland riavviata**: `HYPRLAND_INSTANCE_SIGNATURE` della shell resta vecchio
   ("Couldn't connect"); prendere il più recente in `/run/user/1000/hypr/`.
+- **Alt+numero senza Super** (sposta la finestra nel workspace) è voluto, non è un refuso:
+  in cc7cf03 era diventato Super+Shift+numero ed è stato rimesso. Super+Ctrl+numero sposta e segue.
+- **Finestre di prova Quickshell**: anche sul layer `Background` si vedono sopra il wallpaper
+  (workspace vuoto). Per misure senza disturbare: niente finestra, o 4×4 px trasparente.
+  `pkill -f <pattern>` uccide anche la shell che lo lancia se il pattern è nella sua riga.
+- **Socket di Hyprland dai widget** (`Socket` di Quickshell.Io, una richiesta per connessione): usare
+  le richieste `j/…`. La forma semplice (`cursorpos`) risponde senza a capo e lo `SplitParser`
+  non emette mai la riga (whichkey non si apriva più). Chiudere la connessione dopo la `}`
+  finale, altrimenti un avviso `PeerClosedError` a ogni richiesta.
 - **Autopush**: il repo `.dotfiles` ha un hook post-commit che pubblica subito ogni commit.
   Controllare lo staging prima di committare (una cancellazione già in stage finisce dentro).
 
 ## Aperto
 
-- Picker dei workspace mostra "No workspaces" anche se `hyprctl workspaces -j` li elenca;
-  non viene dal tema. Ultima modifica alla logica della lista: commit 7ba1f815.
 - dunst tolto da `~/.nixos/modules/theme.nix`: serve `sudo nixos-rebuild switch` su ogni host.
 - `.zshrc` ed `emacs` hanno modifiche non committate di un'altra sessione.

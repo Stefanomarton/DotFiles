@@ -1,4 +1,5 @@
 pragma Singleton
+import Quickshell
 import QtQuick
 
 QtObject {
@@ -25,20 +26,18 @@ QtObject {
     // Or a monitor name ("DP-2") or model ("Mi Monitor": same screen whatever DP-x the laptop dock gives it)
     readonly property string moveWorkspaceTargetMonitor: "Mi Monitor"
 
-    // Picker monitor - which monitor to show pickers on
-    // "focused" = show on currently focused monitor (default)
-    // Or a monitor name ("DP-1") or model ("Odyssey G91F", the G9 on desktop and docked laptops);
-    // if it isn't connected, the first screen
-    readonly property string pickerMonitor: "Odyssey G91F"
-
-    // Preview workspace when navigating in window picker
-    // When true, pressing ↑↓ will temporarily switch to the workspace of the highlighted window
-    readonly property bool pickerPreviewOnNavigate: false
-
-    // Minimum characters typed before preview triggers when filtering
-    // 0 = preview immediately (same as arrow navigation)
-    // Set to higher value (e.g., 3) to only preview after typing 3+ characters
-    readonly property int pickerPreviewMinChars: 3
+    // Screen of the Smart picker and Exposé, like the other popups: the first of these (name or
+    // model) that is connected: the G9 on the desktop and a docked laptop, else the laptop
+    // panel (also at TM, with an HDMI monitor); otherwise the first screen.
+    readonly property var pickerMonitors: ["Odyssey G91F", "eDP-1"]
+    function pickerScreen() {
+        for (var i = 0; i < pickerMonitors.length; i++) {
+            var want = pickerMonitors[i]
+            var s = Quickshell.screens.find(function(x) { return x.name === want || x.model === want })
+            if (s) return s
+        }
+        return Quickshell.screens[0]
+    }
 
     // Smart picker: workspace mini-map preview
     // Shows a scaled map of the highlighted workspace's window layout in a pane
@@ -47,24 +46,16 @@ QtObject {
     // When true, each window tile shows a live capture of the window (Hyprland
     // toplevel export). When false, tiles show only the app icon (option 1).
     readonly property bool pickerWorkspacePreviewLive: true
-    // Workspace preview sits below the list. The mini-map keeps the monitor's
+    // Workspace preview sits beside the list (below on narrow screens). The mini-map keeps the monitor's
     // aspect ratio, fitted within these max dimensions (height is the usual
     // limit on a wide monitor; width caps it on a tall/square one).
     readonly property int pickerPreviewHeight: 520
     readonly property int pickerPreviewWidth: 2400
-    // Rows visible before the list scrolls, so the preview below stays put.
-    // Workspace picker: a single column. Smart picker: two columns.
-    readonly property int pickerWorkspaceVisibleRows: 3
-    readonly property int pickerSmartVisibleRows: 4
-    readonly property int pickerWindowVisibleRows: 6
-
-    // Exposé overview: width of each workspace mini-map cell (height follows the
-    // monitor's aspect ratio). Bigger = fewer cells per row.
-    readonly property int exposeCellWidth: 480
+    // Rows of the Smart list (fixed height, so nothing moves while typing)
+    readonly property int pickerSmartVisibleRows: 8
 
     // Picker UI
     readonly property int pickerWidth: Math.round(750 * Theme.textScale)   // grows with the text (Theme.textScale)
-    readonly property int pickerMaxHeight: 1200
     readonly property int pickerFontSize: 20
     readonly property int pickerItemHeight: Math.round(60 * Theme.textScale)   // grows with the text (Theme.textScale)
     readonly property int pickerBorderRadius: Theme.radius

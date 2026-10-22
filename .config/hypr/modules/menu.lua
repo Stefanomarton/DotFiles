@@ -50,7 +50,6 @@ menu = {
         { "Terminale",            terminal,                                           S .. "Return" },
         { "Browser",              "chromium",                                         S .. "SHIFT + F" },
         { "Emacs",                "emacs",                                            S .. "SHIFT + E" },
-        { "Esegui comando",       "pkill tofi || tofi-run | zsh",                     S .. "S" },
         { "Appunti (cronologia)", "cliphist list | tofi | cliphist decode | wl-copy", S .. "V" },
         { "Registra chiamata",    "~/.local/bin/meet-rec toggle",                     S .. "SHIFT + R" },
         -- Super+Alt+D (dettatura diretta) è di hyprwhspr-rs
@@ -64,10 +63,7 @@ menu = {
         { "Calcolatrice",       "pypr toggle qalc",   S .. "C" },
     } },
     { "Finestre", {
-        { "Scegli workspace",      qs("workspaces"),           S .. "W" },
-        { "Scegli finestra",       qs("windows"),              S .. "P" },
-        { "Ricerca smart",         qs("smart"),                S .. "R" },
-        { "Sposta finestra",       qs("movewindow"),           S .. "M" },
+        { "Cerca e apri",          qs("smart"),                S .. "S" },
         { "Exposé",                qs("expose"),               S .. "E" },
         { "Schermo intero",        hl.dsp.window.fullscreen(), S .. "F" },
         { "Chiudi finestra",       hl.dsp.window.close(),      S .. "Q" },

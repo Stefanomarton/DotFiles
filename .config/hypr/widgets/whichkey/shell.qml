@@ -74,11 +74,10 @@ ShellRoot {
         return out.join("+")
     }
 
-    // hyprctl dispatch <lua expression>, optionally after a delay (ms). Each call is its own
-    // detached process: with one shared Process, a call made while the previous one was still
-    // running (the submap switch, then the chosen entry right after) was silently dropped.
+    // Dispatch a Lua expression straight on Hyprland's socket (no hyprctl process), optionally
+    // after a delay (ms).
     function hypr(expr, delay) {
-        if (!delay) { Quickshell.execDetached(["hyprctl", "dispatch", expr]); return }
+        if (!delay) { Hyprland.dispatch(expr); return }
         pendingExpr = expr
         hyprDelay.restart()
     }
@@ -90,22 +89,45 @@ ShellRoot {
         target: Hyprland
         function onRawEvent(event) {
             if (event.name === "submap" && event.data === "whichkey" && !win.visible)
-                Quickshell.execDetached(["hyprctl", "dispatch", 'hl.dsp.submap("reset")'])
+                Hyprland.dispatch('hl.dsp.submap("reset")')
+            else if (event.name === "openlayer") root.layerEvent(event.data, 1)
+            else if (event.name === "closelayer") root.layerEvent(event.data, -1)
         }
     }
-    Timer { id: hyprDelay; interval: 30; onTriggered: Quickshell.execDetached(["hyprctl", "dispatch", root.pendingExpr]) }
+    Timer { id: hyprDelay; interval: 30; onTriggered: Hyprland.dispatch(root.pendingExpr) }
+
+    // Layers on screen by namespace, kept from Hyprland's openlayer/closelayer events, so a
+    // hold knows at once whether a panel has the keyboard (asking `hyprctl layers` then cost
+    // ~26 ms before the menu could open). Read once at startup for panels already open.
+    property var openLayers: ({})
+    function layerEvent(ns, delta) {
+        var o = openLayers
+        o[ns] = Math.max(0, (o[ns] || 0) + delta)
+        openLayers = o
+    }
+    Process {
+        running: true
+        command: ["sh", "-c", "hyprctl layers -j | jq -r '.. | .namespace? // empty'"]
+        stdout: StdioCollector {
+            onStreamFinished: text.split("\n").forEach(function(ns) { if (ns) root.layerEvent(ns, 1) })
+        }
+    }
 
     // Hyprland sends pressed when Super goes down and released when it comes up.
     GlobalShortcut {
         name: "whichkey-hold"
         description: "Super held: open the menu after a moment"
-        onPressed: if (!win.visible) { root.holdCancelled = false; startPos.running = true; holdTimer.restart() }
+        onPressed: if (!win.visible) {
+            root.holdCancelled = false
+            root.cursorPos(function(p) { root.pressPos = p })
+            holdTimer.restart()
+        }
         onReleased: {
             holdTimer.stop()   // released before the delay: it was a quick combo
             if (win.visible && root.held) autoCloseTimer.restart()
         }
     }
-    Timer { id: holdTimer; interval: Config.holdDelay; onTriggered: if (!win.visible) holdCheck.running = true }
+    Timer { id: holdTimer; interval: Config.holdDelay; onTriggered: if (!win.visible) root.holdCheck() }
 
     // Where the pointer was when Super went down, to tell a Super+mouse drag from a hold
     property var pressPos: null
@@ -113,25 +135,39 @@ ShellRoot {
         var m = /(-?\d+)\D+(-?\d+)/.exec(line)
         return m ? { x: parseInt(m[1]), y: parseInt(m[2]) } : null
     }
-    Process {
-        id: startPos
-        command: ["hyprctl", "cursorpos"]
-        stdout: StdioCollector { onStreamFinished: root.pressPos = root.parsePos(text) }
+    // Pointer position from Hyprland's socket, no process. "j/cursorpos": the plain form ends
+    // without a newline, so a SplitParser would never see the line.
+    property var posCallback: null
+    property var posReply: ({})
+    Socket {
+        id: posSock
+        path: Quickshell.env("XDG_RUNTIME_DIR") + "/hypr/" + Quickshell.env("HYPRLAND_INSTANCE_SIGNATURE") + "/.socket.sock"
+        parser: SplitParser {
+            onRead: line => {
+                var m = /"(x|y)": (-?[\d.]+)/.exec(line)
+                if (m) root.posReply[m[1]] = Number(m[2])
+                if (line !== "}") return
+                posSock.connected = false   // close first: else a PeerClosedError warning per request
+                var cb = root.posCallback, p = root.posReply
+                root.posCallback = null
+                if (cb) cb("x" in p && "y" in p ? { x: p.x, y: p.y } : null)
+            }
+        }
+        onConnectedChanged: if (connected) { root.posReply = {}; write("j/cursorpos"); flush() }
+    }
+    function cursorPos(cb) {
+        posCallback = cb
+        if (!posSock.connected) posSock.connected = true
     }
     // After the delay: open unless the pointer moved (dragging a window) or a panel that
     // has the keyboard is showing (a picker, the notification history, tofi).
-    Process {
-        id: holdCheck
-        command: ["sh", "-c", "hyprctl cursorpos; hyprctl layers -j | jq -r '.. | .namespace? // empty'"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var lines = text.split("\n"), pos = root.parsePos(lines[0])
-                var moved = pos && root.pressPos
-                    && Math.max(Math.abs(pos.x - root.pressPos.x), Math.abs(pos.y - root.pressPos.y)) > Config.moveTolerance
-                var blocked = lines.slice(1).some(function(ns) { return Config.blockers.indexOf(ns) >= 0 })
-                if (!moved && !blocked && !root.holdCancelled && !win.visible) root.open("", true)
-            }
-        }
+    function holdCheck() {
+        cursorPos(function(pos) {
+            var moved = pos && root.pressPos
+                && Math.max(Math.abs(pos.x - root.pressPos.x), Math.abs(pos.y - root.pressPos.y)) > Config.moveTolerance
+            var blocked = Config.blockers.some(function(ns) { return (root.openLayers[ns] || 0) > 0 })
+            if (!moved && !blocked && !root.holdCancelled && !win.visible) root.open("", true)
+        })
     }
     // Held open, Super released and then left alone: close by itself
     Timer {

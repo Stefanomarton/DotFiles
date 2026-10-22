@@ -12,17 +12,7 @@ PanelWindow {
 
     visible: ExposeManager.visible
 
-    screen: {
-        if (Config.pickerMonitor === "focused") {
-            return Quickshell.screens.find(function(s) {
-                return Hyprland.focusedMonitor !== null && s.name === Hyprland.focusedMonitor.name
-            }) ?? Quickshell.screens[0]
-        } else {
-            return Quickshell.screens.find(function(s) {
-                return s.name === Config.pickerMonitor || s.model === Config.pickerMonitor
-            }) ?? Quickshell.screens[0]
-        }
-    }
+    screen: Config.pickerScreen()
 
     anchors.top: true
     anchors.bottom: true
@@ -34,7 +24,11 @@ PanelWindow {
     WlrLayershell.namespace: "expose"
 
     exclusionMode: ExclusionMode.Ignore
-    color: Qt.rgba(0, 0, 0, Theme.dimAround)   // dims the backdrop (blurred via layer_rule)
+    // Darker than the pickers' scrim: behind a grid of thumbnails the windows compete with them
+    color: Qt.rgba(0, 0, 0, 0.92)
+
+    // Height each monitor section may use for its row of thumbnails
+    readonly property real sectionMapH: (height - 260) / Math.max(1, ExposeManager.monitors.length) - 140
 
     Component.onCompleted: { var warm = ToplevelManager.toplevels }
 
@@ -54,34 +48,46 @@ PanelWindow {
         Column {
             id: content
             anchors.centerIn: parent
-            width: Math.min(root.width - 120, 2600)
-            spacing: 28
+            width: root.width - 200
+            spacing: 36
 
-            // One section per monitor.
+            // One section per monitor: workspaces with windows as big thumbnails on one row,
+            // empty ones as small named boxes below (still drop targets).
             Repeater {
                 model: ExposeManager.monitors
                 delegate: Column {
                     id: monSection
                     required property var modelData
                     readonly property var mon: modelData
-                    width: content.width
-                    spacing: 10
+                    readonly property var all: ExposeManager.workspacesForMonitor(mon.id)
+                    readonly property var full: all.filter(function(ws) { return ExposeManager.windowsForWorkspace(ws.name).length > 0 })
+                    readonly property var empty: all.filter(function(ws) { return ExposeManager.windowsForWorkspace(ws.name).length === 0 })
+                    readonly property real aspect: (mon && mon.width > 0) ? mon.height / mon.width : (9 / 16)
+                    // Fit the row to the width, at most half of it, and to this section's height
+                    readonly property real cellW: Math.min((content.width - 24 * (full.length - 1)) / Math.max(1, full.length),
+                                                           content.width / 2, root.sectionMapH / aspect)
+                    // Centered, as wide as its widest row; the rows stay left-aligned with the label
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: Math.max(cellsRow.implicitWidth, chipsRow.implicitWidth, monLabel.implicitWidth)
+                    spacing: 12
 
+                    // Monitor model ("Odyssey G91F"), not the connector name
                     Text {
-                        text: monSection.mon.name
-                        color: Theme.pickerHintText
-                        font.pixelSize: Math.round((14) * Theme.textScale)
+                        id: monLabel
+                        text: (Quickshell.screens.find(function(s) { return s.name === monSection.mon.name }) || {}).model || monSection.mon.name
+                        color: Theme.pickerSecondaryText
+                        font.pixelSize: Math.round(18 * Theme.textScale)
                         font.family: Theme.fontFamily
                         font.bold: true
                         font.letterSpacing: 2
                     }
 
-                    Flow {
-                        width: content.width
-                        spacing: 20
+                    Row {
+                        id: cellsRow
+                        spacing: 24
 
                         Repeater {
-                            model: ExposeManager.workspacesForMonitor(monSection.mon.id)
+                            model: monSection.full
 
                             // === Workspace cell ===
                             delegate: Rectangle {
@@ -89,19 +95,18 @@ PanelWindow {
                                 required property var modelData
                                 readonly property string wsName: modelData.name
                                 readonly property var frame: monSection.mon
-                                readonly property real aspect: (frame && frame.width > 0) ? frame.height / frame.width : (9 / 16)
-                                readonly property int mapW: Config.exposeCellWidth
-                                readonly property int mapH: Math.round(mapW * aspect)
+                                readonly property int mapW: Math.round(monSection.cellW)
+                                readonly property int mapH: Math.round(mapW * monSection.aspect)
                                 readonly property var wins: ExposeManager.windowsForWorkspace(wsName)
                                 readonly property bool isActive: Hyprland.activeWorkspace ? Hyprland.activeWorkspace.name === wsName : false
 
                                 width: mapW
-                                height: labelRow.height + 6 + mapH
+                                height: labelRow.height + 8 + mapH
                                 color: "transparent"
 
                                 Column {
                                     anchors.fill: parent
-                                    spacing: 6
+                                    spacing: 8
 
                                     Row {
                                         id: labelRow
@@ -109,8 +114,8 @@ PanelWindow {
                                         spacing: 8
                                         Text {
                                             text: cell.wsName
-                                            color: cell.isActive ? Theme.base0A : Theme.pickerText
-                                            font.pixelSize: Math.round((15) * Theme.textScale)
+                                            color: cell.isActive ? Theme.accent : Theme.pickerText
+                                            font.pixelSize: Math.round(22 * Theme.textScale)
                                             font.family: Theme.fontFamily
                                             font.bold: true
                                             elide: Text.ElideRight
@@ -118,9 +123,10 @@ PanelWindow {
                                         }
                                         Text {
                                             id: cnt
-                                            text: cell.wins.length
+                                            anchors.bottom: parent.bottom
+                                            text: cell.wins.length + (cell.wins.length === 1 ? " window" : " windows")
                                             color: Theme.pickerSecondaryText
-                                            font.pixelSize: Math.round((13) * Theme.textScale)
+                                            font.pixelSize: Math.round(15 * Theme.textScale)
                                             font.family: Theme.fontFamily
                                         }
                                     }
@@ -133,7 +139,7 @@ PanelWindow {
                                         color: Theme.pickerListBackground
                                         clip: true
                                         border.color: dropArea.containsDrag ? Theme.accent2
-                                                     : cell.isActive ? Theme.base0A : Theme.pickerBorder
+                                                     : cell.isActive ? Theme.accent : Theme.pickerBorder
                                         border.width: (dropArea.containsDrag || cell.isActive) ? Theme.borderWidth : Theme.borderWidthInner
 
                                         DropArea {
@@ -177,7 +183,9 @@ PanelWindow {
                                                     anchors.fill: parent
                                                     anchors.margins: 1
                                                     captureSource: tile.tl
-                                                    live: true
+                                                    // One frame when the tile appears, as in the Smart picker:
+                                                    // live capture of every window cost CPU and GPU while open
+                                                    live: false
                                                     paintCursor: false
                                                     constraintSize: Qt.size(Math.max(1, tile.width), Math.max(1, tile.height))
                                                     visible: tile.tl !== null && hasContent
@@ -193,6 +201,27 @@ PanelWindow {
                                                     smooth: true
                                                     mipmap: true
                                                     visible: !capv.visible
+                                                }
+
+                                                // Window title, readable over any content
+                                                Rectangle {
+                                                    anchors.left: parent.left
+                                                    anchors.right: parent.right
+                                                    anchors.bottom: parent.bottom
+                                                    height: titleText.implicitHeight + 8
+                                                    visible: tile.height > height * 2
+                                                    color: Qt.rgba(0, 0, 0, 0.75)
+                                                    Text {
+                                                        id: titleText
+                                                        anchors.verticalCenter: parent.verticalCenter
+                                                        x: 8
+                                                        width: parent.width - 16
+                                                        text: tile.modelData.title || tile.modelData.class
+                                                        color: Theme.pickerText
+                                                        font.pixelSize: Math.round(14 * Theme.textScale)
+                                                        font.family: Theme.fontFamily
+                                                        elide: Text.ElideRight
+                                                    }
                                                 }
 
                                                 // Drag to move, click to focus.
@@ -239,6 +268,47 @@ PanelWindow {
                             }
                         }
                     }
+
+                    // Empty workspaces: small boxes with the name; click to switch, drop to move
+                    Row {
+                        id: chipsRow
+                        spacing: 12
+                        visible: monSection.empty.length > 0
+
+                        Repeater {
+                            model: monSection.empty
+                            delegate: Rectangle {
+                                id: chip
+                                required property var modelData
+                                readonly property bool isActive: Hyprland.activeWorkspace ? Hyprland.activeWorkspace.name === modelData.name : false
+                                width: Math.max(Math.round(110 * Theme.textScale), chipText.implicitWidth + 32)
+                                height: Math.round(52 * Theme.textScale)
+                                radius: Theme.radius
+                                color: chipDrop.containsDrag ? Theme.pickerItemSelected : Theme.pickerListBackground
+                                border.color: chipDrop.containsDrag ? Theme.accent2 : chip.isActive ? Theme.accent : Theme.pickerBorder
+                                border.width: (chipDrop.containsDrag || chip.isActive) ? Theme.borderWidth : Theme.borderWidthInner
+
+                                Text {
+                                    id: chipText
+                                    anchors.centerIn: parent
+                                    text: chip.modelData.name
+                                    color: chip.isActive ? Theme.accent : Theme.pickerSecondaryText
+                                    font.pixelSize: Math.round(18 * Theme.textScale)
+                                    font.family: Theme.fontFamily
+                                    font.bold: true
+                                }
+                                DropArea {
+                                    id: chipDrop
+                                    anchors.fill: parent
+                                    onDropped: (drop) => ExposeManager.moveWindow(ghost.windowAddress, chip.modelData.name)
+                                }
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: ExposeManager.switchTo(chip.modelData.name)
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -246,8 +316,8 @@ PanelWindow {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Drag a window to move it · Click a window to focus · Click a workspace to switch · Esc to close"
-                color: Theme.pickerHintText
-                font.pixelSize: Math.round((13) * Theme.textScale)
+                color: Theme.pickerSecondaryText
+                font.pixelSize: Math.round(15 * Theme.textScale)
                 font.family: Theme.fontFamily
             }
         }
