@@ -26,15 +26,4 @@ if host == "desktop" then
         gaps_out  = 0,
         on_created_empty = "looking-glass-client -F",
     })
-
-    -- Tasks workspace: monocle (one window at a time, fills the screen)
-    hl.workspace_rule({
-        workspace = "name:tasks",
-        monitor   = "HDMI-A-1",
-        gaps_in   = 0,
-        gaps_out  = 0,
-        layout    = "monocle",
-        on_created_empty = "tasks",
-        persistent = true,
-    })
 end
