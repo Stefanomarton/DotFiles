@@ -40,7 +40,7 @@ local function clean_screen()
     qs_send("whichkey-close")   -- qs_send, not qs(): see modules/keybindings.lua
     qs_send("notif-clean")
     qs_send("pickers-close")
-    hl.dispatch(hl.dsp.exec_cmd([[pypr hide '*'; pkill tofi; hyprctl dismissnotify]]))
+    hl.dispatch(hl.dsp.exec_cmd([[pypr hide '*'; pkill tofi; pkill fuzzel; hyprctl dismissnotify]]))
 end
 
 -- Not usable here: digits, j/k/l/slash, Up/Down (navigation_binds, they stay active with the
@@ -52,6 +52,8 @@ menu = {
         { "Emacs",                "emacs",                                            S .. "SHIFT + E" },
         { "Appunti (cronologia)", "cliphist list | tofi | cliphist decode | wl-copy", S .. "V" },
         { "Registra chiamata",    "~/.local/bin/meet-rec toggle",                     S .. "SHIFT + R" },
+        -- Invio scrive la password, Alt+1 utente+Tab+password, Alt+T copia il TOTP
+        { "Password",             "rofi-rbw --selector fuzzel",                       S .. "P" },
         -- Super+Alt+D (dettatura diretta) è di hyprwhspr-rs
         { "Dettatura in Emacs",   "~/.config/hypr/scripts/dettatura-emacs.sh",        S .. "ALT + E" },
     } },

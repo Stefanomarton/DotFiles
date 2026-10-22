@@ -19,7 +19,9 @@ Gira su desktop (G9 + Xiaomi) e sui portatili (`laptop`, `tm-laptop`): profili i
   pannello con la tastiera (`blockers`) o se nel frattempo è scattata una scorciatoia
   (`whichkey-cancel`). Si chiude da solo `autoClose` ms dopo il rilascio di Super.
 - Super+Esc = `clean_screen` in menu.lua: nasconde scratchpad (`pypr hide '*'`), popup,
-  picker, menu, tofi.
+  picker, menu, tofi, fuzzel.
+- Super+P = rofi-rbw su fuzzel (Bitwarden via rbw; rbw, fuzzel e `SSH_AUTH_SOCK` in
+  `~/.nixos/modules/web.nix`, `rbw-agent` in autostart).
 
 ## Widget
 
