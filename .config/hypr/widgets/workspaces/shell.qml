@@ -39,6 +39,19 @@ ShellRoot {
         onPressed: ExposeManager.toggle()
     }
 
+    // Close every picker (Super+Esc, "pulisci schermo" in modules/menu.lua)
+    GlobalShortcut {
+        name: "pickers-close"
+        description: "Close every picker"
+        onPressed: {
+            WorkspaceManager.hide()
+            WindowManager.hide()
+            SmartPickerManager.hide()
+            MoveWindowManager.hide()
+            ExposeManager.hide()
+        }
+    }
+
     // Workspace picker popup
     WorkspacePicker {}
 

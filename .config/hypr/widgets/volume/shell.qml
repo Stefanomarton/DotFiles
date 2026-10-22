@@ -29,13 +29,13 @@ ShellRoot {
         id: osd
 
         screen: {
-            if (Config.osdMonitor === "focused") {
-                return Quickshell.screens.find(function(s) {
-                    return Hyprland.focusedMonitor !== null && s.name === Hyprland.focusedMonitor.name
-                }) ?? Quickshell.screens[0]
+            // the first of Config.monitors that is connected, otherwise the first screen
+            for (var i = 0; i < Config.monitors.length; i++) {
+                var want = Config.monitors[i]
+                var s = Quickshell.screens.find(function(x) { return x.name === want || x.model === want })
+                if (s) return s
             }
-            return Quickshell.screens.find(function(s) { return s.name === Config.osdMonitor })
-                   ?? Quickshell.screens[0]
+            return Quickshell.screens[0]
         }
 
         // Fullscreen transparent overlay; the card is centered inside it.

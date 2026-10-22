@@ -2,8 +2,9 @@ pragma Singleton
 import QtQuick
 
 QtObject {
-    // Which monitor to show the OSD on: "focused" or a monitor name (e.g. "DP-1")
-    readonly property string osdMonitor: "focused"
+    // Main screen: the first of these that is connected (name or model), otherwise the first
+    // screen. G9 on the desktop and on a docked laptop, else the laptop panel; never the Xiaomi.
+    readonly property var monitors: ["Odyssey G91F", "eDP-1"]
 
     readonly property int osdTimeout: 1500   // ms the OSD stays after a change
     readonly property int osdWidth: 480

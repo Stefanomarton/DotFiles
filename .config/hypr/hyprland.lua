@@ -10,4 +10,5 @@ require("modules/monitors")    -- physical monitor setup
 require("modules/workspaces")  -- workspace rules
 require("modules/rules")       -- window rules
 require("modules/keybindings") -- key & mouse binds
+require("modules/menu")        -- Super-hold menu (which-key) and app/action shortcuts
 require("modules/autostart")   -- startup commands
