@@ -18,7 +18,7 @@ PanelWindow {
             }) ?? Quickshell.screens[0]
         } else {
             return Quickshell.screens.find(function(s) {
-                return s.name === Config.pickerMonitor
+                return s.name === Config.pickerMonitor || s.model === Config.pickerMonitor
             }) ?? Quickshell.screens[0]
         }
     }

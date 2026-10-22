@@ -47,7 +47,7 @@ hl.window_rule({
          stay_focused = false,
          float = true,
          center = true,
-         monitor = "DP-1",
+         monitor = screens.main,
 })
 
 hl.window_rule({
@@ -58,7 +58,7 @@ hl.window_rule({
       float = true,
       center = true,
       size = {"(monitor_w*0.5)", "(monitor_h*0.5)"},
-      monitor = "DP-1"
+      monitor = screens.main
 })
 
 
@@ -134,5 +134,5 @@ hl.window_rule({
     float   = true,
     center  = true,
     size    = {"(monitor_w*0.4)", "(monitor_h*0.35)"},
-    monitor = "DP-1",
+    monitor = screens.main,
 })

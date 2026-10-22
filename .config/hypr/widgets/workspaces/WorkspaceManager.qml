@@ -374,7 +374,9 @@ QtObject {
     }
 
     function moveToMonitor(workspaceName, monitorName) {
-        var targetMonitor = monitorName
+        // a model ("Mi Monitor") becomes the connector name it has right now
+        var byModel = Quickshell.screens.find(function(s) { return s.model === monitorName })
+        var targetMonitor = byModel ? byModel.name : monitorName
 
         // If "auto", resolve to first available other monitor
         if (targetMonitor === "auto" && availableMonitors.length > 0) {

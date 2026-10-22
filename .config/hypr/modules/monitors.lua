@@ -3,25 +3,30 @@
 --------------------
 
 -- https://wiki.hypr.land/Configuring/Monitors/
--- Per-host setup, keyed by `host` (see modules/vars.lua).
+-- G9 e Xiaomi per descrizione (modules/vars.lua): stessa disposizione sul fisso e sui
+-- portatili in dock. Il resto dipende da `host`.
 
-local setups = {}
+-- Dalla dock HP (Thunderbolt Dock G2) i due monitor condividono un solo collegamento DP
+-- (MST, ~26 Gbit/s): G9 a 60 Hz + Xiaomi a 100 Hz è il massimo; col G9 a 120 Hz resta nero.
+hl.monitor({
+    output   = screens.main,
+    mode     = profile.laptop and "5120x1440@60" or "5120x1440@144",
+    position = "0x0",
+    scale    = "1.066",
+})
 
-setups.desktop = function()
-    hl.monitor({
-        output   = "DP-1",
-        mode     = "5120x1440@144",
-        position = "0x0",
-        scale    = "1.066",
-    })
+hl.monitor({
+    output   = screens.side,
+    mode     = profile.laptop and "3440x1440@100" or "3440x1440@144",
+    position = "auto-center-up",
+    scale    = "1",
+})
 
-    hl.monitor({
-        output   = "DP-2",
-        mode     = "3440x1440@144",
-        position = "auto-center-up",
-        scale    = "1",
-    })
+-- Qualsiasi altro schermo (proiettore, monitor in ufficio): risoluzione preferita, accanto
+hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
 
+if host == "desktop" then
+    -- Monitor verticale capovolto (TickTick)
     hl.monitor({
         output    = "HDMI-A-1",
         mode      = "1920x1080@60",
@@ -31,20 +36,47 @@ setups.desktop = function()
     })
 end
 
-setups.laptop = function()
-    -- TODO: adjust for the laptop panel (output name / mode / scale).
-    hl.monitor({
-        output   = "eDP-1",
-        mode     = "preferred",
-        position = "auto",
-        scale    = "1",
-    })
-end
+if profile.laptop then
+    local function panel(enabled)
+        hl.monitor({
+            output   = screens.panel,
+            mode     = "preferred",
+            position = "auto-center-down",
+            scale    = "1",
+            disabled = not enabled,
+        })
+    end
 
--- Unknown host: let Hyprland auto-configure every connected output.
-local function fallback()
-    hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
-end
+    local function lid_closed()
+        local p = io.popen("cat /proc/acpi/button/lid/*/state 2>/dev/null")
+        if not p then return false end
+        local state = p:read("*a")
+        p:close()
+        return state:find("closed") ~= nil
+    end
 
-local apply = setups[host] or fallback
-apply()
+    local function external_connected()
+        for _, m in ipairs(hl.get_monitors()) do
+            if m.name ~= screens.panel then return true end
+        end
+        return false
+    end
+
+    -- Coperchio chiuso con monitor esterni: pannello spento. Senza esterni non si tocca
+    -- (logind sospende; con un monitor esterno collegato invece ignora il coperchio).
+    local panel_on = nil
+    local function update_panel(closed)
+        local want = not (closed and external_connected())
+        if want ~= panel_on then
+            panel_on = want
+            panel(want)
+        end
+    end
+
+    update_panel(lid_closed())
+    hl.bind("switch:on:Lid Switch",  function() update_panel(true)  end, { locked = true })
+    hl.bind("switch:off:Lid Switch", function() update_panel(false) end, { locked = true })
+    -- Dock collegata o staccata a coperchio chiuso
+    hl.on("monitor.added",   function() update_panel(lid_closed()) end)
+    hl.on("monitor.removed", function() update_panel(lid_closed()) end)
+end

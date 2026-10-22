@@ -16,13 +16,14 @@ QtObject {
 
     // Target monitor for "move workspace" action (Ctrl+Enter in picker)
     // "auto" = move to first available other monitor
-    // Or specify monitor name: "DP-1", "DP-2", "HDMI-A-1", etc.
-    readonly property string moveWorkspaceTargetMonitor: "DP-2"
+    // Or a monitor name ("DP-2") or model ("Mi Monitor": same screen whatever DP-x the laptop dock gives it)
+    readonly property string moveWorkspaceTargetMonitor: "Mi Monitor"
 
     // Picker monitor - which monitor to show pickers on
     // "focused" = show on currently focused monitor (default)
-    // Or specify monitor name: "DP-1", "DP-2", "HDMI-A-1", etc.
-    readonly property string pickerMonitor: "DP-1"
+    // Or a monitor name ("DP-1") or model ("Odyssey G91F", the G9 on desktop and docked laptops);
+    // if it isn't connected, the first screen
+    readonly property string pickerMonitor: "Odyssey G91F"
 
     // Preview workspace when navigating in window picker
     // When true, pressing ↑↓ will temporarily switch to the workspace of the highlighted window

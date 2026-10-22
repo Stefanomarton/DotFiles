@@ -185,7 +185,7 @@ ShellRoot {
             property var modelData
             screen: modelData
 
-            visible: modelData.name === "DP-1" &&
+            visible: modelData.model === "Odyssey G91F" &&
                      (whspr.alt === "active" || whspr.alt === "processing" || whspr.alt === "error")
 
             anchors.bottom: true

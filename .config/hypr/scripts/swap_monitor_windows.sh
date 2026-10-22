@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Swap the windows between the workspaces active on DP-1 and DP-2
+# Swap the windows between the workspaces active on the G9 and the Xiaomi
+# (by description: through the laptop dock they get other DP-x names)
 # (the workspaces stay on their monitor, only the windows move)
 set -euo pipefail
 
 # match by name: named workspaces have no "id" in hyprctl -j
 IFS=$'\t' read -r a b < <(hyprctl -j monitors | jq -r '
-    [ (.[] | select(.name=="DP-1").activeWorkspace.name),
-      (.[] | select(.name=="DP-2").activeWorkspace.name) ] | @tsv')
+    [ (.[] | select(.description|startswith("Samsung Electric Company Odyssey G91F")).activeWorkspace.name),
+      (.[] | select(.description|startswith("Xiaomi Corporation Mi Monitor")).activeWorkspace.name) ] | @tsv')
 
 # addresses are collected before moving anything, so no temp workspace is needed
 cmds=$(hyprctl -j clients | jq -r --arg a "$a" --arg b "$b" '
