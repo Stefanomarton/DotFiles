@@ -22,6 +22,7 @@ hl.on("hyprland.start", function ()
          if profile.personal then
             hl.exec_cmd("nextcloud")
             hl.exec_cmd("go-hass-agent run")
+            hl.exec_cmd("tasks --hidden")  -- solo nel tray, pronta quando serve
          end
 
          -- rimappatura della tastiera interna
