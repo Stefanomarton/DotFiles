@@ -52,6 +52,11 @@ hl.config({
         force_default_wallpaper = -1,   -- 0/1 to disable the anime mascot wallpapers
         disable_hyprland_logo   = true,
         focus_on_activate       = true,  -- clic su una notifica (es. sessione Claude in kitty) porta alla sua finestra
+        vrr                     = 2,     -- adaptive sync only for fullscreen apps (video, games)
+    },
+
+    xwayland = {
+        force_zero_scaling = true,  -- X11 apps sharp on fractional-scale monitors instead of blurry
     },
 })
 
