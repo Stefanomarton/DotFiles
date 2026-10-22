@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Registra una chiamata: il microfono che usa davvero l'app (es. Meet in Chromium) + l'audio di sistema.
+# Uso: meet-rec          registra in primo piano (in ~/inbox/meet/meet-AAAA-MM-GG-HHMM/; fermare con q o un solo Ctrl+C)
+#      meet-rec toggle   avvia/ferma la registrazione come servizio utente "meet-rec"
+#                        (Super+Shift+R in Hyprland; il widget widgets/recorder mostra lo stato)
+set -euo pipefail
+
+if [[ ${1:-} == toggle ]]; then
+  if systemctl --user is-active -q meet-rec; then
+    exec systemctl --user stop meet-rec   # KillSignal=SIGINT: ffmpeg chiude il file pulito
+  fi
+  systemctl --user reset-failed meet-rec 2>/dev/null || true
+  exec systemd-run --user --unit=meet-rec -q -p KillSignal=SIGINT -p SuccessExitStatus=255 -p TimeoutStopSec=10 "$0"
+fi
+
+name="meet-$(date +%F-%H%M)"
+mkdir -p ~/inbox/meet/"$name" && cd ~/inbox/meet/"$name"
+
+# Il microfono collegato a uno stream di registrazione già aperto (la chiamata); se nessuno, quello predefinito.
+mic=$(pw-dump | jq -r '
+  (map(select(.type=="PipeWire:Interface:Node")) | INDEX(.id)) as $n
+  | [.[] | select(.type=="PipeWire:Interface:Link") | .info
+     | select($n[(.["output-node-id"]|tostring)].info.props["media.class"]=="Audio/Source"
+          and $n[(.["input-node-id"]|tostring)].info.props["media.class"]=="Stream/Input/Audio")
+     | $n[(.["output-node-id"]|tostring)].info.props | [.["node.name"], .["node.description"]] | @tsv]
+  | first // "@DEFAULT_SOURCE@\tpredefinito (nessuna chiamata trovata)"')
+mic_desc=${mic#*$'\t'} mic=${mic%%$'\t'*}
+out="$name.m4a"
+echo "Microfono: $mic_desc ($mic)"
+echo "File: $PWD/$out"
+
+# MP4 frammentato: se ffmpeg viene ucciso il file resta leggibile fino all'ultimo frammento (5 s).
+# Senza terminale (servizio) niente riga di avanzamento, che riempirebbe il journal.
+exec ffmpeg -hide_banner $([ -t 2 ] || echo -nostdin -nostats) \
+  -f pulse -i "$mic" -f pulse -i @DEFAULT_MONITOR@ \
+  -filter_complex amix=inputs=2:duration=longest:normalize=0 -c:a aac -b:a 96k \
+  -movflags +frag_keyframe+empty_moov+default_base_moof -frag_duration 5000000 -flush_packets 1 \
+  "$out"

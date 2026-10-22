@@ -1,0 +1,18 @@
+pragma Singleton
+import QtQuick
+
+QtObject {
+    // Popup and badge on the main screen: the first of these that is connected (name or model),
+    // otherwise the first screen. G9 on the desktop and on a docked laptop, else the laptop panel.
+    readonly property var monitors: ["Odyssey G91F", "eDP-1"]
+    readonly property int popupTimeout: 2500   // ms
+    readonly property int popupWidth: 560
+    readonly property int popupHeight: 116
+
+    // Badge shown while recording, top center
+    readonly property int badgeMargin: 12      // offset from the top edge
+    readonly property int badgeFontSize: 20
+
+    readonly property color recColor: "#ff4d5e"   // red dot; the shared Theme has no red
+    readonly property int pollInterval: 1000      // ms between systemd state checks
+}
