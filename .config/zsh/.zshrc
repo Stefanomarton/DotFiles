@@ -65,6 +65,7 @@ export VISUAL='emacsclient -c'
 # export BROWSER='chromium'
 export PAGER='moor -colors "auto" -no-statusbar'
 export HISTFILE="$XDG_STATE_HOME"/zsh/history
+[[ -d ${HISTFILE:h} ]] || mkdir -p ${HISTFILE:h} # su una macchina nuova la cartella non c'è e la history non si salva
 HISTSIZE=100000000
 SAVEHIST=100000000
 
