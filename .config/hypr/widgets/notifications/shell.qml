@@ -169,7 +169,7 @@ ShellRoot {
         visible: root.shownEntries.length > 0
         anchors.top: true
         margins.top: Config.topMargin
-        implicitWidth: Config.width
+        implicitWidth: Math.round(Config.width * Theme.textScale)
         implicitHeight: popupColumn.implicitHeight
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
@@ -217,7 +217,8 @@ ShellRoot {
                     anchors.centerIn: parent
                     text: "+" + (root.shownEntries.length - Config.maxVisible)
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: Config.fontSize - 2
+                    font.pixelSize: Math.round((Config.fontSize - 2) * Theme.textScale)
+                    font.family: Theme.fontFamily
                 }
             }
         }
@@ -228,7 +229,7 @@ ShellRoot {
         property var entry
         readonly property var n: entry.n
         readonly property color tint: entry.urgency === NotificationUrgency.Critical ? Theme.warning
-                                    : entry.urgency === NotificationUrgency.Low ? Theme.base04 : Theme.accent
+                                    : Theme.pickerSecondaryText   // the app name stays quiet; only critical is coloured
         readonly property string iconSource: {
             if (n && n.image) return n.image
             var i = entry.icon || ""
@@ -240,7 +241,7 @@ ShellRoot {
 
         implicitHeight: cardRow.implicitHeight + 32
         color: Theme.pickerBackground
-        border.color: tint
+        border.color: entry.urgency === NotificationUrgency.Critical ? Theme.warning : Theme.outline
         border.width: Theme.borderWidth
         radius: Theme.radius
 
@@ -284,20 +285,23 @@ ShellRoot {
                         Layout.fillWidth: true
                         text: card.entry.app
                         color: card.tint
-                        font.pixelSize: Config.fontSize - 3
+                        font.pixelSize: Math.round((Config.fontSize - 3) * Theme.textScale)
+                        font.family: Theme.fontFamily
                         elide: Text.ElideRight
                     }
                     Text {
                         text: Qt.formatTime(card.entry.time, "hh:mm")
                         color: Theme.pickerSecondaryText
-                        font.pixelSize: Config.fontSize - 3
+                        font.pixelSize: Math.round((Config.fontSize - 3) * Theme.textScale)
+                        font.family: Theme.fontFamily
                     }
                 }
                 Text {
                     Layout.fillWidth: true
                     text: card.entry.summary
                     color: Theme.pickerText
-                    font.pixelSize: Config.fontSize + 1
+                    font.pixelSize: Math.round((Config.fontSize + 1) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                     wrapMode: Text.Wrap
                     maximumLineCount: 2
@@ -309,7 +313,8 @@ ShellRoot {
                     Layout.fillWidth: true
                     text: card.entry.body
                     color: Theme.pickerText
-                    font.pixelSize: Config.fontSize
+                    font.pixelSize: Math.round((Config.fontSize) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     wrapMode: Text.Wrap
                     maximumLineCount: Config.bodyLines
                     elide: Text.ElideRight
@@ -336,7 +341,8 @@ ShellRoot {
                                 anchors.centerIn: parent
                                 text: modelData.text
                                 color: Theme.pickerText
-                                font.pixelSize: Config.fontSize - 2
+                                font.pixelSize: Math.round((Config.fontSize - 2) * Theme.textScale)
+                                font.family: Theme.fontFamily
                             }
                             MouseArea {
                                 id: actMouse
@@ -402,7 +408,8 @@ ShellRoot {
                     visible: root.missed > 0
                     text: root.missed
                     color: Theme.pickerText
-                    font.pixelSize: Config.fontSize + 2
+                    font.pixelSize: Math.round((Config.fontSize + 2) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
             }
@@ -455,7 +462,8 @@ ShellRoot {
                 anchors.margins: 20
                 text: root.entries.length > 0 ? "Notifiche · " + root.entries.length : "Nessuna notifica"
                 color: Theme.pickerSecondaryText
-                font.pixelSize: Config.fontSize - 2
+                font.pixelSize: Math.round((Config.fontSize - 2) * Theme.textScale)
+                font.family: Theme.fontFamily
             }
 
             ListView {
@@ -503,18 +511,21 @@ ShellRoot {
                             Text {
                                 text: Qt.formatTime(modelData.time, "hh:mm")
                                 color: Theme.pickerSecondaryText
-                                font.pixelSize: Config.fontSize - 3
+                                font.pixelSize: Math.round((Config.fontSize - 3) * Theme.textScale)
+                                font.family: Theme.fontFamily
                             }
                             Text {
                                 text: modelData.app
                                 color: modelData.urgency === NotificationUrgency.Critical ? Theme.warning : Theme.accent
-                                font.pixelSize: Config.fontSize - 3
+                                font.pixelSize: Math.round((Config.fontSize - 3) * Theme.textScale)
+                                font.family: Theme.fontFamily
                             }
                             Text {
                                 Layout.fillWidth: true
                                 text: modelData.summary
                                 color: Theme.pickerText
-                                font.pixelSize: Config.fontSize
+                                font.pixelSize: Math.round((Config.fontSize) * Theme.textScale)
+                                font.family: Theme.fontFamily
                                 font.bold: true
                                 elide: Text.ElideRight
                                 textFormat: Text.PlainText
@@ -525,7 +536,8 @@ ShellRoot {
                             Layout.fillWidth: true
                             text: modelData.body.replace(/<[^>]*>/g, "").replace(/\s+/g, " ")
                             color: Theme.pickerSecondaryText
-                            font.pixelSize: Config.fontSize - 2
+                            font.pixelSize: Math.round((Config.fontSize - 2) * Theme.textScale)
+                            font.family: Theme.fontFamily
                             elide: Text.ElideRight
                             textFormat: Text.PlainText
                         }

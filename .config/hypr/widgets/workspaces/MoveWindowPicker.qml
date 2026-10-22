@@ -105,14 +105,16 @@ PanelWindow {
                     Layout.alignment: Qt.AlignHCenter
                     text: "Move window → workspace"
                     color: Theme.base0A
-                    font.pixelSize: 14
+                    font.pixelSize: Math.round((14) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
                     Layout.alignment: Qt.AlignHCenter
                     text: "moving: " + (MoveWindowManager.currentWindowTitle || "(no focused window)")
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 12
+                    font.pixelSize: Math.round((12) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     elide: Text.ElideRight
                     Layout.maximumWidth: card.width - 40
                 }
@@ -133,7 +135,8 @@ PanelWindow {
                     anchors.margins: 12
                     verticalAlignment: TextInput.AlignVCenter
                     color: Theme.pickerText
-                    font.pixelSize: Config.pickerFontSize
+                    font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     selectByMouse: true
                     clip: true
 
@@ -145,7 +148,8 @@ PanelWindow {
                         verticalAlignment: Text.AlignVCenter
                         text: "Search or type a new workspace..."
                         color: Theme.pickerPlaceholder
-                        font.pixelSize: Config.pickerFontSize
+                        font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                        font.family: Theme.fontFamily
                         visible: !searchInput.text && !searchInput.activeFocus
                     }
 
@@ -242,14 +246,16 @@ PanelWindow {
                                     Layout.fillWidth: true
                                     text: itemDelegate.modelData.name
                                     color: Theme.pickerText
-                                    font.pixelSize: Config.pickerFontSize
+                                    font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                                    font.family: Theme.fontFamily
                                     font.bold: true
                                     elide: Text.ElideRight
                                 }
                                 Text {
                                     text: itemDelegate.modelData.windows + " window" + (itemDelegate.modelData.windows !== 1 ? "s" : "")
                                     color: Theme.pickerSecondaryText
-                                    font.pixelSize: Config.pickerFontSize - 4
+                                    font.pixelSize: Math.round((Config.pickerFontSize - 4) * Theme.textScale)
+                                    font.family: Theme.fontFamily
                                 }
                             }
 
@@ -277,7 +283,8 @@ PanelWindow {
                                                   itemDelegate.modelData.windowList[index]?.class ||
                                                   "Window"
                                             color: Theme.pickerSecondaryText
-                                            font.pixelSize: 13
+                                            font.pixelSize: Math.round((13) * Theme.textScale)
+                                            font.family: Theme.fontFamily
                                             elide: Text.ElideRight
                                             Layout.maximumWidth: 120
                                         }
@@ -288,7 +295,8 @@ PanelWindow {
                                     visible: itemDelegate.windowCount > 4
                                     text: "+" + (itemDelegate.windowCount - 4) + " more"
                                     color: Theme.pickerHintText
-                                    font.pixelSize: 12
+                                    font.pixelSize: Math.round((12) * Theme.textScale)
+                                    font.family: Theme.fontFamily
                                 }
                             }
                         }
@@ -312,7 +320,8 @@ PanelWindow {
                               ? "Press Enter to move to new \"" + MoveWindowManager.filterText + "\""
                               : "No workspaces"
                         color: Theme.pickerSecondaryText
-                        font.pixelSize: Config.pickerFontSize
+                        font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                        font.family: Theme.fontFamily
                         visible: workspaceList.count === 0
                     }
                 }
@@ -328,25 +337,29 @@ PanelWindow {
                 Text {
                     text: "↑↓ Navigate"
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
                     text: "Enter Move"
                     color: Theme.base0A
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
                     text: "Shift+Enter Move+Follow"
                     color: Theme.base0A
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
                     text: "Esc Cancel"
                     color: Theme.pickerHintText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                 }
             }
         }
@@ -420,7 +433,8 @@ PanelWindow {
                 Text {
                     text: previewPane.wsItem ? previewPane.wsItem.name : ""
                     color: Theme.pickerText
-                    font.pixelSize: 18
+                    font.pixelSize: Math.round((18) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                     elide: Text.ElideRight
                     width: parent.width - countLabel.width - parent.spacing
@@ -430,7 +444,8 @@ PanelWindow {
                     visible: previewPane.hasPreview
                     text: previewPane.wsWindows.length + (previewPane.wsWindows.length === 1 ? " window" : " windows")
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 14
+                    font.pixelSize: Math.round((14) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }

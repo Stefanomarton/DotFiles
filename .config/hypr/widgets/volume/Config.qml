@@ -8,7 +8,7 @@ QtObject {
 
     readonly property int osdTimeout: 1500   // ms the OSD stays after a change
     readonly property int osdWidth: 480
-    readonly property int osdHeight: 116
+    readonly property int osdHeight: 92
     readonly property int osdRadius: Theme.radius
     // Nudge from the exact screen center (px). 0,0 = dead center.
     readonly property int osdOffsetX: 0

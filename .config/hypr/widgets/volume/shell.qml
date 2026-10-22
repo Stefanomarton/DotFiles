@@ -64,11 +64,11 @@ ShellRoot {
             anchors.centerIn: parent
             anchors.horizontalCenterOffset: Config.osdOffsetX
             anchors.verticalCenterOffset: Config.osdOffsetY
-            width: Config.osdWidth
-            height: Config.osdHeight
+            width: Math.round(Config.osdWidth * Theme.textScale)
+            height: Math.round(Config.osdHeight * Theme.textScale)
             radius: Config.osdRadius
             color: Theme.pickerBackground
-            border.color: Theme.pickerBorder
+            border.color: Theme.outline
             border.width: Theme.borderWidth
 
             opacity: osd.shown
@@ -126,7 +126,7 @@ ShellRoot {
                 // Volume bar
                 Rectangle {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 12
+                    Layout.preferredHeight: 4
                     radius: Theme.radius
                     color: Theme.pickerInputBackground
 
@@ -149,7 +149,8 @@ ShellRoot {
                     horizontalAlignment: Text.AlignRight
                     text: root.isMuted ? "muted" : (Math.round(root.volume * 100) + "%")
                     color: root.isMuted ? Theme.warning : Theme.pickerText
-                    font.pixelSize: root.isMuted ? 19 : 24
+                    font.pixelSize: Math.round((root.isMuted ? 19 : 24) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
             }

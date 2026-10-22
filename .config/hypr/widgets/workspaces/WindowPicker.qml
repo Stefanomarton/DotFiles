@@ -100,7 +100,8 @@ PanelWindow {
             Text {
                 text: "Windows"
                 color: Theme.pickerText
-                font.pixelSize: 14
+                font.pixelSize: Math.round((14) * Theme.textScale)
+                font.family: Theme.fontFamily
                 font.bold: true
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 4
@@ -121,7 +122,8 @@ PanelWindow {
                     anchors.margins: 12
                     verticalAlignment: TextInput.AlignVCenter
                     color: Theme.pickerText
-                    font.pixelSize: Config.pickerFontSize
+                    font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     selectByMouse: true
                     clip: true
                     enabled: picker.mode === "normal"
@@ -137,7 +139,8 @@ PanelWindow {
                         verticalAlignment: Text.AlignVCenter
                         text: "Search windows..."
                         color: Theme.pickerPlaceholder
-                        font.pixelSize: Config.pickerFontSize
+                        font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                        font.family: Theme.fontFamily
                         visible: !searchInput.text && !searchInput.activeFocus && picker.mode === "normal"
                     }
 
@@ -322,7 +325,8 @@ PanelWindow {
                     anchors.margins: 12
                     verticalAlignment: TextInput.AlignVCenter
                     color: Theme.pickerText
-                    font.pixelSize: Config.pickerFontSize
+                    font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     selectByMouse: true
                     clip: true
 
@@ -335,7 +339,8 @@ PanelWindow {
                         verticalAlignment: Text.AlignVCenter
                         text: "Enter workspace name..."
                         color: Theme.pickerPlaceholder
-                        font.pixelSize: Config.pickerFontSize
+                        font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                        font.family: Theme.fontFamily
                         visible: !workspaceInputField.text && !workspaceInputField.activeFocus
                     }
 
@@ -446,7 +451,8 @@ PanelWindow {
                                     Layout.fillWidth: true
                                     text: itemDelegate.modelData.title || itemDelegate.modelData.class
                                     color: WindowManager.isSelected(itemDelegate.modelData.address) ? Theme.base00 : Theme.pickerText
-                                    font.pixelSize: Config.pickerFontSize
+                                    font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                                    font.family: Theme.fontFamily
                                     elide: Text.ElideRight
                                 }
 
@@ -455,7 +461,8 @@ PanelWindow {
                                     Layout.fillWidth: true
                                     text: itemDelegate.modelData.class + " — " + itemDelegate.modelData.workspace
                                     color: WindowManager.isSelected(itemDelegate.modelData.address) ? Theme.base01 : Theme.pickerSecondaryText
-                                    font.pixelSize: Config.pickerFontSize - 4
+                                    font.pixelSize: Math.round((Config.pickerFontSize - 4) * Theme.textScale)
+                                    font.family: Theme.fontFamily
                                     elide: Text.ElideRight
                                 }
                             }
@@ -485,7 +492,8 @@ PanelWindow {
                               ? "No windows match \"" + WindowManager.filterText + "\""
                               : "No windows open"
                         color: Theme.pickerSecondaryText
-                        font.pixelSize: Config.pickerFontSize
+                        font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                        font.family: Theme.fontFamily
                         visible: windowList.count === 0
                     }
                 }
@@ -502,37 +510,43 @@ PanelWindow {
                 Text {
                     text: "↑↓ Navigate"
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
                     text: "Space Select"
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
                     text: "Enter Focus"
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
                     text: "Ctrl+Enter → Current"
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
-                    text: "Alt+⌫ Close"
+                    text: "Alt+Backspace Close"
                     color: Theme.base0A
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
                     text: "Esc Cancel"
                     color: Theme.pickerHintText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                 }
             }
 
@@ -546,7 +560,8 @@ PanelWindow {
                 Text {
                     text: WindowManager.selectedWindows.length + " selected"
                     color: Theme.base0B
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
             }
@@ -561,18 +576,21 @@ PanelWindow {
                 Text {
                     text: "Enter Confirm"
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
                     text: "Esc Cancel"
                     color: Theme.pickerHintText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                 }
                 Text {
                     text: WindowManager.selectedWindows.length + " windows"
                     color: Theme.base0B
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
             }
@@ -655,7 +673,8 @@ PanelWindow {
                 Text {
                     text: previewPane.wsName
                     color: Theme.pickerText
-                    font.pixelSize: 18
+                    font.pixelSize: Math.round((18) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                     elide: Text.ElideRight
                     width: parent.width - countLabel.width - parent.spacing
@@ -665,7 +684,8 @@ PanelWindow {
                     visible: previewPane.hasPreview
                     text: previewPane.wsWindows.length + (previewPane.wsWindows.length === 1 ? " window" : " windows")
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 14
+                    font.pixelSize: Math.round((14) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }

@@ -215,7 +215,7 @@ ShellRoot {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
             anchors.bottomMargin: Config.bottomMargin
-            width: Math.min(Config.width, parent.width - 80)
+            width: Math.min(Math.round(Config.width * Theme.textScale), parent.width - 80)
             height: body.implicitHeight + 40
             color: Theme.pickerBackground
             border.color: Theme.pickerBorder
@@ -238,15 +238,16 @@ ShellRoot {
                     Layout.fillWidth: true
                     Text {
                         Layout.fillWidth: true
-                        text: root.chord ? "Super +  " + root.chord.key + "  ›  " + root.chord.label : "Super +"
-                        color: Theme.accent
-                        font.pixelSize: Config.fontSize
-                        font.bold: true
+                        text: root.chord ? "Super  " + root.chord.key + "  ›  " + root.chord.label : "Super"
+                        color: Theme.pickerSecondaryText
+                        font.pixelSize: Math.round((Config.fontSize - 3) * Theme.textScale)
+                        font.family: Theme.fontFamily
                     }
                     Text {
-                        text: (root.chord ? "⌫ indietro   " : "") + "Esc chiudi"
+                        text: (root.chord ? "Backspace indietro   " : "") + "Esc chiudi"
                         color: Theme.pickerHintText
-                        font.pixelSize: Config.fontSize - 3
+                        font.pixelSize: Math.round((Config.fontSize - 3) * Theme.textScale)
+                        font.family: Theme.fontFamily
                     }
                 }
 
@@ -269,10 +270,13 @@ ShellRoot {
                             spacing: 6
 
                             Text {
-                                text: modelData.title
-                                color: Theme.accent
-                                font.pixelSize: Config.fontSize - 2
-                                font.bold: true
+                                // section heading: small, spaced capitals, quiet
+                                text: modelData.title.toUpperCase()
+                                color: Theme.pickerSecondaryText
+                                font.pixelSize: Math.round((Config.fontSize - 5) * Theme.textScale)
+                                font.family: Theme.fontFamily
+                                font.letterSpacing: 1.5
+                                bottomPadding: 4
                             }
                             Repeater {
                                 model: modelData.items
@@ -294,17 +298,19 @@ ShellRoot {
                                         anchors.leftMargin: 4
                                         spacing: 12
                                         Text {
-                                            Layout.preferredWidth: Config.keyWidth
+                                            Layout.preferredWidth: Math.round(Config.keyWidth * Theme.textScale)
                                             text: modelData.key
                                             color: Theme.accent2
-                                            font.pixelSize: Config.fontSize - 1
+                                            font.pixelSize: Math.round((Config.fontSize - 1) * Theme.textScale)
+                                            font.family: Theme.fontFamily
                                             font.bold: true
                                         }
                                         Text {
                                             Layout.fillWidth: true
                                             text: modelData.items ? modelData.label + "  ›" : modelData.label
-                                            color: modelData.items ? Theme.accent : Theme.pickerText
-                                            font.pixelSize: Config.fontSize - 1
+                                            color: Theme.pickerText
+                                            font.pixelSize: Math.round((Config.fontSize - 1) * Theme.textScale)
+                                            font.family: Theme.fontFamily
                                             elide: Text.ElideRight
                                         }
                                     }

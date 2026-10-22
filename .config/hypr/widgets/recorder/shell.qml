@@ -126,7 +126,7 @@ ShellRoot {
                 anchors.fill: parent
                 radius: Theme.radius
                 color: Theme.pickerBackground
-                border.color: Config.recColor
+                border.color: Theme.outline
                 border.width: Theme.borderWidth
 
                 RowLayout {
@@ -145,7 +145,8 @@ ShellRoot {
                     Text {
                         text: (root.state === "deactivating" ? "chiusura… " : "REC ") + root.fmt(root.elapsed)
                         color: Theme.pickerText
-                        font.pixelSize: Config.badgeFontSize
+                        font.pixelSize: Math.round((Config.badgeFontSize) * Theme.textScale)
+                        font.family: Theme.fontFamily
                         font.bold: true
                     }
                 }
@@ -185,11 +186,11 @@ ShellRoot {
 
         Rectangle {
             anchors.centerIn: parent
-            width: Config.popupWidth
-            height: Config.popupHeight
+            width: Math.round(Config.popupWidth * Theme.textScale)
+            height: Math.round(Config.popupHeight * Theme.textScale)
             radius: Theme.radius
             color: Theme.pickerBackground
-            border.color: popup.tint
+            border.color: popup.kind === "error" ? Theme.warning : Theme.outline
             border.width: Theme.borderWidth
             opacity: popup.shown
             scale: 0.94 + 0.06 * popup.shown
@@ -209,7 +210,7 @@ ShellRoot {
                     Text {
                         anchors.centerIn: parent
                         visible: popup.kind === "error"
-                        text: "!"; color: popup.tint; font.pixelSize: 34; font.bold: true
+                        text: "!"; color: popup.tint; font.pixelSize: Math.round(34 * Theme.textScale); font.bold: true
                     }
                 }
 
@@ -221,7 +222,8 @@ ShellRoot {
                             : popup.kind === "stop" ? "Salvata · " + root.fmt(root.lastElapsed)
                             : "Registrazione interrotta"
                         color: Theme.pickerText
-                        font.pixelSize: 24
+                        font.pixelSize: Math.round((24) * Theme.textScale)
+                        font.family: Theme.fontFamily
                         font.bold: true
                     }
                     Text {
@@ -231,7 +233,8 @@ ShellRoot {
                             : popup.kind === "stop" ? root.file.replace(/^.*\//, "")
                             : "journalctl --user -u meet-rec"
                         color: popup.kind === "start" && popup.defaultMic ? Theme.warning : Theme.pickerSecondaryText
-                        font.pixelSize: 17
+                        font.pixelSize: Math.round((17) * Theme.textScale)
+                        font.family: Theme.fontFamily
                     }
                 }
             }

@@ -70,7 +70,8 @@ PanelWindow {
                     Text {
                         text: monSection.mon.name
                         color: Theme.pickerHintText
-                        font.pixelSize: 14
+                        font.pixelSize: Math.round((14) * Theme.textScale)
+                        font.family: Theme.fontFamily
                         font.bold: true
                         font.letterSpacing: 2
                     }
@@ -109,7 +110,8 @@ PanelWindow {
                                         Text {
                                             text: cell.wsName
                                             color: cell.isActive ? Theme.base0A : Theme.pickerText
-                                            font.pixelSize: 15
+                                            font.pixelSize: Math.round((15) * Theme.textScale)
+                                            font.family: Theme.fontFamily
                                             font.bold: true
                                             elide: Text.ElideRight
                                             width: parent.width - cnt.width - parent.spacing
@@ -118,7 +120,8 @@ PanelWindow {
                                             id: cnt
                                             text: cell.wins.length
                                             color: Theme.pickerSecondaryText
-                                            font.pixelSize: 13
+                                            font.pixelSize: Math.round((13) * Theme.textScale)
+                                            font.family: Theme.fontFamily
                                         }
                                     }
 
@@ -244,7 +247,8 @@ PanelWindow {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Drag a window to move it · Click a window to focus · Click a workspace to switch · Esc to close"
                 color: Theme.pickerHintText
-                font.pixelSize: 13
+                font.pixelSize: Math.round((13) * Theme.textScale)
+                font.family: Theme.fontFamily
             }
         }
     }

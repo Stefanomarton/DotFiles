@@ -152,9 +152,9 @@ ShellRoot {
                     width: Math.min(implicitWidth, parent.width - paddingH * 2)
                     text:           cornerWin.monitorWsName
                     color:          Theme.cornerText
-                    font.pixelSize: Config.cornerFontSize
+                    font.pixelSize: Math.round((Config.cornerFontSize) * Theme.textScale)
                     font.bold:      true
-                    font.family:    "sans-serif"
+                    font.family:    Theme.fontFamily
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
@@ -218,7 +218,7 @@ ShellRoot {
                         id: micIcon
                         text: whspr.text
                         color: whspr.alt === "active" ? Theme.accent2 : Theme.warning
-                        font.pixelSize: 32
+                        font.pixelSize: Math.round((32) * Theme.textScale)
                         font.family: "Symbols Nerd Font"
                         anchors.verticalCenter: parent.verticalCenter
 
@@ -237,9 +237,9 @@ ShellRoot {
                             : whspr.alt === "processing" ? "Trascrivo…"
                             : whspr.tooltip
                         color: Theme.cornerText
-                        font.pixelSize: 22
+                        font.pixelSize: Math.round((22) * Theme.textScale)
                         font.bold: true
-                        font.family: "sans-serif"
+                        font.family: Theme.fontFamily
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }

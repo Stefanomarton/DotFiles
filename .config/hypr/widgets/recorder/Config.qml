@@ -13,6 +13,6 @@ QtObject {
     readonly property int badgeMargin: 12      // offset from the top edge
     readonly property int badgeFontSize: 20
 
-    readonly property color recColor: "#ff4d5e"   // red dot; the shared Theme has no red
+    readonly property color recColor: Theme.danger   // the red dot
     readonly property int pollInterval: 1000      // ms between systemd state checks
 }

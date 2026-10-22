@@ -97,7 +97,8 @@ PanelWindow {
             Text {
                 text: "Workspaces"
                 color: Theme.pickerText
-                font.pixelSize: 14
+                font.pixelSize: Math.round((14) * Theme.textScale)
+                font.family: Theme.fontFamily
                 font.bold: true
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 4
@@ -118,7 +119,8 @@ PanelWindow {
                     anchors.margins: 12
                     verticalAlignment: TextInput.AlignVCenter
                     color: Theme.pickerText
-                    font.pixelSize: Config.pickerFontSize
+                    font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     selectByMouse: true
                     clip: true
 
@@ -131,7 +133,8 @@ PanelWindow {
                         verticalAlignment: Text.AlignVCenter
                         text: "Search or create workspace..."
                         color: Theme.pickerPlaceholder
-                        font.pixelSize: Config.pickerFontSize
+                        font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                        font.family: Theme.fontFamily
                         visible: !searchInput.text && !searchInput.activeFocus
                     }
 
@@ -306,7 +309,8 @@ PanelWindow {
                                     Layout.fillWidth: true
                                     text: itemDelegate.modelData.name
                                     color: Theme.pickerText
-                                    font.pixelSize: Config.pickerFontSize
+                                    font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                                    font.family: Theme.fontFamily
                                     font.bold: true
                                     elide: Text.ElideRight
                                 }
@@ -315,7 +319,8 @@ PanelWindow {
                                 Text {
                                     text: itemDelegate.modelData.windows + " window" + (itemDelegate.modelData.windows !== 1 ? "s" : "")
                                     color: Theme.pickerSecondaryText
-                                    font.pixelSize: Config.pickerFontSize - 4
+                                    font.pixelSize: Math.round((Config.pickerFontSize - 4) * Theme.textScale)
+                                    font.family: Theme.fontFamily
                                 }
                             }
 
@@ -346,7 +351,8 @@ PanelWindow {
                                                   itemDelegate.modelData.windowList[index]?.class || 
                                                   "Window"
                                             color: index === WorkspaceManager.selectedIndex ? Theme.pickerText : Theme.pickerSecondaryText
-                                            font.pixelSize: 13
+                                            font.pixelSize: Math.round((13) * Theme.textScale)
+                                            font.family: Theme.fontFamily
                                             elide: Text.ElideRight
                                             Layout.maximumWidth: 120
                                         }
@@ -358,7 +364,8 @@ PanelWindow {
                                     visible: itemDelegate.windowCount > 4
                                     text: "+" + (itemDelegate.windowCount - 4) + " more"
                                     color: Theme.pickerHintText
-                                    font.pixelSize: 12
+                                    font.pixelSize: Math.round((12) * Theme.textScale)
+                                    font.family: Theme.fontFamily
                                 }
                             }
                         }
@@ -382,7 +389,8 @@ PanelWindow {
                               ? "Press Enter to create \"" + WorkspaceManager.filterText + "\""
                               : "No workspaces"
                         color: Theme.pickerSecondaryText
-                        font.pixelSize: Config.pickerFontSize
+                        font.pixelSize: Math.round((Config.pickerFontSize) * Theme.textScale)
+                        font.family: Theme.fontFamily
                         visible: workspaceList.count === 0
                     }
                 }
@@ -398,13 +406,15 @@ PanelWindow {
                 Text {
                     text: "↑↓ Navigate"
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
                     text: "Enter Select"
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
@@ -416,27 +426,31 @@ PanelWindow {
                         return "Ctrl+Enter → " + target
                     }
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                     visible: WorkspaceManager.availableMonitors.length > 0
                 }
                 Text {
                     text: "Alt+Enter → Here"
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                     visible: WorkspaceManager.availableMonitors.length > 0
                 }
                 Text {
                     text: "Del Destroy"
                     color: Theme.base0A
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                 }
                 Text {
                     text: "Esc Close"
                     color: Theme.pickerHintText
-                    font.pixelSize: 13
+                    font.pixelSize: Math.round((13) * Theme.textScale)
+                    font.family: Theme.fontFamily
                 }
             }
         }
@@ -514,7 +528,8 @@ PanelWindow {
                 Text {
                     text: previewPane.wsItem ? previewPane.wsItem.name : ""
                     color: Theme.pickerText
-                    font.pixelSize: 18
+                    font.pixelSize: Math.round((18) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     font.bold: true
                     elide: Text.ElideRight
                     width: parent.width - countLabel.width - parent.spacing
@@ -524,7 +539,8 @@ PanelWindow {
                     visible: previewPane.hasPreview
                     text: previewPane.wsWindows.length + (previewPane.wsWindows.length === 1 ? " window" : " windows")
                     color: Theme.pickerSecondaryText
-                    font.pixelSize: 14
+                    font.pixelSize: Math.round((14) * Theme.textScale)
+                    font.family: Theme.fontFamily
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
