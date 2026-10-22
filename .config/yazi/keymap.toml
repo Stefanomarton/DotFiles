@@ -174,7 +174,7 @@ desc = "Open the selected files"
 
 [[mgr.keymap]]
 on = ["$"]
-run = """shell --confirm 'kitty -d "$(pwd)"'"""
+run = """shell --orphan --confirm 'kitty -d "$PWD"'"""
 desc = "Open kitty in current pwd"
 
 [[mgr.keymap]]
