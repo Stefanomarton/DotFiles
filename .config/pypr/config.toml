@@ -1,6 +1,6 @@
 [pyprland]
 plugins = ["scratchpads"]
-hyprland_version = "0.54.0"
+hyprland_version = "0.56.0"
 # yazi per workspace: le voci le genera hypr/scripts/yazi-workspace.sh
 include = ["~/.config/pypr/yazi-workspaces"]
 
@@ -49,16 +49,6 @@ size = "50% 25%"
 animation = ""
 command = """kitty --class emacs-ebuku --hold emacsclient -t --eval '(ebuku)'"""
 class = "emacs-ebuku"
-lazy = true
-unfocus = "hide"
-margin = 60
-position = "25% 25%"
-size = "50% 50%"
-
-[scratchpads.qutebrowser]
-animation = ""
-command = """qutebrowser"""
-class = "org.qutebrowser.qutebrowser"
 lazy = true
 unfocus = "hide"
 margin = 60

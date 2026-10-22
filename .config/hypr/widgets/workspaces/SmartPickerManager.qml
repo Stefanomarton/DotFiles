@@ -361,7 +361,8 @@ QtObject {
     }
 
     property Process appsProcess: Process {
-        command: ["sh", "-c", "find /usr/share/applications ~/.local/share/applications -name '*.desktop' 2>/dev/null | head -200"]
+        // NixOS: no /usr/share, the .desktop files are under $XDG_DATA_DIRS; first one per name wins
+        command: ["sh", "-c", "IFS=:; for d in ${XDG_DATA_HOME:-$HOME/.local/share} $XDG_DATA_DIRS; do find -L \"$d/applications\" -name '*.desktop' 2>/dev/null; done | awk -F/ '!seen[$NF]++'"]
         running: false
         property string buffer: ""
         stdout: SplitParser {

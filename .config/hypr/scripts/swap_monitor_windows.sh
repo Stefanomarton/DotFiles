@@ -8,6 +8,7 @@ set -euo pipefail
 IFS=$'\t' read -r a b < <(hyprctl -j monitors | jq -r '
     [ (.[] | select(.description|startswith("Samsung Electric Company Odyssey G91F")).activeWorkspace.name),
       (.[] | select(.description|startswith("Xiaomi Corporation Mi Monitor")).activeWorkspace.name) ] | @tsv')
+[ -n "$a" ] && [ -n "$b" ] || exit 0   # fuori dal dock c'è un monitor solo
 
 # addresses are collected before moving anything, so no temp workspace is needed
 cmds=$(hyprctl -j clients | jq -r --arg a "$a" --arg b "$b" '

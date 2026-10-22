@@ -26,7 +26,7 @@ hl.monitor({
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
 
 if host == "desktop" then
-    -- Monitor verticale capovolto (TickTick)
+    -- Monitor verticale capovolto (Tasks)
     hl.monitor({
         output    = "HDMI-A-1",
         mode      = "1920x1080@60",

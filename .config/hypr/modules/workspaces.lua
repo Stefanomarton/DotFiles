@@ -34,7 +34,7 @@ if host == "desktop" then
         gaps_in   = 0,
         gaps_out  = 0,
         layout    = "monocle",
-        on_created_empty = "ticktick",
+        on_created_empty = "tasks",
         persistent = true,
     })
 end

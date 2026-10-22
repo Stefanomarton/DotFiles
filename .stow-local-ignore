@@ -12,7 +12,7 @@ _darcs
 \.git
 \.gitignore
 \.gitmodules
-\.github
+\.claude
 
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files

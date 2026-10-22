@@ -9,7 +9,6 @@
   pager = delta
 
 [credential "https://github.com"]
-	credentialStore = cache
 	helper = !gh auth git-credential
 
 [filter "lfs"]

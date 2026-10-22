@@ -7,7 +7,6 @@
 
 mainMod     = "SUPER" -- main modifier ("Windows" key)
 terminal    = "kitty"
-fileManager = "nemo"
 
 -- Current machine, so monitors/workspaces can differ per host (desktop, laptop, ...).
 local function detect_host()

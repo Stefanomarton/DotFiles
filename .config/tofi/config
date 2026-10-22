@@ -7,7 +7,6 @@ prompt-text = ""
 font = JuliaMono
 outline-width = 1
 border-width = 0
-min-input-width = 10
 result-spacing = 5
 # padding-top = 2%
 # padding-bottom = 4%
