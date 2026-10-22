@@ -6,6 +6,83 @@
 -- Apps and actions (with their shortcuts) are in modules/menu.lua, the menu shown while Super is held;
 -- here only movement, workspaces, mouse and volume. See https://wiki.hypr.land/Configuring/Basics/Binds/
 
+-- Layout a carte (custom_center2), secondo deck_columns (layouts.lua): Super+j/slash passano alla
+-- colonna accanto, sulla carta usata più di recente; Super+l/k alla carta sopra/sotto nella stessa
+-- colonna; Super+Shift+j/slash scambiano la finestra con quella della colonna accanto (niente
+-- Shift+l: è il menu dei layout). Altrove, o dove la colonna finisce, focus/swap per direzione.
+local function deck_layout()
+    local ws = hl.get_active_workspace()
+    return ws and ws.tiled_layout == "lua:custom_center2" and ws or nil
+end
+
+-- la carta della colonna usata più di recente (quella che si vede sopra le altre)
+local function top_card(col)
+    local history = {}
+    for _, w in ipairs(hl.get_windows()) do history[w.address] = w.focus_history_id end
+    local best, best_id = col[#col], math.huge
+    for _, addr in ipairs(col) do
+        local id = history[addr]
+        if id and id >= 0 and id < best_id then best, best_id = addr, id end
+    end
+    return best
+end
+
+-- selettore della finestra a dx colonne (dx ~= 0) o dy carte (dy ~= 0) da quella attiva
+local function deck_target(dx, dy)
+    local w, ws = hl.get_active_window(), deck_layout()
+    local cols = w and ws and deck_columns[ws.id]
+    for c, col in ipairs(cols or {}) do
+        for i, addr in ipairs(col) do
+            if addr == w.address then
+                local target
+                if dx ~= 0 then
+                    target = cols[c + dx] and #cols[c + dx] > 0 and top_card(cols[c + dx])
+                else
+                    target = col[i + dy]
+                end
+                return target and "address:" .. target
+            end
+        end
+    end
+end
+
+function deck_focus(direction, dx, dy)
+    local target = deck_target(dx, dy)
+    hl.dispatch(target and hl.dsp.focus({ window = target }) or hl.dsp.focus({ direction = direction }))
+end
+
+function deck_swap(direction, dx, dy)
+    local target = deck_target(dx, dy)
+    hl.dispatch(target and hl.dsp.window.swap({ target = target }) or hl.dsp.window.swap({ direction = direction }))
+end
+
+-- Super+Space: focus sulla master; Super+Shift+Space: la finestra attiva prende il posto della master
+local function deck_master_addr()
+    local ws = deck_layout()
+    return ws and deck_master[ws.id]
+end
+
+function focus_master()
+    local addr = deck_master_addr()
+    if addr then hl.dispatch(hl.dsp.focus({ window = "address:" .. addr })) end
+end
+
+function swap_with_master()
+    local addr, w = deck_master_addr(), hl.get_active_window()
+    if addr and w and w.address ~= addr then
+        hl.dispatch(hl.dsp.window.swap({ target = "address:" .. addr }))
+    end
+end
+
+-- Super+Ctrl+j/slash: stringe/allarga la master; negli altri layout ridimensiona la finestra
+function deck_resize(delta)
+    if deck_layout() then
+        hl.dispatch(hl.dsp.layout(string.format("ratio %+.2f", delta)))
+    else
+        hl.dispatch(hl.dsp.window.resize({ x = delta > 0 and 100 or -100, y = 0, relative = true }))
+    end
+end
+
 -- Movement, workspaces, volume and mouse. A function because the which-key submap
 -- (modules/menu.lua) binds them again, with `after` closing the menu, so they keep
 -- working however long Super is held. Here `after` tells the menu a shortcut fired, so
@@ -26,10 +103,14 @@ function navigation_binds(after)
     bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
     -- Move focus with mainMod + arrow keys
-    bind(mainMod .. " + j",  hl.dsp.focus({ direction = "left" }))
-    bind(mainMod .. " + slash", hl.dsp.focus({ direction = "right" }))
-    bind(mainMod .. " + l",    hl.dsp.focus({ direction = "up" }))
-    bind(mainMod .. " + k",  hl.dsp.focus({ direction = "down" }))
+    bind(mainMod .. " + j",     function() deck_focus("left", -1, 0) end)
+    bind(mainMod .. " + slash", function() deck_focus("right", 1, 0) end)
+    bind(mainMod .. " + l",     function() deck_focus("up", 0, -1) end)
+    bind(mainMod .. " + k",     function() deck_focus("down", 0, 1) end)
+    bind(mainMod .. " + space", focus_master)
+    bind(mainMod .. " + SHIFT + space", swap_with_master)
+    bind(mainMod .. " + CTRL + j",     function() deck_resize(-0.05) end, { repeating = true })
+    bind(mainMod .. " + CTRL + slash", function() deck_resize(0.05) end,  { repeating = true })
 
     bind(mainMod .. "+ page_down", hl.dsp.window.cycle_next({next = false}))
     bind(mainMod .. "+ page_up", hl.dsp.window.cycle_next())
@@ -39,22 +120,15 @@ function navigation_binds(after)
     for i = 1, 10 do
         local key = i % 10 -- 10 maps to key 0
         bind(mainMod .. " + " .. key,             hl.dsp.focus({ workspace = i}))
-        bind(" + ALT + " .. key,     hl.dsp.window.move({ workspace = i, follow=false }))
+        bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i, follow=false }))
     end
 
     -- Volume (repeats while held; capped at 100%)
     bind(mainMod .. " + Up",   hl.dsp.exec_cmd("wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true })
     bind(mainMod .. " + Down", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),        { repeating = true })
 
-    bind("mouse_right", hl.dsp.layout("move -500"), {mouse = true})
-    bind("mouse_left", hl.dsp.layout("move +500"), {mouse = true})
-
-
-    bind(mainMod .. "+ SHIFT + slash",
-            hl.dsp.window.swap({direction = "right"}))
-
-    bind(mainMod .. "+ SHIFT + j",
-            hl.dsp.window.swap({direction = "left"}))
+    bind(mainMod .. " + SHIFT + j",     function() deck_swap("left", -1, 0) end)
+    bind(mainMod .. " + SHIFT + slash", function() deck_swap("right", 1, 0) end)
 
     bind(mainMod .. "+ SHIFT + k",
             hl.dsp.window.resize({x = 200, y = 0, relative = true}))

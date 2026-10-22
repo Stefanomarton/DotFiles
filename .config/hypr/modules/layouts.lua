@@ -2,14 +2,61 @@
 ---- LAYOUTS ----
 -----------------
 
--- Centered master with cascaded, overlapping side decks.
--- NOTE: side windows overlap on purpose; with follow_mouse = 1 (hover focus)
--- the overlap region focuses whichever window sits underneath.
+-- Master con i deck di carte ai lati (G9, Xiaomi), o master a sinistra e deck a destra (portatili).
+-- Le carte di un deck sono impilate in verticale: di ognuna resta visibile una linguetta in alto,
+-- e la carta col focus viene disegnata sopra le altre. Il focus al passaggio del mouse sceglie la carta
+-- disegnata sopra solo con la patch di Hyprland in ~/.nixos/assets/hyprland-tiled-hit-order.patch.
+-- Per workspace: colonne da sinistra a destra, ognuna con le sue finestre dall'alto in basso
+-- (indirizzi), per Super+j/slash/k/l, perché il focus per direzione non distingue carte
+-- sovrapposte; master per Super+Space; larghezza della master cambiata con Super+Ctrl+j/slash
+-- (keybindings.lua).
+deck_columns = {}
+deck_master = {}
+deck_ratio = {}
+
+local TAB = 35 -- altezza della linguetta di ogni carta
+
+local function master_ratio(ctx, ws)
+    local default = #ctx.targets == 2 and 0.5 or ctx.area.w >= 3000 and 0.45 or 0.6
+    return deck_ratio[ws] or default
+end
+
+-- carte ctx.targets[from..to] nella colonna (x, w), ognuna una linguetta più in basso della precedente
+local function place_deck(ctx, from, to, x, w)
+    local h = ctx.area.h - (to - from) * TAB
+    for i = from, to do
+        ctx.targets[i]:place({
+            x = math.floor(x),
+            y = math.floor(ctx.area.y + (i - from) * TAB),
+            w = math.floor(w),
+            h = math.floor(h)
+        })
+    end
+end
+
+-- indirizzi delle finestre ctx.targets[from..to]
+local function deck_addresses(ctx, from, to)
+    local list = {}
+    for i = from, to do
+        local w = ctx.targets[i].window
+        if w then list[#list + 1] = w.address end
+    end
+    return list
+end
+
 hl.layout.register("custom_center2", {
     recalculate = function(ctx)
         local n = #ctx.targets
 
         if n == 0 then return end
+
+        local first = ctx.targets[1].window
+        local ws = first and first.workspace and first.workspace.id
+        if ws then
+            deck_columns[ws] = nil
+            deck_master[ws] = first.address
+        end
+        local ratio = master_ratio(ctx, ws)
 
         -- I margini laterali fissi hanno senso solo sugli ultrawide (G9, Xiaomi): sul pannello
         -- di un portatile una finestra sola resterebbe larga pochi pixel.
@@ -26,22 +73,27 @@ hl.layout.register("custom_center2", {
 
         elseif n == 2 then
             local gap = wide and 200 or 0
-            local win_w = math.floor((ctx.area.w - (2 * gap)) / 2)
+            local avail = ctx.area.w - (2 * gap)
+            local first_w = math.floor(avail * ratio)
 
-            for i, target in ipairs(ctx.targets) do
-                target:place({
-                    x = math.floor(ctx.area.x + gap + ((i - 1) * win_w)),
-                    y = math.floor(ctx.area.y),
-                    w = win_w,
-                    h = math.floor(ctx.area.h)
-                })
-            end
+            ctx.targets[1]:place({
+                x = math.floor(ctx.area.x + gap),
+                y = math.floor(ctx.area.y),
+                w = first_w,
+                h = math.floor(ctx.area.h)
+            })
+            ctx.targets[2]:place({
+                x = math.floor(ctx.area.x + gap + first_w),
+                y = math.floor(ctx.area.y),
+                w = math.floor(avail - first_w),
+                h = math.floor(ctx.area.h)
+            })
 
         elseif not wide then
-            -- 3+ finestre su uno schermo stretto: principale a sinistra, le altre impilate a destra
-            local master_w = math.floor(ctx.area.w * 0.6)
-            local stack_n = n - 1
-            local stack_h = math.floor(ctx.area.h / stack_n)
+            -- 3+ finestre su uno schermo stretto: master a sinistra, le altre in un deck a destra
+            local master_w = math.floor(ctx.area.w * ratio)
+
+            if ws then deck_columns[ws] = { { first.address }, deck_addresses(ctx, 2, n) } end
 
             ctx.targets[1]:place({
                 x = math.floor(ctx.area.x),
@@ -49,74 +101,45 @@ hl.layout.register("custom_center2", {
                 w = master_w,
                 h = math.floor(ctx.area.h)
             })
-
-            for i = 2, n do
-                ctx.targets[i]:place({
-                    x = math.floor(ctx.area.x + master_w),
-                    y = math.floor(ctx.area.y + (i - 2) * stack_h),
-                    w = math.floor(ctx.area.w - master_w),
-                    h = stack_h
-                })
-            end
+            place_deck(ctx, 2, n, ctx.area.x + master_w, ctx.area.w - master_w)
 
         else
-            -- 3+ windows: centered master with cascaded side decks.
-            local master_ratio = 0.5
-            local master_w = math.floor(ctx.area.w * master_ratio)
+            -- 3+ finestre: master al centro, deck a sinistra e a destra
+            local master_w = math.floor(ctx.area.w * ratio)
             local side_w = math.floor((ctx.area.w - master_w) / 2)
 
             local left_count = math.ceil((n - 1) / 2)
-            local right_count = math.floor((n - 1) / 2)
 
-            local offset_step = 35 -- pixels to shift each window down and right
-
-            -- Left stack (cascading down and right)
-            if left_count > 0 then
-                local total_offset = (left_count - 1) * offset_step
-                local cascade_win_w = side_w - total_offset
-                local cascade_win_h = math.floor(ctx.area.h) - total_offset
-
-                for i = 1, left_count do
-                    local target = ctx.targets[i + 1]
-                    local current_offset = (i - 1) * offset_step
-
-                    target:place({
-                        x = math.floor(ctx.area.x + current_offset),
-                        y = math.floor(ctx.area.y + current_offset),
-                        w = math.floor(cascade_win_w),
-                        h = math.floor(cascade_win_h)
-                    })
-                end
+            if ws then
+                deck_columns[ws] = {
+                    deck_addresses(ctx, 2, left_count + 1),
+                    { first.address },
+                    deck_addresses(ctx, left_count + 2, n),
+                }
             end
 
-            -- Master window (target 1, centered)
+            place_deck(ctx, 2, left_count + 1, ctx.area.x, side_w)
             ctx.targets[1]:place({
                 x = math.floor(ctx.area.x + side_w),
                 y = math.floor(ctx.area.y),
                 w = master_w,
                 h = math.floor(ctx.area.h)
             })
-
-            -- Right stack (cascading down and right)
-            if right_count > 0 then
-                local total_offset = (right_count - 1) * offset_step
-                local cascade_win_w = side_w - total_offset
-                local cascade_win_h = math.floor(ctx.area.h) - total_offset
-
-                for i = 1, right_count do
-                    local target = ctx.targets[1 + left_count + i]
-                    local current_offset = (i - 1) * offset_step
-
-                    target:place({
-                        x = math.floor(ctx.area.x + side_w + master_w + current_offset),
-                        y = math.floor(ctx.area.y + current_offset),
-                        w = math.floor(cascade_win_w),
-                        h = math.floor(cascade_win_h)
-                    })
-                end
+            if n > left_count + 1 then
+                place_deck(ctx, left_count + 2, n, ctx.area.x + side_w + master_w, side_w)
             end
         end
-    end
+    end,
+
+    -- "ratio +0.05" / "ratio -0.05": allarga o stringe la master del workspace
+    layout_msg = function(ctx, msg)
+        local delta = tonumber(msg:match("^ratio%s+([+-]?[%d.]+)$") or "")
+        local first = ctx.targets[1] and ctx.targets[1].window
+        if not delta then return "custom_center2: messaggio sconosciuto (uso: ratio +0.05)" end
+        if not first then return end
+        local ws = first.workspace.id
+        deck_ratio[ws] = math.max(0.2, math.min(0.8, master_ratio(ctx, ws) + delta))
+    end,
 })
 
 -- Built-in layout engine tuning

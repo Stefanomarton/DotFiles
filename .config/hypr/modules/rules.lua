@@ -7,13 +7,12 @@
 
 -- Example window rules that are useful
 
-local suppressMaximizeRule = hl.window_rule({
+hl.window_rule({
     -- Ignore maximize requests from all apps. You'll probably like this.
     name  = "suppress-maximize-events",
     match = { class = ".*" },
     suppress_event = "maximize",
 })
--- suppressMaximizeRule:set_enabled(false)
 
 hl.window_rule({
     -- Fix some dragging issues with XWayland
@@ -61,6 +60,28 @@ hl.window_rule({
       monitor = screens.main
 })
 
+-- selettore di condivisione schermo (xdph)
+hl.window_rule({
+      name = "float-share-picker",
+      match = {
+         class = "^hyprland-share-picker$"
+      },
+      float = true,
+      center = true,
+      size = {"(monitor_w*0.5)", "(monitor_h*0.5)"},
+      monitor = screens.main
+})
+
+-- barra "… is sharing a window/your screen" di Chromium: parcheggiata in uno special workspace
+hl.window_rule({
+      name = "hide-chromium-share-bar",
+      match = {
+         class = "^$",
+         title = ".* is sharing (a window|your screen|this tab|a tab)\\.?",
+      },
+      workspace = "special:sharebar silent",
+})
+
 
 -- Zotero: every window but the main one is a popup (dialogs, Sci-Hub, "Progress" toasts)
 hl.window_rule({
@@ -93,21 +114,13 @@ hl.window_rule({
 })
 
 
+-- popup dell'estensione Bitwarden (non l'app desktop, che ha classe Bitwarden)
 hl.on("window.title", function(w)
     local prefix = "Bitwarden"
-    if w.title:sub(1, #prefix) == prefix then
-        local monitor = hl.get_active_monitor()
-        if monitor == nil then
-            return
-        end
-        local win = { width = 500, height = 800 }
-        local pos = {
-            x = math.floor((monitor.width  - win.width)  / 2),
-            y = math.floor((monitor.height - win.height) / 2),
-        }
+    if w.title:sub(1, #prefix) == prefix and w.class:lower() ~= "bitwarden" then
         hl.dispatch(hl.dsp.window.float({ action = "enable", window = w }))
-        hl.dispatch(hl.dsp.window.resize({ x = win.width, y = win.height, relative = false, window = w }))
-        hl.dispatch(hl.dsp.window.move({ x = pos.x, y = pos.y, relative = false, window = w }))
+        hl.dispatch(hl.dsp.window.resize({ x = 500, y = 800, relative = false, window = w }))
+        hl.dispatch(hl.dsp.window.center({ window = w }))
     end
 end)
 
