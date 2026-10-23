@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Shell root sul Proxmox di Borsini, password dal vault (voce "proxmox-borsini").
+# Super+B (menu.lua) lo apre in kitty. Fa da SSH_ASKPASS a se stesso: niente sshpass,
+# la password va da rbw a ssh senza passare da variabili d'ambiente o disco.
+set -euo pipefail
+
+host=192.168.1.50 # la voce rbw indica ancora .32, che non risponde più
+
+if [[ -n ${BORSINI_ASKPASS:-} ]]; then
+    [[ ${1:-} == *assword* ]] || exit 1 # solo la richiesta di password, non conferme di host key
+    exec rbw get proxmox-borsini
+fi
+
+BORSINI_ASKPASS=1 SSH_ASKPASS=$(realpath "$0") SSH_ASKPASS_REQUIRE=force \
+    ssh -o PubkeyAuthentication=no -o NumberOfPasswordPrompts=1 "root@$host" "$@" ||
+    { echo "ssh uscito con errore $? (vault bloccato? password cambiata?)"; read -r; }

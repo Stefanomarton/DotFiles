@@ -24,6 +24,8 @@ Gira su desktop (G9 + Xiaomi) e sui portatili (`laptop`, `tm-laptop`): profili i
   `--override`, che rofi-rbw usa per le scorciatoie). Bitwarden via rbw; rbw, rofi e `SSH_AUTH_SOCK` in
   `~/.nixos/modules/web.nix`). Al login `~/.local/bin/secrets-sync` (autostart) sblocca il vault
   e scrive le chiavi API in RAM: elenco e regole nello script.
+- Super+B = kitty con `~/.local/bin/ssh-borsini` (root sul Proxmox di Borsini, password dal vault
+  via `SSH_ASKPASS`; host in cima allo script).
 
 ## Widget
 
