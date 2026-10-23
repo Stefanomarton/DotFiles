@@ -20,6 +20,12 @@ Gira su desktop (G9 + Xiaomi) e sui portatili (`laptop`, `tm-laptop`): profili i
   (`whichkey-cancel`). Si chiude da solo `autoClose` ms dopo il rilascio di Super.
 - Super+Esc = `clean_screen` in menu.lua: nasconde scratchpad (`pypr hide '*'`), popup,
   picker, menu, tofi, rofi.
+- Super+Ctrl+W = VM Windows a schermo intero nel workspace `w11` (voce del menu → `vm_enter` in
+  keybindings.lua; submap `clean`: le altre scorciatoie vanno alla VM). Il viewer per host è in
+  `modules/workspaces.lua`: Looking Glass sul fisso (`on_created_empty`), virt-viewer `--kiosk` su
+  tm-laptop, lanciato da `vm_enter` (`vm_launch`) perché lì `on_created_empty` non parte.
+  L'uscita ha `dont_inhibit` (= `bindp`), perché il viewer blocca le scorciatoie di Hyprland
+  quando prende la tastiera.
 - Super+P = rofi-rbw su rofi, tema in `.config/rofi/config.rasi` (fuzzel 1.14 non ha più
   `--override`, che rofi-rbw usa per le scorciatoie). Bitwarden via rbw; rbw, rofi e `SSH_AUTH_SOCK` in
   `~/.nixos/modules/web.nix`). Al login `~/.local/bin/secrets-sync` (autostart) sblocca il vault
@@ -74,6 +80,9 @@ Gira su desktop (G9 + Xiaomi) e sui portatili (`laptop`, `tm-laptop`): profili i
   le richieste `j/…`. La forma semplice (`cursorpos`) risponde senza a capo e lo `SplitParser`
   non emette mai la riga (whichkey non si apriva più). Chiudere la connessione dopo la `}`
   finale, altrimenti un avviso `PeerClosedError` a ogni richiesta.
+- **Monitor a x negativa**: virt-viewer a schermo intero non ridimensiona la VM (SPICE
+  `assertion 'x >= 0' failed`). Il pannello da solo sta in `0x0` (monitors.lua): con
+  `auto-center-down` senza G9 finiva a x = -960.
 - **Autopush**: il repo `.dotfiles` ha un hook post-commit che pubblica subito ogni commit.
   Controllare lo staging prima di committare (una cancellazione già in stage finisce dentro).
 

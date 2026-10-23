@@ -146,19 +146,22 @@ end
 navigation_binds(function() qs_send("whichkey-cancel") end)
 
 
--- Entering the submap
-hl.bind(mainMod .. " + CTRL + W", function()
+-- Entering the submap: Super+Ctrl+W, bound in menu.lua so it shows in the which-key menu.
+-- vm_launch (workspaces.lua) starts the viewer where on_created_empty doesn't
+function vm_enter()
     hl.dispatch(hl.dsp.submap("clean"))
     hl.dispatch(hl.dsp.focus({ workspace = "name:w11" }))
-end)
+    if vm_launch then hl.dispatch(hl.dsp.exec_cmd(vm_launch)) end
+end
 
 -- Defining the submap
 hl.define_submap("clean", function()
-    -- Exiting the submap
+    -- Exiting the submap. dont_inhibit (bindp): the viewer grabs the keyboard for the VM,
+    -- this key still reaches Hyprland
         hl.bind(mainMod .. " + CTRL + W", function()
         hl.dispatch(hl.dsp.submap("reset"))
         hl.dispatch(hl.dsp.focus({ workspace = "previous_per_monitor" }))
-        end)
+        end, { dont_inhibit = true })
 end)
 
 

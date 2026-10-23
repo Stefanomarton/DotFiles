@@ -57,6 +57,8 @@ menu = {
         { "Password",             "rbw lock; rofi-rbw --selector rofi; rbw lock",     S .. "P" },
         -- Super+Alt+D (dettatura diretta) è di hyprwhspr-rs
         { "Dettatura in Emacs",   "~/.config/hypr/scripts/dettatura-emacs.sh",        S .. "ALT + E" },
+        -- di nuovo Super+Ctrl+W per uscire: submap "clean" in keybindings.lua
+        { "VM Windows",           vm_enter,                                           S .. "CTRL + W" },
     } },
     { "Scratchpad", {
         { "Yazi del workspace", "~/.config/hypr/scripts/yazi-workspace.sh", S .. "A" },

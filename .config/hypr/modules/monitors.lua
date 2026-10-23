@@ -37,11 +37,11 @@ if host == "desktop" then
 end
 
 if profile.laptop then
-    local function panel(enabled)
+    local function panel(enabled, position)
         hl.monitor({
             output   = screens.panel,
             mode     = "preferred",
-            position = "auto-center-down",
+            position = position,
             scale    = "1",
             disabled = not enabled,
         })
@@ -64,12 +64,17 @@ if profile.laptop then
 
     -- Coperchio chiuso con monitor esterni: pannello spento. Senza esterni non si tocca
     -- (logind sospende; con un monitor esterno collegato invece ignora il coperchio).
-    local panel_on = nil
+    -- Posizione: sotto il G9 in dock, 0x0 da solo. Senza esterni auto-center-down lo mette a
+    -- x = -960, e virt-viewer a schermo intero non ridimensiona la VM (SPICE scarta le x negative).
+    local panel_state = nil
     local function update_panel(closed)
-        local want = not (closed and external_connected())
-        if want ~= panel_on then
-            panel_on = want
-            panel(want)
+        local external = external_connected()
+        local want = not (closed and external)
+        local position = external and "auto-center-down" or "0x0"
+        local state = tostring(want) .. " " .. position
+        if state ~= panel_state then
+            panel_state = state
+            panel(want, position)
         end
     end
 
