@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# VM Windows di Borsini (BORSINISERVER, EpyX) in Remmina, password dal vault (voce "rdp borsini").
+# Super+B (menu.lua). Usa il profilo salvato in Remmina; la copia con la password (cifrata col
+# segreto di remmina.pref) sta in RAM e sparisce allo spegnimento.
+set -euo pipefail
+
+profile=~/.local/share/remmina/group_rdp_borsiniserver_192-168-1-203.remmina
+run="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/borsini.remmina"
+
+enc=$(rbw get "rdp borsini" | remmina --encrypt-password 2>/dev/null | sed -n 's/^Encrypted password: //p') || true
+[[ -n $enc ]] || { notify-send "Borsini" "Vault bloccato o voce \"rdp borsini\" mancante"; exit 1; }
+
+umask 077
+sed "s|^password=.*|password=$enc|" "$profile" >"$run"
+exec remmina -c "$run"
