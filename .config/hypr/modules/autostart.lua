@@ -8,9 +8,10 @@ hl.on("hyprland.start", function ()
          hl.exec_cmd([[sh -c 'while [ -S "$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket.sock" ]; do pypr >> ~/.cache/pypr.log 2>&1; sleep 1; done']])
          hl.exec_cmd("hyprpaper")
          hl.exec_cmd("hyprsunset")
-         -- Bitwarden (rbw, web.nix di NixOS): parte qui perché il socket SSH ci sia dal login
-         -- e perché erediti WAYLAND_DISPLAY per la richiesta della master password
-         hl.exec_cmd("rbw-agent")
+         -- Bitwarden (rbw, web.nix di NixOS): login con 2FA, sblocca il vault (avvia rbw-agent,
+         -- socket SSH) e scrive in RAM le chiavi API lette dai programmi. Parte qui perché
+         -- erediti WAYLAND_DISPLAY per la richiesta della master password
+         hl.exec_cmd([[~/.local/bin/secrets-sync --login || notify-send -u critical "Segreti" "secrets-sync non riuscito: rilanciarlo"]])
          hl.exec_cmd("qs -p ~/.config/hypr/widgets/workspaces/")
          hl.exec_cmd("qs -p ~/.config/hypr/widgets/corner/")
          hl.exec_cmd("qs -p ~/.config/hypr/widgets/volume/")

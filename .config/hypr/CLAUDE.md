@@ -21,7 +21,8 @@ Gira su desktop (G9 + Xiaomi) e sui portatili (`laptop`, `tm-laptop`): profili i
 - Super+Esc = `clean_screen` in menu.lua: nasconde scratchpad (`pypr hide '*'`), popup,
   picker, menu, tofi, fuzzel.
 - Super+P = rofi-rbw su fuzzel (Bitwarden via rbw; rbw, fuzzel e `SSH_AUTH_SOCK` in
-  `~/.nixos/modules/web.nix`, `rbw-agent` in autostart).
+  `~/.nixos/modules/web.nix`). Al login `~/.local/bin/secrets-sync` (autostart) sblocca il vault
+  e scrive le chiavi API in RAM: elenco e regole nello script.
 
 ## Widget
 
