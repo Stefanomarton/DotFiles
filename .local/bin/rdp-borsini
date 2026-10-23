@@ -10,6 +10,10 @@ run="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/borsini.remmina"
 enc=$(rbw get "rdp borsini" | remmina --encrypt-password 2>/dev/null | sed -n 's/^Encrypted password: //p') || true
 [[ -n $enc ]] || { notify-send "Borsini" "Vault bloccato o voce \"rdp borsini\" mancante"; exit 1; }
 
+# Niente conferma alla chiusura. remmina.pref resta fuori dai dotfiles: contiene il segreto delle password
+pref=~/.config/remmina/remmina.pref
+[[ -f $pref ]] && sed -i 's/^confirm_close=true$/confirm_close=false/' "$pref"
+
 umask 077
 # disablepasswordstoring: altrimenti al salvataggio del profilo Remmina copia la password nel
 # portachiavi GNOME, che col login automatico è bloccato e chiede la sua password
