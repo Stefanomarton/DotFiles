@@ -65,6 +65,7 @@ ShellRoot {
         if (event.key >= Qt.Key_A && event.key <= Qt.Key_Z) k = String.fromCharCode(event.key)
         else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) k = "Enter"
         else if (event.key === Qt.Key_Space) k = "Space"
+        else if (event.key === Qt.Key_Delete) k = "Del"
         if (!k) return ""
         var m = event.modifiers, out = []
         if (m & Qt.ControlModifier) out.push("Ctrl")

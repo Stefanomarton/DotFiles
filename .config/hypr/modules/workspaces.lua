@@ -44,3 +44,21 @@ if vm_launch then
         workspace = "name:w11",
     })
 end
+
+-- agent-deck: web UI a tutto schermo (servizio utente agent-deck-web), Super+Del
+hl.workspace_rule({
+    workspace = "name:agents",
+    monitor   = screens.main,
+    layout    = "monocle",
+    no_rounding = true,
+    decorate  = false,
+    no_border = true,
+    gaps_in   = 0,
+    gaps_out  = 0,
+})
+-- la web UI (aperta da Super+Del, menu.lua) finisce sempre qui
+hl.window_rule({
+    name      = "agent-deck-web",
+    match     = { class = "chrome-127\\.0\\.0\\.1__.*" },
+    workspace = "name:agents",
+})

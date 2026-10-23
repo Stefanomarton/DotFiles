@@ -43,6 +43,18 @@ local function clean_screen()
     hl.dispatch(hl.dsp.exec_cmd([[pypr hide '*'; pkill tofi; pkill -x rofi; hyprctl dismissnotify]]))
 end
 
+-- Super+Del: workspace "agents" with the agent-deck web UI (rule in workspaces.lua), and back.
+-- Its own Chromium profile, so it is a separate process the window rule can catch; checked via
+-- hyprctl because pgrep -f would match this very shell.
+local function agents_workspace()
+    if hl.get_active_workspace().name == "agents" then
+        hl.dispatch(hl.dsp.focus({ workspace = "previous_per_monitor" }))
+        return
+    end
+    hl.dispatch(hl.dsp.focus({ workspace = "name:agents" }))
+    hl.dispatch(hl.dsp.exec_cmd([[hyprctl clients | grep -q 'class: chrome-127\.0\.0\.1__' || chromium --user-data-dir=$HOME/.local/share/agent-deck/chromium --force-device-scale-factor=1.3 --app=http://127.0.0.1:8420]]))
+end
+
 -- Not usable here: digits, j/k/l/slash, Up/Down (navigation_binds, they stay active with the
 -- menu open) and Esc/Backspace (close and back in the menu).
 menu = {
@@ -56,6 +68,7 @@ menu = {
         -- Vault bloccato prima (chiede sempre la master password) e dopo: sbloccato solo durante la scelta
         { "Password",             "rbw lock; rofi-rbw --selector rofi; rbw lock",     S .. "P" },
         { "Server Borsini",       "~/.local/bin/rdp-borsini",                         S .. "B" },
+        { "Agent Deck",           agents_workspace,                                   S .. "DELETE" },
         -- Super+Alt+D (dettatura diretta) è di hyprwhspr-rs
         { "Dettatura in Emacs",   "~/.config/hypr/scripts/dettatura-emacs.sh",        S .. "ALT + E" },
         -- di nuovo Super+Ctrl+W per uscire: submap "clean" in keybindings.lua
@@ -119,7 +132,7 @@ end
 -- The key as the menu shows and matches it: modifiers in a fixed order, Super left out.
 -- "SUPER + SHIFT + N" -> "Shift+N", "SUPER + Return" -> "Enter", "m" -> "M"
 local function menu_key(bind)
-    local names = { RETURN = "Enter", ESCAPE = "Esc", SPACE = "Space" }
+    local names = { RETURN = "Enter", ESCAPE = "Esc", SPACE = "Space", DELETE = "Del" }
     local mods, key = {}, nil
     for p in bind:gmatch("[^+%s]+") do
         local u = p:upper()

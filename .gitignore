@@ -9,3 +9,4 @@
 __pycache__/
 # Claude Code worktrees and settings
 .claude/
+.local/bin/agent-deck
