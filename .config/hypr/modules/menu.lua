@@ -45,14 +45,15 @@ end
 
 -- Super+Del: workspace "agents" with the agent-deck web UI (rule in workspaces.lua), and back.
 -- Its own Chromium profile, so it is a separate process the window rule can catch; checked via
--- hyprctl because pgrep -f would match this very shell.
+-- hyprctl because pgrep -f would match this very shell. The token (agent-deck web on NetBird, ~/.nixos)
+-- is read from its file at launch: ?token= sets agent-deck's cookie, nothing secret in the dotfiles.
 local function agents_workspace()
     if hl.get_active_workspace().name == "agents" then
         hl.dispatch(hl.dsp.focus({ workspace = "previous_per_monitor" }))
         return
     end
     hl.dispatch(hl.dsp.focus({ workspace = "name:agents" }))
-    hl.dispatch(hl.dsp.exec_cmd([[hyprctl clients | grep -q 'class: chrome-127\.0\.0\.1__' || chromium --user-data-dir=$HOME/.local/share/agent-deck/chromium --force-device-scale-factor=1.3 --app=http://127.0.0.1:8420]]))
+    hl.dispatch(hl.dsp.exec_cmd([[hyprctl clients | grep -q 'class: chrome-127\.0\.0\.1__' || chromium --user-data-dir=$HOME/.local/share/agent-deck/chromium --force-device-scale-factor=1.3 --app="http://127.0.0.1:8420/?token=$(cat ~/.config/agent-deck/web-token 2>/dev/null)"]]))
 end
 
 -- Not usable here: digits, j/k/l/slash, Up/Down (navigation_binds, they stay active with the
