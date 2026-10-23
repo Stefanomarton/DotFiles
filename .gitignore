@@ -7,3 +7,5 @@
 !.config/yazi/plugins/smart-switch.yazi
 *.exc
 __pycache__/
+# Claude Code worktrees and settings
+.claude/
