@@ -19,8 +19,9 @@ Gira su desktop (G9 + Xiaomi) e sui portatili (`laptop`, `tm-laptop`): profili i
   pannello con la tastiera (`blockers`) o se nel frattempo è scattata una scorciatoia
   (`whichkey-cancel`). Si chiude da solo `autoClose` ms dopo il rilascio di Super.
 - Super+Esc = `clean_screen` in menu.lua: nasconde scratchpad (`pypr hide '*'`), popup,
-  picker, menu, tofi, fuzzel.
-- Super+P = rofi-rbw su fuzzel (Bitwarden via rbw; rbw, fuzzel e `SSH_AUTH_SOCK` in
+  picker, menu, tofi, rofi.
+- Super+P = rofi-rbw su rofi, tema in `.config/rofi/config.rasi` (fuzzel 1.14 non ha più
+  `--override`, che rofi-rbw usa per le scorciatoie). Bitwarden via rbw; rbw, rofi e `SSH_AUTH_SOCK` in
   `~/.nixos/modules/web.nix`). Al login `~/.local/bin/secrets-sync` (autostart) sblocca il vault
   e scrive le chiavi API in RAM: elenco e regole nello script.
 
