@@ -3,6 +3,8 @@
 # Uso: meet-rec          registra in primo piano (in ~/inbox/meet/meet-AAAA-MM-GG-HHMM/; fermare con q o un solo Ctrl+C)
 #      meet-rec toggle   avvia/ferma la registrazione come servizio utente "meet-rec"
 #                        (Super+Shift+R in Hyprland; il widget widgets/recorder mostra lo stato)
+# A registrazione finita parte da sola la trascrizione (skill trascrivi, unità "trascrivi-meet-…"):
+# <nome>.txt, .srt e .min.txt nella stessa cartella. Log: journalctl --user -u 'trascrivi-meet-*'
 set -euo pipefail
 
 if [[ ${1:-} == toggle ]]; then
@@ -31,8 +33,12 @@ echo "File: $PWD/$out"
 
 # MP4 frammentato: se ffmpeg viene ucciso il file resta leggibile fino all'ultimo frammento (5 s).
 # Senza terminale (servizio) niente riga di avanzamento, che riempirebbe il journal.
-exec ffmpeg -hide_banner $([ -t 2 ] || echo -nostdin -nostats) \
+ffmpeg -hide_banner $([ -t 2 ] || echo -nostdin -nostats) \
   -f pulse -i "$mic" -f pulse -i @DEFAULT_MONITOR@ \
   -filter_complex amix=inputs=2:duration=longest:normalize=0 -c:a aac -b:a 96k \
   -movflags +frag_keyframe+empty_moov+default_base_moof -frag_duration 5000000 -flush_packets 1 \
-  "$out"
+  "$out" || true   # q/Ctrl+C/stop fanno uscire ffmpeg con 255: il file è comunque buono
+
+# Unità a parte: sopravvive allo stop di meet-rec e non tiene occupato il terminale.
+[ -s "$out" ] && systemd-run --user --unit="trascrivi-$name" -q --working-directory="$PWD" \
+  ~/.claude/skills/trascrivi/trascrivi.sh "$out" auto
