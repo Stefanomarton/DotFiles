@@ -7,7 +7,7 @@ hl.on("hyprland.start", function ()
          -- the error notification fails too): restart it while this Hyprland instance is up
          hl.exec_cmd([[sh -c 'while [ -S "$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket.sock" ]; do pypr >> ~/.cache/pypr.log 2>&1; sleep 1; done']])
          hl.exec_cmd("hyprpaper")
-         hl.exec_cmd("hyprsunset")
+         -- hyprsunset: servizio utente di NixOS (hyprland.nix), riavviato se cade
          -- Bitwarden (rbw, web.nix di NixOS): login con 2FA, sblocca il vault (avvia rbw-agent,
          -- socket SSH) e scrive in RAM le chiavi API lette dai programmi. Parte qui perché
          -- erediti WAYLAND_DISPLAY per la richiesta della master password
