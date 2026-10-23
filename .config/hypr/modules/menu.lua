@@ -52,8 +52,9 @@ menu = {
         { "Emacs",                "emacs",                                            S .. "SHIFT + E" },
         { "Appunti (cronologia)", "cliphist list | tofi | cliphist decode | wl-copy", S .. "V" },
         { "Registra chiamata",    "~/.local/bin/meet-rec toggle",                     S .. "SHIFT + R" },
-        -- Invio scrive la password, Alt+1 utente+Tab+password, Alt+T copia il TOTP
-        { "Password",             "rofi-rbw --selector rofi",                         S .. "P" },
+        -- Invio scrive la password, Alt+1 utente+Tab+password, Alt+T copia il TOTP.
+        -- Vault bloccato prima (chiede sempre la master password) e dopo: sbloccato solo durante la scelta
+        { "Password",             "rbw lock; rofi-rbw --selector rofi; rbw lock",     S .. "P" },
         -- Super+Alt+D (dettatura diretta) è di hyprwhspr-rs
         { "Dettatura in Emacs",   "~/.config/hypr/scripts/dettatura-emacs.sh",        S .. "ALT + E" },
     } },
