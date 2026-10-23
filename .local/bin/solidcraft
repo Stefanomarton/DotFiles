@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-exec nix run nixpkgs#appimage-run -- "$HOME/.local/share/solidcraft/SolidCraft.AppImage" "$@"
