@@ -55,6 +55,7 @@ menu = {
         -- Invio scrive la password, Alt+1 utente+Tab+password, Alt+T copia il TOTP.
         -- Vault bloccato prima (chiede sempre la master password) e dopo: sbloccato solo durante la scelta
         { "Password",             "rbw lock; rofi-rbw --selector rofi; rbw lock",     S .. "P" },
+        { "Server Borsini (SSH)", terminal .. " --title 'Borsini' ssh-borsini",       S .. "B" },
         -- Super+Alt+D (dettatura diretta) è di hyprwhspr-rs
         { "Dettatura in Emacs",   "~/.config/hypr/scripts/dettatura-emacs.sh",        S .. "ALT + E" },
         -- di nuovo Super+Ctrl+W per uscire: submap "clean" in keybindings.lua
