@@ -13,6 +13,8 @@ enc=$(rbw get "rdp borsini" | remmina --encrypt-password 2>/dev/null | sed -n 's
 umask 077
 # disablepasswordstoring: altrimenti al salvataggio del profilo Remmina copia la password nel
 # portachiavi GNOME, che col login automatico è bloccato e chiede la sua password
+# viewmode=1 e niente maximize: finestra normale, gestita da Hyprland (il profilo è a schermo intero)
 sed -e "s|^password=.*|password=$enc|" -e "s|^disablepasswordstoring=.*|disablepasswordstoring=1|" \
+    -e "s|^viewmode=.*|viewmode=1|" -e "s|^window_maximize=.*|window_maximize=0|" \
     "$profile" >"$run"
 exec remmina -c "$run"
