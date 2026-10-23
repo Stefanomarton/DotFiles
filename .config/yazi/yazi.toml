@@ -67,7 +67,10 @@ download = [
 pdf = [
   { run = 'for f in %s; do sioyek "$f" & done', orphan = true, for = "linux" },
 ]
-office = [{ run = 'soffice %s', orphan = true, for = "linux" }]
+office = [
+  { run = 'wordcraft %s', orphan = true, desc = "Wordcraft", for = "linux" },
+  { run = 'soffice %s', orphan = true, desc = "LibreOffice", for = "linux" },
+]
 
 [open]
 rules = [
