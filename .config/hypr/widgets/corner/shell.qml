@@ -31,6 +31,17 @@ ShellRoot {
         onConnectedChanged: if (connected) { write("j/cursorpos"); flush() }
     }
 
+    // lastIpcObject (activeWorkspace = the regular one, specialWorkspace apart) is only
+    // refreshed on request: after a scratchpad toggle activeWorkspace can stay "special:…",
+    // so the hidden-workspace check reads the regular name from here.
+    Connections {
+        target: Hyprland
+        function onRawEvent(event) {
+            if (/^(workspace|activespecial|focusedmon|moveworkspace)/.test(event.name))
+                Hyprland.refreshMonitors()
+        }
+    }
+
     Timer {
         interval: 120
         repeat: true
@@ -66,10 +77,23 @@ ShellRoot {
                 return "?"
             }
 
+            // The monitor's regular workspace, even while a scratchpad (special:…) is shown on it
+            readonly property string regularWsName: {
+                for (var i = 0; i < Hyprland.monitors.values.length; i++) {
+                    var m = Hyprland.monitors.values[i]
+                    if (m.name === modelData.name) {
+                        var o = m.lastIpcObject
+                        return (o && o.activeWorkspace && o.activeWorkspace.name) ? o.activeWorkspace.name : ""
+                    }
+                }
+                return ""
+            }
+
             visible: Config.showCorner &&
                      (Config.cornerMonitor === "all" ||
                       modelData.name === Config.cornerMonitor) &&
-                     Config.cornerHiddenWorkspaces.indexOf(monitorWsName) < 0
+                     Config.cornerHiddenWorkspaces.indexOf(monitorWsName) < 0 &&
+                     Config.cornerHiddenWorkspaces.indexOf(regularWsName) < 0
 
             // Posizione verticale
             anchors.top:    Config.cornerPositionV === "top"
