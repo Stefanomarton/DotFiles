@@ -21,3 +21,6 @@ theme = "dark"
 [groups."inbox"]
   create = true
   default_path = "~/inbox/claude"
+
+[groups."Apricity"]
+  default_path = "~/work/projects/apricity"
