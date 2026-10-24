@@ -68,7 +68,8 @@ ShellRoot {
 
             visible: Config.showCorner &&
                      (Config.cornerMonitor === "all" ||
-                      modelData.name === Config.cornerMonitor)
+                      modelData.name === Config.cornerMonitor) &&
+                     Config.cornerHiddenWorkspaces.indexOf(monitorWsName) < 0
 
             // Posizione verticale
             anchors.top:    Config.cornerPositionV === "top"

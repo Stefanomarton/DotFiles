@@ -16,6 +16,8 @@ QtObject {
     readonly property int    cornerFontSize:      56
     // "all" = every monitor, or a specific connector name e.g. "DP-1"
     readonly property string cornerMonitor:       "all"
+    // Workspaces where the badge is not shown (agents = agent-deck web UI full screen, Super+Del)
+    readonly property var    cornerHiddenWorkspaces: ["agents"]
     // Fade the badge out while the cursor is over it (so you can see under it).
     // The badge is always click-through; this just controls the hover fade,
     // which is driven by polling the cursor position.
