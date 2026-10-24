@@ -24,3 +24,7 @@ theme = "dark"
 
 [groups."Apricity"]
   default_path = "~/work/projects/apricity"
+
+[tmux]
+  # The web UI and the TUI already show title, group and status: no tmux bar.
+  inject_status_line = false
